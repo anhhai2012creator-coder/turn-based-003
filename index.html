@@ -3,11 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - v1.3.0</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v1.5.0 (Chính Thức)</title>
 <style>
   :root {
     --bg-main: #0d1117;
     --bg-card: #161b22;
+    --bg-card-hover: #21262d;
     --border-color: #30363d;
     --text-primary: #f0f6fc;
     --text-secondary: #8b949e;
@@ -101,7 +102,7 @@
     font-weight: 600;
     font-size: 11px;
   }
-  /* Views */
+  /* Screens */
   .view-container {
     flex: 1;
     position: relative;
@@ -114,8 +115,10 @@
     display: none;
     flex-direction: column;
   }
-  .screen.active { display: flex; }
-  /* Hub Screen */
+  .screen.active {
+    display: flex;
+  }
+  /* Main Hub */
   .hub-screen {
     align-items: center;
     justify-content: center;
@@ -163,13 +166,26 @@
     cursor: not-allowed;
   }
   .btn-primary { background: #238636; border-color: #2ea043; }
+  .btn-primary:hover:not(:disabled) { background: #2ea043; border-color: #3fb950; }
   .btn-accent { background: #1f6feb; border-color: #388bfd; }
+  .btn-accent:hover:not(:disabled) { background: #388bfd; }
   .btn-gold { background: #d29922; border-color: #e3b341; color: #000; }
+  .btn-gold:hover:not(:disabled) { background: #e3b341; }
   .btn-pink { background: #bf3989; border-color: #f778ba; color: #fff; }
+  .btn-pink:hover:not(:disabled) { background: #d24797; }
+  .btn-danger { background: #da3633; border-color: #f85149; }
   .btn-icon { font-size: 20px; }
   /* Battle Screen */
-  .battle-screen { position: relative; background: #000; }
-  #battleCanvas { width: 100%; height: 480px; display: block; background: #0d1117; }
+  .battle-screen {
+    position: relative;
+    background: #000;
+  }
+  #battleCanvas {
+    width: 100%;
+    height: 480px;
+    display: block;
+    background: #0d1117;
+  }
   .battle-controls {
     height: 200px;
     background: #0f141c;
@@ -188,7 +204,10 @@
     border-radius: 8px;
     border: 1px solid var(--border-color);
   }
-  .speed-toggle-group { display: flex; gap: 6px; }
+  .speed-toggle-group {
+    display: flex;
+    gap: 6px;
+  }
   .speed-btn {
     flex: 1;
     padding: 4px;
@@ -200,8 +219,17 @@
     cursor: pointer;
     font-weight: 600;
   }
-  .speed-btn.active { background: #1f6feb; color: #fff; border-color: #388bfd; }
-  .action-deck { flex: 1; display: flex; gap: 12px; align-items: center; }
+  .speed-btn.active {
+    background: #1f6feb;
+    color: #fff;
+    border-color: #388bfd;
+  }
+  .action-deck {
+    flex: 1;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
   .skill-card {
     flex: 1;
     background: #161b22;
@@ -215,11 +243,31 @@
     transition: all 0.2s;
     height: 100%;
   }
-  .skill-card:hover:not(.disabled) { border-color: var(--accent-blue); background: #21262d; transform: translateY(-2px); }
-  .skill-card.disabled { opacity: 0.35; cursor: not-allowed; }
-  .skill-title { font-size: 13px; font-weight: 700; display: flex; justify-content: space-between; }
-  .skill-desc { font-size: 11px; color: var(--text-secondary); line-height: 1.3; }
-  .skill-meta { font-size: 10px; color: var(--accent-gold); margin-top: auto; }
+  .skill-card:hover:not(.disabled) {
+    border-color: var(--accent-blue);
+    background: #21262d;
+    transform: translateY(-2px);
+  }
+  .skill-card.disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+  .skill-title {
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+  }
+  .skill-desc {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.3;
+  }
+  .skill-meta {
+    font-size: 10px;
+    color: var(--accent-gold);
+    margin-top: auto;
+  }
   .battle-log-mini {
     width: 240px;
     background: #090d13;
@@ -264,11 +312,35 @@
     align-items: center;
   }
   .modal-title { font-size: 16px; font-weight: 700; }
-  .modal-close { background: none; border: none; color: var(--text-secondary); font-size: 20px; cursor: pointer; }
+  .modal-close {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+  }
   .modal-close:hover { color: #fff; }
-  .modal-body { padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-  .modal-footer { padding: 10px 18px; border-top: 1px solid var(--border-color); display: flex; justify-content: flex-end; gap: 10px; }
-  .tab-bar { display: flex; gap: 8px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+  .modal-body {
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .modal-footer {
+    padding: 10px 18px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
+  /* Tabs */
+  .tab-bar {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 8px;
+  }
   .tab-btn {
     background: #21262d;
     color: var(--text-secondary);
@@ -279,8 +351,16 @@
     font-size: 12px;
     font-weight: 600;
   }
-  .tab-btn.active { background: #1f6feb; color: #fff; border-color: #388bfd; }
-  .grid-selector { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .tab-btn.active {
+    background: #1f6feb;
+    color: #fff;
+    border-color: #388bfd;
+  }
+  .grid-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
   .select-box {
     background: #21262d;
     border: 1px solid var(--border-color);
@@ -294,7 +374,11 @@
   .select-box:hover:not(.locked) { border-color: var(--accent-blue); background: #30363d; }
   .select-box.selected { border-color: var(--accent-blue); background: #1f6feb33; color: var(--accent-blue); }
   .select-box.locked { opacity: 0.35; cursor: not-allowed; }
-  .team-slots { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .team-slots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
   .slot-card {
     background: #0d1117;
     border: 1px dashed var(--border-color);
@@ -310,7 +394,11 @@
     cursor: pointer;
   }
   .slot-card.filled { border-style: solid; border-color: #388bfd; background: #161b22; }
-  .character-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .character-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
   .hero-card {
     background: #21262d;
     border: 1px solid var(--border-color);
@@ -322,8 +410,14 @@
     gap: 4px;
   }
   .hero-card:hover { border-color: #8b949e; }
-  .stat-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text-secondary); }
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
   .stat-val { color: var(--text-primary); font-weight: 600; }
+  /* Gacha Display Container */
   .gacha-reveal-box {
     background: #0d1117;
     border: 1px solid var(--border-color);
@@ -401,7 +495,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v1.3.0: Sổ Sứ Mệnh, Điểm Danh & Nhiệm Vụ Hàng Ngày</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v1.5.0 (Chính Thức): Sổ Sứ Mệnh, Cân Bằng Toàn Diện Kinh Tế & Quà Tặng Hàng Ngày</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -485,7 +579,7 @@
   <!-- Toast -->
   <div id="toast">Thông báo</div>
 
-  <!-- Popup: Điểm Danh Hàng Tuần -->
+  <!-- Popup: Điểm Danh Hàng Tuần (Reset mỗi tuần) -->
   <div class="modal-overlay" id="modalCheckin">
     <div class="modal-card" style="width:620px;">
       <div class="modal-header">
@@ -493,7 +587,7 @@
         <button class="modal-close" onclick="closeModal('modalCheckin')">&times;</button>
       </div>
       <div class="modal-body">
-        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">Đăng nhập mỗi ngày để nhận quà, chu kỳ tự động làm mới sau mỗi 7 ngày:</div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">Đăng nhập mỗi ngày để nhận quà phong phú, chu kỳ tự động reset sau mỗi 7 ngày:</div>
         <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;" id="checkinDaysGrid"></div>
       </div>
       <div class="modal-footer">
@@ -503,7 +597,7 @@
     </div>
   </div>
 
-  <!-- Popup: Nhiệm Vụ Mỗi Ngày -->
+  <!-- Popup: Nhiệm Vụ Mỗi Ngày (Reset mỗi ngày) -->
   <div class="modal-overlay" id="modalQuests">
     <div class="modal-card" style="width:720px;">
       <div class="modal-header">
@@ -511,12 +605,15 @@
         <button class="modal-close" onclick="closeModal('modalQuests')">&times;</button>
       </div>
       <div class="modal-body">
+        <!-- Cột mốc điểm nhiệm vụ -->
         <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <span style="font-size:13px; font-weight:700;">Điểm Nhiệm Vụ Hôm Nay: <span style="color:var(--accent-gold);" id="uiQuestPoints">0</span>/22</span>
           </div>
           <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px;" id="questMilestonesContainer"></div>
         </div>
+
+        <!-- Danh sách nhiệm vụ -->
         <div style="display:flex; flex-direction:column; gap:8px;" id="dailyQuestListContainer"></div>
       </div>
       <div class="modal-footer">
@@ -538,11 +635,12 @@
           <button class="tab-btn" id="tabBtnNormalPass" onclick="switchPassTab('normal')">🔷 Sổ Thường (Vegito & Whis)</button>
         </div>
 
+        <!-- Nội dung Tab Gacha -->
         <div style="display:flex; flex-direction:column; gap:12px;">
           <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
             <div>
               <div style="font-weight:700; font-size:14px;" id="gachaBannerTitle">Sổ Sứ Mệnh Đặc Biệt Mùa I</div>
-              <div style="font-size:11px; color:var(--text-secondary);" id="gachaBannerDesc">Cơ hội nhận Pain Thiên Đạo (3%), Madara Lục Đạo (3%) cùng nhiều mảnh thiên thạch & ánh sao.</div>
+              <div style="font-size:11px; color:var(--text-secondary);" id="gachaBannerDesc">Cơ hội nhận Pain Thiên Đạo (0.35%), Madara Lục Đạo (0.35%) cùng nhiều Mảnh Thiên Thạch & Ánh Sao.</div>
             </div>
             <div style="display:flex; gap:8px;">
               <button class="btn btn-accent" style="padding:8px 12px;" onclick="performGacha(1)">Quay 1 Lần<br><span style="font-size:10px;" id="gachaCost1">1 ☄️</span></button>
@@ -550,6 +648,7 @@
             </div>
           </div>
 
+          <!-- Khung Hiển Thị Kết Quả Gacha Từng Món -->
           <div class="gacha-reveal-box" id="gachaRevealBox">
             <div style="font-size:13px; color:var(--text-secondary);" id="gachaPlaceholderText">Chọn "Quay 1 Lần" hoặc "Quay 10 Lần" để bắt đầu quay Sổ Sứ Mệnh...</div>
             <div id="gachaActiveCard" style="display:none;"></div>
@@ -563,7 +662,7 @@
     </div>
   </div>
 
-  <!-- Popup: Cửa Hàng Mới -->
+  <!-- Popup: Cửa Hàng Mới (Vật Phẩm, Thiên Thạch & Mảnh) -->
   <div class="modal-overlay" id="modalShop">
     <div class="modal-card" style="width:720px;">
       <div class="modal-header">
@@ -572,40 +671,45 @@
       </div>
       <div class="modal-body">
         <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:12px;">
+          <!-- Gói Thiên Thạch Hồng -->
           <div class="hero-card" style="cursor:default;">
             <div style="font-weight:700; color:var(--accent-pink);">1 Thiên Thạch Hồng</div>
             <div style="font-size:11px; color:var(--text-secondary);">Dùng để quay Sổ Sứ Mệnh Đặc Biệt.</div>
             <div style="margin-top:auto; display:flex; flex-direction:column; gap:4px; padding-top:6px;">
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('pink_shard')">Đổi: 2 Mảnh Thiên Thạch Hồng</button>
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('pink_star')">Mua: 120 ⭐ Ánh sao</button>
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('pink_dia')">Mua: 500 💎 Kim cương</button>
+              <button class="btn" style="padding:5px;" onclick="buyItemShop('pink_shard')">Đổi: 15 Mảnh Thiên Thạch Hồng</button>
+              <button class="btn" style="padding:5px;" onclick="buyItemShop('pink_star')">Mua: 380 ⭐ Ánh sao</button>
+              <button class="btn" style="padding:5px;" onclick="buyItemShop('pink_dia')">Mua: 2,050 💎 Kim cương</button>
             </div>
           </div>
 
+          <!-- Gói Thiên Thạch Xanh -->
           <div class="hero-card" style="cursor:default;">
             <div style="font-weight:700; color:var(--accent-cyan);">1 Thiên Thạch Xanh</div>
             <div style="font-size:11px; color:var(--text-secondary);">Dùng để quay Sổ Sứ Mệnh Thường.</div>
             <div style="margin-top:auto; display:flex; flex-direction:column; gap:4px; padding-top:6px;">
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('blue_shard')">Đổi: 2 Mảnh Thiên Thạch Xanh</button>
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('blue_star')">Mua: 50 ⭐ Ánh sao</button>
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('blue_dia')">Mua: 200 💎 Kim cương</button>
+              <button class="btn" style="padding:5px;" onclick="buyItemShop('blue_shard')">Đổi: 15 Mảnh Thiên Thạch Xanh</button>
+              <button class="btn" style="padding:5px;" onclick="buyItemShop('blue_star')">Mua: 120 ⭐ Ánh sao</button>
+              <button class="btn" style="padding:5px;" onclick="buyItemShop('blue_dia')">Mua: 640 💎 Kim cương</button>
             </div>
           </div>
 
+          <!-- Gói Nâng Cấp Tướng -->
           <div class="hero-card" style="cursor:default;">
             <div style="font-weight:700; color:var(--accent-green);">Gói 500 VPNC</div>
             <div style="font-size:11px; color:var(--text-secondary);">Vật phẩm nâng cấp cấp độ nhân vật.</div>
-            <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:6px;">
-              <span style="font-weight:700; color:var(--accent-gold);">🪙 2,500 Vàng</span>
-              <button class="btn" onclick="buyItemShop('vpnc')">Mua</button>
+            <div style="margin-top:auto; display:flex; flex-direction:column; gap:4px; padding-top:6px;">
+              <button class="btn" style="padding:5px;" onclick="buyItemShop('vpnc_gold')">Mua: 2,500 🪙 Vàng</button>
+              <button class="btn" style="padding:5px;" onclick="buyItemShop('vpnc_dia')">Mua: 5 💎 Kim cương</button>
+              <button class="btn" style="padding:5px;" onclick="buyItemShop('vpnc_star')">Mua: 1 ⭐ Ánh sao</button>
             </div>
           </div>
 
+          <!-- Đổi Vàng Bằng Kim Cương -->
           <div class="hero-card" style="cursor:default;">
             <div style="font-weight:700; color:var(--accent-gold);">5,000 Vàng</div>
             <div style="font-size:11px; color:var(--text-secondary);">Đổi Kim cương lấy lượng lớn Vàng.</div>
             <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:6px;">
-              <span style="font-weight:700; color:var(--accent-cyan);">💎 200 KC</span>
+              <span style="font-weight:700; color:var(--accent-cyan);">💎 10 KC</span>
               <button class="btn" onclick="buyItemShop('gold')">Đổi</button>
             </div>
           </div>
@@ -676,8 +780,8 @@
             <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px;">
               <div class="hero-card"><button class="btn btn-primary" style="padding:5px;" onclick="exchangeItem('star_to_cake_1')">5,000 ⭐ ➔ 1 🥮 Bánh</button></div>
               <div class="hero-card"><button class="btn btn-primary" style="padding:5px;" onclick="exchangeItem('star_to_cake_5')">20,000 ⭐ ➔ 5 🥮 Bánh</button></div>
-              <div class="hero-card"><button class="btn btn-primary" style="padding:5px;" onclick="exchangeItem('gold_to_star')">7,000 🪙 ➔ 40 ⭐ Ánh sao</button></div>
-              <div class="hero-card"><button class="btn btn-primary" style="padding:5px;" onclick="exchangeItem('diamond_to_star')">800 💎 ➔ 200 ⭐ Ánh sao</button></div>
+              <div class="hero-card"><button class="btn btn-primary" style="padding:5px;" onclick="exchangeItem('gold_to_star')">120,000 🪙 ➔ 40 ⭐ Ánh sao</button></div>
+              <div class="hero-card"><button class="btn btn-primary" style="padding:5px;" onclick="exchangeItem('diamond_to_star')">1,300 💎 ➔ 200 ⭐ Ánh sao</button></div>
             </div>
             <div style="margin-top:10px; background:#161b22; border:1px solid var(--accent-gold); border-radius:8px; padding:8px; display:flex; justify-content:space-between; align-items:center;">
               <div style="font-size:12px; font-weight:700; color:var(--accent-gold);">5 🥮 Bánh Trung Thu ➔ Luân Hồi Tiên Nhân [DEF]</div>
@@ -806,8 +910,8 @@ const GIFTCODES = {
   "TANTHU002": { anhSao: 500 },
   "TANTHU003": { anhSao: 500 },
   "TFJIKOKDAB": { kimCuong: 299 },
-  "TRUNGTHUVV": { anhSao: 4000 },
-  "TRUNGTHU2026": { anhSao: 4000 }
+  "TRUNGTHUVV": { anhSao: 500 },
+  "TRUNGTHU2026": { anhSao: 500 }
 };
 
 const HERO_DB = {
@@ -991,9 +1095,10 @@ let gameState = {
     autumnChestNextAvailable: 0,
     luanHoiExchanged: false
   },
+  // Retention: Check-in & Quests
   checkin: {
-    currentCycleDay: 0,
-    lastClaimDate: "",
+    currentCycleDay: 0, // 0 to 6
+    lastClaimDate: "", // YYYY-MM-DD
     cycleStartDate: ""
   },
   dailyQuests: {
@@ -1024,6 +1129,7 @@ function loadGame() {
       gameState = Object.assign(gameState, parsed);
     } catch(e) { console.error(e); }
   }
+  // Initialize new properties if absent
   if (!gameState.resources.pinkMeteor) gameState.resources.pinkMeteor = 0;
   if (!gameState.resources.pinkShard) gameState.resources.pinkShard = 0;
   if (!gameState.resources.blueMeteor) gameState.resources.blueMeteor = 0;
@@ -1185,7 +1291,7 @@ function generateBotTeam(chapter, stage) {
 }
 
 /* ==========================================================================
-   COMBAT ENGINE
+   COMBAT ENGINE (OPTIMIZED, LIGHTWEIGHT)
    ========================================================================== */
 let battle = {
   active: false,
@@ -1214,7 +1320,9 @@ function toggleAutoBattle() {
   battle.auto = !battle.auto;
   const btn = document.getElementById("btnAutoBattle");
   btn.classList.toggle("active", battle.auto);
-  if (battle.auto && battle.isWaitingPlayer) autoChooseAction();
+  if (battle.auto && battle.isWaitingPlayer) {
+    autoChooseAction();
+  }
 }
 
 function startBattle() {
@@ -1304,7 +1412,7 @@ function handleVictory() {
   const rAnhSao = Math.round(10 * levelMult);
   const rKimCuong = Math.round(50 * levelMult);
   const rVpnc = Math.round(100 * levelMult);
-  const rGold = Math.round(500 * levelMult);
+  const rGold = Math.round(7500 * levelMult);
   const rExp = Math.round(80 * levelMult);
 
   gameState.resources.anhSao += rAnhSao;
@@ -1313,6 +1421,7 @@ function handleVictory() {
   gameState.resources.gold += rGold;
   addPlayerExp(rExp);
 
+  // Check Quests Tracking
   const isNewStage = (battle.chapter > gameState.progress.maxChapter) ||
                      (battle.chapter === gameState.progress.maxChapter && battle.stage === gameState.progress.maxStage);
 
@@ -1325,6 +1434,7 @@ function handleVictory() {
       gameState.progress.maxStage = 1;
     }
   } else {
+    // Old stage: calculate distance from current max
     const maxGlobalStage = (gameState.progress.maxChapter - 1) * 10 + gameState.progress.maxStage;
     const currentGlobalStage = (battle.chapter - 1) * 10 + battle.stage;
     const diff = maxGlobalStage - currentGlobalStage;
@@ -1367,6 +1477,7 @@ function nextTurn() {
         f.en = Math.min(f.enMax, +(f.en + 2).toFixed(1));
         logCombat(`[Điều Tức] ${f.name} nhận 2 EN!`);
       }
+      // Decrement duration of buffs
       ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff"].forEach(k => {
         if (f.buffs[k]) {
           f.buffs[k]--;
@@ -1395,7 +1506,7 @@ function nextTurn() {
     return;
   }
 
-  // DOT
+  // DOT: Burn, Bleeding, Bleeding2
   let dotDamage = 0;
   if (actor.buffs.burn && actor.buffs.burn > 0) {
     const stacks = actor.buffs.burn;
@@ -1446,7 +1557,9 @@ function nextTurn() {
   if (!actor.isBot) {
     battle.isWaitingPlayer = true;
     updatePlayerSkillCards(actor);
-    if (battle.auto) setTimeout(autoChooseAction, 350 / battle.speed);
+    if (battle.auto) {
+      setTimeout(autoChooseAction, 350 / battle.speed);
+    }
   } else {
     battle.isWaitingPlayer = false;
     disablePlayerActionCards();
@@ -1498,11 +1611,13 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
   const defReductionPct = Math.min(0.85, (effectiveDef / 5) * 0.005);
   let dmg = rawDmg * (1 - defReductionPct);
 
+  // Giảm sát thương từ debuff
   if (attacker.buffs.suyGiam) dmg *= 0.80;
   if (attacker.buffs.kiemSoatDebuff) dmg *= 0.70;
   if (attacker.buffs.thienDaoDebuff) dmg *= 0.70;
   if (attacker.buffs.teleportDebuff) dmg *= 0.80;
 
+  // Buff tăng công
   if (attacker.buffs.madaraDmgBoost) dmg *= 1.05;
   if (!attacker.isBot && attacker.id === "vegito" && attacker.level >= 80) dmg *= 1.30;
 
@@ -1526,14 +1641,15 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
 }
 
 function applyDamage(target, amount, isCrit = false, attacker = null) {
+  // Pain Passive 2: Teleportation (né đòn)
   if (target.id === "pain" && target.level >= 80) {
     let dodgeChance = 0.15;
-    if (target.level >= 150) dodgeChance += 0.10;
+    if (target.level >= 150) dodgeChance += 0.10; // Thần 1: +10% mọi tỷ lệ
     if (Math.random() < dodgeChance) {
       addAnimation(target, "TELEPORT! NÉ ĐÒN", "#bc8cff");
       logCombat(`🌀 [Teleportation] Pain Thiên Đạo né sạch toàn bộ đòn tấn công!`);
       if (attacker) {
-        attacker.buffs.teleportDebuff = 2;
+        attacker.buffs.teleportDebuff = 2; // Giảm 20% ST trong 2 lượt
         logCombat(`["Suy Giảm ST"] ${attacker.name} bị giảm 20% ST trong 2 lượt do Pain né đòn.`);
       }
       return 0;
@@ -1656,18 +1772,20 @@ function executePlayerAction(type) {
       logCombat(`🌀 [Lục Đạo Trảm] Luân Hồi Tiên Nhân chém quét toàn bộ quân địch gây ${totalDmg} tổng ST!`);
       if (actor.level >= 80) grantTeamShield(totalDmg * 0.20);
     } else if (actor.id === "pain") {
+      // 45% ATK lên TOÀN BỘ mục tiêu
       let totalDmg = 0;
       battle.botTeam.forEach(bot => {
         if (bot.hp > 0) {
           const raw = actor.atk * 0.45;
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
           totalDmg += applyDamage(bot, damage, isCrit, actor);
+          // Pain Passive 1: đánh mục tiêu có kiểm soát -> giảm 30% ST trong 2 lượt
           if (actor.level >= 40 && (bot.buffs.choang || bot.buffs.terror)) {
             bot.buffs.kiemSoatDebuff = 2;
           }
         }
       });
-      logCombat(`💥 [Hắc Bổng Kích] Pain Thiên Đạo phóng cọc toàn bộ quân địch gây ${totalDmg} ST!`);
+      logCombat(`💥 [Hắc Bổng Kích] Pain Thiên Đạo găm cọc phóng khắp toàn bộ quân địch gây ${totalDmg} ST!`);
     }
   } else if (type === "skill") {
     if (actor.en < actor.enMax) return;
@@ -1739,9 +1857,10 @@ function executePlayerAction(type) {
       logCombat(`💥 [Địa Bộc Thiên Tinh Vực] Luân Hồi Tiên Nhân phong ấn toàn thể, khắc +7 tầng "Lục đạo"!`);
       if (actor.level >= 80) grantTeamShield(totalDmg * 0.20);
     } else if (actor.id === "pain") {
+      // Gây 110% ATK lên toàn bộ mục tiêu, 30% gây [Terror] 2 lượt
       let terrorRate = 0.30;
       let thienDaoRate = 0.30;
-      if (actor.level >= 150) { terrorRate += 0.10; thienDaoRate += 0.10; }
+      if (actor.level >= 150) { terrorRate += 0.10; thienDaoRate += 0.10; } // Thần 1 (+10% tỷ lệ)
 
       let totalDmg = 0;
       battle.botTeam.forEach(bot => {
@@ -1750,14 +1869,17 @@ function executePlayerAction(type) {
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
           totalDmg += applyDamage(bot, damage, isCrit, actor);
 
+          // 30% gây Terror
           if (Math.random() < terrorRate) {
             bot.buffs.terror = 2;
             logCombat(`😱 ["Terror"] ${bot.name} rơi vào kinh hãi tột cùng!`);
+            // 30% cơ hội choáng
             if (Math.random() < 0.30) {
               bot.buffs.choang = 2;
               logCombat(`💫 ["Choáng"] ${bot.name} bị đẩy lùi choáng váng 2 lượt!`);
             }
           }
+          // Bị động 2: 30% gây Thiên Đạo (-30% ST trong 3 lượt)
           if (actor.level >= 80 && Math.random() < thienDaoRate) {
             bot.buffs.thienDaoDebuff = 3;
             logCombat(`👁️ ["Thiên đạo"] ${bot.name} bị uy áp Thiên Đạo giảm 30% ST trong 3 lượt!`);
@@ -1895,7 +2017,21 @@ function getFighterCoord(fighter) {
   return { x: 200, y: 200 };
 }
 
+let isBattleCanvasRunning = false;
+
+function startBattleCanvasLoop() {
+  if (!isBattleCanvasRunning) {
+    isBattleCanvasRunning = true;
+    requestAnimationFrame(renderCanvas);
+  }
+}
+
+function stopBattleCanvasLoop() {
+  isBattleCanvasRunning = false;
+}
+
 function renderCanvas() {
+  if (!isBattleCanvasRunning) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   ctx.fillStyle = "#0c1017";
@@ -1910,12 +2046,14 @@ function renderCanvas() {
     ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
   }
 
+  // Divider
   ctx.strokeStyle = "#21262d";
   ctx.lineWidth = 2;
   ctx.setLineDash([6, 6]);
   ctx.beginPath(); ctx.moveTo(canvas.width / 2, 40); ctx.lineTo(canvas.width / 2, canvas.height - 40); ctx.stroke();
   ctx.setLineDash([]);
 
+  // Render Turn Timeline Bar at top
   renderTimelineBar();
 
   battle.playerTeam.forEach(f => { if (f) drawCharacter(f); });
@@ -2012,6 +2150,7 @@ function drawCharacter(f) {
     ctx.fillText("▼ MỤC TIÊU", x, y - 48);
   }
 
+  // HP Bar & Shield
   const barWidth = 72;
   const barHeight = 6;
   const barX = x - barWidth / 2;
@@ -2042,6 +2181,7 @@ function drawCharacter(f) {
     ctx.fillStyle = "#8b949e";
     ctx.fillText(`${f.hp}/${f.maxHp}`, x, enBarY + 14);
 
+    // Buff & Debuff Badges
     let badgeOffset = -30;
     if (f.buffs.burn) { drawBadge(x + badgeOffset, y - 56, `🔥x${f.buffs.burn}`, "#f85149"); badgeOffset += 30; }
     if (f.buffs.bleeding) { drawBadge(x + badgeOffset, y - 56, `🩸x${f.buffs.bleeding.stacks}`, "#da3633"); badgeOffset += 30; }
@@ -2088,14 +2228,14 @@ canvas.addEventListener("click", (e) => {
 });
 
 /* ==========================================================================
-   RETENTION 1: ĐIỂM DANH HÀNG TUẦN
+   RETENTION 1: ĐIỂM DANH HÀNG TUẦN (RESET MỖI TUẦN)
    ========================================================================== */
 const CHECKIN_REWARDS = [
-  { day: 1, text: "5,000 🪙 Vàng", type: "gold", val: 5000 },
+  { day: 1, text: "30,000 🪙 Vàng", type: "gold", val: 30000 },
   { day: 2, text: "200 💎 Kim cương", type: "kimCuong", val: 200 },
-  { day: 3, text: "5,000 🪙 Vàng", type: "gold", val: 5000 },
+  { day: 3, text: "30,000 🪙 Vàng", type: "gold", val: 30000 },
   { day: 4, text: "200 💎 Kim cương", type: "kimCuong", val: 200 },
-  { day: 5, text: "5,000 🪙 Vàng", type: "gold", val: 5000 },
+  { day: 5, text: "30,000 🪙 Vàng", type: "gold", val: 30000 },
   { day: 6, text: "200 💎 Kim cương", type: "kimCuong", val: 200 },
   { day: 7, text: "100 ⭐ Ánh sao", type: "anhSao", val: 100 }
 ];
@@ -2149,6 +2289,7 @@ function claimTodayCheckin() {
   gameState.checkin.lastClaimDate = today;
   gameState.checkin.currentCycleDay++;
 
+  // Reset sau 7 ngày
   if (gameState.checkin.currentCycleDay >= 7) {
     gameState.checkin.currentCycleDay = 0;
   }
@@ -2159,7 +2300,7 @@ function claimTodayCheckin() {
 }
 
 /* ==========================================================================
-   RETENTION 2: NHIỆM VỤ MỖI NGÀY
+   RETENTION 2: NHIỆM VỤ MỖI NGÀY & CỘT MỐC (RESET MỖI NGÀY)
    ========================================================================== */
 const DAILY_QUESTS_CONFIG = [
   { id: "new_stage_2", name: "Vượt qua 2 ải mới", target: 2, key: "newStages", rewardText: "300 💎", type: "kimCuong", val: 300, pts: 2 },
@@ -2189,6 +2330,7 @@ function openQuestsModal() {
 function renderQuestsUI() {
   document.getElementById("uiQuestPoints").textContent = gameState.dailyQuests.points;
 
+  // Render Milestones
   const mContainer = document.getElementById("questMilestonesContainer");
   mContainer.innerHTML = "";
   QUEST_MILESTONES.forEach(m => {
@@ -2209,6 +2351,7 @@ function renderQuestsUI() {
     mContainer.appendChild(div);
   });
 
+  // Render Quest Items
   const qContainer = document.getElementById("dailyQuestListContainer");
   qContainer.innerHTML = "";
   DAILY_QUESTS_CONFIG.forEach(q => {
@@ -2267,38 +2410,38 @@ function claimMilestone(pts, rewardAmount) {
 }
 
 /* ==========================================================================
-   RETENTION 3: SỔ SỨ MỆNH MÙA I
+   RETENTION 3: SỔ SỨ MỆNH MÙA I (GACHA ĐẶC BIỆT & THƯỜNG)
    ========================================================================== */
 let activePassTab = "special";
 let gachaQueue = [];
 let currentGachaIndex = 0;
 
 const GACHA_SPECIAL_RATES = [
-  { name: "Madara (Lục đạo) [Đặc biệt]", type: "hero", id: "madara", rate: 0.03, color: "var(--accent-red)" },
-  { name: "Pain Thiên Đạo [Đặc biệt]", type: "hero", id: "pain", rate: 0.03, color: "var(--accent-purple)" },
+  { name: "Madara (Lục đạo) [Đặc biệt]", type: "hero", id: "madara", rate: 0.0035, color: "var(--accent-red)" },
+  { name: "Pain Thiên Đạo [Đặc biệt]", type: "hero", id: "pain", rate: 0.0035, color: "var(--accent-purple)" },
   { name: "50 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 50, rate: 0.05, color: "var(--accent-gold)" },
   { name: "40 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 40, rate: 0.14, color: "var(--accent-gold)" },
-  { name: "30 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 30, rate: 0.12, color: "var(--accent-gold)" },
-  { name: "1 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 1, rate: 0.08, color: "var(--accent-pink)" },
-  { name: "3 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 3, rate: 0.09, color: "var(--accent-pink)" },
+  { name: "30 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 30, rate: 0.13, color: "var(--accent-gold)" },
+  { name: "1 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 1, rate: 0.10, color: "var(--accent-pink)" },
+  { name: "3 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 3, rate: 0.103, color: "var(--accent-pink)" },
   { name: "5 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 5, rate: 0.11, color: "var(--accent-pink)" },
   { name: "10 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 10, rate: 0.06, color: "var(--accent-pink)" },
-  { name: "10 💎 Kim cương", type: "res", res: "kimCuong", amt: 10, rate: 0.14, color: "var(--accent-cyan)" },
-  { name: "20 💎 Kim cương", type: "res", res: "kimCuong", amt: 20, rate: 0.15, color: "var(--accent-cyan)" }
+  { name: "100 💎 Kim cương", type: "res", res: "kimCuong", amt: 100, rate: 0.15, color: "var(--accent-cyan)" },
+  { name: "200 💎 Kim cương", type: "res", res: "kimCuong", amt: 200, rate: 0.15, color: "var(--accent-cyan)" }
 ];
 
 const GACHA_NORMAL_RATES = [
-  { name: "Vegito [SKL]", type: "hero", id: "vegito", rate: 0.05, color: "var(--accent-purple)" },
-  { name: "Whis [SKL]", type: "hero", id: "whis", rate: 0.05, color: "var(--accent-cyan)" },
+  { name: "Vegito [SKL]", type: "hero", id: "vegito", rate: 0.008, color: "var(--accent-purple)" },
+  { name: "Whis [SKL]", type: "hero", id: "whis", rate: 0.008, color: "var(--accent-cyan)" },
   { name: "50 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 50, rate: 0.15, color: "var(--accent-gold)" },
   { name: "40 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 40, rate: 0.12, color: "var(--accent-gold)" },
-  { name: "30 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 30, rate: 0.10, color: "var(--accent-gold)" },
-  { name: "1 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 1, rate: 0.08, color: "var(--accent-cyan)" },
-  { name: "3 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 3, rate: 0.10, color: "var(--accent-cyan)" },
+  { name: "30 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 30, rate: 0.11, color: "var(--accent-gold)" },
+  { name: "1 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 1, rate: 0.11, color: "var(--accent-cyan)" },
+  { name: "3 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 3, rate: 0.12, color: "var(--accent-cyan)" },
   { name: "5 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 5, rate: 0.12, color: "var(--accent-cyan)" },
   { name: "10 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 10, rate: 0.15, color: "var(--accent-cyan)" },
-  { name: "10 💎 Kim cương", type: "res", res: "kimCuong", amt: 10, rate: 0.03, color: "var(--accent-cyan)" },
-  { name: "20 💎 Kim cương", type: "res", res: "kimCuong", amt: 20, rate: 0.05, color: "var(--accent-cyan)" }
+  { name: "100 💎 Kim cương", type: "res", res: "kimCuong", amt: 100, rate: 0.054, color: "var(--accent-cyan)" },
+  { name: "200 💎 Kim cương", type: "res", res: "kimCuong", amt: 200, rate: 0.05, color: "var(--accent-cyan)" }
 ];
 
 function openPassModal() {
@@ -2313,12 +2456,12 @@ function switchPassTab(tab) {
 
   if (tab === "special") {
     document.getElementById("gachaBannerTitle").textContent = "Sổ Sứ Mệnh Đặc Biệt Mùa I";
-    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Pain Thiên Đạo (3%), Madara Lục Đạo (3%) cùng Mảnh Thiên Thạch & Ánh Sao.";
+    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Pain Thiên Đạo (0.35%), Madara Lục Đạo (0.35%) cùng nhiều Mảnh Thiên Thạch & Ánh Sao.";
     document.getElementById("gachaCost1").textContent = "1 ☄️ Thiên Thạch Hồng";
     document.getElementById("gachaCost10").textContent = "9 ☄️ (Ưu đãi 10 lượt)";
   } else {
     document.getElementById("gachaBannerTitle").textContent = "Sổ Sứ Mệnh Thường Mùa I";
-    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Vegito (5%), Whis (5%) cùng Mảnh Thiên Thạch Xanh & Ánh Sao.";
+    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Vegito (0.8%), Whis (0.8%) cùng nhiều Mảnh Thiên Thạch Xanh & Ánh Sao.";
     document.getElementById("gachaCost1").textContent = "1 🔷 Thiên Thạch Xanh";
     document.getElementById("gachaCost10").textContent = "9 🔷 (Ưu đãi 10 lượt)";
   }
@@ -2331,7 +2474,7 @@ function performGacha(times) {
   const currencyName = isSpecial ? "Thiên Thạch Hồng" : "Thiên Thạch Xanh";
 
   if ((gameState.resources[currencyKey] || 0) < cost) {
-    toast(`Không đủ ${currencyName} (Cần ${cost})! Đổi thêm trong Cửa hàng.`, true);
+    toast(`Không đủ ${currencyName} (Cần ${cost})! Mua thêm trong Cửa hàng.`, true);
     return;
   }
 
@@ -2352,6 +2495,7 @@ function performGacha(times) {
       }
     }
 
+    // Process reward
     if (selected.type === "hero") {
       gameState.heroes[selected.id] = gameState.heroes[selected.id] || { level: 1 };
     } else {
@@ -2395,49 +2539,59 @@ function showNextGachaItem() {
 }
 
 /* ==========================================================================
-   CỬA HÀNG MỚI
+   CỬA HÀNG MỚI (TÀI NGUYÊN & THIÊN THẠCH)
    ========================================================================== */
 function openShopModal() { openModal("modalShop"); }
 
 function buyItemShop(type) {
   if (type === "pink_shard") {
-    if ((gameState.resources.pinkShard || 0) < 2) { toast("Không đủ Mảnh Thiên Thạch Hồng (Cần 2)!", true); return; }
-    gameState.resources.pinkShard -= 2;
+    if ((gameState.resources.pinkShard || 0) < 15) { toast("Không đủ Mảnh Thiên Thạch Hồng (Cần 15)!", true); return; }
+    gameState.resources.pinkShard -= 15;
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
     toast("Đổi thành công 1 ☄️ Thiên Thạch Hồng!");
   } else if (type === "pink_star") {
-    if (gameState.resources.anhSao < 120) { toast("Không đủ Ánh sao (Cần 120 ⭐)!", true); return; }
-    gameState.resources.anhSao -= 120;
+    if (gameState.resources.anhSao < 380) { toast("Không đủ Ánh sao (Cần 380 ⭐)!", true); return; }
+    gameState.resources.anhSao -= 380;
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
     toast("Mua thành công 1 ☄️ Thiên Thạch Hồng!");
   } else if (type === "pink_dia") {
-    if (gameState.resources.kimCuong < 500) { toast("Không đủ Kim cương (Cần 500 💎)!", true); return; }
-    gameState.resources.kimCuong -= 500;
+    if (gameState.resources.kimCuong < 2050) { toast("Không đủ Kim cương (Cần 2,050 💎)!", true); return; }
+    gameState.resources.kimCuong -= 2050;
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
     toast("Mua thành công 1 ☄️ Thiên Thạch Hồng!");
   } else if (type === "blue_shard") {
-    if ((gameState.resources.blueShard || 0) < 2) { toast("Không đủ Mảnh Thiên Thạch Xanh (Cần 2)!", true); return; }
-    gameState.resources.blueShard -= 2;
+    if ((gameState.resources.blueShard || 0) < 15) { toast("Không đủ Mảnh Thiên Thạch Xanh (Cần 15)!", true); return; }
+    gameState.resources.blueShard -= 15;
     gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 1;
     toast("Đổi thành công 1 🔷 Thiên Thạch Xanh!");
   } else if (type === "blue_star") {
-    if (gameState.resources.anhSao < 50) { toast("Không đủ Ánh sao (Cần 50 ⭐)!", true); return; }
-    gameState.resources.anhSao -= 50;
+    if (gameState.resources.anhSao < 120) { toast("Không đủ Ánh sao (Cần 120 ⭐)!", true); return; }
+    gameState.resources.anhSao -= 120;
     gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 1;
     toast("Mua thành công 1 🔷 Thiên Thạch Xanh!");
   } else if (type === "blue_dia") {
-    if (gameState.resources.kimCuong < 200) { toast("Không đủ Kim cương (Cần 200 💎)!", true); return; }
-    gameState.resources.kimCuong -= 200;
+    if (gameState.resources.kimCuong < 640) { toast("Không đủ Kim cương (Cần 640 💎)!", true); return; }
+    gameState.resources.kimCuong -= 640;
     gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 1;
     toast("Mua thành công 1 🔷 Thiên Thạch Xanh!");
-  } else if (type === "vpnc") {
+  } else if (type === "vpnc" || type === "vpnc_gold") {
     if (gameState.resources.gold < 2500) { toast("Không đủ Vàng (Cần 2,500 🪙)!", true); return; }
     gameState.resources.gold -= 2500;
     gameState.resources.vpnc += 500;
     toast("Mua thành công 500 VPNC!");
+  } else if (type === "vpnc_dia") {
+    if (gameState.resources.kimCuong < 5) { toast("Không đủ Kim cương (Cần 5 💎)!", true); return; }
+    gameState.resources.kimCuong -= 5;
+    gameState.resources.vpnc += 500;
+    toast("Mua thành công 500 VPNC!");
+  } else if (type === "vpnc_star") {
+    if (gameState.resources.anhSao < 1) { toast("Không đủ Ánh sao (Cần 1 ⭐)!", true); return; }
+    gameState.resources.anhSao -= 1;
+    gameState.resources.vpnc += 500;
+    toast("Mua thành công 500 VPNC!");
   } else if (type === "gold") {
-    if (gameState.resources.kimCuong < 200) { toast("Không đủ Kim cương (Cần 200 💎)!", true); return; }
-    gameState.resources.kimCuong -= 200;
+    if (gameState.resources.kimCuong < 10) { toast("Không đủ Kim cương (Cần 10 💎)!", true); return; }
+    gameState.resources.kimCuong -= 10;
     gameState.resources.gold += 5000;
     toast("Đổi thành công 5,000 Vàng!");
   }
@@ -2546,6 +2700,7 @@ function openAutumnChest() {
   const cooldownSec = Math.floor(Math.random() * (1200 - 300 + 1)) + 300;
   gameState.events.autumnChestNextAvailable = Date.now() + (cooldownSec * 1000);
 
+  // Quest tracking
   gameState.dailyQuests.progress.chestOpened++;
   saveGame();
 
@@ -2565,13 +2720,13 @@ function exchangeItem(type) {
     gameState.resources.banhTrungThu = (gameState.resources.banhTrungThu || 0) + 5;
     toast("Đổi thành công 5 🥮 Bánh Trung Thu!");
   } else if (type === "gold_to_star") {
-    if (gameState.resources.gold < 7000) { toast("Cần 7,000 🪙 Vàng!", true); return; }
-    gameState.resources.gold -= 7000;
+    if (gameState.resources.gold < 120000) { toast("Cần 120,000 🪙 Vàng!", true); return; }
+    gameState.resources.gold -= 120000;
     gameState.resources.anhSao += 40;
     toast("Đổi thành công 40 ⭐ Ánh sao!");
   } else if (type === "diamond_to_star") {
-    if (gameState.resources.kimCuong < 800) { toast("Cần 800 💎 Kim cương!", true); return; }
-    gameState.resources.kimCuong -= 800;
+    if (gameState.resources.kimCuong < 1300) { toast("Cần 1,300 💎 Kim cương!", true); return; }
+    gameState.resources.kimCuong -= 1300;
     gameState.resources.anhSao += 200;
     toast("Đổi thành công 200 ⭐ Ánh sao!");
   }
@@ -2591,7 +2746,7 @@ function exchangeLuanHoi() {
 }
 
 /* ==========================================================================
-   GIFTCODE & NAVIGATION
+   GIFTCODE & MODALS
    ========================================================================== */
 function openGiftcodeModal() { openModal("modalGiftcode"); }
 
@@ -2617,6 +2772,11 @@ function submitGiftcode() {
 function switchScreen(screenId) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(screenId).classList.add("active");
+  if (screenId === "screenBattle") {
+    startBattleCanvasLoop();
+  } else {
+    stopBattleCanvasLoop();
+  }
 }
 function openModal(id) { document.getElementById(id).classList.add("active"); }
 function closeModal(id) { document.getElementById(id).classList.remove("active"); }
@@ -2844,6 +3004,7 @@ function upgradeHero(heroId) {
   gameState.resources.gold -= goldCost;
   gameState.heroes[heroId].level++;
 
+  // Daily quest tracking
   gameState.dailyQuests.progress.levelsUpgraded++;
   saveGame();
 
@@ -2854,7 +3015,6 @@ function upgradeHero(heroId) {
 
 window.onload = () => {
   loadGame();
-  requestAnimationFrame(renderCanvas);
 };
 </script>
 </body>
