@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v1.5.0 (Chính Thức)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v2.0.1 (Chính Thức)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -487,6 +488,7 @@
       <div class="currency-item" title="Bánh Trung Thu Ngọt"><span style="color:var(--accent-orange)">🥮</span> <span id="uiBanhTrungThu">0</span></div>
       <div class="currency-item" title="Thiên thạch hồng"><span style="color:var(--accent-pink)">☄️</span> <span id="uiPinkMeteor">0</span></div>
       <div class="currency-item" title="Thiên thạch xanh"><span style="color:var(--accent-cyan)">🔷</span> <span id="uiBlueMeteor">0</span></div>
+      <div class="currency-item" title="Kẹo Bánh Trung Thu"><span style="color:#ff79c6">🍬</span> <span id="uiKeoBanh">0</span></div>
     </div>
   </div>
 
@@ -495,7 +497,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v1.5.0 (Chính Thức): Sổ Sứ Mệnh, Cân Bằng Toàn Diện Kinh Tế & Quà Tặng Hàng Ngày</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v2.0.1 (Chính Thức): Cân Bằng Isshiki & Vegito, Giftcode Test & Reset</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -714,6 +716,109 @@
             </div>
           </div>
         </div>
+
+        <!-- TAB 3: ĐẠI TIỆC TRUNG THU -->
+        <div id="tabContentMidAutumn" style="display:none; flex-direction:column; gap:12px; max-height:480px; overflow-y:auto; padding-right:4px;">
+          <!-- Header Tóm Tắt & Số Dư Kẹo Bánh -->
+          <div style="background:#161b22; border:1px solid #ff79c6; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:15px; font-weight:800; color:#ff79c6;">🥮 ĐẠI TIỆC TRUNG THU v2.0.0</div>
+              <div style="font-size:11px; color:var(--text-secondary);">Làm nhiệm vụ mỗi ngày & vĩnh viễn để nhận 🍬 Kẹo Bánh đổi tài nguyên cực khủng!</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:11px; color:var(--text-secondary);">Số dư Kẹo Bánh:</div>
+              <div style="font-size:18px; font-weight:bold; color:#ff79c6;" id="midAutumnKeoBanhCount">0 🍬</div>
+            </div>
+          </div>
+
+          <!-- Section 1: Nhiệm Vụ Hằng Ngày -->
+          <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="font-size:13px; font-weight:700; color:var(--accent-gold);">📅 Nhiệm Vụ Hằng Ngày (Reset 00:00)</div>
+              <div style="font-size:12px; font-weight:bold; color:var(--accent-cyan);" id="midAutumnDailyPtsDisplay">Điểm: 0/77</div>
+            </div>
+            <div id="midAutumnDailyQuestsList" style="display:flex; flex-direction:column; gap:6px;"></div>
+
+            <!-- Cột mốc hàng ngày -->
+            <div style="margin-top:10px; padding-top:8px; border-top:1px solid #21262d;">
+              <div style="font-size:11px; font-weight:bold; color:var(--text-secondary); margin-bottom:6px;">🎁 Cột Mốc Điểm Hằng Ngày:</div>
+              <div id="midAutumnDailyMilestonesList" style="display:grid; grid-template-columns:repeat(5, 1fr); gap:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Section 2: Nhiệm Vụ Vĩnh Viễn -->
+          <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="font-size:13px; font-weight:700; color:var(--accent-purple);">🏆 Nhiệm Vụ Vĩnh Viễn (1 Lần Duy Nhất)</div>
+              <div style="font-size:12px; font-weight:bold; color:var(--accent-purple);" id="midAutumnPermPtsDisplay">Điểm: 0/290</div>
+            </div>
+            <div id="midAutumnPermQuestsList" style="display:flex; flex-direction:column; gap:6px;"></div>
+
+            <!-- Cột mốc vĩnh viễn -->
+            <div style="margin-top:10px; padding-top:8px; border-top:1px solid #21262d;">
+              <div style="font-size:11px; font-weight:bold; color:var(--text-secondary); margin-bottom:6px;">🎁 Cột Mốc Điểm Đặc Biệt:</div>
+              <div id="midAutumnPermMilestonesList" style="display:grid; grid-template-columns:repeat(5, 1fr); gap:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Section 3: Tiệm Quy Đổi Kẹo Bánh -->
+          <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+            <div style="font-size:13px; font-weight:700; color:#ff79c6; margin-bottom:8px;">🏪 Tiệm Quy Đổi Kẹo Bánh</div>
+            <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px;">
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-green);">7,500 VPNC</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">50 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_50')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-green);">18,000 VPNC</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">90 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_90')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default; border-color:var(--accent-gold);">
+                <div style="font-weight:700; color:var(--accent-gold);">40,000 VPNC (Cực Hời)</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">180 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_180')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-green);">200,000 VPNC</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">1,000 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_1000')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-gold);">1,000 Vàng</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">20 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('gold_20')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-gold);">8,000 Vàng</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">100 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('gold_100')">Đổi</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hộp Gacha Nhân Vật -->
+            <div style="margin-top:10px; background:#161b22; border:2px solid var(--accent-purple); border-radius:8px; padding:10px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-size:13px; font-weight:800; color:var(--accent-purple);">🎁 HỘP GACHA NHÂN VẬT CAO CẤP (1/1)</div>
+                <div style="font-size:11px; color:var(--text-secondary);">Mở nhận ngẫu nhiên 1 trong 6 tướng: Itachi Uế Thổ, Madara Lục Đạo, Phoverus, Kaioshin XENO, Momoshiki, Omega Shenron. Nếu đã có: đền bù 5,000 ⭐ Ánh sao!</div>
+              </div>
+              <button class="btn btn-gold" id="btnGachaBoxHero" onclick="openMidAutumnHeroBox()" style="padding:6px 14px; white-space:nowrap;">Đổi: 2,000 🍬</button>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn" onclick="closeModal('modalShop')">Đóng</button>
@@ -732,6 +837,7 @@
         <div class="tab-bar">
           <button class="tab-btn active" id="tabBtnEvent1" onclick="switchEventTab('starter')">Khởi Đầu Muôn Vạn</button>
           <button class="tab-btn" id="tabBtnEvent2" onclick="switchEventTab('autumn')">Mùa Thu Ánh Sao</button>
+          <button class="tab-btn" id="tabBtnEvent3" onclick="switchEventTab('midAutumn')">🥮 Đại Tiệc Trung Thu</button>
         </div>
 
         <div id="tabContentStarter" style="display:flex; flex-direction:column; gap:10px;">
@@ -786,6 +892,109 @@
             <div style="margin-top:10px; background:#161b22; border:1px solid var(--accent-gold); border-radius:8px; padding:8px; display:flex; justify-content:space-between; align-items:center;">
               <div style="font-size:12px; font-weight:700; color:var(--accent-gold);">5 🥮 Bánh Trung Thu ➔ Luân Hồi Tiên Nhân [DEF]</div>
               <button class="btn btn-gold" id="btnExchangeLuanHoi" onclick="exchangeLuanHoi()" style="padding:6px 12px;">Đổi (1/1)</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: ĐẠI TIỆC TRUNG THU -->
+        <div id="tabContentMidAutumn" style="display:none; flex-direction:column; gap:12px; max-height:480px; overflow-y:auto; padding-right:4px;">
+          <!-- Header Tóm Tắt & Số Dư Kẹo Bánh -->
+          <div style="background:#161b22; border:1px solid #ff79c6; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:15px; font-weight:800; color:#ff79c6;">🥮 ĐẠI TIỆC TRUNG THU v2.0.0</div>
+              <div style="font-size:11px; color:var(--text-secondary);">Làm nhiệm vụ mỗi ngày & vĩnh viễn để nhận 🍬 Kẹo Bánh đổi tài nguyên cực khủng!</div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:11px; color:var(--text-secondary);">Số dư Kẹo Bánh:</div>
+              <div style="font-size:18px; font-weight:bold; color:#ff79c6;" id="midAutumnKeoBanhCount">0 🍬</div>
+            </div>
+          </div>
+
+          <!-- Section 1: Nhiệm Vụ Hằng Ngày -->
+          <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="font-size:13px; font-weight:700; color:var(--accent-gold);">📅 Nhiệm Vụ Hằng Ngày (Reset 00:00)</div>
+              <div style="font-size:12px; font-weight:bold; color:var(--accent-cyan);" id="midAutumnDailyPtsDisplay">Điểm: 0/77</div>
+            </div>
+            <div id="midAutumnDailyQuestsList" style="display:flex; flex-direction:column; gap:6px;"></div>
+
+            <!-- Cột mốc hàng ngày -->
+            <div style="margin-top:10px; padding-top:8px; border-top:1px solid #21262d;">
+              <div style="font-size:11px; font-weight:bold; color:var(--text-secondary); margin-bottom:6px;">🎁 Cột Mốc Điểm Hằng Ngày:</div>
+              <div id="midAutumnDailyMilestonesList" style="display:grid; grid-template-columns:repeat(5, 1fr); gap:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Section 2: Nhiệm Vụ Vĩnh Viễn -->
+          <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="font-size:13px; font-weight:700; color:var(--accent-purple);">🏆 Nhiệm Vụ Vĩnh Viễn (1 Lần Duy Nhất)</div>
+              <div style="font-size:12px; font-weight:bold; color:var(--accent-purple);" id="midAutumnPermPtsDisplay">Điểm: 0/290</div>
+            </div>
+            <div id="midAutumnPermQuestsList" style="display:flex; flex-direction:column; gap:6px;"></div>
+
+            <!-- Cột mốc vĩnh viễn -->
+            <div style="margin-top:10px; padding-top:8px; border-top:1px solid #21262d;">
+              <div style="font-size:11px; font-weight:bold; color:var(--text-secondary); margin-bottom:6px;">🎁 Cột Mốc Điểm Đặc Biệt:</div>
+              <div id="midAutumnPermMilestonesList" style="display:grid; grid-template-columns:repeat(5, 1fr); gap:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Section 3: Tiệm Quy Đổi Kẹo Bánh -->
+          <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
+            <div style="font-size:13px; font-weight:700; color:#ff79c6; margin-bottom:8px;">🏪 Tiệm Quy Đổi Kẹo Bánh</div>
+            <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px;">
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-green);">7,500 VPNC</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">50 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_50')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-green);">18,000 VPNC</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">90 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_90')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default; border-color:var(--accent-gold);">
+                <div style="font-weight:700; color:var(--accent-gold);">40,000 VPNC (Cực Hời)</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">180 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_180')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-green);">200,000 VPNC</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">1,000 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_1000')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-gold);">1,000 Vàng</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">20 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('gold_20')">Đổi</button>
+                </div>
+              </div>
+              <div class="hero-card" style="cursor:default;">
+                <div style="font-weight:700; color:var(--accent-gold);">8,000 Vàng</div>
+                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
+                  <span style="font-weight:bold; color:#ff79c6;">100 🍬</span>
+                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('gold_100')">Đổi</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hộp Gacha Nhân Vật -->
+            <div style="margin-top:10px; background:#161b22; border:2px solid var(--accent-purple); border-radius:8px; padding:10px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-size:13px; font-weight:800; color:var(--accent-purple);">🎁 HỘP GACHA NHÂN VẬT CAO CẤP (1/1)</div>
+                <div style="font-size:11px; color:var(--text-secondary);">Mở nhận ngẫu nhiên 1 trong 6 tướng: Itachi Uế Thổ, Madara Lục Đạo, Phoverus, Kaioshin XENO, Momoshiki, Omega Shenron. Nếu đã có: đền bù 5,000 ⭐ Ánh sao!</div>
+              </div>
+              <button class="btn btn-gold" id="btnGachaBoxHero" onclick="openMidAutumnHeroBox()" style="padding:6px 14px; white-space:nowrap;">Đổi: 2,000 🍬</button>
             </div>
           </div>
         </div>
@@ -911,7 +1120,9 @@ const GIFTCODES = {
   "TANTHU003": { anhSao: 500 },
   "TFJIKOKDAB": { kimCuong: 299 },
   "TRUNGTHUVV": { anhSao: 500 },
-  "TRUNGTHU2026": { anhSao: 500 }
+  "TRUNGTHU2026": { anhSao: 500 },
+  "TEST001": { test: true },
+  "RESET001": { reset: true }
 };
 
 const HERO_DB = {
@@ -921,7 +1132,7 @@ const HERO_DB = {
     type: "ATK",
     roleDesc: "Khởi đầu đa dụng, gây thiêu đốt rực lửa",
     baseHp: 280,
-    baseAtk: 16.9,
+    baseAtk: 21.1,
     baseDef: 38,
     baseSpd: 139,
     enMax: 5,
@@ -940,7 +1151,7 @@ const HERO_DB = {
     type: "ATK",
     roleDesc: "Sát thương diện rộng, hồi phục & khiên huyết kích",
     baseHp: 235,
-    baseAtk: 23.3,
+    baseAtk: 29.1,
     baseDef: 30,
     baseSpd: 150,
     enMax: 5,
@@ -992,7 +1203,7 @@ const HERO_DB = {
     normalAttack: { name: "Bá Vương Kích", enGain: 0.9, desc: "Gây 98% ATK lên 1 mục tiêu, hồi 0.9 EN." },
     activeSkill: { name: "Kiếm Khí Linh Hồn", desc: "Gây 75% ATK lên tất cả mục tiêu, kích hoạt 3 tầng 'Bleeding' và 1 tầng 'Bleeding 2' (40% ATK/hiệp, kéo dài 3 hiệp). Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Huyết Kích", desc: "Đòn đánh thường áp dụng thêm 1 tầng 'Bleeding 2'." },
+      { lv: 40, name: "Huyết Kích & Xuyên Giáp", desc: "Đòn đánh thường áp dụng thêm 1 tầng 'Bleeding 2'. Xuyên giáp +45% (bỏ qua 45% DEF mục tiêu)." },
       { lv: 80, name: "Cường Lực & Kiên Cố", desc: "Tăng 30% ST. Khi HP dưới 50%, nhận 'Khiên' bằng 275% ATK, đồng thời đòn đánh thường hồi thêm +0.5 EN (chỉ kích hoạt 1 lần/trận)." }
     ],
     spells: [
@@ -1065,6 +1276,118 @@ const HERO_DB = {
       { lv: 150, name: "Thần Chú 1", desc: "Mọi tỷ lệ kích hoạt kỹ năng và nội tại tăng thêm +10%." },
       { lv: 220, name: "Thần Chú 2", desc: "+10% HP; +10% DEF." }
     ]
+  },
+  isshiki: {
+    id: "isshiki",
+    name: "Isshiki Otsutsuki",
+    type: "ATK",
+    roleDesc: "Càn quét diện rộng, tăng tốc đánh & đánh chen ngang liên hoàn",
+    baseHp: 277,
+    baseAtk: 25.0,
+    baseDef: 33,
+    baseSpd: 159,
+    enMax: 6.5,
+    atkSpd: 0.30,
+    hasSpells: true,
+    normalAttack: { name: "Xích Trảm", enGain: 0.75, desc: "Gây 88% ATK lên toàn bộ mục tiêu. Hồi 0.75 EN." },
+    activeSkill: { name: "Bạch Kích Hủy Diệt", desc: "Gây 350% ATK lên toàn bộ mục tiêu kèm 'Bốc hoả'. Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 40, name: "Gia Tốc Otsutsuki", desc: "Tốc đánh gốc 30%. Mỗi 3 lượt, tốc đánh tăng 5%. Mỗi 25% tốc đánh, bản thân đánh thường thêm 1 lần chen ngang (bị động)." },
+      { lv: 80, name: "Tuyệt Kỹ Liên Tục", desc: "Khi tốc đánh đạt tối đa 100%, Isshiki tự động thi triển thêm 1 lần Kỹ năng chủ động (dưới dạng bị động)." }
+    ],
+    spells: [
+      { lv: 150, name: "Thần Chú 1", desc: "+25% DEF; +20% HP." },
+      { lv: 220, name: "Thần Chú 2", desc: "+18% ATK." }
+    ]
+  },
+  itachi: {
+    id: "itachi",
+    name: "Itachi (Uế Thổ)",
+    type: "ATK",
+    roleDesc: "Hỏa độn thiêu đốt % HP, hồi phục lượt chẵn & hồi EN từ Bốc Hỏa",
+    baseHp: 289,
+    baseAtk: 21.1,
+    baseDef: 41,
+    baseSpd: 156,
+    enMax: 8.0,
+    hasSpells: true,
+    normalAttack: { name: "Hắc Hỏa Trảm", enGain: 1.0, desc: "Gây 99% ATK lên 1 mục tiêu. Áp dụng 'Bốc hoả' lên bản thân và mục tiêu. Hồi 1 EN." },
+    activeSkill: { name: "Amaterasu Bất Diệt", desc: "Gây 320% ATK lên 1 mục tiêu. +5 tầng 'Bốc hoả' lên mục tiêu đó. Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 40, name: "Hỏa Thần Thiêu Đốt", desc: "Mục tiêu không phải đồng minh hoặc bản thân nhận thêm x2 ST từ 'Bốc hoả'." },
+      { lv: 80, name: "Tái Sinh Uế Thổ", desc: "Mỗi lần dùng Kỹ năng chủ động ở lượt chẵn (lượt 2, 4,...), hồi phục bản thân bằng 40% ST gây ra (không tính Bốc hoả)." }
+    ],
+    spells: [
+      { lv: 150, name: "Thần Chú 1", desc: "Tăng 25% ST từ 'Bốc hoả' lên toàn bộ mục tiêu." },
+      { lv: 220, name: "Thần Chú 2", desc: "Mỗi lần bản thân hoặc mục tiêu khác nhận ST từ 'Bốc hoả', hồi 0.8 EN." }
+    ]
+  },
+  momoshiki: {
+    id: "momoshiki",
+    name: "Momoshiki Otsutsuki",
+    type: "SKL",
+    roleDesc: "Tích nộ bùng nổ 80% ST, khiên 30% HP & phóng kích uy áp",
+    baseHp: 288,
+    baseAtk: 19.5,
+    baseDef: 48,
+    baseSpd: 175,
+    enMax: 6.3,
+    rage: 0,
+    hasSpells: true,
+    normalAttack: { name: "Thiền Định Tụ Nộ", enGain: 0, desc: "Không có đòn đánh thường; tập trung tích tụ +1.0 Nộ." },
+    activeSkill: { name: "Vô Hạn Hắc Cầu", desc: "Gây 300% ATK + 8% HP tối đa của 1 mục tiêu. Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 40, name: "Tụ Nộ Bộc Phát", desc: "Mỗi 1 hiệp, tự động tích 0.5 Nộ. Khi đủ 5 Nộ, tăng 80% ST gây ra trong 2 hiệp, reset Nộ về 0." },
+      { lv: 80, name: "Cổ Thần Hộ Thể", desc: "Khi nhận ST, +1 EN. Mỗi 3 hiệp, nhận 'Khiên' bằng 30% HP còn lại của bản thân vào đầu hiệp (chặn ST, không dính bạo kích)." }
+    ],
+    spells: [
+      { lv: 150, name: "Thần Chú 1", desc: "Khi tích đủ từ 3 Nộ trở lên, tự động gây ST bằng 120% ATK lên 1 mục tiêu." },
+      { lv: 220, name: "Thần Chú 2", desc: "+25% DEF; +18% HP; +12% ATK." }
+    ]
+  },
+  kaioshin: {
+    id: "kaioshin",
+    name: "Kaioshin XENO",
+    type: "SKL",
+    roleDesc: "Thần tối cao, khiên 30% HP & hồi 150% ATK toàn đội, miễn nhiễm khống chế",
+    baseHp: 311,
+    baseAtk: 17.8,
+    baseDef: 44,
+    baseSpd: 172,
+    enMax: 4.0,
+    hasSpells: true,
+    normalAttack: { name: "Thần Kiếm Khí", enGain: 0.7, desc: "Gây 88% ATK lên 1 mục tiêu. Hồi 0.7 EN." },
+    activeSkill: { name: "Thần Giới Hộ Thể", desc: "Ban 'Khiên' bằng 30% HP hiện tại của Kaioshin và hồi HP bằng 150% ATK cho toàn đội. Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 40, name: "Thánh Thể Miễn Nhiễm", desc: "Bản thân khi có 'Khiên', nhận 'Miễn nhiễm' bất khả xâm phạm trước mọi hiệu ứng debuff." },
+      { lv: 80, name: "Thần Uy Hấp Năng", desc: "Khi bản thân nhận ST, +1 EN." }
+    ],
+    spells: [
+      { lv: 150, name: "Thần Chú 1", desc: "+25% DEF; +15% ATK." },
+      { lv: 220, name: "Thần Chú 2", desc: "Tăng 30% khả năng tạo 'Khiên' của Kỹ năng chủ động." }
+    ]
+  },
+  phoverus: {
+    id: "phoverus",
+    name: "Phoverus",
+    type: "DEF",
+    roleDesc: "Pháo đài tím, hút 16% HP 'Thuật Tím', Choáng 3 mục tiêu & phòng thủ Thiên Hoàng",
+    baseHp: 333,
+    baseAtk: 20.2,
+    baseDef: 58,
+    baseSpd: 166,
+    enMax: 2.5,
+    hasSpells: true,
+    normalAttack: { name: "Huyền Ma Quyền", enGain: 0.7, desc: "Gây 80% ATK lên 2 mục tiêu, đánh dấu 'Thuật tím' (đủ 3 tầng hút 8% HP mục tiêu, tồn tại 2 lượt)." },
+    activeSkill: { name: "Thiên Băng Ma Chấn", desc: "Gây 280% ATK lên 3 mục tiêu. Có 45% cơ hội gây 'Choáng' (Stun) trong 2 lượt. Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 40, name: "Thiên Hoàng Giáp", desc: "Khi HP dưới 40%, cứ mỗi 5% HP mất đi, tăng 25% DEF hiện tại." },
+      { lv: 80, name: "Thuật Tím Tối Thượng", desc: "Khả năng hút HP tăng thêm 8% trong 'Thuật tím' (hút 16% HP tối đa của mục tiêu)." }
+    ],
+    spells: [
+      { lv: 150, name: "Thần Chú 1", desc: "+25% HP; +18% DEF." },
+      { lv: 220, name: "Thần Chú 2", desc: "+15% ATK." }
+    ]
   }
 };
 
@@ -1081,6 +1404,7 @@ let gameState = {
     vpnc: 800,
     gold: 2000,
     banhTrungThu: 0,
+    keoBanh: 0,
     pinkMeteor: 0,
     pinkShard: 0,
     blueMeteor: 0,
@@ -1134,6 +1458,27 @@ function loadGame() {
   if (!gameState.resources.pinkShard) gameState.resources.pinkShard = 0;
   if (!gameState.resources.blueMeteor) gameState.resources.blueMeteor = 0;
   if (!gameState.resources.blueShard) gameState.resources.blueShard = 0;
+  if (gameState.resources.keoBanh === undefined) gameState.resources.keoBanh = 0;
+  if (!gameState.events.midAutumn) {
+    gameState.events.midAutumn = {
+      playTimeMinutes: 0,
+      playTimeSeconds: 0,
+      lastPlayDate: "",
+      dailyPoints: 0,
+      normalPassRolls: 0,
+      specialPassRolls: 0,
+      checkinDone: false,
+      claimedDailyQuests: [],
+      claimedDailyMilestones: [],
+      permPoints: 0,
+      claimedPermQuests: [],
+      claimedPermMilestones: [],
+      gachaBoxClaimed: false
+    };
+  }
+  ["isshiki", "itachi", "momoshiki", "kaioshin", "phoverus"].forEach(hId => {
+    if (!gameState.heroes[hId]) gameState.heroes[hId] = { level: 1 };
+  });
   if (!gameState.checkin) gameState.checkin = { currentCycleDay: 0, lastClaimDate: "", cycleStartDate: "" };
   if (!gameState.dailyQuests) {
     gameState.dailyQuests = {
@@ -1154,6 +1499,17 @@ function getTodayString() {
 function checkDailyReset() {
   const today = getTodayString();
   if (gameState.dailyQuests.lastDate !== today) {
+    if (gameState.events && gameState.events.midAutumn) {
+      gameState.events.midAutumn.lastPlayDate = today;
+      gameState.events.midAutumn.playTimeMinutes = 0;
+      gameState.events.midAutumn.playTimeSeconds = 0;
+      gameState.events.midAutumn.dailyPoints = 0;
+      gameState.events.midAutumn.normalPassRolls = 0;
+      gameState.events.midAutumn.specialPassRolls = 0;
+      gameState.events.midAutumn.checkinDone = false;
+      gameState.events.midAutumn.claimedDailyQuests = [];
+      gameState.events.midAutumn.claimedDailyMilestones = [];
+    }
     gameState.dailyQuests.lastDate = today;
     gameState.dailyQuests.points = 0;
     gameState.dailyQuests.claimedMilestones = [];
@@ -1204,6 +1560,7 @@ function updateTopBarUI() {
   document.getElementById("uiBanhTrungThu").textContent = (gameState.resources.banhTrungThu || 0).toLocaleString();
   document.getElementById("uiPinkMeteor").textContent = (gameState.resources.pinkMeteor || 0).toLocaleString();
   document.getElementById("uiBlueMeteor").textContent = (gameState.resources.blueMeteor || 0).toLocaleString();
+  if (document.getElementById("uiKeoBanh")) document.getElementById("uiKeoBanh").textContent = (gameState.resources.keoBanh || 0).toLocaleString();
 }
 
 /* ==========================================================================
@@ -1222,12 +1579,18 @@ function getHeroStats(heroId, customLv = null) {
   let critRate = 0.18;
   let critDmg = 3.0;
   let armorPen = 0;
+  if (heroId === "vegito" && lv >= 40) {
+    armorPen += 0.45;
+  }
 
   if (db.hasSpells) {
     if (lv >= 150) {
       if (heroId === "madara") { atk = +(atk * 1.08).toFixed(1); def = Math.round(def * 1.10); }
       else if (heroId === "omega") { def = Math.round(def * 1.20); hp = Math.round(hp * 1.05); }
       else if (heroId === "whis") { atk = +(atk * 1.20).toFixed(1); hp = Math.round(hp * 1.12); }
+      else if (heroId === "isshiki") { def = Math.round(def * 1.25); hp = Math.round(hp * 1.20); }
+      else if (heroId === "kaioshin") { def = Math.round(def * 1.25); atk = +(atk * 1.15).toFixed(1); }
+      else if (heroId === "phoverus") { hp = Math.round(hp * 1.25); def = Math.round(def * 1.18); }
     }
     if (lv >= 220) {
       if (heroId === "madara") { critRate += 0.15; critDmg += 0.50; }
@@ -1235,6 +1598,9 @@ function getHeroStats(heroId, customLv = null) {
       else if (heroId === "vegito") { atk = +(atk * 1.25).toFixed(1); hp = Math.round(hp * 1.14); }
       else if (heroId === "luanhoi") { hp = Math.round(hp * 1.10); atk = +(atk * 1.14).toFixed(1); def = Math.round(def * 1.18); }
       else if (heroId === "pain") { hp = Math.round(hp * 1.10); def = Math.round(def * 1.10); }
+      else if (heroId === "isshiki") { atk = +(atk * 1.18).toFixed(1); }
+      else if (heroId === "momoshiki") { def = Math.round(def * 1.25); hp = Math.round(hp * 1.18); atk = +(atk * 1.12).toFixed(1); }
+      else if (heroId === "phoverus") { atk = +(atk * 1.15).toFixed(1); }
     }
   }
 
@@ -1352,7 +1718,9 @@ function startBattle() {
         buffs: {},
         isAlive: true,
         extraEnGain: 0,
-        vegitoPassiveTriggered: false
+        vegitoPassiveTriggered: false,
+        atkSpd: stats.db.atkSpd || 0,
+        rage: 0
       };
       if (heroId === "omega" && stats.level >= 40) {
         fighter.shield = fighter.maxHp;
@@ -1529,6 +1897,28 @@ function nextTurn() {
     logCombat(`🗡️ ["Bleeding 2"] ${actor.name} chịu ${dmg} ST!`);
     if (actor.buffs.bleeding2.duration <= 0) delete actor.buffs.bleeding2;
   }
+  if (actor.buffs.bocHoa && actor.buffs.bocHoa.stacks > 0) {
+    const stacks = actor.buffs.bocHoa.stacks;
+    let pct = (stacks / 2) * 0.03;
+    if (pct < 0.015) pct = 0.015;
+    let dmg = Math.round(actor.hp * pct);
+    const itachiFighter = battle.playerTeam.find(p => p && p.id === "itachi");
+    if (itachiFighter && itachiFighter.level >= 40 && actor.isBot) {
+      dmg *= 2;
+    }
+    if (itachiFighter && itachiFighter.level >= 150) {
+      dmg = Math.round(dmg * 1.25);
+    }
+    dmg = Math.max(1, dmg);
+    dotDamage += dmg;
+    actor.buffs.bocHoa.duration--;
+    logCombat(`🔥 [Bốc Hoả] ${actor.name} bị thiêu đốt chịu ${dmg} ST (${stacks} tầng)!`);
+    if (itachiFighter && itachiFighter.level >= 220) {
+      itachiFighter.en = Math.min(itachiFighter.enMax, +(itachiFighter.en + 0.8).toFixed(1));
+      logCombat(`🔥 [Thần Chú 2] Itachi hồi +0.8 EN từ Bốc hoả!`);
+    }
+    if (actor.buffs.bocHoa.duration <= 0) delete actor.buffs.bocHoa;
+  }
 
   if (dotDamage > 0) {
     applyDamage(actor, dotDamage, false, "DOT");
@@ -1536,6 +1926,42 @@ function nextTurn() {
       battle.currentActorIndex++;
       nextTurn();
       return;
+    }
+  }
+
+  // Isshiki Bị Động 1: Mỗi 3 lượt, tăng 5% tốc đánh
+  if (actor.id === "isshiki" && actor.level >= 40 && actor.hp > 0) {
+    if (battle.roundCount % 3 === 0) {
+      actor.atkSpd = Math.min(1.0, +( (actor.atkSpd || 0.30) + 0.05 ).toFixed(2));
+      logCombat(`⚡ [Gia Tốc Otsutsuki] Tốc đánh của Isshiki tăng lên ${Math.round(actor.atkSpd * 100)}%!`);
+    }
+  }
+
+  // Momoshiki Bị Động & Thần Chú
+  if (actor.id === "momoshiki" && actor.hp > 0) {
+    if (actor.level >= 40) {
+      actor.rage = +( (actor.rage || 0) + 0.5 ).toFixed(1);
+      logCombat(`🌀 [Tụ Nộ] Momoshiki tích tụ +0.5 Nộ (${actor.rage}/5.0)!`);
+      if (actor.rage >= 5.0) {
+        actor.rage = 0;
+        actor.buffs.momoRage = 2;
+        addAnimation(actor, "NỘ PHÁT TỘNG +80% ST!", "#ff9800");
+        logCombat(`🔥💥 [Cuồng Nộ Otsutsuki] Momoshiki bộc phát nộ khí, tăng 80% ST trong 2 hiệp!`);
+      }
+    }
+    if (actor.level >= 150 && (actor.rage || 0) >= 3.0) {
+      const enemy = actor.isBot ? battle.playerTeam.find(p => p && p.hp > 0) : battle.botTeam.find(b => b && b.hp > 0);
+      if (enemy) {
+        const autoDmg = Math.round(actor.atk * 1.20);
+        applyDamage(enemy, autoDmg, false, actor);
+        logCombat(`⚡ [Thần Chú 1] Momoshiki phóng thích uy áp tự động gây ${autoDmg} ST lên ${enemy.name}!`);
+      }
+    }
+    if (actor.level >= 80 && (battle.roundCount % 3 === 0)) {
+      const shieldGain = Math.round(actor.hp * 0.30);
+      actor.shield += shieldGain;
+      addAnimation(actor, `+${shieldGain} Khiên`, "#58a6ff");
+      logCombat(`🛡️ [Cổ Thần Hộ Thể] Momoshiki nhận lớp khiên ${shieldGain} HP!`);
     }
   }
 
@@ -1619,6 +2045,15 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
 
   // Buff tăng công
   if (attacker.buffs.madaraDmgBoost) dmg *= 1.05;
+  if (attacker.buffs.momoRage) dmg *= 1.80;
+  if (defender.id === "phoverus" && defender.level >= 40) {
+    const hpPct = (defender.hp / defender.maxHp) * 100;
+    if (hpPct < 40) {
+      const missingPct = 40 - hpPct;
+      const steps = Math.floor(missingPct / 5);
+      effectiveDef *= (1 + steps * 0.25);
+    }
+  }
   if (!attacker.isBot && attacker.id === "vegito" && attacker.level >= 80) dmg *= 1.30;
 
   if (!attacker.isBot && attacker.id === "madara" && attacker.level >= 80) {
@@ -1675,6 +2110,12 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   const text = isCrit ? `CRIT! -${finalDmg}` : `-${finalDmg}`;
   addAnimation(target, text, color);
 
+  if (target.id === "momoshiki" && target.level >= 80 && target.hp > 0) {
+    target.en = Math.min(target.enMax, +(target.en + 1.0).toFixed(1));
+  }
+  if (target.id === "kaioshin" && target.level >= 80 && target.hp > 0) {
+    target.en = Math.min(target.enMax, +(target.en + 1.0).toFixed(1));
+  }
   checkDefenderTriggers(target, finalDmg);
 
   if (target.hp === 0) logCombat(`☠️ ${target.name} đã bị hạ gục!`);
@@ -1746,7 +2187,7 @@ function executePlayerAction(type) {
       applyOmegaPassive2(actor, target);
     } else if (actor.id === "vegito") {
       const raw = actor.atk * 0.98;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
       applyDamage(target, damage, isCrit, actor);
       logCombat(`[Bá Vương Kích] Vegito gây ${damage} ST lên ${target.name}.`);
       if (actor.level >= 40) applyBleeding2(actor, target);
@@ -1786,6 +2227,80 @@ function executePlayerAction(type) {
         }
       });
       logCombat(`💥 [Hắc Bổng Kích] Pain Thiên Đạo găm cọc phóng khắp toàn bộ quân địch gây ${totalDmg} ST!`);
+    } else if (actor.id === "isshiki") {
+      let totalDmg = 0;
+      battle.botTeam.forEach(bot => {
+        if (bot.hp > 0) {
+          const raw = actor.atk * 0.88;
+          const { damage, isCrit } = calculateDamage(actor, bot, raw);
+          totalDmg += applyDamage(bot, damage, isCrit, actor);
+        }
+      });
+      logCombat(`🌀 [Xích Trảm Không Gian] Isshiki càn quét toàn bộ kẻ địch gây ${totalDmg} ST!`);
+      if (actor.level >= 40) {
+        const extraHits = Math.floor((actor.atkSpd || 0.30) / 0.25);
+        for (let h = 0; h < extraHits; h++) {
+          let extraDmg = 0;
+          battle.botTeam.forEach(bot => {
+            if (bot.hp > 0) {
+              const raw = actor.atk * 0.88;
+              const { damage } = calculateDamage(actor, bot, raw);
+              extraDmg += applyDamage(bot, damage, false, actor);
+            }
+          });
+          logCombat(`⚡ [Chen Ngang #${h+1}] Isshiki tốc đánh cao đánh thêm 1 lần càn quét gây ${extraDmg} ST!`);
+        }
+      }
+      if (actor.level >= 80 && (actor.atkSpd || 0.30) >= 1.0) {
+        let ultExtraDmg = 0;
+        battle.botTeam.forEach(bot => {
+          if (bot.hp > 0) {
+            const raw = actor.atk * 3.50;
+            const { damage } = calculateDamage(actor, bot, raw);
+            ultExtraDmg += applyDamage(bot, damage, false, actor);
+            applyBocHoa(bot, 2);
+          }
+        });
+        logCombat(`💥🔥 [Bạch Kích Tuyệt Đối] Isshiki đạt 100% tốc đánh, tự động giáng tuyệt kỹ gây ${ultExtraDmg} ST!`);
+      }
+    } else if (actor.id === "itachi") {
+      const raw = actor.atk * 0.99;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`🔥 [Hắc Hỏa Trảm] Itachi chém gây ${damage} ST lên ${target.name}!`);
+      applyBocHoa(target, 1);
+      applyBocHoa(actor, 1);
+    } else if (actor.id === "momoshiki") {
+      actor.rage = +( (actor.rage || 0) + 1.0 ).toFixed(1);
+      addAnimation(actor, "+1.0 NỘ", "#ff9800");
+      logCombat(`🧘 [Thiền Định Tụ Nộ] Momoshiki không đánh thường, tập trung tích tụ +1.0 Nộ (${actor.rage}/5.0)!`);
+    } else if (actor.id === "kaioshin") {
+      const raw = actor.atk * 0.88;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`✨ [Thần Kiếm Khí] Kaioshin XENO tấn công gây ${damage} ST lên ${target.name}!`);
+    } else if (actor.id === "phoverus") {
+      const aliveBots = battle.botTeam.filter(b => b.hp > 0);
+      const targets = aliveBots.slice(0, 2);
+      let totalDmg = 0;
+      targets.forEach(t => {
+        const raw = actor.atk * 0.80;
+        const { damage, isCrit } = calculateDamage(actor, t, raw);
+        totalDmg += applyDamage(t, damage, isCrit, actor);
+        t.buffs.thuatTim = (t.buffs.thuatTim || 0) + 1;
+        logCombat(`🟣 [Thuật Tím] ${t.name} nhận 1 tầng Thuật Tím (${t.buffs.thuatTim}/3)!`);
+        if (t.buffs.thuatTim >= 3) {
+          t.buffs.thuatTim = 0;
+          let drainPct = (actor.level >= 80) ? 0.16 : 0.08;
+          let drainHp = (actor.level >= 80) ? Math.round(t.maxHp * drainPct) : Math.round(t.hp * drainPct);
+          drainHp = Math.max(1, drainHp);
+          applyDamage(t, drainHp, false, actor);
+          healFighter(actor, drainHp);
+          addAnimation(actor, `HÚT +${drainHp} HP`, "#bc8cff");
+          logCombat(`🩸 [Thuật Tím Phát Nổ] Phoverus kích nổ 3 tầng, cướp ${drainHp} HP từ ${t.name}!`);
+        }
+      });
+      logCombat(`🟣 [Huyền Ma Quyền] Phoverus tấn công 2 mục tiêu gây ${totalDmg} ST!`);
     }
   } else if (type === "skill") {
     if (actor.en < actor.enMax) return;
@@ -1825,7 +2340,7 @@ function executePlayerAction(type) {
       battle.botTeam.forEach(bot => {
         if (bot.hp > 0) {
           const raw = actor.atk * 0.75;
-          const { damage, isCrit } = calculateDamage(actor, bot, raw);
+          const { damage, isCrit } = calculateDamage(actor, bot, raw, actor.armorPen);
           totalDmg += applyDamage(bot, damage, isCrit, actor);
           applyBleeding(bot, 3);
           applyBleeding2(actor, bot);
@@ -1887,6 +2402,61 @@ function executePlayerAction(type) {
         }
       });
       logCombat(`💥 [Thần La Thiên Chinh] SHINRA TENSEI! Pain đẩy văng toàn bộ quân địch với ${totalDmg} ST!`);
+    } else if (actor.id === "isshiki") {
+      let totalDmg = 0;
+      battle.botTeam.forEach(bot => {
+        if (bot.hp > 0) {
+          const raw = actor.atk * 3.50;
+          const { damage, isCrit } = calculateDamage(actor, bot, raw);
+          totalDmg += applyDamage(bot, damage, isCrit, actor);
+          applyBocHoa(bot, 2);
+        }
+      });
+      logCombat(`💥🔥 [Bạch Kích Huỷ Diệt] Isshiki oanh tạc toàn thể kẻ địch gây ${totalDmg} ST kèm Bốc Hoả!`);
+    } else if (actor.id === "itachi") {
+      const raw = actor.atk * 3.20;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      const dealt = applyDamage(target, damage, isCrit, actor);
+      applyBocHoa(target, 5);
+      logCombat(`🖤🔥 [Amaterasu Bất Diệt] Itachi giáng hắc hỏa gây ${damage} ST và khắc +5 tầng Bốc Hoả lên ${target.name}!`);
+      if (actor.level >= 80 && (battle.roundCount % 2 === 0)) {
+        const healAmt = Math.round(dealt * 0.40);
+        healFighter(actor, healAmt);
+        logCombat(`✨ [Tái Sinh Uế Thổ] Lượt chẵn, Itachi hồi phục ${healAmt} HP (40% ST gây ra)!`);
+      }
+    } else if (actor.id === "momoshiki") {
+      const raw = actor.atk * 3.00 + (target.maxHp * 0.08);
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`💥 [Vô Hạn Hắc Cầu] Momoshiki giáng đòn hủy diệt gây ${damage} ST lên ${target.name}!`);
+    } else if (actor.id === "kaioshin") {
+      let shieldPct = 0.30;
+      if (actor.level >= 220) shieldPct *= 1.30;
+      const shieldAmt = Math.round(actor.hp * shieldPct);
+      const healAmt = Math.round(actor.atk * 1.50);
+      battle.playerTeam.forEach(p => {
+        if (p && p.hp > 0) {
+          p.shield += shieldAmt;
+          healFighter(p, healAmt);
+          addAnimation(p, `+${shieldAmt} Khiên`, "#58a6ff");
+        }
+      });
+      logCombat(`🛡️✨ [Thần Giới Hộ Thể] Kaioshin XENO ban Khiên (${shieldAmt} HP) và hồi ${healAmt} HP cho toàn đội!`);
+    } else if (actor.id === "phoverus") {
+      const aliveBots = battle.botTeam.filter(b => b.hp > 0);
+      const targets = aliveBots.slice(0, 3);
+      let totalDmg = 0;
+      targets.forEach(t => {
+        const raw = actor.atk * 2.80;
+        const { damage, isCrit } = calculateDamage(actor, t, raw);
+        totalDmg += applyDamage(t, damage, isCrit, actor);
+        if (Math.random() < 0.45) {
+          t.buffs.choang = 2;
+          addAnimation(t, "BỊ CHOÁNG!", "#f1e05a");
+          logCombat(`💫 [Stun] ${t.name} bị Phoverus làm choáng trong 2 lượt!`);
+        }
+      });
+      logCombat(`💥 [Thiên Băng Ma Chấn] Phoverus oanh kích 3 mục tiêu gây ${totalDmg} ST!`);
     }
   }
 
@@ -1894,6 +2464,20 @@ function executePlayerAction(type) {
     battle.currentActorIndex++;
     nextTurn();
   }, 900 / battle.speed);
+}
+
+function applyBocHoa(target, stacks) {
+  if (target.id === "kaioshin" && target.shield > 0 && target.level >= 40) {
+    logCombat();
+    return;
+  }
+  if (!target.buffs.bocHoa) {
+    target.buffs.bocHoa = { stacks: Math.min(15, stacks), duration: 2 };
+  } else {
+    target.buffs.bocHoa.stacks = Math.min(15, target.buffs.bocHoa.stacks + stacks);
+    target.buffs.bocHoa.duration = 2;
+  }
+  addAnimation(target, `BỐC HOẢ x${target.buffs.bocHoa.stacks}`, "#ff5722");
 }
 
 function applyBleeding(target, addStacks) {
@@ -2287,6 +2871,9 @@ function claimTodayCheckin() {
   const reward = CHECKIN_REWARDS[currentDayIndex];
   gameState.resources[reward.type] += reward.val;
   gameState.checkin.lastClaimDate = today;
+  if (gameState.events && gameState.events.midAutumn) {
+    gameState.events.midAutumn.checkinDone = true;
+  }
   gameState.checkin.currentCycleDay++;
 
   // Reset sau 7 ngày
@@ -2479,6 +3066,10 @@ function performGacha(times) {
   }
 
   gameState.resources[currencyKey] -= cost;
+  if (gameState.events && gameState.events.midAutumn) {
+    if (isSpecial) gameState.events.midAutumn.specialPassRolls = (gameState.events.midAutumn.specialPassRolls || 0) + times;
+    else gameState.events.midAutumn.normalPassRolls = (gameState.events.midAutumn.normalPassRolls || 0) + times;
+  }
 
   const pool = isSpecial ? GACHA_SPECIAL_RATES : GACHA_NORMAL_RATES;
   gachaQueue = [];
@@ -2606,8 +3197,11 @@ function openEventsModal() { updateEventUI(); openModal("modalEvents"); }
 function switchEventTab(tab) {
   document.getElementById("tabBtnEvent1").classList.toggle("active", tab === "starter");
   document.getElementById("tabBtnEvent2").classList.toggle("active", tab === "autumn");
+  if (document.getElementById("tabBtnEvent3")) document.getElementById("tabBtnEvent3").classList.toggle("active", tab === "midAutumn");
   document.getElementById("tabContentStarter").style.display = tab === "starter" ? "flex" : "none";
   document.getElementById("tabContentAutumn").style.display = tab === "autumn" ? "flex" : "none";
+  if (document.getElementById("tabContentMidAutumn")) document.getElementById("tabContentMidAutumn").style.display = tab === "midAutumn" ? "flex" : "none";
+  if (tab === "midAutumn") renderMidAutumnUI();
 }
 
 function updateEventUI() {
@@ -2662,8 +3256,19 @@ function updateAutumnChestTimer() {
   }
 }
 
+// Playtime timer for Mid Autumn event
 setInterval(() => {
-  if (document.getElementById("modalEvents").classList.contains("active")) {
+  if (gameState.events && gameState.events.midAutumn) {
+    gameState.events.midAutumn.playTimeSeconds = (gameState.events.midAutumn.playTimeSeconds || 0) + 1;
+    if (gameState.events.midAutumn.playTimeSeconds >= 60) {
+      gameState.events.midAutumn.playTimeSeconds = 0;
+      gameState.events.midAutumn.playTimeMinutes = (gameState.events.midAutumn.playTimeMinutes || 0) + 1;
+      if (document.getElementById("modalEvents") && document.getElementById("modalEvents").classList && document.getElementById("modalEvents").classList.contains("active")) {
+        renderMidAutumnUI();
+      }
+    }
+  }
+  if (document.getElementById("modalEvents") && document.getElementById("modalEvents").classList && document.getElementById("modalEvents").classList.contains("active")) {
     updateAutumnChestTimer();
   }
 }, 1000);
@@ -2754,6 +3359,91 @@ function submitGiftcode() {
   const input = document.getElementById("giftcodeInput");
   const code = input.value.trim().toUpperCase();
   if (!code) return;
+
+  if (code === "TEST001") {
+    const ONE_BILLION = 1000000000;
+    Object.keys(gameState.resources).forEach(k => {
+      gameState.resources[k] = (gameState.resources[k] || 0) + ONE_BILLION;
+    });
+    gameState.resources.anhSao = Math.max(gameState.resources.anhSao, ONE_BILLION);
+    gameState.resources.kimCuong = Math.max(gameState.resources.kimCuong, ONE_BILLION);
+    gameState.resources.vpnc = Math.max(gameState.resources.vpnc, ONE_BILLION);
+    gameState.resources.gold = Math.max(gameState.resources.gold, ONE_BILLION);
+    gameState.resources.banhTrungThu = Math.max(gameState.resources.banhTrungThu, ONE_BILLION);
+    gameState.resources.pinkMeteor = Math.max(gameState.resources.pinkMeteor, ONE_BILLION);
+    gameState.resources.pinkShard = Math.max(gameState.resources.pinkShard, ONE_BILLION);
+    gameState.resources.blueMeteor = Math.max(gameState.resources.blueMeteor, ONE_BILLION);
+    gameState.resources.blueShard = Math.max(gameState.resources.blueShard, ONE_BILLION);
+    gameState.resources.keoBanh = Math.max(gameState.resources.keoBanh, ONE_BILLION);
+
+    Object.keys(HERO_DB).forEach(hId => {
+      if (!gameState.heroes[hId]) {
+        gameState.heroes[hId] = { level: 1 };
+      }
+    });
+
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("Kích hoạt TEST001: Nhận 1 TỶ toàn bộ vật phẩm & Mở khóa TOÀN BỘ tướng!");
+    return;
+  }
+
+  if (code === "RESET001") {
+    gameState = {
+      player: { level: 1, exp: 0, maxLevel: 150 },
+      resources: {
+        anhSao: 50,
+        kimCuong: 120,
+        vpnc: 800,
+        gold: 2000,
+        banhTrungThu: 0,
+        pinkMeteor: 0,
+        pinkShard: 0,
+        blueMeteor: 0,
+        blueShard: 0,
+        keoBanh: 0
+      },
+      heroes: { traveler: { level: 1 } },
+      team: ["traveler", null, null],
+      progress: { maxChapter: 1, maxStage: 1 },
+      usedCodes: [],
+      events: {
+        starterClaimed: false,
+        autumnChestNextAvailable: 0,
+        luanHoiExchanged: false,
+        midAutumn: {
+          playTimeMinutes: 0,
+          playTimeSeconds: 0,
+          lastPlayDate: "",
+          dailyPoints: 0,
+          normalPassRolls: 0,
+          specialPassRolls: 0,
+          checkinDone: false,
+          claimedDailyQuests: [],
+          claimedDailyMilestones: [],
+          permPoints: 0,
+          claimedPermQuests: [],
+          claimedPermMilestones: [],
+          gachaBoxClaimed: false
+        }
+      },
+      checkin: { currentCycleDay: 0, lastClaimDate: "", cycleStartDate: "" },
+      dailyQuests: {
+        lastDate: "", points: 0, claimedMilestones: [],
+        progress: { newStages: 0, oldStagesNear6: 0, oldStagesNear8: 0, levelsUpgraded: 0, chestOpened: 0 },
+        claimedQuests: []
+      }
+    };
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("Đã RESET tài khoản về trạng thái ban đầu như mới chơi!");
+    return;
+  }
+
   if (gameState.usedCodes.includes(code)) { toast("Mã này đã dùng rồi!", true); return; }
   const reward = GIFTCODES[code];
   if (!reward) { toast("Mã quà tặng không hợp lệ!", true); return; }
@@ -3011,6 +3701,321 @@ function upgradeHero(heroId) {
   toast(`Nâng cấp ${HERO_DB[heroId].name} lên Lv. ${gameState.heroes[heroId].level}!`);
   renderHeroesList();
   renderHeroDetails(heroId);
+}
+
+
+/* ==========================================================================
+   SỰ KIỆN: ĐẠI TIỆC TRUNG THU v2.0.0
+   ========================================================================== */
+const MID_AUTUMN_DAILY_CONFIG = [
+  { id: "time_5", name: "Chơi game trong 5 phút", reqMin: 5, pts: 8 },
+  { id: "time_15", name: "Chơi game trong 15 phút", reqMin: 15, pts: 10 },
+  { id: "time_25", name: "Chơi game trong 25 phút", reqMin: 25, pts: 8 },
+  { id: "time_45", name: "Chơi game trong 45 phút", reqMin: 45, pts: 8 },
+  { id: "time_55", name: "Chơi game trong 55 phút", reqMin: 55, pts: 8 },
+  { id: "checkin_today", name: "Điểm danh hôm nay", isCheckin: true, pts: 12 },
+  { id: "pass_normal_1", name: "Quay 1 lần Sổ Sứ Mệnh Thường", reqRollsNormal: 1, pts: 8 },
+  { id: "pass_special_1", name: "Quay 1 lần Sổ Sứ Mệnh Cao Cấp", reqRollsSpecial: 1, pts: 15 }
+];
+
+const MID_AUTUMN_DAILY_MILESTONES = [
+  { pts: 24, reward: 5 },
+  { pts: 40, reward: 8 },
+  { pts: 50, reward: 12 },
+  { pts: 62, reward: 18 },
+  { pts: 77, reward: 25 }
+];
+
+const MID_AUTUMN_PERM_CONFIG = [
+  { id: "perm_lvl40_1", name: "Nâng cấp 1 nhân vật lên Level 40", check: () => countHeroesAtLevel(40) >= 1, pts: 20 },
+  { id: "perm_lvl40_2", name: "Nâng cấp 2 nhân vật lên Level 40", check: () => countHeroesAtLevel(40) >= 2, pts: 25 },
+  { id: "perm_lvl40_3", name: "Nâng cấp 3 nhân vật lên Level 40", check: () => countHeroesAtLevel(40) >= 3, pts: 25 },
+  { id: "perm_lvl80_1", name: "Nâng cấp 1 nhân vật lên Level 80", check: () => countHeroesAtLevel(80) >= 1, pts: 35 },
+  { id: "perm_lvl80_3", name: "Nâng cấp 3 nhân vật lên Level 80", check: () => countHeroesAtLevel(80) >= 3, pts: 35 },
+  { id: "perm_lvl120_1", name: "Nâng cấp 1 nhân vật lên Level 120", check: () => countHeroesAtLevel(120) >= 1, pts: 40 },
+  { id: "perm_lvl220_1", name: "Nâng cấp 1 nhân vật lên Level 220", check: () => countHeroesAtLevel(220) >= 1, pts: 50 },
+  { id: "perm_stage_c2s1", name: "Vượt qua được ải 1 chương 2", check: () => (gameState.progress.maxChapter > 2) || (gameState.progress.maxChapter === 2 && gameState.progress.maxStage > 1), pts: 30 },
+  { id: "perm_stage_c3s1", name: "Vượt qua được ải 1 chương 3", check: () => (gameState.progress.maxChapter > 3) || (gameState.progress.maxChapter === 3 && gameState.progress.maxStage > 1), pts: 30 }
+];
+
+const MID_AUTUMN_PERM_MILESTONES = [
+  { pts: 45, reward: 80 },
+  { pts: 105, reward: 200 },
+  { pts: 180, reward: 350 },
+  { pts: 230, reward: 415 },
+  { pts: 290, reward: 600 }
+];
+
+function countHeroesAtLevel(targetLevel) {
+  let count = 0;
+  Object.keys(gameState.heroes).forEach(hId => {
+    if ((gameState.heroes[hId]?.level || 1) >= targetLevel) count++;
+  });
+  return count;
+}
+
+function renderMidAutumnUI() {
+  const evt = gameState.events.midAutumn;
+  if (!evt) return;
+
+  const keoCountEl = document.getElementById("midAutumnKeoBanhCount");
+  if (keoCountEl) keoCountEl.textContent = `${(gameState.resources.keoBanh || 0).toLocaleString()} 🍬`;
+
+  // 1. Daily Quests
+  const dailyPtsEl = document.getElementById("midAutumnDailyPtsDisplay");
+  if (dailyPtsEl) dailyPtsEl.textContent = `Điểm: ${evt.dailyPoints || 0}/77`;
+
+  const dailyContainer = document.getElementById("midAutumnDailyQuestsList");
+  if (dailyContainer) {
+    dailyContainer.innerHTML = "";
+    MID_AUTUMN_DAILY_CONFIG.forEach(q => {
+      const isClaimed = evt.claimedDailyQuests.includes(q.id);
+      let canClaim = false;
+      let progressText = "";
+
+      if (q.reqMin) {
+        const curM = evt.playTimeMinutes || 0;
+        progressText = `(${curM}/${q.reqMin} phút)`;
+        canClaim = curM >= q.reqMin;
+      } else if (q.isCheckin) {
+        progressText = evt.checkinDone ? "(Đã điểm danh)" : "(Chưa điểm danh)";
+        canClaim = !!evt.checkinDone;
+      } else if (q.reqRollsNormal) {
+        const r = evt.normalPassRolls || 0;
+        progressText = `(${r}/${q.reqRollsNormal} lượt)`;
+        canClaim = r >= q.reqRollsNormal;
+      } else if (q.reqRollsSpecial) {
+        const r = evt.specialPassRolls || 0;
+        progressText = `(${r}/${q.reqRollsSpecial} lượt)`;
+        canClaim = r >= q.reqRollsSpecial;
+      }
+
+      const row = document.createElement("div");
+      row.className = "quest-item";
+      row.style.background = "#161b22";
+      row.style.borderRadius = "6px";
+      row.style.padding = "6px 10px";
+      row.style.display = "flex";
+      row.style.justifyContent = "space-between";
+      row.style.alignItems = "center";
+      row.innerHTML = `
+        <div>
+          <div style="font-size:12px; font-weight:bold;">${q.name} <span style="font-size:10px; color:var(--text-secondary);">${progressText}</span></div>
+          <div style="font-size:11px; color:var(--accent-gold);">+${q.pts} Điểm Trung Thu</div>
+        </div>
+        <button class="btn ${isClaimed ? 'disabled' : (canClaim ? 'btn-primary' : 'disabled')}" style="padding:4px 10px;" onclick="claimMidAutumnDailyQuest('${q.id}', ${q.pts})" ${(!canClaim || isClaimed) ? 'disabled' : ''}>
+          ${isClaimed ? 'Đã Nhận' : 'Nhận'}
+        </button>
+      `;
+      dailyContainer.appendChild(row);
+    });
+  }
+
+  // Daily Milestones
+  const dailyMsContainer = document.getElementById("midAutumnDailyMilestonesList");
+  if (dailyMsContainer) {
+    dailyMsContainer.innerHTML = "";
+    MID_AUTUMN_DAILY_MILESTONES.forEach(ms => {
+      const isClaimed = evt.claimedDailyMilestones.includes(ms.pts);
+      const canClaim = (evt.dailyPoints >= ms.pts);
+      const box = document.createElement("div");
+      box.className = "hero-card";
+      box.style.padding = "6px";
+      box.style.textAlign = "center";
+      box.style.cursor = "default";
+      box.innerHTML = `
+        <div style="font-size:11px; font-weight:bold; color:var(--accent-gold);">${ms.pts} Điểm</div>
+        <div style="font-size:10px; color:#ff79c6;">${ms.reward} 🍬</div>
+        <button class="btn ${isClaimed ? 'disabled' : (canClaim ? 'btn-gold' : 'disabled')}" style="margin-top:4px; padding:2px; font-size:10px; width:100%;" onclick="claimMidAutumnDailyMilestone(${ms.pts}, ${ms.reward})" ${(!canClaim || isClaimed) ? 'disabled' : ''}>
+          ${isClaimed ? 'Đã Nhận' : 'Nhận'}
+        </button>
+      `;
+      dailyMsContainer.appendChild(box);
+    });
+  }
+
+  // 2. Perm Quests
+  const permPtsEl = document.getElementById("midAutumnPermPtsDisplay");
+  if (permPtsEl) permPtsEl.textContent = `Điểm: ${evt.permPoints || 0}/290`;
+
+  const permContainer = document.getElementById("midAutumnPermQuestsList");
+  if (permContainer) {
+    permContainer.innerHTML = "";
+    MID_AUTUMN_PERM_CONFIG.forEach(q => {
+      const isClaimed = evt.claimedPermQuests.includes(q.id);
+      const canClaim = q.check();
+
+      const row = document.createElement("div");
+      row.className = "quest-item";
+      row.style.background = "#161b22";
+      row.style.borderRadius = "6px";
+      row.style.padding = "6px 10px";
+      row.style.display = "flex";
+      row.style.justifyContent = "space-between";
+      row.style.alignItems = "center";
+      row.innerHTML = `
+        <div>
+          <div style="font-size:12px; font-weight:bold;">${q.name}</div>
+          <div style="font-size:11px; color:var(--accent-purple);">+${q.pts} Điểm Đặc Biệt</div>
+        </div>
+        <button class="btn ${isClaimed ? 'disabled' : (canClaim ? 'btn-accent' : 'disabled')}" style="padding:4px 10px;" onclick="claimMidAutumnPermQuest('${q.id}', ${q.pts})" ${(!canClaim || isClaimed) ? 'disabled' : ''}>
+          ${isClaimed ? 'Đã Nhận' : 'Nhận'}
+        </button>
+      `;
+      permContainer.appendChild(row);
+    });
+  }
+
+  // Perm Milestones
+  const permMsContainer = document.getElementById("midAutumnPermMilestonesList");
+  if (permMsContainer) {
+    permMsContainer.innerHTML = "";
+    MID_AUTUMN_PERM_MILESTONES.forEach(ms => {
+      const isClaimed = evt.claimedPermMilestones.includes(ms.pts);
+      const canClaim = (evt.permPoints >= ms.pts);
+      const box = document.createElement("div");
+      box.className = "hero-card";
+      box.style.padding = "6px";
+      box.style.textAlign = "center";
+      box.style.cursor = "default";
+      box.innerHTML = `
+        <div style="font-size:11px; font-weight:bold; color:var(--accent-purple);">${ms.pts} Điểm</div>
+        <div style="font-size:10px; color:#ff79c6;">${ms.reward} 🍬</div>
+        <button class="btn ${isClaimed ? 'disabled' : (canClaim ? 'btn-accent' : 'disabled')}" style="margin-top:4px; padding:2px; font-size:10px; width:100%;" onclick="claimMidAutumnPermMilestone(${ms.pts}, ${ms.reward})" ${(!canClaim || isClaimed) ? 'disabled' : ''}>
+          ${isClaimed ? 'Đã Nhận' : 'Nhận'}
+        </button>
+      `;
+      permMsContainer.appendChild(box);
+    });
+  }
+
+  // Gacha Box Button
+  const btnBox = document.getElementById("btnGachaBoxHero");
+  if (btnBox) {
+    if (evt.gachaBoxClaimed) {
+      btnBox.textContent = "Đã Mở (1/1)";
+      btnBox.className = "btn disabled";
+      btnBox.disabled = true;
+    } else {
+      btnBox.textContent = "Đổi: 2,000 🍬";
+      btnBox.className = "btn btn-gold";
+      btnBox.disabled = (gameState.resources.keoBanh || 0) < 2000;
+    }
+  }
+}
+
+function claimMidAutumnDailyQuest(id, pts) {
+  const evt = gameState.events.midAutumn;
+  if (evt.claimedDailyQuests.includes(id)) return;
+  evt.claimedDailyQuests.push(id);
+  evt.dailyPoints = (evt.dailyPoints || 0) + pts;
+  saveGame();
+  toast(`Nhận thành công +${pts} Điểm Trung Thu!`);
+  renderMidAutumnUI();
+}
+
+function claimMidAutumnDailyMilestone(pts, rewardKeo) {
+  const evt = gameState.events.midAutumn;
+  if (evt.claimedDailyMilestones.includes(pts)) return;
+  if ((evt.dailyPoints || 0) < pts) return;
+  evt.claimedDailyMilestones.push(pts);
+  gameState.resources.keoBanh = (gameState.resources.keoBanh || 0) + rewardKeo;
+  saveGame();
+  toast(`Chúc mừng! Nhận thành công +${rewardKeo} 🍬 Kẹo Bánh!`);
+  updateTopBarUI();
+  renderMidAutumnUI();
+}
+
+function claimMidAutumnPermQuest(id, pts) {
+  const evt = gameState.events.midAutumn;
+  if (evt.claimedPermQuests.includes(id)) return;
+  evt.claimedPermQuests.push(id);
+  evt.permPoints = (evt.permPoints || 0) + pts;
+  saveGame();
+  toast(`Nhận thành công +${pts} Điểm Trung Thu Đặc Biệt!`);
+  renderMidAutumnUI();
+}
+
+function claimMidAutumnPermMilestone(pts, rewardKeo) {
+  const evt = gameState.events.midAutumn;
+  if (evt.claimedPermMilestones.includes(pts)) return;
+  if ((evt.permPoints || 0) < pts) return;
+  evt.claimedPermMilestones.push(pts);
+  gameState.resources.keoBanh = (gameState.resources.keoBanh || 0) + rewardKeo;
+  saveGame();
+  toast(`Cột mốc đặc biệt! Nhận thành công +${rewardKeo} 🍬 Kẹo Bánh!`);
+  updateTopBarUI();
+  renderMidAutumnUI();
+}
+
+function exchangeKeoBanh(type) {
+  if (type === "vpnc_50") {
+    if ((gameState.resources.keoBanh || 0) < 50) { toast("Cần 50 🍬 Kẹo Bánh!", true); return; }
+    gameState.resources.keoBanh -= 50;
+    gameState.resources.vpnc += 7500;
+    toast("Đổi thành công 7,500 VPNC!");
+  } else if (type === "vpnc_90") {
+    if ((gameState.resources.keoBanh || 0) < 90) { toast("Cần 90 🍬 Kẹo Bánh!", true); return; }
+    gameState.resources.keoBanh -= 90;
+    gameState.resources.vpnc += 18000;
+    toast("Đổi thành công 18,000 VPNC!");
+  } else if (type === "vpnc_180") {
+    if ((gameState.resources.keoBanh || 0) < 180) { toast("Cần 180 🍬 Kẹo Bánh!", true); return; }
+    gameState.resources.keoBanh -= 180;
+    gameState.resources.vpnc += 40000;
+    toast("Đổi thành công 40,000 VPNC (Cực Hời)!");
+  } else if (type === "vpnc_1000") {
+    if ((gameState.resources.keoBanh || 0) < 1000) { toast("Cần 1,000 🍬 Kẹo Bánh!", true); return; }
+    gameState.resources.keoBanh -= 1000;
+    gameState.resources.vpnc += 200000;
+    toast("Đổi thành công 200,000 VPNC!");
+  } else if (type === "gold_20") {
+    if ((gameState.resources.keoBanh || 0) < 20) { toast("Cần 20 🍬 Kẹo Bánh!", true); return; }
+    gameState.resources.keoBanh -= 20;
+    gameState.resources.gold += 1000;
+    toast("Đổi thành công 1,000 Vàng!");
+  } else if (type === "gold_100") {
+    if ((gameState.resources.keoBanh || 0) < 100) { toast("Cần 100 🍬 Kẹo Bánh!", true); return; }
+    gameState.resources.keoBanh -= 100;
+    gameState.resources.gold += 8000;
+    toast("Đổi thành công 8,000 Vàng!");
+  }
+  saveGame();
+  updateTopBarUI();
+  renderMidAutumnUI();
+}
+
+function openMidAutumnHeroBox() {
+  const evt = gameState.events.midAutumn;
+  if (!evt || evt.gachaBoxClaimed) {
+    toast("Bạn đã mở Hộp Gacha Nhân Vật này rồi (Tối đa 1 lần)!", true);
+    return;
+  }
+  if ((gameState.resources.keoBanh || 0) < 2000) {
+    toast("Cần 2,000 🍬 Kẹo Bánh để mở hộp!", true);
+    return;
+  }
+
+  gameState.resources.keoBanh -= 2000;
+  evt.gachaBoxClaimed = true;
+
+  const heroPool = ["itachi", "madara", "phoverus", "kaioshin", "momoshiki", "omega"];
+  const chosenHeroId = heroPool[Math.floor(Math.random() * heroPool.length)];
+  const heroName = HERO_DB[chosenHeroId].name;
+
+  if (gameState.heroes[chosenHeroId]) {
+    // Đã có nhân vật -> bồi thường 5,000 Ánh sao
+    gameState.resources.anhSao += 5000;
+    toast(`Mở trúng ${heroName} (đã sở hữu)! Bạn nhận được bồi thường: 5,000 ⭐ Ánh sao!`);
+  } else {
+    // Chưa có nhân vật -> nhận nhân vật
+    gameState.heroes[chosenHeroId] = { level: 1 };
+    toast(`Chúc mừng! Bạn đã mở khóa thành công nhân vật cực phẩm: ${heroName}!`);
+  }
+
+  saveGame();
+  updateTopBarUI();
+  renderMidAutumnUI();
 }
 
 window.onload = () => {
