@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v2.0.1 (Chính Thức)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v2.2.0 (Chính Thức: Mở Khóa Chương 4)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -497,7 +496,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v2.0.1 (Chính Thức): Cân Bằng Isshiki & Vegito, Giftcode Test & Reset</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v2.2.0 (Chính Thức): Mở Khóa Chương 4 - Đối Đầu Hệ Thống Tướng & Bị Động Cực Phẩm</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -1617,6 +1616,24 @@ function getHeroUpgradeCost(currentLv) {
    BOT SCALING
    ========================================================================== */
 function getBotScalingFactor(chapter, stage) {
+  if (chapter === 4) {
+    let c3_10 = 1.0;
+    for (let c = 1; c <= 3; c++) {
+      for (let s = 1; s <= 10; s++) {
+        if (c === 1 && s === 1) continue;
+        if (s === 1) c3_10 *= 1.40;
+        else c3_10 *= 1.15;
+      }
+    }
+    // Ải 1 chương 4 mạnh hơn 80% so với ải cuối chương 3
+    let factor = c3_10 * 1.80;
+    // Ải sau mạnh hơn ải trước 40%
+    for (let s = 2; s <= stage; s++) {
+      factor *= 1.40;
+    }
+    return factor;
+  }
+
   let factor = 1.0;
   for (let c = 1; c <= chapter; c++) {
     const maxS = (c === chapter) ? stage : 10;
@@ -1631,6 +1648,44 @@ function getBotScalingFactor(chapter, stage) {
 
 function generateBotTeam(chapter, stage) {
   const factor = getBotScalingFactor(chapter, stage);
+
+  if (chapter === 4) {
+    const equivLevel = Math.round(1 + (factor - 1) / 0.08);
+    const ch4Teams = [
+      ["traveler", "vegito", "whis"],
+      ["itachi", "pain", "traveler"],
+      ["omega", "vegito", "pain"],
+      ["phoverus", "kaioshin", "whis"],
+      ["madara", "pain", "itachi"],
+      ["momoshiki", "isshiki", "kaioshin"],
+      ["whis", "kaioshin", "luanhoi"],
+      ["omega", "phoverus", "madara"],
+      ["isshiki", "momoshiki", "luanhoi"],
+      ["isshiki", "madara", "luanhoi"]
+    ];
+    const heroIds = ch4Teams[stage - 1] || ["madara", "isshiki", "luanhoi"];
+    return heroIds.map((hId, slot) => {
+      const stats = getHeroStats(hId, equivLevel);
+      const fighter = {
+        ...stats,
+        id: hId,
+        heroId: hId,
+        name: `${stats.name} (C.4-${stage})`,
+        slot: slot,
+        isBot: true,
+        en: 0,
+        shield: (hId === "omega") ? stats.maxHp : 0,
+        buffs: {},
+        isAlive: true,
+        extraEnGain: 0,
+        vegitoPassiveTriggered: false,
+        atkSpd: stats.db.atkSpd || 0,
+        rage: 0
+      };
+      return fighter;
+    });
+  }
+
   return [
     {
       id: "bot_0", name: `Quái Hộ Vệ C.${chapter}-${stage}`, type: "DEF",
@@ -1797,7 +1852,7 @@ function handleVictory() {
     gameState.dailyQuests.progress.newStages++;
     if (battle.stage < 10) {
       gameState.progress.maxStage++;
-    } else if (battle.chapter < 3) {
+    } else if (battle.chapter < 4) {
       gameState.progress.maxChapter++;
       gameState.progress.maxStage = 1;
     }
@@ -2506,12 +2561,13 @@ function addLuanHoiStack(hero, target, count) {
   }
 }
 
-function grantTeamShield(shieldAmount) {
+function grantTeamShield(shieldAmount, isBot = false) {
   const roundShield = Math.max(1, Math.round(shieldAmount));
-  battle.playerTeam.forEach(p => {
+  const team = isBot ? battle.botTeam : battle.playerTeam;
+  team.forEach(p => {
     if (p && p.hp > 0) {
       p.shield += roundShield;
-      addAnimation(p, `+${roundShield} "Khiên"`, "#58a6ff");
+      addAnimation(p, `+${roundShield} "Khiên"`, isBot ? "#da3633" : "#58a6ff");
     }
   });
 }
@@ -2536,6 +2592,12 @@ function executeBotAction(bot) {
     return;
   }
 
+  // Chapter 4: Hero Bot logic
+  if (battle.chapter === 4 && bot.heroId) {
+    executeHeroBotAction(bot, alivePlayers);
+    return;
+  }
+
   let target = alivePlayers.find(p => p.slot === 0) || alivePlayers[0];
   bot.en = Math.min(bot.enMax, bot.en + 1);
 
@@ -2554,6 +2616,253 @@ function executeBotAction(bot) {
 
   if (target.id === "luanhoi" && target.level >= 150 && Math.random() < 0.32) {
     addLuanHoiStack(target, bot, 1);
+  }
+
+  setTimeout(() => {
+    battle.currentActorIndex++;
+    nextTurn();
+  }, 750 / battle.speed);
+}
+
+function executeHeroBotAction(actor, alivePlayers) {
+  let target = alivePlayers[Math.floor(Math.random() * alivePlayers.length)];
+  const isSkill = (actor.en >= actor.enMax);
+
+  if (isSkill) {
+    actor.en = 0;
+    if (actor.heroId === "traveler") {
+      const raw = actor.atk * 2.20 + (target.maxHp * 0.03);
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`💥 [Địch: Phong Lôi Trảm] ${actor.name} giáng đòn gây ${damage} ST lên ${target.name}!`);
+    } else if (actor.heroId === "madara") {
+      let totalDmgDone = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 2.00 + (p.maxHp * 0.05);
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalDmgDone += applyDamage(p, damage, isCrit, actor);
+      });
+      logCombat(`☄️ [Địch: Thiên Ngại Ma Tinh] ${actor.name} giáng thiên thạch toàn thể! Gây ${totalDmgDone} ST.`);
+      healFighter(actor, Math.round(totalDmgDone * 0.20));
+      actor.buffs.madaraDmgBoost = 3;
+    } else if (actor.heroId === "omega") {
+      let lowestPlayer = alivePlayers.slice().sort((a, b) => a.hp - b.hp)[0];
+      if (lowestPlayer) {
+        const raw = actor.atk * 3.00;
+        const { damage, isCrit } = calculateDamage(actor, lowestPlayer, raw, actor.armorPen);
+        applyDamage(lowestPlayer, damage, isCrit, actor);
+        const shieldGain = Math.round(damage * 0.20);
+        actor.shield += shieldGain;
+        addAnimation(actor, `+${shieldGain} Khiên`, "#58a6ff");
+        logCombat(`🌀 [Địch: Tiêu Diệt Cầu] ${actor.name} gây ${damage} ST, nhận ${shieldGain} Khiên!`);
+        applyOmegaPassive2(actor, lowestPlayer);
+      }
+    } else if (actor.heroId === "vegito") {
+      let totalDmg = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 0.75;
+        const { damage, isCrit } = calculateDamage(actor, p, raw, actor.armorPen);
+        totalDmg += applyDamage(p, damage, isCrit, actor);
+        applyBleeding(p, 3);
+        applyBleeding2(actor, p);
+      });
+      logCombat(`🗡️ [Địch: Kiếm Khí Linh Hồn] ${actor.name} chém toàn thể, kích hoạt Bleeding!`);
+    } else if (actor.heroId === "whis") {
+      const aliveBots = battle.botTeam.filter(b => b && b.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp));
+      if (aliveBots.length > 0) {
+        const targetAlly = aliveBots[0];
+        const healAmt = Math.round(actor.atk * 1.50);
+        healFighter(targetAlly, healAmt);
+        logCombat(`✨ [Địch: Thiên Sứ Thời Gian] ${actor.name} hồi ${healAmt} HP cho ${targetAlly.name}!`);
+      }
+      if (actor.level >= 40) {
+        battle.botTeam.forEach(b => { if (b && b.hp > 0) b.buffs.whisProtect = 2; });
+        logCombat(`🛡️ [Địch: Thần Hộ] ${actor.name} kích hoạt "Bảo vệ" cho toàn đội địch!`);
+      }
+    } else if (actor.heroId === "luanhoi") {
+      let totalDmg = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 0.50;
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalDmg += applyDamage(p, damage, isCrit, actor);
+        addLuanHoiStack(actor, p, 7);
+      });
+      logCombat(`💥 [Địch: Địa Bộc Thiên Tinh] ${actor.name} phong ấn toàn thể, khắc +7 tầng Lục đạo!`);
+      if (actor.level >= 80) grantTeamShield(totalDmg * 0.20, true);
+    } else if (actor.heroId === "pain") {
+      let totalDmg = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 1.10;
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalDmg += applyDamage(p, damage, isCrit, actor);
+        if (Math.random() < 0.40) {
+          p.buffs.terror = 2;
+          if (Math.random() < 0.30) p.buffs.choang = 2;
+        }
+        if (actor.level >= 80 && Math.random() < 0.40) {
+          p.buffs.thienDaoDebuff = 3;
+        }
+      });
+      logCombat(`💥 [Địch: Thần La Thiên Chinh] SHINRA TENSEI! ${actor.name} đẩy văng toàn đội!`);
+    } else if (actor.heroId === "isshiki") {
+      let totalDmg = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 3.50;
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalDmg += applyDamage(p, damage, isCrit, actor);
+        applyBocHoa(p, 2);
+      });
+      logCombat(`💥🔥 [Địch: Bạch Kích Huỷ Diệt] ${actor.name} oanh tạc toàn thể gây ${totalDmg} ST kèm Bốc Hoả!`);
+    } else if (actor.heroId === "itachi") {
+      const raw = actor.atk * 3.20;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      const dealt = applyDamage(target, damage, isCrit, actor);
+      applyBocHoa(target, 5);
+      logCombat(`🖤🔥 [Địch: Amaterasu] ${actor.name} giáng hắc hỏa gây ${damage} ST & +5 tầng Bốc Hoả!`);
+      if (actor.level >= 80 && (battle.roundCount % 2 === 0)) {
+        healFighter(actor, Math.round(dealt * 0.40));
+      }
+    } else if (actor.heroId === "momoshiki") {
+      const raw = actor.atk * 3.00 + (target.maxHp * 0.08);
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`💥 [Địch: Vô Hạn Hắc Cầu] ${actor.name} giáng đòn hủy diệt gây ${damage} ST!`);
+    } else if (actor.heroId === "kaioshin") {
+      let shieldPct = 0.30;
+      if (actor.level >= 220) shieldPct *= 1.30;
+      const shieldAmt = Math.round(actor.hp * shieldPct);
+      const healAmt = Math.round(actor.atk * 1.50);
+      battle.botTeam.forEach(b => {
+        if (b && b.hp > 0) {
+          b.shield += shieldAmt;
+          healFighter(b, healAmt);
+          addAnimation(b, `+${shieldAmt} Khiên`, "#58a6ff");
+        }
+      });
+      logCombat(`🛡️✨ [Địch: Thần Giới Hộ Thể] ${actor.name} ban Khiên & hồi máu cho toàn đội địch!`);
+    } else if (actor.heroId === "phoverus") {
+      const targets = alivePlayers.slice(0, 3);
+      let totalDmg = 0;
+      targets.forEach(t => {
+        const raw = actor.atk * 2.80;
+        const { damage, isCrit } = calculateDamage(actor, t, raw);
+        totalDmg += applyDamage(t, damage, isCrit, actor);
+        if (Math.random() < 0.45) {
+          t.buffs.choang = 2;
+          addAnimation(t, "BỊ CHOÁNG!", "#f1e05a");
+        }
+      });
+      logCombat(`💥 [Địch: Thiên Băng Ma Chấn] ${actor.name} oanh kích gây ${totalDmg} ST kèm Choáng!`);
+    }
+  } else {
+    // Normal attack
+    const db = HERO_DB[actor.heroId];
+    const enGain = db.normalAttack.enGain || 1.0;
+    actor.en = Math.min(actor.enMax, +(actor.en + enGain).toFixed(1));
+
+    if (actor.heroId === "traveler") {
+      const raw = actor.atk * 0.94;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`[Địch: Trảm Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      if (actor.level >= 80) target.buffs.burn = Math.min(5, (target.buffs.burn || 0) + 2);
+    } else if (actor.heroId === "madara") {
+      const raw = actor.atk * 0.98 + (target.maxHp * 0.02);
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`[Địch: Cầu Đạo Ngọc] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+    } else if (actor.heroId === "omega") {
+      const raw = actor.atk * 0.78;
+      const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`[Địch: Long Cốt Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      applyOmegaPassive2(actor, target);
+    } else if (actor.heroId === "vegito") {
+      const raw = actor.atk * 0.98;
+      const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`[Địch: Bá Vương Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      if (actor.level >= 40) applyBleeding2(actor, target);
+    } else if (actor.heroId === "whis") {
+      const raw = actor.atk * 0.88;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`[Địch: Trượng Khí] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      if (actor.level >= 80 && Math.random() < 0.24) target.buffs.suyGiam = 3;
+    } else if (actor.heroId === "luanhoi") {
+      let totalDmg = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 0.77;
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalDmg += applyDamage(p, damage, isCrit, actor);
+        if (actor.level >= 40) addLuanHoiStack(actor, p, 1);
+      });
+      logCombat(`🌀 [Địch: Lục Đạo Trảm] ${actor.name} chém quét toàn đội gây ${totalDmg} ST!`);
+      if (actor.level >= 80) grantTeamShield(totalDmg * 0.20, true);
+    } else if (actor.heroId === "pain") {
+      let totalDmg = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 0.45;
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalDmg += applyDamage(p, damage, isCrit, actor);
+        if (actor.level >= 40 && (p.buffs.choang || p.buffs.terror)) p.buffs.kiemSoatDebuff = 2;
+      });
+      logCombat(`💥 [Địch: Hắc Bổng Kích] ${actor.name} phóng cọc toàn đội gây ${totalDmg} ST!`);
+    } else if (actor.heroId === "isshiki") {
+      let totalDmg = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 0.88;
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalDmg += applyDamage(p, damage, isCrit, actor);
+      });
+      logCombat(`🌀 [Địch: Xích Trảm] ${actor.name} càn quét toàn đội gây ${totalDmg} ST!`);
+      if (actor.level >= 40) {
+        const extraHits = Math.floor((actor.atkSpd || 0.30) / 0.25);
+        for (let h = 0; h < extraHits; h++) {
+          let extraDmg = 0;
+          alivePlayers.forEach(p => {
+            const raw = actor.atk * 0.88;
+            const { damage } = calculateDamage(actor, p, raw);
+            extraDmg += applyDamage(p, damage, false, actor);
+          });
+          logCombat(`⚡ [Địch: Chen Ngang #${h+1}] ${actor.name} đánh thêm càn quét gây ${extraDmg} ST!`);
+        }
+      }
+    } else if (actor.heroId === "itachi") {
+      const raw = actor.atk * 0.99;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`🔥 [Địch: Hắc Hỏa Trảm] ${actor.name} gây ${damage} ST lên ${target.name}!`);
+      applyBocHoa(target, 1);
+      applyBocHoa(actor, 1);
+    } else if (actor.heroId === "momoshiki") {
+      actor.rage = +( (actor.rage || 0) + 1.0 ).toFixed(1);
+      addAnimation(actor, "+1.0 NỘ", "#ff9800");
+      logCombat(`🧘 [Địch: Tụ Nộ] ${actor.name} tích tụ +1.0 Nộ (${actor.rage}/5.0)!`);
+    } else if (actor.heroId === "kaioshin") {
+      const raw = actor.atk * 0.88;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`✨ [Địch: Thần Kiếm Khí] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+    } else if (actor.heroId === "phoverus") {
+      const targets = alivePlayers.slice(0, 2);
+      let totalDmg = 0;
+      targets.forEach(t => {
+        const raw = actor.atk * 0.80;
+        const { damage, isCrit } = calculateDamage(actor, t, raw);
+        totalDmg += applyDamage(t, damage, isCrit, actor);
+        t.buffs.thuatTim = (t.buffs.thuatTim || 0) + 1;
+        if (t.buffs.thuatTim >= 3) {
+          t.buffs.thuatTim = 0;
+          let drainPct = (actor.level >= 80) ? 0.16 : 0.08;
+          let drainHp = (actor.level >= 80) ? Math.round(t.maxHp * drainPct) : Math.round(t.hp * drainPct);
+          drainHp = Math.max(1, drainHp);
+          applyDamage(t, drainHp, false, actor);
+          healFighter(actor, drainHp);
+        }
+      });
+      logCombat(`🟣 [Địch: Huyền Ma Quyền] ${actor.name} tấn công 2 mục tiêu gây ${totalDmg} ST!`);
+    }
   }
 
   setTimeout(() => {
@@ -3493,7 +3802,7 @@ function openBattleStageModal() {
 function renderChapterTabs() {
   const container = document.getElementById("chapterTabsContainer");
   container.innerHTML = "";
-  for (let c = 1; c <= 3; c++) {
+  for (let c = 1; c <= 4; c++) {
     const btn = document.createElement("button");
     btn.className = `btn ${c === selectedChapter ? "btn-accent" : ""}`;
     btn.textContent = `Chương ${c}`;
