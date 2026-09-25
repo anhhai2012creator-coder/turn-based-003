@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v3.0.0 (Chính Thức: Kỷ Nguyên Linh Thú & Cân Bằng Meta)</title>
+<title>Chiến Thuật Luân Hồi - Chiến Thuật Luân Hồi - Bản Cập Nhật Demo v3.1.0 (Cổng Ải Đấu Luyện & Khóa Trang Bị Linh Thú)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -496,11 +496,15 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v3.0.0 (Chính Thức): Kỷ Nguyên Linh Thú, Sửa Lỗi Omega & Cân Bằng Toàn Diện</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">Demo v3.1.0: Cổng Ải Đấu Luyện (50 Ải Vàng & 45 Ải Tài Nguyên) | Tra Cứu Linh Thú Chờ Sự Kiện</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
           <span>Đấu Ải</span>
+        </button>
+        <button class="btn btn-gold" onclick="openTrainingGateModal()">
+          <span class="btn-icon">⛩️</span>
+          <span>Đấu Luyện</span>
         </button>
         <button class="btn" onclick="openHeroesModal()">
           <span class="btn-icon">👥</span>
@@ -1013,6 +1017,34 @@
   </div>
 
   <!-- Popup: Kết Quả Trận Đấu -->
+  
+  <!-- Popup: Cổng Ải Đấu Luyện (Demo v3.1.0) -->
+  <div class="modal-overlay" id="modalTrainingGate">
+    <div class="modal-card" style="width:720px; max-width:96vw;">
+      <div class="modal-header">
+        <div class="modal-title">⛩️ Cổng Ải Đấu Luyện (Demo v3.1.0)</div>
+        <button class="modal-close" onclick="closeModal('modalTrainingGate')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:16px;">
+        <div style="display:flex; gap:10px; margin-bottom:14px;">
+          <button id="btnTabGateGold" class="btn btn-gold" style="flex:1; padding:8px 12px; font-weight:700;" onclick="switchTrainingGateTab('goldGate')">
+            💰 Cổng Ải Vàng (50 Ải)
+          </button>
+          <button id="btnTabGateRes" class="btn btn-secondary" style="flex:1; padding:8px 12px; font-weight:700;" onclick="switchTrainingGateTab('resGate')">
+            💎 Cổng Ải Tài Nguyên (45 Ải)
+          </button>
+        </div>
+
+        <div id="trainingGateContent">
+          <!-- Dynamically populated by renderTrainingGateContent() -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeModal('modalTrainingGate')">Đóng</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="modalBattleResult">
     <div class="modal-card" style="width:460px; text-align:center;">
       <div class="modal-header" style="justify-content:center;">
@@ -1395,6 +1427,10 @@ function loadGame() {
     } catch(e) { console.error(e); }
   }
   // Initialize new properties if absent
+  if (!gameState.training) gameState.training = { goldMaxStage: 1, resMaxStage: 1 };
+  if (!gameState.training.goldMaxStage) gameState.training.goldMaxStage = 1;
+  if (!gameState.training.resMaxStage) gameState.training.resMaxStage = 1;
+  if (!gameState.ownedBeasts) gameState.ownedBeasts = [];
   if (!gameState.resources.pinkMeteor) gameState.resources.pinkMeteor = 0;
   if (!gameState.resources.pinkShard) gameState.resources.pinkShard = 0;
   if (!gameState.resources.blueMeteor) gameState.resources.blueMeteor = 0;
@@ -1815,65 +1851,65 @@ function renderBeastModal() {
   const container = document.getElementById("beastModalContent");
   if (!container) return;
 
-  const unlocked = isBeastUnlocked();
-  let html = "";
-
-  if (!unlocked) {
-    const curCh = gameState.progress.maxChapter || 1;
-    const curSt = gameState.progress.maxStage || 1;
-    html = `
-      <div style="text-align:center; padding:24px 12px;">
-        <div style="font-size:52px; margin-bottom:12px;">🔒 🥚</div>
-        <div style="font-size:16px; font-weight:800; color:var(--accent-red); margin-bottom:8px;">HỆ THỐNG LINH THÚ CHƯA MỞ KHÓA</div>
-        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6; background:#161b22; padding:14px; border-radius:8px; border:1px dashed #30363d;">
-          Yêu cầu: Hoàn thành <b>Ải 10 Chương 3</b> để giải phóng phong ấn Linh Thú!<br>
-          <span style="color:var(--accent-gold); font-weight:700;">Tiến độ của bạn: Chương ${curCh} - Ải ${curSt}/10</span>
-        </div>
-      </div>
-    `;
-    container.innerHTML = html;
-    return;
+  if (!gameState.ownedBeasts) gameState.ownedBeasts = [];
+  // Reset equipped beast if not owned
+  if (gameState.equippedBeast && !gameState.ownedBeasts.includes(gameState.equippedBeast)) {
+    gameState.equippedBeast = null;
   }
 
   const curBeastId = gameState.equippedBeast || null;
   const curBeast = curBeastId ? BEASTS_DB[curBeastId] : null;
 
-  html += `
+  let html = `
+    <div style="background:#161b22; border:1px dashed #30363d; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:12px; color:var(--text-secondary); line-height:1.5;">
+      📢 <b>Thông Báo Linh Thú:</b> Tính năng nhận Linh Thú sẽ xuất hiện trong các Sự Kiện sắp tới! Hiện tại bạn có thể xem chi tiết bộ kỹ năng và chỉ số của toàn bộ 9 Linh Thú Thần Thoại. <span style="color:var(--accent-gold); font-weight:700;">Chưa thể trang bị khi chưa sở hữu.</span>
+    </div>
+
     <div style="background:#0d1117; border:1px solid #30363d; border-radius:10px; padding:12px; margin-bottom:14px;">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <div>
           <span style="font-size:12px; color:var(--text-secondary); text-transform:uppercase; font-weight:700;">Linh Thú Xuất Trận Hiện Tại:</span>
           <div style="font-size:16px; font-weight:800; color:${curBeast ? curBeast.tierColor : 'var(--text-muted)'}; margin-top:2px;">
-            ${curBeast ? `${curBeast.icon} ${curBeast.name} [${curBeast.tier}]` : 'Chưa trang bị Linh Thú nào'}
+            ${curBeast ? `${curBeast.icon} ${curBeast.name} [${curBeast.tier}]` : 'Chưa có Linh Thú xuất trận (Chưa sở hữu)'}
           </div>
         </div>
         ${curBeast ? `<button class="btn btn-secondary" onclick="equipBeast(null)" style="padding:4px 10px; font-size:11px;">Tháo Ra</button>` : ''}
       </div>
       ${curBeast ? `<div style="font-size:12px; color:var(--accent-green); margin-top:6px;">${curBeast.desc}</div>` : ''}
     </div>
-    <div style="font-size:13px; font-weight:700; color:var(--accent-gold); margin-bottom:10px;">DANH SÁCH LINH THÚ THẦN THOẠI (9 LINH THÚ)</div>
+
+    <div style="font-size:13px; font-weight:700; color:var(--accent-gold); margin-bottom:10px;">DANH SÁCH 9 LINH THÚ THẦN THOẠI & KỸ NĂNG</div>
     <div style="display:flex; flex-direction:column; gap:10px; max-height:420px; overflow-y:auto; padding-right:4px;">
   `;
 
   for (const key in BEASTS_DB) {
     const b = BEASTS_DB[key];
-    const isEquipped = (gameState.equippedBeast === b.id);
+    const isOwned = (gameState.ownedBeasts && gameState.ownedBeasts.includes(b.id));
+    const isEquipped = isOwned && (gameState.equippedBeast === b.id);
+
     html += `
       <div style="background:#161b22; border:1px solid ${isEquipped ? b.tierColor : '#30363d'}; border-radius:8px; padding:12px; position:relative; box-shadow:${isEquipped ? '0 0 10px ' + b.tierColor + '44' : 'none'};">
         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="font-size:26px;">${b.icon}</span>
             <div>
-              <div style="font-size:14px; font-weight:800; color:${b.tierColor};">
-                ${b.name} <span style="font-size:11px; padding:1px 5px; background:${b.tierColor}22; border:1px solid ${b.tierColor}; border-radius:4px;">Hạng ${b.tier}</span>
+              <div style="font-size:14px; font-weight:800; color:${b.tierColor}; display:flex; align-items:center; gap:6px;">
+                ${b.name} 
+                <span style="font-size:11px; padding:1px 5px; background:${b.tierColor}22; border:1px solid ${b.tierColor}; border-radius:4px;">Hạng ${b.tier}</span>
+                ${isOwned 
+                  ? `<span style="font-size:10px; padding:1px 6px; background:#23863633; border:1px solid #238636; border-radius:4px; color:#3fb950;">Đã Sở Hữu</span>`
+                  : `<span style="font-size:10px; padding:1px 6px; background:#da363322; border:1px solid #da3633; border-radius:4px; color:#f85149;">Chưa Sở Hữu</span>`
+                }
               </div>
               <div style="font-size:12px; color:var(--text-primary); margin-top:3px; font-weight:600;">${b.desc}</div>
             </div>
           </div>
           <div>
-            ${isEquipped 
-              ? `<button class="btn btn-gold" style="padding:5px 12px; font-size:12px;" disabled>Đang Trang Bị</button>`
-              : `<button class="btn btn-primary" onclick="equipBeast('${b.id}')" style="padding:5px 12px; font-size:12px;">Trang Bị</button>`
+            ${isOwned
+              ? (isEquipped 
+                  ? `<button class="btn btn-gold" style="padding:5px 12px; font-size:12px;" disabled>Đang Trang Bị</button>`
+                  : `<button class="btn btn-primary" onclick="equipBeast('${b.id}')" style="padding:5px 12px; font-size:12px;">Trang Bị</button>`)
+              : `<button class="btn btn-secondary" style="padding:5px 12px; font-size:12px; opacity:0.5; cursor:not-allowed;" disabled title="Chưa sở hữu - Chờ sự kiện ra mắt!">Chưa Sở Hữu</button>`
             }
           </div>
         </div>
@@ -1891,6 +1927,12 @@ function renderBeastModal() {
 }
 
 function equipBeast(beastId) {
+  if (beastId) {
+    if (!gameState.ownedBeasts || !gameState.ownedBeasts.includes(beastId)) {
+      toast("Bạn chưa sở hữu Linh Thú này! Hãy chờ sự kiện ra mắt.", true);
+      return;
+    }
+  }
   gameState.equippedBeast = beastId;
   saveGame();
   renderBeastModal();
@@ -1900,6 +1942,374 @@ function equipBeast(beastId) {
   } else {
     toast(`Đã tháo Linh Thú khỏi đội hình!`, false);
   }
+}
+
+
+// ==================== CỔNG ẢI ĐẤU LUYỆN (DEMO v3.1.0) ====================
+let currentGateTab = 'goldGate';
+let currentSelectedStage = 1;
+
+function openTrainingGateModal() {
+  if (!gameState.training) {
+    gameState.training = { goldMaxStage: 1, resMaxStage: 1 };
+  }
+  if (!gameState.training.goldMaxStage) gameState.training.goldMaxStage = 1;
+  if (!gameState.training.resMaxStage) gameState.training.resMaxStage = 1;
+
+  currentSelectedStage = (currentGateTab === 'goldGate') ? (gameState.training.goldMaxStage || 1) : (gameState.training.resMaxStage || 1);
+  renderTrainingGateContent();
+  openModal('modalTrainingGate');
+}
+
+function switchTrainingGateTab(tab) {
+  currentGateTab = tab;
+  document.getElementById("btnTabGateGold").className = (tab === 'goldGate') ? 'btn btn-gold' : 'btn btn-secondary';
+  document.getElementById("btnTabGateRes").className = (tab === 'resGate') ? 'btn btn-accent' : 'btn btn-secondary';
+  currentSelectedStage = (tab === 'goldGate') ? (gameState.training.goldMaxStage || 1) : (gameState.training.resMaxStage || 1);
+  renderTrainingGateContent();
+}
+
+function getTrainingBotLevel(gateType, stage) {
+  if (gateType === 'goldGate') {
+    // Ải 1 Lv 5, tăng 19.8% mỗi ải
+    return Math.round(5 * Math.pow(1.198, stage - 1));
+  } else {
+    // Ải 1 Lv 12, tăng 18% mỗi ải
+    return Math.round(12 * Math.pow(1.18, stage - 1));
+  }
+}
+
+function getTrainingBotHeroIds(gateType, stage) {
+  const pool = ["madara", "isshiki", "luanhoi", "whis", "itachi", "pain", "omega", "phoverus", "kaioshin", "vegito", "momoshiki", "traveler"];
+  const offset = (gateType === 'goldGate') ? 0 : 5;
+  const h1 = pool[(stage * 3 + offset) % pool.length];
+  const h2 = pool[(stage * 3 + 1 + offset) % pool.length];
+  const h3 = pool[(stage * 3 + 2 + offset) % pool.length];
+
+  const res = [h1];
+  if (!res.includes(h2)) res.push(h2);
+  else res.push(pool[(pool.indexOf(h2) + 1) % pool.length]);
+
+  for (let i = 0; i < pool.length; i++) {
+    const candidate = pool[(pool.indexOf(h3) + i) % pool.length];
+    if (!res.includes(candidate)) {
+      res.push(candidate);
+      break;
+    }
+  }
+  return res;
+}
+
+function renderTrainingGateContent() {
+  const container = document.getElementById("trainingGateContent");
+  if (!container) return;
+
+  const isGold = (currentGateTab === 'goldGate');
+  const maxStages = isGold ? 50 : 45;
+  const currentMax = isGold ? (gameState.training.goldMaxStage || 1) : (gameState.training.resMaxStage || 1);
+  const s = Math.min(maxStages, Math.max(1, currentSelectedStage));
+
+  const botLv = getTrainingBotLevel(currentGateTab, s);
+  const botHeroIds = getTrainingBotHeroIds(currentGateTab, s);
+
+  // Compute unlocked passives string
+  const pList = [];
+  if (botLv >= 30) pList.push("Bị Động 1 (Lv.30)");
+  if (botLv >= 70) pList.push("Bị Động 2 (Lv.70)");
+  if (botLv >= 80) pList.push("Bị Động 3 (Lv.80)");
+  if (botLv >= 100) pList.push("Bị Động 4 (Lv.100)");
+  if (botLv >= 130) pList.push("Thần Chú 1 (Lv.130)");
+  if (botLv >= 150) pList.push("Thần Chú 2 (Lv.150)");
+  const pStr = pList.length > 0 ? pList.join(", ") : "Chưa mở khóa bị động";
+
+  // Compute rewards
+  let rewardHtml = "";
+  if (isGold) {
+    const gold = Math.round(10000 * Math.pow(1.80, s - 1));
+    rewardHtml = `<div style="font-size:15px; font-weight:800; color:var(--accent-gold);">🪙 ${gold.toLocaleString()} Vàng</div>`;
+  } else {
+    const mult = Math.pow(1.90, s - 1);
+    const anhSao = Math.round(5 * mult);
+    const kc = Math.round(20 * mult);
+    const exp = Math.round(300 * mult);
+    const vpnc = Math.round(1200 * mult);
+    rewardHtml = `
+      <div style="display:flex; flex-wrap:wrap; gap:12px; font-size:12px;">
+        <span style="color:var(--accent-gold); font-weight:700;">⭐ +${anhSao.toLocaleString()} Ánh Sao</span>
+        <span style="color:var(--accent-blue); font-weight:700;">💎 +${kc.toLocaleString()} Kim Cương</span>
+        <span style="color:#e6edf3; font-weight:700;">📈 +${exp.toLocaleString()} EXP</span>
+        <span style="color:var(--accent-green); font-weight:700;">🧪 +${vpnc.toLocaleString()} VPNC</span>
+      </div>
+      <div style="font-size:11px; color:#bc8cff; margin-top:4px; font-weight:600;">
+        ☄️ Tỉ lệ rơi: <b>20%</b> Thiên Thạch Hồng | <b>30%</b> Thiên Thạch Xanh
+      </div>
+    `;
+  }
+
+  // Generate Stage Buttons Grid
+  let stageButtonsHtml = '<div style="display:flex; flex-wrap:wrap; gap:6px; max-height:140px; overflow-y:auto; padding:4px; background:#0d1117; border-radius:8px; border:1px solid #30363d;">';
+  for (let i = 1; i <= maxStages; i++) {
+    const isUnlocked = (i <= currentMax);
+    const isSelected = (i === s);
+    const isCleared = (i < currentMax);
+
+    let btnClass = "btn ";
+    if (isSelected) btnClass += isGold ? "btn-gold " : "btn-accent ";
+    else if (isCleared) btnClass += "btn-primary ";
+    else btnClass += "btn-secondary ";
+
+    stageButtonsHtml += `
+      <button class="${btnClass}" style="width:44px; height:34px; padding:0; font-size:12px; font-weight:700; opacity:${isUnlocked ? '1' : '0.4'};"
+        ${isUnlocked ? `onclick="selectTrainingStage(${i})"` : 'disabled title="Ải bị khóa"'}>
+        ${i}
+      </button>
+    `;
+  }
+  stageButtonsHtml += '</div>';
+
+  const html = `
+    <div style="background:#0d1117; border:1px solid #30363d; border-radius:8px; padding:12px; margin-bottom:12px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <b style="color:${isGold ? 'var(--accent-gold)' : 'var(--accent-blue)'}; font-size:14px;">
+            ${isGold ? '💰 CỔNG ẢI VÀNG' : '💎 CỔNG ẢI TÀI NGUYÊN'}
+          </b>
+          <span style="font-size:12px; color:var(--text-secondary); margin-left:8px;">
+            Tiến độ: Đã vượt <b>${currentMax - 1}/${maxStages}</b> ải
+          </span>
+        </div>
+        <div style="font-size:12px; color:var(--text-secondary);">
+          Hệ số tăng sức mạnh: <b>${isGold ? '+19.8%/ải' : '+18%/ải'}</b>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:10px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:6px;">CHỌN ẢI THỬ THÁCH (TỐI ĐA ${maxStages} ẢI):</div>
+      ${stageButtonsHtml}
+    </div>
+
+    <!-- Selected Stage Preview Card -->
+    <div style="background:#161b22; border:1px solid ${isGold ? '#d29922' : '#388bfd'}; border-radius:10px; padding:14px; margin-top:10px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+        <div>
+          <div style="font-size:16px; font-weight:800; color:#f0f6fc;">
+            ẢI ${s} / ${maxStages} — CẤP ĐỐI THỦ: <span style="color:var(--accent-red);">Lv.${botLv}</span>
+          </div>
+          <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
+            Trạng thái bot: <span style="color:#e6edf3;">${pStr}</span>
+          </div>
+        </div>
+        <button class="btn ${isGold ? 'btn-gold' : 'btn-primary'}" onclick="startTrainingBattle('${currentGateTab}', ${s})" style="padding:8px 18px; font-size:14px; font-weight:800;">
+          ⚔️ KHIÊU CHIẾN
+        </button>
+      </div>
+
+      <!-- Enemy Team Preview -->
+      <div style="background:#0d1117; border-radius:8px; padding:10px; margin-bottom:10px;">
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:6px; font-weight:700;">ĐỘI HÌNH ĐỐI THỦ (3 TƯỚNG BOT):</div>
+        <div style="display:flex; gap:10px;">
+          ${botHeroIds.map(hId => {
+            const db = HERO_DB[hId];
+            return `
+              <div style="flex:1; background:#161b22; border:1px solid #30363d; border-radius:6px; padding:6px 8px; text-align:center;">
+                <div style="font-weight:700; font-size:12px; color:#f0f6fc;">${db.name}</div>
+                <div style="font-size:11px; color:var(--accent-gold);">Hệ [${db.type}] - Lv.${botLv}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+
+      <!-- Rewards Preview -->
+      <div style="background:#0d1117; border-radius:8px; padding:10px;">
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:4px; font-weight:700;">PHẦN THƯỞNG CHIẾN THẮNG:</div>
+        ${rewardHtml}
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = html;
+}
+
+function selectTrainingStage(st) {
+  currentSelectedStage = st;
+  renderTrainingGateContent();
+}
+
+function generateTrainingBotTeam(gateType, stage) {
+  const botLv = getTrainingBotLevel(gateType, stage);
+  const heroIds = getTrainingBotHeroIds(gateType, stage);
+
+  return heroIds.map((hId, slot) => {
+    const stats = getHeroStats(hId, botLv);
+    const fighter = {
+      ...stats,
+      id: hId,
+      heroId: hId,
+      name: `${stats.name} (Lv.${botLv})`,
+      slot: slot,
+      isBot: true,
+      en: (hId === "itachi" && stats.level >= 80) ? 2 : ((hId === "luanhoi" && stats.level >= 80) ? 1.5 : ((hId === "phoverus" && stats.level >= 80) ? Math.min(stats.enMax, 3) : 0)),
+      shield: (hId === "omega" && stats.level >= 30) ? Math.round(stats.maxHp * 1.10) : 0,
+      atkSpd: (hId === "isshiki" && stats.level >= 80) ? 0.40 : (stats.db.atkSpd || 0),
+      buffs: {},
+      isAlive: true,
+      extraEnGain: 0,
+      vegitoPassiveTriggered: false,
+      rage: 0
+    };
+    return fighter;
+  });
+}
+
+function startTrainingBattle(gateType, stage) {
+  closeModal("modalTrainingGate");
+
+  const activeHeroes = gameState.team.filter(t => t !== null);
+  if (activeHeroes.length === 0) {
+    toast("Đội hình cần ít nhất 1 nhân vật!", true);
+    return;
+  }
+
+  switchScreen("screenBattle");
+  const gateName = (gateType === 'goldGate') ? 'CỔNG ẢI VÀNG' : 'CỔNG ẢI TÀI NGUYÊN';
+  const botLv = getTrainingBotLevel(gateType, stage);
+  logCombat(`=== BẮT ĐẦU ${gateName} - ẢI ${stage} (CẤP ĐỐI THỦ: ${botLv}) ===`);
+
+  const pTeam = [];
+  for (let slot = 0; slot < 3; slot++) {
+    const heroId = gameState.team[slot];
+    if (heroId) {
+      const stats = getHeroStats(heroId);
+      const fighter = {
+        ...stats,
+        en: 0,
+        shield: 0,
+        isBot: false,
+        slot: slot,
+        buffs: {},
+        isAlive: true,
+        extraEnGain: 0,
+        vegitoPassiveTriggered: false,
+        atkSpd: stats.db.atkSpd || 0,
+        rage: 0
+      };
+      // Passives kích hoạt đầu trận
+      if (heroId === "omega" && stats.level >= 30) {
+        fighter.shield = Math.round(fighter.maxHp * 1.10);
+        logCombat(`[Tà Long Hộ Thể] ${fighter.name} nhận khiên ${fighter.shield} HP (110%)!`);
+      }
+      if (heroId === "itachi" && stats.level >= 80) {
+        fighter.en = 2;
+        logCombat(`[Khai Mở Luân Xa] Itachi nhận sẵn 2 EN đầu trận!`);
+      }
+      if (heroId === "luanhoi" && stats.level >= 80) {
+        fighter.en = 1.5;
+        logCombat(`[Khai Ấn Thần Thông] Luân Hồi Tiên Nhân nhận sẵn 1.5 EN đầu trận!`);
+      }
+      if (heroId === "phoverus" && stats.level >= 80) {
+        fighter.en = Math.min(fighter.enMax, 3);
+        logCombat(`[Hắc Ám Đoạt Hồn] Phoverus nhận sẵn 3 EN đầu trận!`);
+      }
+      if (heroId === "isshiki" && stats.level >= 80) {
+        fighter.atkSpd = 0.40;
+      }
+      pTeam.push(fighter);
+    } else {
+      pTeam.push(null);
+    }
+  }
+
+  // Áp dụng Linh thú nếu có sở hữu
+  if (gameState.equippedBeast && BEASTS_DB[gameState.equippedBeast]) {
+    const beast = BEASTS_DB[gameState.equippedBeast];
+    logCombat(`🐉 [Linh Thú Hộ Trận] Đội hình được phù trợ bởi ${beast.name} [${beast.tier}]!`);
+
+    pTeam.forEach(p => {
+      if (!p) return;
+      const baseHp = (p.db && p.db.baseHp) ? p.db.baseHp : 500;
+      const baseAtk = (p.db && p.db.baseAtk) ? p.db.baseAtk : 30;
+      const hpBonus = Math.round(baseHp * beast.stats.hpPct);
+      const atkBonus = +(baseAtk * beast.stats.atkPct).toFixed(1);
+
+      p.maxHp += hpBonus;
+      p.hp += hpBonus;
+      p.atk = +(p.atk + atkBonus).toFixed(1);
+      if (beast.stats.defFlat) p.def += beast.stats.defFlat;
+      if (beast.stats.critRate) p.critRate += beast.stats.critRate;
+      if (beast.stats.normalEnGain) p.extraEnGain = (p.extraEnGain || 0) + beast.stats.normalEnGain;
+      if (beast.stats.teamStartEn) p.en = Math.min(p.enMax, +(p.en + beast.stats.teamStartEn).toFixed(1));
+    });
+
+    if (gameState.equippedBeast === "susanoo") {
+      const madara = pTeam.find(p => p && p.id === "madara");
+      if (madara) {
+        madara.critRate += 0.25;
+        madara.en = Math.min(madara.enMax, +(madara.en + 2).toFixed(1));
+        logCombat(`⚔️ [Susanoo Đồng Hành] Madara tăng 25% Crit và nhận thêm 2 EN đầu trận!`);
+      }
+    }
+    if (gameState.equippedBeast === "amaterasu") {
+      const itachi = pTeam.find(p => p && p.id === "itachi");
+      if (itachi) {
+        const extraAtk = +( (itachi.db ? itachi.db.baseAtk : 32.5) * 0.20 ).toFixed(1);
+        itachi.atk = +(itachi.atk + extraAtk).toFixed(1);
+        logCombat(`🔥 [Amaterasu Đồng Hành] Itachi tăng 20% ATK gốc và thăng hoa Kỹ năng chủ động!`);
+      }
+    }
+    if (gameState.equippedBeast === "otsutsuki_blood") {
+      const isshiki = pTeam.find(p => p && p.id === "isshiki");
+      const momo = pTeam.find(p => p && p.id === "momoshiki");
+      const luanhoi = pTeam.find(p => p && p.id === "luanhoi");
+
+      if (isshiki && momo && luanhoi) {
+        const shieldVal = Math.round(momo.maxHp * 0.50);
+        pTeam.forEach(p => {
+          if (p) {
+            p.shield += shieldVal;
+            p.extraEnGain = (p.extraEnGain || 0) + 0.5;
+            addAnimation(p, `+${shieldVal} Khiên`, "#58a6ff");
+          }
+        });
+        isshiki.atkSpd = 0.50;
+        logCombat(`👑 [Dòng Máu Otsutsuki] Bộ ba thức tỉnh! Toàn đội nhận Khiên ${shieldVal} HP (50% HP Momoshiki), +0.5 EN đánh thường, Isshiki 50% tốc đánh gốc!`);
+      }
+    }
+  }
+
+  // Momoshiki Bị Động 3
+  const momoPlayer = pTeam.find(p => p && p.id === "momoshiki" && p.level >= 80);
+  if (momoPlayer) {
+    pTeam.forEach(p => {
+      if (p) p.en = Math.min(p.enMax, +(p.en + 2).toFixed(1));
+    });
+    logCombat(`🔥 [Thần Uy Khởi Nguyên] Momoshiki ban +2 EN cho toàn đội đầu trận!`);
+  }
+
+  const bTeam = generateTrainingBotTeam(gateType, stage);
+
+  // Momoshiki bot passive
+  const momoBot = bTeam.find(b => b && b.heroId === "momoshiki" && b.level >= 80);
+  if (momoBot) {
+    bTeam.forEach(b => {
+      if (b) b.en = Math.min(b.enMax, +(b.en + 2).toFixed(1));
+    });
+  }
+
+  battle.active = true;
+  battle.mode = gateType;
+  battle.chapter = 0;
+  battle.stage = stage;
+  battle.playerTeam = pTeam;
+  battle.botTeam = bTeam;
+  battle.roundCount = 1;
+  battle.combatLogs = [];
+  battle.animations = [];
+  battle.selectedTargetIndex = 0;
+
+  buildTurnQueue();
+  nextTurn();
 }
 
 function startBattle() {
@@ -2080,6 +2490,70 @@ function checkBattleEnd() {
 }
 
 function handleVictory() {
+  // CỔNG ẢI VÀNG (Demo v3.1.0)
+  if (battle.mode === 'goldGate') {
+    const s = battle.stage;
+    const rGold = Math.round(10000 * Math.pow(1.80, s - 1));
+    gameState.resources.gold += rGold;
+
+    if (!gameState.training) gameState.training = { goldMaxStage: 1, resMaxStage: 1 };
+    if (s === (gameState.training.goldMaxStage || 1) && (gameState.training.goldMaxStage || 1) < 50) {
+      gameState.training.goldMaxStage = s + 1;
+    }
+    saveGame();
+
+    document.getElementById("battleResultTitle").innerHTML = "<span style='color:var(--accent-gold)'>VƯỢT CỔNG ẢI VÀNG THÀNH CÔNG!</span>";
+    document.getElementById("battleResultBody").innerHTML = `
+      <p style="color:var(--text-secondary); margin-bottom:12px;">Đã hoàn thành Ải ${s} / 50 Cổng Ải Vàng!</p>
+      <div style="background:#0d1117; padding:14px; border-radius:8px; display:inline-block; text-align:left; font-size:14px; line-height:1.8;">
+        <div>🪙 Vàng Nhận Được: <b style="color:var(--accent-gold); font-size:16px;">+${rGold.toLocaleString()} Vàng</b></div>
+      </div>
+    `;
+    openModal("modalBattleResult");
+    return;
+  }
+
+  // CỔNG ẢI TÀI NGUYÊN (Demo v3.1.0)
+  if (battle.mode === 'resGate') {
+    const s = battle.stage;
+    const mult = Math.pow(1.90, s - 1);
+    const rAnhSao = Math.round(5 * mult);
+    const rKimCuong = Math.round(20 * mult);
+    const rExp = Math.round(300 * mult);
+    const rVpnc = Math.round(1200 * mult);
+
+    gameState.resources.anhSao += rAnhSao;
+    gameState.resources.kimCuong += rKimCuong;
+    gameState.resources.vpnc += rVpnc;
+    addPlayerExp(rExp);
+
+    let pinkDrop = (Math.random() < 0.20);
+    let blueDrop = (Math.random() < 0.30);
+    if (pinkDrop) gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
+    if (blueDrop) gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 1;
+
+    if (!gameState.training) gameState.training = { goldMaxStage: 1, resMaxStage: 1 };
+    if (s === (gameState.training.resMaxStage || 1) && (gameState.training.resMaxStage || 1) < 45) {
+      gameState.training.resMaxStage = s + 1;
+    }
+    saveGame();
+
+    document.getElementById("battleResultTitle").innerHTML = "<span style='color:var(--accent-green)'>VƯỢT CỔNG ẢI TÀI NGUYÊN THÀNH CÔNG!</span>";
+    document.getElementById("battleResultBody").innerHTML = `
+      <p style="color:var(--text-secondary); margin-bottom:12px;">Đã hoàn thành Ải ${s} / 45 Cổng Ải Tài Nguyên!</p>
+      <div style="background:#0d1117; padding:14px; border-radius:8px; display:inline-block; text-align:left; font-size:13px; line-height:1.8;">
+        <div>⭐ Ánh sao: <b style="color:var(--accent-gold);">+${rAnhSao.toLocaleString()}</b></div>
+        <div>💎 Kim cương: <b style="color:var(--accent-blue);">+${rKimCuong.toLocaleString()}</b></div>
+        <div>🧪 VPNC: <b style="color:var(--accent-green);">+${rVpnc.toLocaleString()}</b></div>
+        <div>📈 EXP Tài khoản: <b style="color:#e6edf3;">+${rExp.toLocaleString()}</b></div>
+        ${pinkDrop ? `<div style="color:#f47067; font-weight:700; margin-top:4px;">☄️ Rơi May Mắn: +1 Thiên Thạch Hồng!</div>` : ''}
+        ${blueDrop ? `<div style="color:#58a6ff; font-weight:700; margin-top:4px;">☄️ Rơi May Mắn: +1 Thiên Thạch Xanh!</div>` : ''}
+      </div>
+    `;
+    openModal("modalBattleResult");
+    return;
+  }
+
   const levelMult = 1 + Math.floor(gameState.player.level / 5) * 0.20;
   const rAnhSao = Math.round(10 * levelMult);
   const rKimCuong = Math.round(50 * levelMult);
@@ -2135,9 +2609,14 @@ function handleVictory() {
 
 function handleDefeat() {
   document.getElementById("battleResultTitle").innerHTML = "<span style='color:var(--accent-red)'>THẤT BẠI!</span>";
+  let defeatMsg = "Toàn đội đã bị hạ gục. Thất bại không nhận thưởng. Hãy nâng cấp nhân vật để thử lại!";
+  if (battle.mode === 'goldGate') {
+    defeatMsg = `Toàn đội đã bị hạ gục tại Ải ${battle.stage} Cổng Ải Vàng! Hãy cường hóa nhân vật và thử lại.`;
+  } else if (battle.mode === 'resGate') {
+    defeatMsg = `Toàn đội đã bị hạ gục tại Ải ${battle.stage} Cổng Ải Tài Nguyên! Hãy cường hóa nhân vật và thử lại.`;
+  }
   document.getElementById("battleResultBody").innerHTML = `
-    <p style="color:var(--text-secondary);">Toàn đội đã bị hạ gục.</p>
-    <p style="font-size:12px; color:var(--text-secondary); margin-top:8px;">Thất bại không nhận thưởng. Hãy nâng cấp nhân vật để thử lại!</p>
+    <p style="color:var(--text-secondary);">${defeatMsg}</p>
   `;
   openModal("modalBattleResult");
 }
@@ -2982,8 +3461,8 @@ function executeBotAction(bot) {
     return;
   }
 
-  // Chapter 4: Hero Bot logic
-  if (battle.chapter === 4 && bot.heroId) {
+  // Chapter 4 & Cổng Ải Đấu Luyện: Hero Bot logic
+  if ((battle.chapter === 4 || battle.mode === 'goldGate' || battle.mode === 'resGate') && bot.heroId) {
     executeHeroBotAction(bot, alivePlayers);
     return;
   }
