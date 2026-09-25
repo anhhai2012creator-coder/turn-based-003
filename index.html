@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v2.3.0 (Chính Thức: Full Bị Động & Linh Thú)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v3.0.0 (Chính Thức: Kỷ Nguyên Linh Thú & Cân Bằng Meta)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -496,7 +496,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v2.3.0 (Chính Thức): Bổ Sung Bị Động 3 & 4, Né Đòn 13% & Mở Tab Linh Thú</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v3.0.0 (Chính Thức): Kỷ Nguyên Linh Thú, Sửa Lỗi Omega & Cân Bằng Toàn Diện</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -907,19 +907,15 @@
 
   <!-- Popup: Linh Thú -->
   <div class="modal-overlay" id="modalBeast">
-    <div class="modal-card" style="width:460px; text-align:center;">
+    <div class="modal-card" style="width:620px; max-width:96vw;">
       <div class="modal-header">
-        <div class="modal-title">🐉 Hệ Thống Linh Thú</div>
+        <div class="modal-title">🐉 Hệ Thống Linh Thú Thần Thoại (v3.0.0)</div>
         <button class="modal-close" onclick="closeModal('modalBeast')">&times;</button>
       </div>
-      <div class="modal-body" style="padding:28px 16px;">
-        <div style="font-size:42px; margin-bottom:12px;">🥚 ✨ 🐉</div>
-        <div style="font-size:15px; font-weight:800; color:var(--accent-gold); margin-bottom:8px;">HỆ THỐNG LINH THÚ ĐANG PHÁT TRIỂN</div>
-        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6; background:#161b22; padding:12px; border-radius:8px; border:1px dashed #30363d;">
-          Hãy đợi đến cập nhập 3.0.0 nhé
-        </div>
+      <div class="modal-body" id="beastModalContent" style="padding:16px;">
+        <!-- Rendered dynamically by renderBeastModal() -->
       </div>
-      <div class="modal-footer" style="justify-content:center;">
+      <div class="modal-footer">
         <button class="btn btn-primary" onclick="closeModal('modalBeast')">Đóng</button>
       </div>
     </div>
@@ -1707,6 +1703,205 @@ function toggleAutoBattle() {
   }
 }
 
+
+// ==================== HỆ THỐNG LINH THÚ (VERSION 3.0.0) ====================
+const BEASTS_DB = {
+  thien_linh_thu: {
+    id: "thien_linh_thu",
+    name: "Thiên Linh Thú",
+    tier: "S",
+    tierColor: "#bc8cff",
+    icon: "🦅",
+    desc: "Tăng 1300% HP và ATK gốc toàn đội. +30 DEF toàn đội.",
+    stats: { hpPct: 13.0, atkPct: 13.0, defFlat: 30 }
+  },
+  thong_linh_thu: {
+    id: "thong_linh_thu",
+    name: "Thông Linh Thú",
+    tier: "S",
+    tierColor: "#bc8cff",
+    icon: "🐸",
+    desc: "Tăng 1420% HP và ATK gốc toàn đội. +15 DEF toàn đội.",
+    stats: { hpPct: 14.2, atkPct: 14.2, defFlat: 15 }
+  },
+  bao_ma_thu: {
+    id: "bao_ma_thu",
+    name: "Bạo Ma Thú",
+    tier: "S",
+    tierColor: "#f85149",
+    icon: "🦁",
+    desc: "Tăng 1250% HP và 1500% ATK gốc toàn đội. +22 DEF toàn đội.",
+    stats: { hpPct: 12.5, atkPct: 15.0, defFlat: 22 }
+  },
+  tu_phach_thu: {
+    id: "tu_phach_thu",
+    name: "Tử Phách Thú",
+    tier: "S",
+    tierColor: "#bc8cff",
+    icon: "🦇",
+    desc: "Tăng 1100% HP và ATK gốc toàn đội. +25 DEF toàn đội. Đầu trận toàn đội nhận 1 EN.",
+    stats: { hpPct: 11.0, atkPct: 11.0, defFlat: 25, teamStartEn: 1 }
+  },
+  susanoo: {
+    id: "susanoo",
+    name: "Susanoo Linh Thú (Độc Quyền)",
+    tier: "SS",
+    tierColor: "#f0883e",
+    icon: "⚔️",
+    desc: "Tăng 1650% HP và ATK gốc toàn đội. +50 DEF toàn đội.",
+    companion: "madara",
+    companionName: "Madara Lục Đạo",
+    companionDesc: "Tăng 25% Crit cho Madara. Đầu trận Madara nhận thêm 2 EN.",
+    stats: { hpPct: 16.5, atkPct: 16.5, defFlat: 50 }
+  },
+  amaterasu: {
+    id: "amaterasu",
+    name: "Linh Thú Amaterasu (Độc Quyền)",
+    tier: "SS",
+    tierColor: "#f85149",
+    icon: "🔥",
+    desc: "Tăng 1550% HP và ATK gốc toàn đội. +45 DEF toàn đội.",
+    companion: "itachi",
+    companionName: "Itachi Uế Thổ Chuyển Sinh",
+    companionDesc: "Tăng 20% ATK gốc cho Itachi. Nâng cấp Tuyệt kỹ: Gây 400% ATK lên 1 mục tiêu, +7 tầng 'Bốc hoả', tiêu tốn toàn bộ EN, sau khi dùng hồi 1.5 EN.",
+    stats: { hpPct: 15.5, atkPct: 15.5, defFlat: 45 }
+  },
+  rinnegan: {
+    id: "rinnegan",
+    name: "Rinnegan",
+    tier: "SS",
+    tierColor: "#d29922",
+    icon: "👁️",
+    desc: "Tăng 1800% HP và 1300% ATK gốc toàn đội. +60 DEF toàn đội.",
+    companion: "pain",
+    companionName: "Pain (Thiên Đạo)",
+    companionDesc: "Tăng thêm 5% tỉ lệ Teleportation của Pain. Mỗi lần Pain sử dụng Teleportation hồi phục toàn đội bằng 10% HP tối đa và tăng 30% ST trong 2 lượt.",
+    stats: { hpPct: 18.0, atkPct: 13.0, defFlat: 60 }
+  },
+  otsutsuki_blood: {
+    id: "otsutsuki_blood",
+    name: "Dòng Máu Otsutsuki",
+    tier: "SS",
+    tierColor: "#58a6ff",
+    icon: "👑",
+    desc: "Tăng 1600% HP và ATK gốc toàn đội. +90 DEF toàn đội.",
+    companion: ["isshiki", "momoshiki", "luanhoi"],
+    companionName: "Bộ Ba Otsutsuki (Isshiki, Momoshiki, Luân Hồi Tiên Nhân)",
+    companionDesc: "Khi cả 3 cùng đội: Đầu trận nhận Khiên bằng 50% HP tối đa của Momoshiki cho toàn đội; Momoshiki mỗi lượt tích 2 Nộ (thay vì 0.5); Luân Hồi Tiên Nhân khi gây ST cấp Khiên cho toàn đội bằng 70% ST gây ra; Isshiki tốc đánh gốc 50%; Khả năng hồi EN đánh thường +0.5 EN cho toàn đội.",
+    stats: { hpPct: 16.0, atkPct: 16.0, defFlat: 90 }
+  },
+  thien_than_thu: {
+    id: "thien_than_thu",
+    name: "Thiên Thần Thú",
+    tier: "SS",
+    tierColor: "#ffdf5d",
+    icon: "✨",
+    desc: "Tăng 2000% HP và ATK gốc toàn đội. Crit +20%. +50 DEF toàn đội. Khả năng hồi EN của đánh thường +1 EN.",
+    stats: { hpPct: 20.0, atkPct: 20.0, defFlat: 50, critRate: 0.20, normalEnGain: 1.0 }
+  }
+};
+
+function isBeastUnlocked() {
+  if (!gameState.progress) return false;
+  return (gameState.progress.maxChapter >= 4) || (gameState.progress.maxChapter === 3 && gameState.progress.maxStage > 10);
+}
+
+function openBeastModal() {
+  renderBeastModal();
+  openModal("modalBeast");
+}
+
+function renderBeastModal() {
+  const container = document.getElementById("beastModalContent");
+  if (!container) return;
+
+  const unlocked = isBeastUnlocked();
+  let html = "";
+
+  if (!unlocked) {
+    const curCh = gameState.progress.maxChapter || 1;
+    const curSt = gameState.progress.maxStage || 1;
+    html = `
+      <div style="text-align:center; padding:24px 12px;">
+        <div style="font-size:52px; margin-bottom:12px;">🔒 🥚</div>
+        <div style="font-size:16px; font-weight:800; color:var(--accent-red); margin-bottom:8px;">HỆ THỐNG LINH THÚ CHƯA MỞ KHÓA</div>
+        <div style="font-size:13px; color:var(--text-secondary); line-height:1.6; background:#161b22; padding:14px; border-radius:8px; border:1px dashed #30363d;">
+          Yêu cầu: Hoàn thành <b>Ải 10 Chương 3</b> để giải phóng phong ấn Linh Thú!<br>
+          <span style="color:var(--accent-gold); font-weight:700;">Tiến độ của bạn: Chương ${curCh} - Ải ${curSt}/10</span>
+        </div>
+      </div>
+    `;
+    container.innerHTML = html;
+    return;
+  }
+
+  const curBeastId = gameState.equippedBeast || null;
+  const curBeast = curBeastId ? BEASTS_DB[curBeastId] : null;
+
+  html += `
+    <div style="background:#0d1117; border:1px solid #30363d; border-radius:10px; padding:12px; margin-bottom:14px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span style="font-size:12px; color:var(--text-secondary); text-transform:uppercase; font-weight:700;">Linh Thú Xuất Trận Hiện Tại:</span>
+          <div style="font-size:16px; font-weight:800; color:${curBeast ? curBeast.tierColor : 'var(--text-muted)'}; margin-top:2px;">
+            ${curBeast ? `${curBeast.icon} ${curBeast.name} [${curBeast.tier}]` : 'Chưa trang bị Linh Thú nào'}
+          </div>
+        </div>
+        ${curBeast ? `<button class="btn btn-secondary" onclick="equipBeast(null)" style="padding:4px 10px; font-size:11px;">Tháo Ra</button>` : ''}
+      </div>
+      ${curBeast ? `<div style="font-size:12px; color:var(--accent-green); margin-top:6px;">${curBeast.desc}</div>` : ''}
+    </div>
+    <div style="font-size:13px; font-weight:700; color:var(--accent-gold); margin-bottom:10px;">DANH SÁCH LINH THÚ THẦN THOẠI (9 LINH THÚ)</div>
+    <div style="display:flex; flex-direction:column; gap:10px; max-height:420px; overflow-y:auto; padding-right:4px;">
+  `;
+
+  for (const key in BEASTS_DB) {
+    const b = BEASTS_DB[key];
+    const isEquipped = (gameState.equippedBeast === b.id);
+    html += `
+      <div style="background:#161b22; border:1px solid ${isEquipped ? b.tierColor : '#30363d'}; border-radius:8px; padding:12px; position:relative; box-shadow:${isEquipped ? '0 0 10px ' + b.tierColor + '44' : 'none'};">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:26px;">${b.icon}</span>
+            <div>
+              <div style="font-size:14px; font-weight:800; color:${b.tierColor};">
+                ${b.name} <span style="font-size:11px; padding:1px 5px; background:${b.tierColor}22; border:1px solid ${b.tierColor}; border-radius:4px;">Hạng ${b.tier}</span>
+              </div>
+              <div style="font-size:12px; color:var(--text-primary); margin-top:3px; font-weight:600;">${b.desc}</div>
+            </div>
+          </div>
+          <div>
+            ${isEquipped 
+              ? `<button class="btn btn-gold" style="padding:5px 12px; font-size:12px;" disabled>Đang Trang Bị</button>`
+              : `<button class="btn btn-primary" onclick="equipBeast('${b.id}')" style="padding:5px 12px; font-size:12px;">Trang Bị</button>`
+            }
+          </div>
+        </div>
+        ${b.companionDesc ? `
+          <div style="margin-top:8px; padding:6px 10px; background:#0d1117; border-left:3px solid ${b.tierColor}; border-radius:4px; font-size:11px; color:#e6edf3; line-height:1.4;">
+            <b style="color:${b.tierColor};">🌟 Nhân vật đồng hành (${Array.isArray(b.companion) ? b.companion.join(', ') : b.companion}):</b> ${b.companionDesc}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }
+
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+function equipBeast(beastId) {
+  gameState.equippedBeast = beastId;
+  saveGame();
+  renderBeastModal();
+  if (beastId) {
+    const b = BEASTS_DB[beastId];
+    toast(`Đã gắn ${b.name} vào đội hình!`, false);
+  } else {
+    toast(`Đã tháo Linh Thú khỏi đội hình!`, false);
+  }
+}
+
 function startBattle() {
   closeModal("modalTeamSetup");
   closeModal("modalStageSelect");
@@ -1775,6 +1970,68 @@ function startBattle() {
   battle.combatLogs = [];
   battle.animations = [];
   battle.selectedTargetIndex = 0;
+
+  // ================= KÍCH HOẠT LINH THÚ TRONG TRẬN ĐẤU (v3.0.0) =================
+  if (gameState.equippedBeast && BEASTS_DB[gameState.equippedBeast]) {
+    const beast = BEASTS_DB[gameState.equippedBeast];
+    logCombat(`🐉 [Linh Thú Hộ Trận] Đội hình được phù trợ bởi ${beast.name} [${beast.tier}]!`);
+
+    pTeam.forEach(p => {
+      if (!p) return;
+      const baseHp = (p.db && p.db.baseHp) ? p.db.baseHp : 500;
+      const baseAtk = (p.db && p.db.baseAtk) ? p.db.baseAtk : 30;
+      const hpBonus = Math.round(baseHp * beast.stats.hpPct);
+      const atkBonus = +(baseAtk * beast.stats.atkPct).toFixed(1);
+
+      p.maxHp += hpBonus;
+      p.hp += hpBonus;
+      p.atk = +(p.atk + atkBonus).toFixed(1);
+      if (beast.stats.defFlat) p.def += beast.stats.defFlat;
+      if (beast.stats.critRate) p.critRate += beast.stats.critRate;
+      if (beast.stats.normalEnGain) p.extraEnGain = (p.extraEnGain || 0) + beast.stats.normalEnGain;
+      if (beast.stats.teamStartEn) p.en = Math.min(p.enMax, +(p.en + beast.stats.teamStartEn).toFixed(1));
+    });
+
+    // Linh thú đồng hành: Susanoo Linh Thú (Madara)
+    if (gameState.equippedBeast === "susanoo") {
+      const madara = pTeam.find(p => p && p.id === "madara");
+      if (madara) {
+        madara.critRate += 0.25;
+        madara.en = Math.min(madara.enMax, +(madara.en + 2).toFixed(1));
+        logCombat(`⚔️ [Susanoo Đồng Hành] Madara tăng 25% Crit và nhận thêm 2 EN đầu trận!`);
+      }
+    }
+
+    // Linh thú đồng hành: Amaterasu (Itachi)
+    if (gameState.equippedBeast === "amaterasu") {
+      const itachi = pTeam.find(p => p && p.id === "itachi");
+      if (itachi) {
+        const extraAtk = +( (itachi.db ? itachi.db.baseAtk : 32.5) * 0.20 ).toFixed(1);
+        itachi.atk = +(itachi.atk + extraAtk).toFixed(1);
+        logCombat(`🔥 [Amaterasu Đồng Hành] Itachi tăng 20% ATK gốc và thăng hoa Kỹ năng chủ động!`);
+      }
+    }
+
+    // Linh thú đồng hành: Dòng máu Otsutsuki
+    if (gameState.equippedBeast === "otsutsuki_blood") {
+      const isshiki = pTeam.find(p => p && p.id === "isshiki");
+      const momo = pTeam.find(p => p && p.id === "momoshiki");
+      const luanhoi = pTeam.find(p => p && p.id === "luanhoi");
+
+      if (isshiki && momo && luanhoi) {
+        const shieldVal = Math.round(momo.maxHp * 0.50);
+        pTeam.forEach(p => {
+          if (p) {
+            p.shield += shieldVal;
+            p.extraEnGain = (p.extraEnGain || 0) + 0.5; // Hồi EN đánh thường +0.5
+            addAnimation(p, `+${shieldVal} Khiên`, "#58a6ff");
+          }
+        });
+        isshiki.atkSpd = 0.50; // Tốc đánh gốc 50%
+        logCombat(`👑 [Dòng Máu Otsutsuki] Bộ ba thức tỉnh! Toàn đội nhận Khiên ${shieldVal} HP (50% HP Momoshiki), +0.5 EN đánh thường, Isshiki 50% tốc đánh gốc!`);
+      }
+    }
+  }
 
   // Momoshiki Bị Động 3: Cung cấp toàn đội 2 EN đầu trận
   const momoPlayer = pTeam.find(p => p && p.id === "momoshiki" && p.level >= 80);
@@ -1990,8 +2247,15 @@ function nextTurn() {
   // Momoshiki Bị Động & Thần Chú
   if (actor.id === "momoshiki" && actor.hp > 0) {
     if (actor.level >= 30) {
-      actor.rage = +( (actor.rage || 0) + 0.5 ).toFixed(1);
-      logCombat(`🌀 [Tụ Nộ] Momoshiki tích tụ +0.5 Nộ (${actor.rage}/5.0)!`);
+      let rGain = 0.5;
+      const hasOtsuTrio = battle.playerTeam.some(p => p && p.id === "isshiki") && 
+                          battle.playerTeam.some(p => p && p.id === "momoshiki") && 
+                          battle.playerTeam.some(p => p && p.id === "luanhoi");
+      if (!actor.isBot && gameState.equippedBeast === "otsutsuki_blood" && hasOtsuTrio) {
+        rGain = 2.0;
+      }
+      actor.rage = +( (actor.rage || 0) + rGain ).toFixed(1);
+      logCombat(`🌀 [Tụ Nộ] Momoshiki tích tụ +${rGain} Nộ (${actor.rage}/5.0)!`);
       if (actor.rage >= 5.0) {
         actor.rage = 0;
         actor.buffs.momoRage = 2;
@@ -2047,6 +2311,7 @@ function autoChooseAction() {
   if (!battle.isWaitingPlayer) return;
   const actor = battle.turnQueue[battle.currentActorIndex];
   if (!actor || actor.isBot) return;
+  if (checkBattleEnd()) return;
   if (actor.en >= actor.enMax) {
     executePlayerAction('skill');
   } else {
@@ -2083,7 +2348,29 @@ function disablePlayerActionCards() {
 }
 
 function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
-  const effectiveDef = defender.def * (1 - isPenetrate);
+  let effectiveDef = defender.def * (1 - isPenetrate);
+
+  // Phoverus Thiên Hoàng (DEF boost dưới 40% HP)
+  if (defender.id === "phoverus" && defender.level >= 30) {
+    const hpPct = (defender.hp / defender.maxHp) * 100;
+    if (hpPct < 40) {
+      const missingPct = 40 - hpPct;
+      const steps = Math.floor(missingPct / 5);
+      effectiveDef *= (1 + steps * 0.25);
+    }
+  }
+
+  // Omega Bị Động 3: Dưới 40% HP, mỗi 5% HP mất tăng 20% DEF gốc (Sửa dứt điểm lỗi crash biến const & undefined db)
+  if (defender.id === "omega" && defender.level >= 80) {
+    const hpPct = (defender.hp / defender.maxHp) * 100;
+    if (hpPct < 40) {
+      const missingPct = 40 - hpPct;
+      const steps = Math.floor(missingPct / 5);
+      const baseDef = (HERO_DB && HERO_DB.omega) ? HERO_DB.omega.baseDef : (defender.baseDef || 52);
+      effectiveDef += (baseDef * steps * 0.20);
+    }
+  }
+
   const defReductionPct = Math.min(0.85, (effectiveDef / 5) * 0.005);
   let dmg = rawDmg * (1 - defReductionPct);
 
@@ -2098,28 +2385,9 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
   if (attacker.buffs.momoRage) dmg *= 1.80;
   if (attacker.buffs.momoTeamBuff) dmg *= 1.30;
   if (attacker.buffs.isshikiReviveDmg) dmg *= 2.00;
+  if (attacker.buffs.rinneganDmgBoost) dmg *= 1.30;
   if (attacker.buffs.vegitoDmgBoost) dmg *= attacker.buffs.vegitoDmgBoost;
   else if (attacker.id === "vegito" && attacker.level >= 70) dmg *= 1.30;
-
-  // Phoverus Thiên Hoàng (DEF boost dưới 40% HP)
-  if (defender.id === "phoverus" && defender.level >= 30) {
-    const hpPct = (defender.hp / defender.maxHp) * 100;
-    if (hpPct < 40) {
-      const missingPct = 40 - hpPct;
-      const steps = Math.floor(missingPct / 5);
-      effectiveDef *= (1 + steps * 0.25);
-    }
-  }
-
-  // Omega Bị Động 3: Dưới 40% HP, mỗi 5% HP mất tăng 20% DEF gốc
-  if (defender.id === "omega" && defender.level >= 80) {
-    const hpPct = (defender.hp / defender.maxHp) * 100;
-    if (hpPct < 40) {
-      const missingPct = 40 - hpPct;
-      const steps = Math.floor(missingPct / 5);
-      effectiveDef += (defender.db.baseDef * steps * 0.20);
-    }
-  }
 
   // Madara Huyết Kích (Dưới 45% HP: tăng 3% ST mỗi 1% HP mất nếu Lv >= 70; tăng 4% nếu Lv >= 100)
   if (attacker.id === "madara" && attacker.level >= 70) {
@@ -2129,6 +2397,11 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
       const rate = (attacker.level >= 100) ? 4 : 3;
       dmg *= (1 + (missingPct * rate) / 100);
     }
+  }
+
+  // Traveler Lv 100: Dưới 50% HP tăng 40% ST
+  if (attacker.id === "traveler" && attacker.level >= 100 && (attacker.hp / attacker.maxHp) < 0.50) {
+    dmg *= 1.40;
   }
 
   let isCrit = false;
@@ -2143,19 +2416,46 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
 }
 
 function applyDamage(target, amount, isCrit = false, attacker = null) {
-  // Pain Passive 2: Teleportation (né đòn)
-  if (target.id === "pain" && target.level >= 70) {
-    let dodgeChance = 0.15;
-    if (target.level >= 130) dodgeChance += 0.10; // Thần 1: +10% mọi tỷ lệ
-    if (Math.random() < dodgeChance) {
-      addAnimation(target, "TELEPORT! NÉ ĐÒN", "#bc8cff");
-      logCombat(`🌀 [Teleportation] Pain Thiên Đạo né sạch toàn bộ đòn tấn công!`);
-      if (attacker) {
+  // Cơ chế Né Đòn (Teleportation): 13% cơ bản cho mọi nhân vật
+  let dodgeRate = target.dodgeRate || 0.13;
+  if (target.id === "pain") {
+    if (target.level >= 70) dodgeRate += 0.15;
+    if (target.level >= 130) dodgeRate += 0.10;
+    if (target.level >= 100) {
+      const hpPct = (target.hp / target.maxHp) * 100;
+      if (hpPct < 70) {
+        const steps = Math.floor((70 - hpPct) / 5);
+        dodgeRate += steps * 0.03;
+      }
+    }
+    // Rinnegan Linh Thú: +5% Teleportation cho Pain
+    if (!target.isBot && gameState.equippedBeast === "rinnegan") {
+      dodgeRate += 0.05;
+    }
+  }
+
+  if (amount > 0 && Math.random() < dodgeRate) {
+    addAnimation(target, "TELEPORT! NÉ ĐÒN", "#bc8cff");
+    logCombat(`🌀 [Teleportation] ${target.name} né sạch toàn bộ đòn tấn công (${Math.round(dodgeRate*100)}% né)!`);
+    if (target.id === "pain") {
+      if (attacker && attacker.buffs) {
         attacker.buffs.teleportDebuff = 2; // Giảm 20% ST trong 2 lượt
         logCombat(`["Suy Giảm ST"] ${attacker.name} bị giảm 20% ST trong 2 lượt do Pain né đòn.`);
       }
-      return 0;
+      // Rinnegan Linh thú: Mỗi lần Pain dùng Teleportation hồi 10% HP tối đa cho toàn đội và tăng 30% ST trong 2 lượt
+      if (!target.isBot && gameState.equippedBeast === "rinnegan") {
+        battle.playerTeam.forEach(p => {
+          if (p && p.hp > 0) {
+            const heal = Math.round(p.maxHp * 0.10);
+            healFighter(p, heal);
+            p.buffs.rinneganDmgBoost = 2;
+          }
+        });
+        addAnimation(target, "RINNEGAN: HỒI 10% HP & +30% ST!", "#58a6ff");
+        logCombat(`👁️ [Rinnegan Thần Uy] Pain né đòn kích hoạt hồi 10% HP tối đa & tăng 30% ST cho toàn đội!`);
+      }
     }
+    return 0;
   }
 
   let finalDmg = amount;
@@ -2186,7 +2486,33 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   }
   checkDefenderTriggers(target, finalDmg);
 
-  if (target.hp === 0) logCombat(`☠️ ${target.name} đã bị hạ gục!`);
+  // Xử lý Hồi Sinh tự động (Omega Shenron, Isshiki, Whis)
+  if (target.hp === 0) {
+    if (target.id === "omega" && target.level >= 100 && !target.omegaRevived) {
+      target.omegaRevived = true;
+      target.hp = Math.round(target.maxHp * 0.40);
+      addAnimation(target, "BẤT DIỆT LONG HỒN! HỒI SINH 40% HP", "#3fb950");
+      logCombat(`🐉✨ [Bất Diệt Long Hồn] ${target.name} tử vong nhưng đã hồi sinh với 40% HP tối đa (${target.hp} HP)!`);
+    } else if (target.id === "isshiki" && target.level >= 100 && !target.isshikiRevived) {
+      target.isshikiRevived = true;
+      target.hp = Math.round(target.maxHp * 0.40);
+      target.buffs.isshikiReviveDmg = 2; // Tăng 100% ST trong 2 hiệp
+      addAnimation(target, "OTSU TSUKI TRỌNG SINH! +100% ST", "#3fb950");
+      logCombat(`⚡✨ [Otsutsuki Trọng Sinh] ${target.name} hồi sinh với 40% HP (${target.hp} HP) và tăng 100% ST trong 2 lượt!`);
+    } else if (target.id === "whis" && target.level >= 80 && !target.whisSelfRevived) {
+      const aliveAllies = (target.isBot ? battle.botTeam : battle.playerTeam).filter(f => f && f.hp > 0 && f !== target);
+      if (aliveAllies.length === 2) {
+        target.whisSelfRevived = true;
+        target.hp = Math.round(target.maxHp * 0.50);
+        addAnimation(target, "THẦN SỨ HỒI SINH 50% HP", "#3fb950");
+        logCombat(`✨👼 [Nghịch Đảo Thời Gian] Whis tử vong đầu tiên, tự động hồi sinh với 50% HP tối đa (${target.hp} HP)!`);
+      } else {
+        logCombat(`☠️ ${target.name} đã bị hạ gục!`);
+      }
+    } else {
+      logCombat(`☠️ ${target.name} đã bị hạ gục!`);
+    }
+  }
   return finalDmg;
 }
 
@@ -2233,7 +2559,10 @@ function executePlayerAction(type) {
 
   let target = battle.botTeam[battle.selectedTargetIndex];
   if (!target || target.hp <= 0) target = battle.botTeam.find(b => b.hp > 0);
-  if (!target) return;
+  if (!target) {
+    checkBattleEnd();
+    return;
+  }
 
   battle.isWaitingPlayer = false;
   disablePlayerActionCards();
@@ -2281,11 +2610,21 @@ function executePlayerAction(type) {
           const raw = actor.atk * 0.77;
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
           totalDmg += applyDamage(bot, damage, isCrit, actor);
-          if (actor.level >= 30) addLuanHoiStack(actor, bot, 1);
+          const lhRate = (actor.level >= 80) ? 0.70 : 0.60;
+          if (actor.level >= 30 && Math.random() < lhRate) addLuanHoiStack(actor, bot, 1);
         }
       });
       logCombat(`🌀 [Lục Đạo Trảm] Luân Hồi Tiên Nhân chém quét toàn bộ quân địch gây ${totalDmg} tổng ST!`);
-      if (actor.level >= 70) grantTeamShield(totalDmg * 0.20);
+      if (actor.level >= 70) {
+        let sRate = (actor.level >= 100) ? 0.40 : 0.20;
+        const hasOtsuTrio = battle.playerTeam.some(p => p && p.id === "isshiki") && 
+                            battle.playerTeam.some(p => p && p.id === "momoshiki") && 
+                            battle.playerTeam.some(p => p && p.id === "luanhoi");
+        if (!actor.isBot && gameState.equippedBeast === "otsutsuki_blood" && hasOtsuTrio) {
+          sRate = 0.70;
+        }
+        grantTeamShield(totalDmg * sRate);
+      }
     } else if (actor.id === "pain") {
       // 45% ATK lên TOÀN BỘ mục tiêu
       let totalDmg = 0;
@@ -2444,7 +2783,16 @@ function executePlayerAction(type) {
         }
       });
       logCombat(`💥 [Địa Bộc Thiên Tinh Vực] Luân Hồi Tiên Nhân phong ấn toàn thể, khắc +7 tầng "Lục đạo"!`);
-      if (actor.level >= 70) grantTeamShield(totalDmg * 0.20);
+      if (actor.level >= 70) {
+        let sRate = (actor.level >= 100) ? 0.40 : 0.20;
+        const hasOtsuTrio = battle.playerTeam.some(p => p && p.id === "isshiki") && 
+                            battle.playerTeam.some(p => p && p.id === "momoshiki") && 
+                            battle.playerTeam.some(p => p && p.id === "luanhoi");
+        if (!actor.isBot && gameState.equippedBeast === "otsutsuki_blood" && hasOtsuTrio) {
+          sRate = 0.70;
+        }
+        grantTeamShield(totalDmg * sRate);
+      }
     } else if (actor.id === "pain") {
       // Gây 110% ATK lên toàn bộ mục tiêu, 30% gây [Terror] 2 lượt
       let terrorRate = 0.30;
@@ -2488,11 +2836,24 @@ function executePlayerAction(type) {
       });
       logCombat(`💥🔥 [Bạch Kích Huỷ Diệt] Isshiki oanh tạc toàn thể kẻ địch gây ${totalDmg} ST kèm Bốc Hoả!`);
     } else if (actor.id === "itachi") {
-      const raw = actor.atk * 3.20;
+      let rawMult = 3.20;
+      let bocHoaStacks = 5;
+      let refundEn = 0;
+      if (!actor.isBot && gameState.equippedBeast === "amaterasu") {
+        rawMult = 4.00;
+        bocHoaStacks = 7;
+        refundEn = 1.5;
+      }
+      const raw = actor.atk * rawMult;
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       const dealt = applyDamage(target, damage, isCrit, actor);
-      applyBocHoa(target, 5);
-      logCombat(`🖤🔥 [Amaterasu Bất Diệt] Itachi giáng hắc hỏa gây ${damage} ST và khắc +5 tầng Bốc Hoả lên ${target.name}!`);
+      applyBocHoa(target, bocHoaStacks);
+      if (refundEn > 0) {
+        actor.en = Math.min(actor.enMax, +(actor.en + refundEn).toFixed(1));
+        logCombat(`🖤🔥 [Amaterasu Thần Thoại] Itachi giáng hắc hỏa gây ${damage} ST (${Math.round(rawMult*100)}% ATK), khắc +7 tầng Bốc Hoả và hồi lại 1.5 EN!`);
+      } else {
+        logCombat(`🖤🔥 [Amaterasu Bất Diệt] Itachi giáng hắc hỏa gây ${damage} ST và khắc +5 tầng Bốc Hoả lên ${target.name}!`);
+      }
       if (actor.level >= 70 && (battle.roundCount % 2 === 0)) {
         const healPct = (actor.level >= 100) ? 0.50 : 0.40;
         const healAmt = Math.round(dealt * healPct);
