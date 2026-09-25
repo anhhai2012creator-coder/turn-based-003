@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v2.2.0 (Chính Thức: Mở Khóa Chương 4)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật v2.2.1 (Chính Thức: Siêu Cân Bằng & Sửa Lỗi)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -496,7 +496,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v2.2.0 (Chính Thức): Mở Khóa Chương 4 - Đối Đầu Hệ Thống Tướng & Bị Động Cực Phẩm</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v2.2.1: Tăng 100% Chỉ Số Gốc, Tăng Trưởng 15%/Lv, Max Lv.240 & Cân Bằng EXP</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -694,7 +694,7 @@
             </div>
           </div>
 
-          <!-- Gói Nâng Cấp Tướng -->
+          <!-- Gói Nâng Cấp Tướng (VPNC) -->
           <div class="hero-card" style="cursor:default;">
             <div style="font-weight:700; color:var(--accent-green);">Gói 500 VPNC</div>
             <div style="font-size:11px; color:var(--text-secondary);">Vật phẩm nâng cấp cấp độ nhân vật.</div>
@@ -715,109 +715,6 @@
             </div>
           </div>
         </div>
-
-        <!-- TAB 3: ĐẠI TIỆC TRUNG THU -->
-        <div id="tabContentMidAutumn" style="display:none; flex-direction:column; gap:12px; max-height:480px; overflow-y:auto; padding-right:4px;">
-          <!-- Header Tóm Tắt & Số Dư Kẹo Bánh -->
-          <div style="background:#161b22; border:1px solid #ff79c6; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <div style="font-size:15px; font-weight:800; color:#ff79c6;">🥮 ĐẠI TIỆC TRUNG THU v2.0.0</div>
-              <div style="font-size:11px; color:var(--text-secondary);">Làm nhiệm vụ mỗi ngày & vĩnh viễn để nhận 🍬 Kẹo Bánh đổi tài nguyên cực khủng!</div>
-            </div>
-            <div style="text-align:right;">
-              <div style="font-size:11px; color:var(--text-secondary);">Số dư Kẹo Bánh:</div>
-              <div style="font-size:18px; font-weight:bold; color:#ff79c6;" id="midAutumnKeoBanhCount">0 🍬</div>
-            </div>
-          </div>
-
-          <!-- Section 1: Nhiệm Vụ Hằng Ngày -->
-          <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-              <div style="font-size:13px; font-weight:700; color:var(--accent-gold);">📅 Nhiệm Vụ Hằng Ngày (Reset 00:00)</div>
-              <div style="font-size:12px; font-weight:bold; color:var(--accent-cyan);" id="midAutumnDailyPtsDisplay">Điểm: 0/77</div>
-            </div>
-            <div id="midAutumnDailyQuestsList" style="display:flex; flex-direction:column; gap:6px;"></div>
-
-            <!-- Cột mốc hàng ngày -->
-            <div style="margin-top:10px; padding-top:8px; border-top:1px solid #21262d;">
-              <div style="font-size:11px; font-weight:bold; color:var(--text-secondary); margin-bottom:6px;">🎁 Cột Mốc Điểm Hằng Ngày:</div>
-              <div id="midAutumnDailyMilestonesList" style="display:grid; grid-template-columns:repeat(5, 1fr); gap:6px;"></div>
-            </div>
-          </div>
-
-          <!-- Section 2: Nhiệm Vụ Vĩnh Viễn -->
-          <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
-              <div style="font-size:13px; font-weight:700; color:var(--accent-purple);">🏆 Nhiệm Vụ Vĩnh Viễn (1 Lần Duy Nhất)</div>
-              <div style="font-size:12px; font-weight:bold; color:var(--accent-purple);" id="midAutumnPermPtsDisplay">Điểm: 0/290</div>
-            </div>
-            <div id="midAutumnPermQuestsList" style="display:flex; flex-direction:column; gap:6px;"></div>
-
-            <!-- Cột mốc vĩnh viễn -->
-            <div style="margin-top:10px; padding-top:8px; border-top:1px solid #21262d;">
-              <div style="font-size:11px; font-weight:bold; color:var(--text-secondary); margin-bottom:6px;">🎁 Cột Mốc Điểm Đặc Biệt:</div>
-              <div id="midAutumnPermMilestonesList" style="display:grid; grid-template-columns:repeat(5, 1fr); gap:6px;"></div>
-            </div>
-          </div>
-
-          <!-- Section 3: Tiệm Quy Đổi Kẹo Bánh -->
-          <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px;">
-            <div style="font-size:13px; font-weight:700; color:#ff79c6; margin-bottom:8px;">🏪 Tiệm Quy Đổi Kẹo Bánh</div>
-            <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px;">
-              <div class="hero-card" style="cursor:default;">
-                <div style="font-weight:700; color:var(--accent-green);">7,500 VPNC</div>
-                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
-                  <span style="font-weight:bold; color:#ff79c6;">50 🍬</span>
-                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_50')">Đổi</button>
-                </div>
-              </div>
-              <div class="hero-card" style="cursor:default;">
-                <div style="font-weight:700; color:var(--accent-green);">18,000 VPNC</div>
-                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
-                  <span style="font-weight:bold; color:#ff79c6;">90 🍬</span>
-                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_90')">Đổi</button>
-                </div>
-              </div>
-              <div class="hero-card" style="cursor:default; border-color:var(--accent-gold);">
-                <div style="font-weight:700; color:var(--accent-gold);">40,000 VPNC (Cực Hời)</div>
-                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
-                  <span style="font-weight:bold; color:#ff79c6;">180 🍬</span>
-                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_180')">Đổi</button>
-                </div>
-              </div>
-              <div class="hero-card" style="cursor:default;">
-                <div style="font-weight:700; color:var(--accent-green);">200,000 VPNC</div>
-                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
-                  <span style="font-weight:bold; color:#ff79c6;">1,000 🍬</span>
-                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('vpnc_1000')">Đổi</button>
-                </div>
-              </div>
-              <div class="hero-card" style="cursor:default;">
-                <div style="font-weight:700; color:var(--accent-gold);">1,000 Vàng</div>
-                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
-                  <span style="font-weight:bold; color:#ff79c6;">20 🍬</span>
-                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('gold_20')">Đổi</button>
-                </div>
-              </div>
-              <div class="hero-card" style="cursor:default;">
-                <div style="font-weight:700; color:var(--accent-gold);">8,000 Vàng</div>
-                <div style="margin-top:auto; display:flex; justify-content:space-between; align-items:center; padding-top:4px;">
-                  <span style="font-weight:bold; color:#ff79c6;">100 🍬</span>
-                  <button class="btn btn-primary" style="padding:4px 8px;" onclick="exchangeKeoBanh('gold_100')">Đổi</button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Hộp Gacha Nhân Vật -->
-            <div style="margin-top:10px; background:#161b22; border:2px solid var(--accent-purple); border-radius:8px; padding:10px; display:flex; justify-content:space-between; align-items:center;">
-              <div>
-                <div style="font-size:13px; font-weight:800; color:var(--accent-purple);">🎁 HỘP GACHA NHÂN VẬT CAO CẤP (1/1)</div>
-                <div style="font-size:11px; color:var(--text-secondary);">Mở nhận ngẫu nhiên 1 trong 6 tướng: Itachi Uế Thổ, Madara Lục Đạo, Phoverus, Kaioshin XENO, Momoshiki, Omega Shenron. Nếu đã có: đền bù 5,000 ⭐ Ánh sao!</div>
-              </div>
-              <button class="btn btn-gold" id="btnGachaBoxHero" onclick="openMidAutumnHeroBox()" style="padding:6px 14px; white-space:nowrap;">Đổi: 2,000 🍬</button>
-            </div>
-          </div>
-        </div>
       </div>
       <div class="modal-footer">
         <button class="btn" onclick="closeModal('modalShop')">Đóng</button>
@@ -834,9 +731,9 @@
       </div>
       <div class="modal-body">
         <div class="tab-bar">
-          <button class="tab-btn active" id="tabBtnEvent1" onclick="switchEventTab('starter')">Khởi Đầu Muôn Vạn</button>
+          <button class="tab-btn active" id="tabBtnEvent3" onclick="switchEventTab('midAutumn')">🥮 Đại Tiệc Trung Thu</button>
           <button class="tab-btn" id="tabBtnEvent2" onclick="switchEventTab('autumn')">Mùa Thu Ánh Sao</button>
-          <button class="tab-btn" id="tabBtnEvent3" onclick="switchEventTab('midAutumn')">🥮 Đại Tiệc Trung Thu</button>
+          <button class="tab-btn" id="tabBtnEvent1" onclick="switchEventTab('starter')">Khởi Đầu Muôn Vạn</button>
         </div>
 
         <div id="tabContentStarter" style="display:flex; flex-direction:column; gap:10px;">
@@ -1130,8 +1027,8 @@ const HERO_DB = {
     name: "Nhà lữ hành",
     type: "ATK",
     roleDesc: "Khởi đầu đa dụng, gây thiêu đốt rực lửa",
-    baseHp: 280,
-    baseAtk: 21.1,
+    baseHp: 560,
+    baseAtk: 42.2,
     baseDef: 38,
     baseSpd: 139,
     enMax: 5,
@@ -1139,8 +1036,11 @@ const HERO_DB = {
     normalAttack: { name: "Trảm Kích", enGain: 1, desc: "Gây 94% ATK lên 1 mục tiêu, hồi 1 EN." },
     activeSkill: { name: "Phong Lôi Trảm", desc: "Gây 220% ATK kèm 3% HP tối đa mục tiêu lên 1 mục tiêu. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Điều Tức", desc: "Mỗi 2 hiệp, Nhà lữ hành nhận 2 EN." },
-      { lv: 80, name: "Rực Lửa", desc: "Đánh thường gây 'Rực lửa' tầng thứ 2 (đốt 1% HP tối đa/tầng mỗi hiệp, tối đa 5 tầng)." }
+      { lv: 30, name: "Điều Tức", desc: "Mỗi 2 hiệp, Nhà lữ hành nhận 2 EN." },
+      { lv: 70, name: "Rực Lửa", desc: "Đánh thường gây 'Rực lửa' tầng thứ 2 (đốt 1% HP tối đa/tầng mỗi hiệp, tối đa 5 tầng)." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: []
   },
@@ -1149,8 +1049,8 @@ const HERO_DB = {
     name: "Madara (Lục đạo)",
     type: "ATK",
     roleDesc: "Sát thương diện rộng, hồi phục & khiên huyết kích",
-    baseHp: 235,
-    baseAtk: 29.1,
+    baseHp: 470,
+    baseAtk: 58.2,
     baseDef: 30,
     baseSpd: 150,
     enMax: 5,
@@ -1158,12 +1058,15 @@ const HERO_DB = {
     normalAttack: { name: "Cầu Đạo Ngọc", enGain: 1.3, desc: "Hồi 1.3 EN. Gây 98% ATK lên 1 mục tiêu kèm 2% HP tối đa mục tiêu." },
     activeSkill: { name: "Thiên Ngại Ma Tinh", desc: "Gây ST lên toàn bộ mục tiêu bằng 200% ATK kèm 5% HP tối đa mục tiêu. Hồi máu 20% ST gây ra. Tăng 5% ST trong 3 hiệp. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Chân Thể Lục Đạo", desc: "Khi nhận được 'hồi phục' từ bất cứ đâu, nhận khiên bằng 8% HP tối đa bản thân." },
-      { lv: 80, name: "Huyết Kích", desc: "Khi HP dưới 30%, nhận 'Huyết kích': mỗi 1% HP mất đi tăng 2% ST gây ra." }
+      { lv: 30, name: "Chân Thể Lục Đạo", desc: "Khi nhận được 'hồi phục' từ bất cứ đâu, nhận khiên bằng 8% HP tối đa bản thân." },
+      { lv: 70, name: "Huyết Kích", desc: "Khi HP dưới 30%, nhận 'Huyết kích': mỗi 1% HP mất đi tăng 2% ST gây ra." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "Tăng 8% ATK; 10% DEF." },
-      { lv: 220, name: "Thần Chú 2", desc: "Tăng 15% tỉ lệ bạo kích; ST bạo kích tăng 50%." }
+      { lv: 130, name: "Thần Chú 1", desc: "Tăng 8% ATK; 10% DEF." },
+      { lv: 150, name: "Thần Chú 2", desc: "Tăng 15% tỉ lệ bạo kích; ST bạo kích tăng 50%." }
     ]
   },
   omega: {
@@ -1171,8 +1074,8 @@ const HERO_DB = {
     name: "Omega Shenron",
     type: "DEF",
     roleDesc: "Phòng ngự tối thượng, khiên đầu trận & cướp sinh lực",
-    baseHp: 325,
-    baseAtk: 14.3,
+    baseHp: 650,
+    baseAtk: 28.6,
     baseDef: 52,
     baseSpd: 152,
     enMax: 4,
@@ -1180,12 +1083,15 @@ const HERO_DB = {
     normalAttack: { name: "Long Cốt Kích", enGain: 0.9, desc: "Gây 78% ATK lên 1 mục tiêu, hồi 0.9 EN." },
     activeSkill: { name: "Tiêu Diệt Cầu", desc: "Gây 300% ATK lên mục tiêu có HP thấp nhất. Nhận khiên bằng 20% ST gây ra. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Tà Long Hộ Thể", desc: "Hiệp đầu tiên của trận, bản thân nhận lớp khiên bằng 100% HP bản thân." },
-      { lv: 80, name: "Thiên Mệnh", desc: "Mỗi lần gây ST, đánh dấu 1 tầng 'Thiên mệnh'. Đủ 3 tầng reset và cướp 3% HP hiện tại mục tiêu hồi cho bản thân." }
+      { lv: 30, name: "Tà Long Hộ Thể", desc: "Hiệp đầu tiên của trận, bản thân nhận lớp khiên bằng 100% HP bản thân." },
+      { lv: 70, name: "Thiên Mệnh", desc: "Mỗi lần gây ST, đánh dấu 1 tầng 'Thiên mệnh'. Đủ 3 tầng reset và cướp 3% HP hiện tại mục tiêu hồi cho bản thân." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "+20% DEF; +5% HP tối đa." },
-      { lv: 220, name: "Thần Chú 2", desc: "Xuyên giáp +10% (bỏ qua 10% DEF mục tiêu)." }
+      { lv: 130, name: "Thần Chú 1", desc: "+20% DEF; +5% HP tối đa." },
+      { lv: 150, name: "Thần Chú 2", desc: "Xuyên giáp +10% (bỏ qua 10% DEF mục tiêu)." }
     ]
   },
   vegito: {
@@ -1193,8 +1099,8 @@ const HERO_DB = {
     name: "Vegito",
     type: "SKL",
     roleDesc: "Chiến thần tốc độ, 'Bleeding' đa tầng & kích hoạt khiên hộ mệnh",
-    baseHp: 278,
-    baseAtk: 19.5,
+    baseHp: 556,
+    baseAtk: 39.0,
     baseDef: 45,
     baseSpd: 170,
     enMax: 3,
@@ -1202,12 +1108,15 @@ const HERO_DB = {
     normalAttack: { name: "Bá Vương Kích", enGain: 0.9, desc: "Gây 98% ATK lên 1 mục tiêu, hồi 0.9 EN." },
     activeSkill: { name: "Kiếm Khí Linh Hồn", desc: "Gây 75% ATK lên tất cả mục tiêu, kích hoạt 3 tầng 'Bleeding' và 1 tầng 'Bleeding 2' (40% ATK/hiệp, kéo dài 3 hiệp). Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Huyết Kích & Xuyên Giáp", desc: "Đòn đánh thường áp dụng thêm 1 tầng 'Bleeding 2'. Xuyên giáp +45% (bỏ qua 45% DEF mục tiêu)." },
-      { lv: 80, name: "Cường Lực & Kiên Cố", desc: "Tăng 30% ST. Khi HP dưới 50%, nhận 'Khiên' bằng 275% ATK, đồng thời đòn đánh thường hồi thêm +0.5 EN (chỉ kích hoạt 1 lần/trận)." }
+      { lv: 30, name: "Huyết Kích & Xuyên Giáp", desc: "Đòn đánh thường áp dụng thêm 1 tầng 'Bleeding 2'. Xuyên giáp +45% (bỏ qua 45% DEF mục tiêu)." },
+      { lv: 70, name: "Cường Lực & Kiên Cố", desc: "Tăng 30% ST. Khi HP dưới 50%, nhận 'Khiên' bằng 275% ATK, đồng thời đòn đánh thường hồi thêm +0.5 EN (chỉ kích hoạt 1 lần/trận)." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "Tăng 10% ST của hiệu ứng 'Bleeding 2'." },
-      { lv: 220, name: "Thần Chú 2", desc: "ATK tăng 25%; HP tăng 14%." }
+      { lv: 130, name: "Thần Chú 1", desc: "Tăng 10% ST của hiệu ứng 'Bleeding 2'." },
+      { lv: 150, name: "Thần Chú 2", desc: "ATK tăng 25%; HP tăng 14%." }
     ]
   },
   whis: {
@@ -1215,8 +1124,8 @@ const HERO_DB = {
     name: "Whis",
     type: "SKL",
     roleDesc: "Thần quan tối cao, hồi phục, 'Bảo vệ' toàn đội & giảm công địch",
-    baseHp: 282,
-    baseAtk: 18.2,
+    baseHp: 564,
+    baseAtk: 36.4,
     baseDef: 47,
     baseSpd: 173,
     enMax: 4,
@@ -1224,12 +1133,15 @@ const HERO_DB = {
     normalAttack: { name: "Trượng Khí", enGain: 1.1, desc: "Gây 88% ATK lên 1 mục tiêu, hồi 1.1 EN." },
     activeSkill: { name: "Thiên Sứ Thời Gian", desc: "Hồi HP bằng 150% ATK bản thân cho đồng minh có HP thấp nhất. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Thần Hộ", desc: "Khi dùng kỹ năng chủ động, cung cấp cho toàn đội 'Bảo vệ' trong 2 lượt. Khi nhận ST, hồi phục bằng 45% ATK của Whis." },
-      { lv: 80, name: "Suy Giảm", desc: "Đánh thường có 24% cơ hội gây 'Suy giảm' (giảm 20% ATK của mục tiêu trong 3 hiệp)." }
+      { lv: 30, name: "Thần Hộ", desc: "Khi dùng kỹ năng chủ động, cung cấp cho toàn đội 'Bảo vệ' trong 2 lượt. Khi nhận ST, hồi phục bằng 45% ATK của Whis." },
+      { lv: 70, name: "Suy Giảm", desc: "Đánh thường có 24% cơ hội gây 'Suy giảm' (giảm 20% ATK của mục tiêu trong 3 hiệp)." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "+20% ATK; +12% HP." },
-      { lv: 220, name: "Thần Chú 2", desc: "Tăng 20% khả năng hồi phục toàn trận." }
+      { lv: 130, name: "Thần Chú 1", desc: "+20% ATK; +12% HP." },
+      { lv: 150, name: "Thần Chú 2", desc: "Tăng 20% khả năng hồi phục toàn trận." }
     ]
   },
   luanhoi: {
@@ -1237,8 +1149,8 @@ const HERO_DB = {
     name: "Luân Hồi Tiên Nhân",
     type: "DEF",
     roleDesc: "Tướng giới hạn, nổ 1000% ATK Lục Đạo & ban khiên toàn đội",
-    baseHp: 355,
-    baseAtk: 18.2,
+    baseHp: 710,
+    baseAtk: 36.4,
     baseDef: 62,
     baseSpd: 166,
     enMax: 3,
@@ -1246,12 +1158,15 @@ const HERO_DB = {
     normalAttack: { name: "Lục Đạo Trảm", enGain: 0.9, desc: "Gây 77% ATK lên TOÀN BỘ mục tiêu, hồi 0.9 EN." },
     activeSkill: { name: "Địa Bộc Thiên Tinh Vực", desc: "Gây 50% ATK lên toàn bộ mục tiêu, đồng thời khắc +7 tầng 'Lục đạo' lên kẻ trúng đòn. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Ấn Ký Lục Đạo", desc: "Đánh thường khắc +1 tầng 'Lục đạo'. Đủ 10 tầng 'Lục đạo', nổ 1000% ATK lên mục tiêu đó rồi reset tầng." },
-      { lv: 80, name: "Tiên Khí Hộ Thể", desc: "Khi gây ST, cung cấp cho toàn đội 'Khiên' bằng 20% ST gây ra (chặn ST, không dính bạo kích)." }
+      { lv: 30, name: "Ấn Ký Lục Đạo", desc: "Đánh thường khắc +1 tầng 'Lục đạo'. Đủ 10 tầng 'Lục đạo', nổ 1000% ATK lên mục tiêu đó rồi reset tầng." },
+      { lv: 70, name: "Tiên Khí Hộ Thể", desc: "Khi gây ST, cung cấp cho toàn đội 'Khiên' bằng 20% ST gây ra (chặn ST, không dính bạo kích)." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "Khi kẻ địch gây ST lên bản thân, có 32% cơ hội +1 tầng 'Lục đạo' lên kẻ tấn công đó." },
-      { lv: 220, name: "Thần Chú 2", desc: "+10% HP; +14% ATK; +18% DEF." }
+      { lv: 130, name: "Thần Chú 1", desc: "Khi kẻ địch gây ST lên bản thân, có 32% cơ hội +1 tầng 'Lục đạo' lên kẻ tấn công đó." },
+      { lv: 150, name: "Thần Chú 2", desc: "+10% HP; +14% ATK; +18% DEF." }
     ]
   },
   pain: {
@@ -1259,8 +1174,8 @@ const HERO_DB = {
     name: "Pain Thiên Đạo",
     type: "SKL",
     roleDesc: "Chúa tể kiểm soát, 'Terror' gây choáng, phản đòn 'Teleportation' & giảm công",
-    baseHp: 275,
-    baseAtk: 32.5, // 25 * 1.3
+    baseHp: 550,
+    baseAtk: 65.0, // 25 * 1.3
     baseDef: 48,
     baseSpd: 165,
     enMax: 4,
@@ -1268,12 +1183,15 @@ const HERO_DB = {
     normalAttack: { name: "Hắc Bổng Kích", enGain: 1.2, desc: "Gây 45% ATK lên TOÀN BỘ mục tiêu, hồi 1.2 EN." },
     activeSkill: { name: "Thần La Thiên Chinh", desc: "Gây 110% ATK lên toàn bộ mục tiêu, có 30% cơ hội gây 'Terror' trong 2 lượt (khiến địch có 30% tỷ lệ bị Choáng). Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Khống Chế Áp Chế", desc: "Khi gây ST lên mục tiêu có 'Kiểm soát' hoặc gây hiệu ứng 'Kiểm soát', giảm 30% ST của mục tiêu trong 2 lượt." },
-      { lv: 80, name: "Dịch Chuyển Không Gian", desc: "Khi bị tấn công, tăng 15% tỷ lệ 'Teleportation' (né toàn bộ kỹ năng). Sau khi né, giảm 20% ST của kẻ tấn công trong 2 lượt. Dùng chiêu chủ động có 30% cơ hội gây 'Thiên đạo' giảm 30% ST kẻ địch trong 3 lượt." }
+      { lv: 30, name: "Khống Chế Áp Chế", desc: "Khi gây ST lên mục tiêu có 'Kiểm soát' hoặc gây hiệu ứng 'Kiểm soát', giảm 30% ST của mục tiêu trong 2 lượt." },
+      { lv: 70, name: "Dịch Chuyển Không Gian", desc: "Khi bị tấn công, tăng 15% tỷ lệ 'Teleportation' (né toàn bộ kỹ năng). Sau khi né, giảm 20% ST của kẻ tấn công trong 2 lượt. Dùng chiêu chủ động có 30% cơ hội gây 'Thiên đạo' giảm 30% ST kẻ địch trong 3 lượt." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "Mọi tỷ lệ kích hoạt kỹ năng và nội tại tăng thêm +10%." },
-      { lv: 220, name: "Thần Chú 2", desc: "+10% HP; +10% DEF." }
+      { lv: 130, name: "Thần Chú 1", desc: "Mọi tỷ lệ kích hoạt kỹ năng và nội tại tăng thêm +10%." },
+      { lv: 150, name: "Thần Chú 2", desc: "+10% HP; +10% DEF." }
     ]
   },
   isshiki: {
@@ -1281,8 +1199,8 @@ const HERO_DB = {
     name: "Isshiki Otsutsuki",
     type: "ATK",
     roleDesc: "Càn quét diện rộng, tăng tốc đánh & đánh chen ngang liên hoàn",
-    baseHp: 277,
-    baseAtk: 25.0,
+    baseHp: 554,
+    baseAtk: 50.0,
     baseDef: 33,
     baseSpd: 159,
     enMax: 6.5,
@@ -1291,12 +1209,15 @@ const HERO_DB = {
     normalAttack: { name: "Xích Trảm", enGain: 0.75, desc: "Gây 88% ATK lên toàn bộ mục tiêu. Hồi 0.75 EN." },
     activeSkill: { name: "Bạch Kích Hủy Diệt", desc: "Gây 350% ATK lên toàn bộ mục tiêu kèm 'Bốc hoả'. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Gia Tốc Otsutsuki", desc: "Tốc đánh gốc 30%. Mỗi 3 lượt, tốc đánh tăng 5%. Mỗi 25% tốc đánh, bản thân đánh thường thêm 1 lần chen ngang (bị động)." },
-      { lv: 80, name: "Tuyệt Kỹ Liên Tục", desc: "Khi tốc đánh đạt tối đa 100%, Isshiki tự động thi triển thêm 1 lần Kỹ năng chủ động (dưới dạng bị động)." }
+      { lv: 30, name: "Gia Tốc Otsutsuki", desc: "Tốc đánh gốc 30%. Mỗi 3 lượt, tốc đánh tăng 5%. Mỗi 25% tốc đánh, bản thân đánh thường thêm 1 lần chen ngang (bị động)." },
+      { lv: 70, name: "Tuyệt Kỹ Liên Tục", desc: "Khi tốc đánh đạt tối đa 100%, Isshiki tự động thi triển thêm 1 lần Kỹ năng chủ động (dưới dạng bị động)." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "+25% DEF; +20% HP." },
-      { lv: 220, name: "Thần Chú 2", desc: "+18% ATK." }
+      { lv: 130, name: "Thần Chú 1", desc: "+25% DEF; +20% HP." },
+      { lv: 150, name: "Thần Chú 2", desc: "+18% ATK." }
     ]
   },
   itachi: {
@@ -1304,8 +1225,8 @@ const HERO_DB = {
     name: "Itachi (Uế Thổ)",
     type: "ATK",
     roleDesc: "Hỏa độn thiêu đốt % HP, hồi phục lượt chẵn & hồi EN từ Bốc Hỏa",
-    baseHp: 289,
-    baseAtk: 21.1,
+    baseHp: 578,
+    baseAtk: 42.2,
     baseDef: 41,
     baseSpd: 156,
     enMax: 8.0,
@@ -1313,12 +1234,15 @@ const HERO_DB = {
     normalAttack: { name: "Hắc Hỏa Trảm", enGain: 1.0, desc: "Gây 99% ATK lên 1 mục tiêu. Áp dụng 'Bốc hoả' lên bản thân và mục tiêu. Hồi 1 EN." },
     activeSkill: { name: "Amaterasu Bất Diệt", desc: "Gây 320% ATK lên 1 mục tiêu. +5 tầng 'Bốc hoả' lên mục tiêu đó. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Hỏa Thần Thiêu Đốt", desc: "Mục tiêu không phải đồng minh hoặc bản thân nhận thêm x2 ST từ 'Bốc hoả'." },
-      { lv: 80, name: "Tái Sinh Uế Thổ", desc: "Mỗi lần dùng Kỹ năng chủ động ở lượt chẵn (lượt 2, 4,...), hồi phục bản thân bằng 40% ST gây ra (không tính Bốc hoả)." }
+      { lv: 30, name: "Hỏa Thần Thiêu Đốt", desc: "Mục tiêu không phải đồng minh hoặc bản thân nhận thêm x2 ST từ 'Bốc hoả'." },
+      { lv: 70, name: "Tái Sinh Uế Thổ", desc: "Mỗi lần dùng Kỹ năng chủ động ở lượt chẵn (lượt 2, 4,...), hồi phục bản thân bằng 40% ST gây ra (không tính Bốc hoả)." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "Tăng 25% ST từ 'Bốc hoả' lên toàn bộ mục tiêu." },
-      { lv: 220, name: "Thần Chú 2", desc: "Mỗi lần bản thân hoặc mục tiêu khác nhận ST từ 'Bốc hoả', hồi 0.8 EN." }
+      { lv: 130, name: "Thần Chú 1", desc: "Tăng 25% ST từ 'Bốc hoả' lên toàn bộ mục tiêu." },
+      { lv: 150, name: "Thần Chú 2", desc: "Mỗi lần bản thân hoặc mục tiêu khác nhận ST từ 'Bốc hoả', hồi 0.8 EN." }
     ]
   },
   momoshiki: {
@@ -1326,8 +1250,8 @@ const HERO_DB = {
     name: "Momoshiki Otsutsuki",
     type: "SKL",
     roleDesc: "Tích nộ bùng nổ 80% ST, khiên 30% HP & phóng kích uy áp",
-    baseHp: 288,
-    baseAtk: 19.5,
+    baseHp: 576,
+    baseAtk: 39.0,
     baseDef: 48,
     baseSpd: 175,
     enMax: 6.3,
@@ -1336,12 +1260,15 @@ const HERO_DB = {
     normalAttack: { name: "Thiền Định Tụ Nộ", enGain: 0, desc: "Không có đòn đánh thường; tập trung tích tụ +1.0 Nộ." },
     activeSkill: { name: "Vô Hạn Hắc Cầu", desc: "Gây 300% ATK + 8% HP tối đa của 1 mục tiêu. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Tụ Nộ Bộc Phát", desc: "Mỗi 1 hiệp, tự động tích 0.5 Nộ. Khi đủ 5 Nộ, tăng 80% ST gây ra trong 2 hiệp, reset Nộ về 0." },
-      { lv: 80, name: "Cổ Thần Hộ Thể", desc: "Khi nhận ST, +1 EN. Mỗi 3 hiệp, nhận 'Khiên' bằng 30% HP còn lại của bản thân vào đầu hiệp (chặn ST, không dính bạo kích)." }
+      { lv: 30, name: "Tụ Nộ Bộc Phát", desc: "Mỗi 1 hiệp, tự động tích 0.5 Nộ. Khi đủ 5 Nộ, tăng 80% ST gây ra trong 2 hiệp, reset Nộ về 0." },
+      { lv: 70, name: "Cổ Thần Hộ Thể", desc: "Khi nhận ST, +1 EN. Mỗi 3 hiệp, nhận 'Khiên' bằng 30% HP còn lại của bản thân vào đầu hiệp (chặn ST, không dính bạo kích)." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "Khi tích đủ từ 3 Nộ trở lên, tự động gây ST bằng 120% ATK lên 1 mục tiêu." },
-      { lv: 220, name: "Thần Chú 2", desc: "+25% DEF; +18% HP; +12% ATK." }
+      { lv: 130, name: "Thần Chú 1", desc: "Khi tích đủ từ 3 Nộ trở lên, tự động gây ST bằng 120% ATK lên 1 mục tiêu." },
+      { lv: 150, name: "Thần Chú 2", desc: "+25% DEF; +18% HP; +12% ATK." }
     ]
   },
   kaioshin: {
@@ -1349,8 +1276,8 @@ const HERO_DB = {
     name: "Kaioshin XENO",
     type: "SKL",
     roleDesc: "Thần tối cao, khiên 30% HP & hồi 150% ATK toàn đội, miễn nhiễm khống chế",
-    baseHp: 311,
-    baseAtk: 17.8,
+    baseHp: 622,
+    baseAtk: 35.6,
     baseDef: 44,
     baseSpd: 172,
     enMax: 4.0,
@@ -1358,12 +1285,15 @@ const HERO_DB = {
     normalAttack: { name: "Thần Kiếm Khí", enGain: 0.7, desc: "Gây 88% ATK lên 1 mục tiêu. Hồi 0.7 EN." },
     activeSkill: { name: "Thần Giới Hộ Thể", desc: "Ban 'Khiên' bằng 30% HP hiện tại của Kaioshin và hồi HP bằng 150% ATK cho toàn đội. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Thánh Thể Miễn Nhiễm", desc: "Bản thân khi có 'Khiên', nhận 'Miễn nhiễm' bất khả xâm phạm trước mọi hiệu ứng debuff." },
-      { lv: 80, name: "Thần Uy Hấp Năng", desc: "Khi bản thân nhận ST, +1 EN." }
+      { lv: 30, name: "Thánh Thể Miễn Nhiễm", desc: "Bản thân khi có 'Khiên', nhận 'Miễn nhiễm' bất khả xâm phạm trước mọi hiệu ứng debuff." },
+      { lv: 70, name: "Thần Uy Hấp Năng", desc: "Khi bản thân nhận ST, +1 EN." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "+25% DEF; +15% ATK." },
-      { lv: 220, name: "Thần Chú 2", desc: "Tăng 30% khả năng tạo 'Khiên' của Kỹ năng chủ động." }
+      { lv: 130, name: "Thần Chú 1", desc: "+25% DEF; +15% ATK." },
+      { lv: 150, name: "Thần Chú 2", desc: "Tăng 30% khả năng tạo 'Khiên' của Kỹ năng chủ động." }
     ]
   },
   phoverus: {
@@ -1371,8 +1301,8 @@ const HERO_DB = {
     name: "Phoverus",
     type: "DEF",
     roleDesc: "Pháo đài tím, hút 16% HP 'Thuật Tím', Choáng 3 mục tiêu & phòng thủ Thiên Hoàng",
-    baseHp: 333,
-    baseAtk: 20.2,
+    baseHp: 666,
+    baseAtk: 40.4,
     baseDef: 58,
     baseSpd: 166,
     enMax: 2.5,
@@ -1380,12 +1310,15 @@ const HERO_DB = {
     normalAttack: { name: "Huyền Ma Quyền", enGain: 0.7, desc: "Gây 80% ATK lên 2 mục tiêu, đánh dấu 'Thuật tím' (đủ 3 tầng hút 8% HP mục tiêu, tồn tại 2 lượt)." },
     activeSkill: { name: "Thiên Băng Ma Chấn", desc: "Gây 280% ATK lên 3 mục tiêu. Có 45% cơ hội gây 'Choáng' (Stun) trong 2 lượt. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 40, name: "Thiên Hoàng Giáp", desc: "Khi HP dưới 40%, cứ mỗi 5% HP mất đi, tăng 25% DEF hiện tại." },
-      { lv: 80, name: "Thuật Tím Tối Thượng", desc: "Khả năng hút HP tăng thêm 8% trong 'Thuật tím' (hút 16% HP tối đa của mục tiêu)." }
+      { lv: 30, name: "Thiên Hoàng Giáp", desc: "Khi HP dưới 40%, cứ mỗi 5% HP mất đi, tăng 25% DEF hiện tại." },
+      { lv: 70, name: "Thuật Tím Tối Thượng", desc: "Khả năng hút HP tăng thêm 8% trong 'Thuật tím' (hút 16% HP tối đa của mục tiêu)." }
+    ,
+      { lv: 80, name: "Bị Động 3", desc: "Đang phát triển (Sắp cập nhật)." },
+      { lv: 100, name: "Bị Động 4", desc: "Đang phát triển (Sắp cập nhật)." }
     ],
     spells: [
-      { lv: 150, name: "Thần Chú 1", desc: "+25% HP; +18% DEF." },
-      { lv: 220, name: "Thần Chú 2", desc: "+15% ATK." }
+      { lv: 130, name: "Thần Chú 1", desc: "+25% HP; +18% DEF." },
+      { lv: 150, name: "Thần Chú 2", desc: "+15% ATK." }
     ]
   }
 };
@@ -1627,9 +1560,9 @@ function getBotScalingFactor(chapter, stage) {
     }
     // Ải 1 chương 4 mạnh hơn 80% so với ải cuối chương 3
     let factor = c3_10 * 1.80;
-    // Ải sau mạnh hơn ải trước 40%
+    // Mỗi ải sau mạnh hơn ải trước 18%
     for (let s = 2; s <= stage; s++) {
-      factor *= 1.40;
+      factor *= 1.18;
     }
     return factor;
   }
@@ -1777,7 +1710,7 @@ function startBattle() {
         atkSpd: stats.db.atkSpd || 0,
         rage: 0
       };
-      if (heroId === "omega" && stats.level >= 40) {
+      if (heroId === "omega" && stats.level >= 30) {
         fighter.shield = fighter.maxHp;
         logCombat(`[Tà Long Hộ Thể] ${fighter.name} nhận khiên ${fighter.shield} HP!`);
       }
@@ -1896,7 +1829,7 @@ function nextTurn() {
   if (battle.currentActorIndex >= battle.turnQueue.length) {
     battle.roundCount++;
     battle.turnQueue.forEach(f => {
-      if (!f.isBot && f.id === "traveler" && f.level >= 40 && battle.roundCount % 2 === 0) {
+      if (!f.isBot && f.id === "traveler" && f.level >= 30 && battle.roundCount % 2 === 0) {
         f.en = Math.min(f.enMax, +(f.en + 2).toFixed(1));
         logCombat(`[Điều Tức] ${f.name} nhận 2 EN!`);
       }
@@ -1958,17 +1891,17 @@ function nextTurn() {
     if (pct < 0.015) pct = 0.015;
     let dmg = Math.round(actor.hp * pct);
     const itachiFighter = battle.playerTeam.find(p => p && p.id === "itachi");
-    if (itachiFighter && itachiFighter.level >= 40 && actor.isBot) {
+    if (itachiFighter && itachiFighter.level >= 30 && actor.isBot) {
       dmg *= 2;
     }
-    if (itachiFighter && itachiFighter.level >= 150) {
+    if (itachiFighter && itachiFighter.level >= 130) {
       dmg = Math.round(dmg * 1.25);
     }
     dmg = Math.max(1, dmg);
     dotDamage += dmg;
     actor.buffs.bocHoa.duration--;
     logCombat(`🔥 [Bốc Hoả] ${actor.name} bị thiêu đốt chịu ${dmg} ST (${stacks} tầng)!`);
-    if (itachiFighter && itachiFighter.level >= 220) {
+    if (itachiFighter && itachiFighter.level >= 150) {
       itachiFighter.en = Math.min(itachiFighter.enMax, +(itachiFighter.en + 0.8).toFixed(1));
       logCombat(`🔥 [Thần Chú 2] Itachi hồi +0.8 EN từ Bốc hoả!`);
     }
@@ -1985,7 +1918,7 @@ function nextTurn() {
   }
 
   // Isshiki Bị Động 1: Mỗi 3 lượt, tăng 5% tốc đánh
-  if (actor.id === "isshiki" && actor.level >= 40 && actor.hp > 0) {
+  if (actor.id === "isshiki" && actor.level >= 30 && actor.hp > 0) {
     if (battle.roundCount % 3 === 0) {
       actor.atkSpd = Math.min(1.0, +( (actor.atkSpd || 0.30) + 0.05 ).toFixed(2));
       logCombat(`⚡ [Gia Tốc Otsutsuki] Tốc đánh của Isshiki tăng lên ${Math.round(actor.atkSpd * 100)}%!`);
@@ -1994,7 +1927,7 @@ function nextTurn() {
 
   // Momoshiki Bị Động & Thần Chú
   if (actor.id === "momoshiki" && actor.hp > 0) {
-    if (actor.level >= 40) {
+    if (actor.level >= 30) {
       actor.rage = +( (actor.rage || 0) + 0.5 ).toFixed(1);
       logCombat(`🌀 [Tụ Nộ] Momoshiki tích tụ +0.5 Nộ (${actor.rage}/5.0)!`);
       if (actor.rage >= 5.0) {
@@ -2004,7 +1937,7 @@ function nextTurn() {
         logCombat(`🔥💥 [Cuồng Nộ Otsutsuki] Momoshiki bộc phát nộ khí, tăng 80% ST trong 2 hiệp!`);
       }
     }
-    if (actor.level >= 150 && (actor.rage || 0) >= 3.0) {
+    if (actor.level >= 130 && (actor.rage || 0) >= 3.0) {
       const enemy = actor.isBot ? battle.playerTeam.find(p => p && p.hp > 0) : battle.botTeam.find(b => b && b.hp > 0);
       if (enemy) {
         const autoDmg = Math.round(actor.atk * 1.20);
@@ -2012,7 +1945,7 @@ function nextTurn() {
         logCombat(`⚡ [Thần Chú 1] Momoshiki phóng thích uy áp tự động gây ${autoDmg} ST lên ${enemy.name}!`);
       }
     }
-    if (actor.level >= 80 && (battle.roundCount % 3 === 0)) {
+    if (actor.level >= 70 && (battle.roundCount % 3 === 0)) {
       const shieldGain = Math.round(actor.hp * 0.30);
       actor.shield += shieldGain;
       addAnimation(actor, `+${shieldGain} Khiên`, "#58a6ff");
@@ -2021,7 +1954,7 @@ function nextTurn() {
   }
 
   // Vegito Passive 2 check
-  if (!actor.isBot && actor.id === "vegito" && actor.level >= 80 && !actor.vegitoPassiveTriggered) {
+  if (!actor.isBot && actor.id === "vegito" && actor.level >= 70 && !actor.vegitoPassiveTriggered) {
     if ((actor.hp / actor.maxHp) <= 0.5) {
       actor.vegitoPassiveTriggered = true;
       const shieldGain = Math.round(actor.atk * 2.75);
@@ -2101,7 +2034,7 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
   // Buff tăng công
   if (attacker.buffs.madaraDmgBoost) dmg *= 1.05;
   if (attacker.buffs.momoRage) dmg *= 1.80;
-  if (defender.id === "phoverus" && defender.level >= 40) {
+  if (defender.id === "phoverus" && defender.level >= 30) {
     const hpPct = (defender.hp / defender.maxHp) * 100;
     if (hpPct < 40) {
       const missingPct = 40 - hpPct;
@@ -2109,9 +2042,9 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
       effectiveDef *= (1 + steps * 0.25);
     }
   }
-  if (!attacker.isBot && attacker.id === "vegito" && attacker.level >= 80) dmg *= 1.30;
+  if (!attacker.isBot && attacker.id === "vegito" && attacker.level >= 70) dmg *= 1.30;
 
-  if (!attacker.isBot && attacker.id === "madara" && attacker.level >= 80) {
+  if (!attacker.isBot && attacker.id === "madara" && attacker.level >= 70) {
     const hpPct = (attacker.hp / attacker.maxHp) * 100;
     if (hpPct < 30) {
       const missingPct = 100 - hpPct;
@@ -2132,9 +2065,9 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
 
 function applyDamage(target, amount, isCrit = false, attacker = null) {
   // Pain Passive 2: Teleportation (né đòn)
-  if (target.id === "pain" && target.level >= 80) {
+  if (target.id === "pain" && target.level >= 70) {
     let dodgeChance = 0.15;
-    if (target.level >= 150) dodgeChance += 0.10; // Thần 1: +10% mọi tỷ lệ
+    if (target.level >= 130) dodgeChance += 0.10; // Thần 1: +10% mọi tỷ lệ
     if (Math.random() < dodgeChance) {
       addAnimation(target, "TELEPORT! NÉ ĐÒN", "#bc8cff");
       logCombat(`🌀 [Teleportation] Pain Thiên Đạo né sạch toàn bộ đòn tấn công!`);
@@ -2165,10 +2098,10 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   const text = isCrit ? `CRIT! -${finalDmg}` : `-${finalDmg}`;
   addAnimation(target, text, color);
 
-  if (target.id === "momoshiki" && target.level >= 80 && target.hp > 0) {
+  if (target.id === "momoshiki" && target.level >= 70 && target.hp > 0) {
     target.en = Math.min(target.enMax, +(target.en + 1.0).toFixed(1));
   }
-  if (target.id === "kaioshin" && target.level >= 80 && target.hp > 0) {
+  if (target.id === "kaioshin" && target.level >= 70 && target.hp > 0) {
     target.en = Math.min(target.enMax, +(target.en + 1.0).toFixed(1));
   }
   checkDefenderTriggers(target, finalDmg);
@@ -2189,7 +2122,7 @@ function checkDefenderTriggers(target, dmgTaken) {
 }
 
 function healFighter(fighter, amount) {
-  const whisFighter = battle.playerTeam.find(p => p && p.id === "whis" && p.level >= 220);
+  const whisFighter = battle.playerTeam.find(p => p && p.id === "whis" && p.level >= 150);
   let finalHeal = amount;
   if (whisFighter) finalHeal = Math.round(finalHeal * 1.20);
 
@@ -2198,7 +2131,7 @@ function healFighter(fighter, amount) {
   const healed = fighter.hp - oldHp;
   if (healed > 0) {
     addAnimation(fighter, `+${healed} HP`, "#3fb950");
-    if (!fighter.isBot && fighter.id === "madara" && fighter.level >= 40) {
+    if (!fighter.isBot && fighter.id === "madara" && fighter.level >= 30) {
       const shieldGain = Math.round(fighter.maxHp * 0.08);
       fighter.shield += shieldGain;
       addAnimation(fighter, `+${shieldGain} "Khiên"`, "#bc8cff");
@@ -2228,7 +2161,7 @@ function executePlayerAction(type) {
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       applyDamage(target, damage, isCrit, actor);
       logCombat(`[Trảm Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 80) target.buffs.burn = Math.min(5, (target.buffs.burn || 0) + 2);
+      if (actor.level >= 70) target.buffs.burn = Math.min(5, (target.buffs.burn || 0) + 2);
     } else if (actor.id === "madara") {
       const raw = actor.atk * 0.98 + (target.maxHp * 0.02);
       const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -2245,13 +2178,13 @@ function executePlayerAction(type) {
       const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
       applyDamage(target, damage, isCrit, actor);
       logCombat(`[Bá Vương Kích] Vegito gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 40) applyBleeding2(actor, target);
+      if (actor.level >= 30) applyBleeding2(actor, target);
     } else if (actor.id === "whis") {
       const raw = actor.atk * 0.88;
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       applyDamage(target, damage, isCrit, actor);
       logCombat(`[Trượng Khí] Whis gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 80 && Math.random() < 0.24) {
+      if (actor.level >= 70 && Math.random() < 0.24) {
         target.buffs.suyGiam = 3;
         logCombat(`🌀 ["Suy giảm"] ${target.name} bị giảm 20% ATK trong 3 hiệp!`);
       }
@@ -2262,11 +2195,11 @@ function executePlayerAction(type) {
           const raw = actor.atk * 0.77;
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
           totalDmg += applyDamage(bot, damage, isCrit, actor);
-          if (actor.level >= 40) addLuanHoiStack(actor, bot, 1);
+          if (actor.level >= 30) addLuanHoiStack(actor, bot, 1);
         }
       });
       logCombat(`🌀 [Lục Đạo Trảm] Luân Hồi Tiên Nhân chém quét toàn bộ quân địch gây ${totalDmg} tổng ST!`);
-      if (actor.level >= 80) grantTeamShield(totalDmg * 0.20);
+      if (actor.level >= 70) grantTeamShield(totalDmg * 0.20);
     } else if (actor.id === "pain") {
       // 45% ATK lên TOÀN BỘ mục tiêu
       let totalDmg = 0;
@@ -2292,7 +2225,7 @@ function executePlayerAction(type) {
         }
       });
       logCombat(`🌀 [Xích Trảm Không Gian] Isshiki càn quét toàn bộ kẻ địch gây ${totalDmg} ST!`);
-      if (actor.level >= 40) {
+      if (actor.level >= 30) {
         const extraHits = Math.floor((actor.atkSpd || 0.30) / 0.25);
         for (let h = 0; h < extraHits; h++) {
           let extraDmg = 0;
@@ -2306,7 +2239,7 @@ function executePlayerAction(type) {
           logCombat(`⚡ [Chen Ngang #${h+1}] Isshiki tốc đánh cao đánh thêm 1 lần càn quét gây ${extraDmg} ST!`);
         }
       }
-      if (actor.level >= 80 && (actor.atkSpd || 0.30) >= 1.0) {
+      if (actor.level >= 70 && (actor.atkSpd || 0.30) >= 1.0) {
         let ultExtraDmg = 0;
         battle.botTeam.forEach(bot => {
           if (bot.hp > 0) {
@@ -2346,8 +2279,8 @@ function executePlayerAction(type) {
         logCombat(`🟣 [Thuật Tím] ${t.name} nhận 1 tầng Thuật Tím (${t.buffs.thuatTim}/3)!`);
         if (t.buffs.thuatTim >= 3) {
           t.buffs.thuatTim = 0;
-          let drainPct = (actor.level >= 80) ? 0.16 : 0.08;
-          let drainHp = (actor.level >= 80) ? Math.round(t.maxHp * drainPct) : Math.round(t.hp * drainPct);
+          let drainPct = (actor.level >= 70) ? 0.16 : 0.08;
+          let drainHp = (actor.level >= 70) ? Math.round(t.maxHp * drainPct) : Math.round(t.hp * drainPct);
           drainHp = Math.max(1, drainHp);
           applyDamage(t, drainHp, false, actor);
           healFighter(actor, drainHp);
@@ -2410,7 +2343,7 @@ function executePlayerAction(type) {
         healFighter(targetAlly, healAmt);
         logCombat(`✨ [Thiên Sứ Thời Gian] Whis hồi ${healAmt} HP cho ${targetAlly.name}!`);
       }
-      if (actor.level >= 40) {
+      if (actor.level >= 30) {
         battle.playerTeam.forEach(p => { if (p && p.hp > 0) p.buffs.whisProtect = 2; });
         logCombat(`🛡️ [Thần Hộ] Whis kích hoạt "Bảo vệ" cho toàn đội trong 2 hiệp!`);
       }
@@ -2425,12 +2358,12 @@ function executePlayerAction(type) {
         }
       });
       logCombat(`💥 [Địa Bộc Thiên Tinh Vực] Luân Hồi Tiên Nhân phong ấn toàn thể, khắc +7 tầng "Lục đạo"!`);
-      if (actor.level >= 80) grantTeamShield(totalDmg * 0.20);
+      if (actor.level >= 70) grantTeamShield(totalDmg * 0.20);
     } else if (actor.id === "pain") {
       // Gây 110% ATK lên toàn bộ mục tiêu, 30% gây [Terror] 2 lượt
       let terrorRate = 0.30;
       let thienDaoRate = 0.30;
-      if (actor.level >= 150) { terrorRate += 0.10; thienDaoRate += 0.10; } // Thần 1 (+10% tỷ lệ)
+      if (actor.level >= 130) { terrorRate += 0.10; thienDaoRate += 0.10; } // Thần 1 (+10% tỷ lệ)
 
       let totalDmg = 0;
       battle.botTeam.forEach(bot => {
@@ -2450,7 +2383,7 @@ function executePlayerAction(type) {
             }
           }
           // Bị động 2: 30% gây Thiên Đạo (-30% ST trong 3 lượt)
-          if (actor.level >= 80 && Math.random() < thienDaoRate) {
+          if (actor.level >= 70 && Math.random() < thienDaoRate) {
             bot.buffs.thienDaoDebuff = 3;
             logCombat(`👁️ ["Thiên đạo"] ${bot.name} bị uy áp Thiên Đạo giảm 30% ST trong 3 lượt!`);
           }
@@ -2474,7 +2407,7 @@ function executePlayerAction(type) {
       const dealt = applyDamage(target, damage, isCrit, actor);
       applyBocHoa(target, 5);
       logCombat(`🖤🔥 [Amaterasu Bất Diệt] Itachi giáng hắc hỏa gây ${damage} ST và khắc +5 tầng Bốc Hoả lên ${target.name}!`);
-      if (actor.level >= 80 && (battle.roundCount % 2 === 0)) {
+      if (actor.level >= 70 && (battle.roundCount % 2 === 0)) {
         const healAmt = Math.round(dealt * 0.40);
         healFighter(actor, healAmt);
         logCombat(`✨ [Tái Sinh Uế Thổ] Lượt chẵn, Itachi hồi phục ${healAmt} HP (40% ST gây ra)!`);
@@ -2486,7 +2419,7 @@ function executePlayerAction(type) {
       logCombat(`💥 [Vô Hạn Hắc Cầu] Momoshiki giáng đòn hủy diệt gây ${damage} ST lên ${target.name}!`);
     } else if (actor.id === "kaioshin") {
       let shieldPct = 0.30;
-      if (actor.level >= 220) shieldPct *= 1.30;
+      if (actor.level >= 150) shieldPct *= 1.30;
       const shieldAmt = Math.round(actor.hp * shieldPct);
       const healAmt = Math.round(actor.atk * 1.50);
       battle.playerTeam.forEach(p => {
@@ -2522,7 +2455,7 @@ function executePlayerAction(type) {
 }
 
 function applyBocHoa(target, stacks) {
-  if (target.id === "kaioshin" && target.shield > 0 && target.level >= 40) {
+  if (target.id === "kaioshin" && target.shield > 0 && target.level >= 30) {
     logCombat();
     return;
   }
@@ -2546,7 +2479,7 @@ function applyBleeding(target, addStacks) {
 
 function applyBleeding2(attacker, target) {
   let dmgPerTurn = Math.round(attacker.atk * 0.40);
-  if (attacker.level >= 150) dmgPerTurn = Math.round(dmgPerTurn * 1.10);
+  if (attacker.level >= 130) dmgPerTurn = Math.round(dmgPerTurn * 1.10);
   target.buffs.bleeding2 = { damage: dmgPerTurn, duration: 3 };
 }
 
@@ -2573,7 +2506,7 @@ function grantTeamShield(shieldAmount, isBot = false) {
 }
 
 function applyOmegaPassive2(omega, target) {
-  if (omega.level >= 80 && target.hp > 0) {
+  if (omega.level >= 70 && target.hp > 0) {
     target.buffs.destiny = (target.buffs.destiny || 0) + 1;
     if (target.buffs.destiny >= 3) {
       target.buffs.destiny = 0;
@@ -2614,7 +2547,7 @@ function executeBotAction(bot) {
     logCombat(`[Địch Tấn Công] ${bot.name} gây ${damage} ST lên ${target.name}.`);
   }
 
-  if (target.id === "luanhoi" && target.level >= 150 && Math.random() < 0.32) {
+  if (target.id === "luanhoi" && target.level >= 130 && Math.random() < 0.32) {
     addLuanHoiStack(target, bot, 1);
   }
 
@@ -2675,7 +2608,7 @@ function executeHeroBotAction(actor, alivePlayers) {
         healFighter(targetAlly, healAmt);
         logCombat(`✨ [Địch: Thiên Sứ Thời Gian] ${actor.name} hồi ${healAmt} HP cho ${targetAlly.name}!`);
       }
-      if (actor.level >= 40) {
+      if (actor.level >= 30) {
         battle.botTeam.forEach(b => { if (b && b.hp > 0) b.buffs.whisProtect = 2; });
         logCombat(`🛡️ [Địch: Thần Hộ] ${actor.name} kích hoạt "Bảo vệ" cho toàn đội địch!`);
       }
@@ -2688,7 +2621,7 @@ function executeHeroBotAction(actor, alivePlayers) {
         addLuanHoiStack(actor, p, 7);
       });
       logCombat(`💥 [Địch: Địa Bộc Thiên Tinh] ${actor.name} phong ấn toàn thể, khắc +7 tầng Lục đạo!`);
-      if (actor.level >= 80) grantTeamShield(totalDmg * 0.20, true);
+      if (actor.level >= 70) grantTeamShield(totalDmg * 0.20, true);
     } else if (actor.heroId === "pain") {
       let totalDmg = 0;
       alivePlayers.forEach(p => {
@@ -2699,7 +2632,7 @@ function executeHeroBotAction(actor, alivePlayers) {
           p.buffs.terror = 2;
           if (Math.random() < 0.30) p.buffs.choang = 2;
         }
-        if (actor.level >= 80 && Math.random() < 0.40) {
+        if (actor.level >= 70 && Math.random() < 0.40) {
           p.buffs.thienDaoDebuff = 3;
         }
       });
@@ -2719,7 +2652,7 @@ function executeHeroBotAction(actor, alivePlayers) {
       const dealt = applyDamage(target, damage, isCrit, actor);
       applyBocHoa(target, 5);
       logCombat(`🖤🔥 [Địch: Amaterasu] ${actor.name} giáng hắc hỏa gây ${damage} ST & +5 tầng Bốc Hoả!`);
-      if (actor.level >= 80 && (battle.roundCount % 2 === 0)) {
+      if (actor.level >= 70 && (battle.roundCount % 2 === 0)) {
         healFighter(actor, Math.round(dealt * 0.40));
       }
     } else if (actor.heroId === "momoshiki") {
@@ -2729,7 +2662,7 @@ function executeHeroBotAction(actor, alivePlayers) {
       logCombat(`💥 [Địch: Vô Hạn Hắc Cầu] ${actor.name} giáng đòn hủy diệt gây ${damage} ST!`);
     } else if (actor.heroId === "kaioshin") {
       let shieldPct = 0.30;
-      if (actor.level >= 220) shieldPct *= 1.30;
+      if (actor.level >= 150) shieldPct *= 1.30;
       const shieldAmt = Math.round(actor.hp * shieldPct);
       const healAmt = Math.round(actor.atk * 1.50);
       battle.botTeam.forEach(b => {
@@ -2765,7 +2698,7 @@ function executeHeroBotAction(actor, alivePlayers) {
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       applyDamage(target, damage, isCrit, actor);
       logCombat(`[Địch: Trảm Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 80) target.buffs.burn = Math.min(5, (target.buffs.burn || 0) + 2);
+      if (actor.level >= 70) target.buffs.burn = Math.min(5, (target.buffs.burn || 0) + 2);
     } else if (actor.heroId === "madara") {
       const raw = actor.atk * 0.98 + (target.maxHp * 0.02);
       const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -2782,23 +2715,23 @@ function executeHeroBotAction(actor, alivePlayers) {
       const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
       applyDamage(target, damage, isCrit, actor);
       logCombat(`[Địch: Bá Vương Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 40) applyBleeding2(actor, target);
+      if (actor.level >= 30) applyBleeding2(actor, target);
     } else if (actor.heroId === "whis") {
       const raw = actor.atk * 0.88;
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       applyDamage(target, damage, isCrit, actor);
       logCombat(`[Địch: Trượng Khí] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 80 && Math.random() < 0.24) target.buffs.suyGiam = 3;
+      if (actor.level >= 70 && Math.random() < 0.24) target.buffs.suyGiam = 3;
     } else if (actor.heroId === "luanhoi") {
       let totalDmg = 0;
       alivePlayers.forEach(p => {
         const raw = actor.atk * 0.77;
         const { damage, isCrit } = calculateDamage(actor, p, raw);
         totalDmg += applyDamage(p, damage, isCrit, actor);
-        if (actor.level >= 40) addLuanHoiStack(actor, p, 1);
+        if (actor.level >= 30) addLuanHoiStack(actor, p, 1);
       });
       logCombat(`🌀 [Địch: Lục Đạo Trảm] ${actor.name} chém quét toàn đội gây ${totalDmg} ST!`);
-      if (actor.level >= 80) grantTeamShield(totalDmg * 0.20, true);
+      if (actor.level >= 70) grantTeamShield(totalDmg * 0.20, true);
     } else if (actor.heroId === "pain") {
       let totalDmg = 0;
       alivePlayers.forEach(p => {
@@ -2816,7 +2749,7 @@ function executeHeroBotAction(actor, alivePlayers) {
         totalDmg += applyDamage(p, damage, isCrit, actor);
       });
       logCombat(`🌀 [Địch: Xích Trảm] ${actor.name} càn quét toàn đội gây ${totalDmg} ST!`);
-      if (actor.level >= 40) {
+      if (actor.level >= 30) {
         const extraHits = Math.floor((actor.atkSpd || 0.30) / 0.25);
         for (let h = 0; h < extraHits; h++) {
           let extraDmg = 0;
@@ -2854,8 +2787,8 @@ function executeHeroBotAction(actor, alivePlayers) {
         t.buffs.thuatTim = (t.buffs.thuatTim || 0) + 1;
         if (t.buffs.thuatTim >= 3) {
           t.buffs.thuatTim = 0;
-          let drainPct = (actor.level >= 80) ? 0.16 : 0.08;
-          let drainHp = (actor.level >= 80) ? Math.round(t.maxHp * drainPct) : Math.round(t.hp * drainPct);
+          let drainPct = (actor.level >= 70) ? 0.16 : 0.08;
+          let drainHp = (actor.level >= 70) ? Math.round(t.maxHp * drainPct) : Math.round(t.hp * drainPct);
           drainHp = Math.max(1, drainHp);
           applyDamage(t, drainHp, false, actor);
           healFighter(actor, drainHp);
@@ -3501,7 +3434,7 @@ function buyItemShop(type) {
 /* ==========================================================================
    SỰ KIỆN MÙA THU & KHỞI ĐẦU
    ========================================================================== */
-function openEventsModal() { updateEventUI(); openModal("modalEvents"); }
+function openEventsModal() { updateEventUI(); switchEventTab("midAutumn"); openModal("modalEvents"); }
 
 function switchEventTab(tab) {
   document.getElementById("tabBtnEvent1").classList.toggle("active", tab === "starter");
@@ -3690,6 +3623,8 @@ function submitGiftcode() {
         gameState.heroes[hId] = { level: 1 };
       }
     });
+    gameState.progress.maxChapter = 4;
+    gameState.progress.maxStage = 10;
 
     saveGame();
     input.value = "";
@@ -3805,9 +3740,12 @@ function renderChapterTabs() {
   for (let c = 1; c <= 4; c++) {
     const btn = document.createElement("button");
     btn.className = `btn ${c === selectedChapter ? "btn-accent" : ""}`;
-    btn.textContent = `Chương ${c}`;
-    if (c > gameState.progress.maxChapter) { btn.disabled = true; btn.style.opacity = "0.4"; }
-    btn.onclick = () => { selectedChapter = c; renderChapterTabs(); renderStageGrid(); };
+    btn.textContent = `Chương ${c}${c > gameState.progress.maxChapter ? " 🔒" : ""}`;
+    btn.onclick = () => {
+      selectedChapter = c;
+      renderChapterTabs();
+      renderStageGrid();
+    };
     container.appendChild(btn);
   }
 }
@@ -3956,7 +3894,7 @@ function renderHeroDetails(heroId) {
         <h3 style="font-size:15px; font-weight:700;">${stats.name}</h3>
         <span style="font-size:10px; color:var(--text-secondary);">${db.roleDesc}</span>
       </div>
-      <span class="level-badge">Lv. ${currentLv}/220</span>
+      <span class="level-badge">Lv. ${currentLv}/240</span>
     </div>
 
     <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; background:#161b22; padding:8px; border-radius:8px;">
@@ -3984,16 +3922,21 @@ function renderHeroDetails(heroId) {
       <div style="font-size:11px;">
         Chi phí: <b style="color:var(--accent-green)">${vpncCost} VPNC</b>, <b style="color:var(--accent-gold)">${goldCost} Vàng</b>
       </div>
-      <button class="btn btn-primary" onclick="upgradeHero('${heroId}')" ${currentLv >= 220 ? "disabled" : ""}>
-        ${currentLv >= 220 ? "Đạt Max Cấp" : "Nâng Cấp (+1 Lv)"}
-      </button>
+      <div style="display:flex; gap:6px;">
+        <button class="btn btn-primary" style="padding:5px 10px;" onclick="upgradeHero('${heroId}')" ${currentLv >= 240 ? "disabled" : ""}>
+          ${currentLv >= 240 ? "Đạt Max Cấp" : "Nâng (+1 Lv)"}
+        </button>
+        <button class="btn btn-accent" style="padding:5px 10px;" onclick="upgradeHero10('${heroId}')" ${currentLv >= 240 ? "disabled" : ""}>
+          +10 Lv
+        </button>
+      </div>
     </div>
   `;
 }
 
 function upgradeHero(heroId) {
   const currentLv = gameState.heroes[heroId].level;
-  if (currentLv >= 220) return;
+  if (currentLv >= 240) return;
   const { vpncCost, goldCost } = getHeroUpgradeCost(currentLv);
 
   if (gameState.resources.vpnc < vpncCost) { toast("Không đủ VPNC!", true); return; }
@@ -4008,6 +3951,39 @@ function upgradeHero(heroId) {
   saveGame();
 
   toast(`Nâng cấp ${HERO_DB[heroId].name} lên Lv. ${gameState.heroes[heroId].level}!`);
+  renderHeroesList();
+  renderHeroDetails(heroId);
+}
+
+function upgradeHero10(heroId) {
+  const currentLv = gameState.heroes[heroId].level;
+  if (currentLv >= 240) return;
+  const targetLv = Math.min(240, currentLv + 10);
+  let totalVpnc = 0;
+  let totalGold = 0;
+  for (let lv = currentLv; lv < targetLv; lv++) {
+    const { vpncCost, goldCost } = getHeroUpgradeCost(lv);
+    totalVpnc += vpncCost;
+    totalGold += goldCost;
+  }
+
+  if (gameState.resources.vpnc < totalVpnc) {
+    toast(`Cần ${totalVpnc.toLocaleString()} VPNC (Thiếu ${(totalVpnc - gameState.resources.vpnc).toLocaleString()})!`, true);
+    return;
+  }
+  if (gameState.resources.gold < totalGold) {
+    toast(`Cần ${totalGold.toLocaleString()} Vàng (Thiếu ${(totalGold - gameState.resources.gold).toLocaleString()})!`, true);
+    return;
+  }
+
+  gameState.resources.vpnc -= totalVpnc;
+  gameState.resources.gold -= totalGold;
+  const levelsGained = targetLv - currentLv;
+  gameState.heroes[heroId].level = targetLv;
+  gameState.dailyQuests.progress.levelsUpgraded += levelsGained;
+  saveGame();
+
+  toast(`Nâng cấp ${HERO_DB[heroId].name} thêm +${levelsGained} Lv (Hiện đạt Lv. ${targetLv})!`);
   renderHeroesList();
   renderHeroDetails(heroId);
 }
