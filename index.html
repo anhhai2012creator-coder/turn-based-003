@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Khắc Phục v3.3.1 (Khôi Phục Dữ Liệu & Chống Treo Nút Bấm Toàn Diện)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Full v4.0.0 (Gaara, Hashirama, Kaguya & Tái Cân Bằng Toàn Diện)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -497,7 +496,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v3.3.1 Hotfix: Khắc Phục Toàn Diện Sự Cố Tải Game & Chống Treo Nút Bấm | Khôi Phục Dữ Liệu An Toàn</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v4.0.0 Full: Đại Cập Nhật 3 Tướng Mới (Gaara, Hashirama, Kaguya) | Tái Cân Bằng Sức Mạnh Toàn Diện</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -1084,18 +1083,7 @@
         <button class="modal-close" onclick="closeModal('modalGiftcode')">&times;</button>
       </div>
       <div class="modal-body">
-        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:6px;">Nhập mã Giftcode quà tặng hoặc sử dụng nút khôi phục bên dưới:</div>
-        <input type="text" id="giftcodeInput" placeholder="VD: TANTHU001, COLLAB, TEST002..." style="width:100%; padding:10px; background:#0d1117; border:1px solid var(--border-color); border-radius:8px; color:#fff; font-size:13px; text-transform:uppercase;">
-        
-        <div style="margin-top:12px; padding:10px; background:#161b22; border:1px dashed #3fb950; border-radius:8px;">
-          <div style="font-size:12px; font-weight:700; color:var(--accent-green); margin-bottom:4px;">🔄 Khôi Phục Nhanh Tiến Độ Thử Nghiệm:</div>
-          <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">
-            Nếu game bị reset hoặc đổi trình duyệt: Nhấn nút bên dưới để nhận ngay <b>10 TỶ Tài Nguyên</b>, mở khóa toàn bộ <b>14 Tướng Max Cấp 300</b>, mở trọn bộ <b>9 Linh Thú (kể cả Thiên Thần Thú SS)</b> và mở Max Chương 4!
-          </div>
-          <button class="btn btn-primary" style="width:100%; padding:8px; font-weight:700;" onclick="submitGiftcodeQuick('TEST002')">
-            ⚡ Khôi Phục Toàn Diện (Tương Đương Mã TEST002)
-          </button>
-        </div>
+        <input type="text" id="giftcodeInput" placeholder="VD: TANTHU001, TRUNGTHU2026..." style="width:100%; padding:10px; background:#0d1117; border:1px solid var(--border-color); border-radius:8px; color:#fff; font-size:13px; text-transform:uppercase;">
       </div>
       <div class="modal-footer">
         <button class="btn" onclick="closeModal('modalGiftcode')">Hủy</button>
@@ -1248,7 +1236,7 @@ const HERO_DB = {
     baseSpd: 139,
     enMax: 5,
     hasSpells: false,
-    normalAttack: { name: "Trảm Kích", enGain: 1, desc: "Gây 94% ATK lên 1 mục tiêu, hồi 1 EN." },
+    normalAttack: { name: "Trảm Kích", enGain: 1.7, desc: "Gây 94% ATK lên 1 mục tiêu, hồi 1.7 EN (+0.7 EN v3.3.2)." },
     activeSkill: { name: "Phong Lôi Trảm", desc: "Gây 220% ATK kèm 3% HP tối đa mục tiêu lên 1 mục tiêu. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Điều Tức", desc: "Mỗi 2 hiệp, Nhà lữ hành nhận 2 EN." },
@@ -1269,7 +1257,7 @@ const HERO_DB = {
     baseSpd: 150,
     enMax: 5,
     hasSpells: true,
-    normalAttack: { name: "Cầu Đạo Ngọc", enGain: 1.3, desc: "Hồi 1.3 EN. Gây 98% ATK lên 1 mục tiêu kèm 2% HP tối đa mục tiêu." },
+    normalAttack: { name: "Cầu Đạo Ngọc", enGain: 2.0, desc: "Hồi 2.0 EN (+0.7 EN v3.3.2). Gây 98% ATK lên 1 mục tiêu kèm 2% HP tối đa mục tiêu." },
     activeSkill: { name: "Thiên Ngại Ma Tinh", desc: "Gây ST lên toàn bộ mục tiêu bằng 200% ATK kèm 5% HP tối đa mục tiêu. Hồi máu 20% ST gây ra. Tăng 5% ST trong 3 hiệp. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Chân Thể Lục Đạo", desc: "Khi nhận được 'hồi phục' từ bất cứ đâu, nhận khiên bằng 8% HP tối đa bản thân." },
@@ -1293,17 +1281,17 @@ const HERO_DB = {
     baseSpd: 152,
     enMax: 4,
     hasSpells: true,
-    normalAttack: { name: "Long Cốt Kích", enGain: 0.9, desc: "Gây 78% ATK lên 1 mục tiêu, hồi 0.9 EN." },
+    normalAttack: { name: "Long Cốt Kích", enGain: 1.6, desc: "Gây 78% ATK lên 1 mục tiêu, hồi 1.6 EN (+0.7 EN v3.3.2)." },
     activeSkill: { name: "Tiêu Diệt Cầu", desc: "Gây 300% ATK lên mục tiêu có HP thấp nhất. Nhận khiên bằng 20% ST gây ra. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Tà Long Hộ Thể", desc: "Ngay hiệp đầu tiên của trận, bản thân nhận lớp khiên bằng 110% HP bản thân." },
-      { lv: 70, name: "Thiên Mệnh", desc: "Mỗi lần gây ST, đánh dấu 1 tầng 'Thiên mệnh'. Đủ 3 tầng reset và cướp 3% HP hiện tại mục tiêu hồi cho bản thân." },
-      { lv: 80, name: "Nghịch Cương Giáp", desc: "Khi HP dưới 40%, mỗi 5% HP mất đi, tăng 20% DEF gốc bản thân." },
+      { lv: 70, name: "Thiên Mệnh", desc: "Mỗi lần gây ST, đánh dấu 1 tầng 'Thiên mệnh'. Đủ 3 tầng reset và cướp 9.5% HP hiện tại mục tiêu hồi cho bản thân." },
+      { lv: 80, name: "Nghịch Cương Giáp", desc: "Khi HP dưới 40%, mỗi 4% HP mất đi, tăng 20% DEF bản thân." },
       { lv: 100, name: "Bất Diệt Long Hồn", desc: "Khi tử vong, chưa chết hẳn, lượt sau hồi sinh với 40% HP tối đa (1 lần/trận)." }
     ],
     spells: [
       { lv: 130, name: "Thần Chú 1", desc: "+20% DEF; +5% HP tối đa." },
-      { lv: 150, name: "Thần Chú 2", desc: "Xuyên giáp +10% (bỏ qua 10% DEF mục tiêu)." }
+      { lv: 150, name: "Thần Chú 2", desc: "Giảm 30% ST nhận vào do ST bạo kích." }
     ]
   },
   vegito: {
@@ -1317,8 +1305,8 @@ const HERO_DB = {
     baseSpd: 170,
     enMax: 3,
     hasSpells: true,
-    normalAttack: { name: "Bá Vương Kích", enGain: 0.9, desc: "Gây 98% ATK lên 1 mục tiêu, hồi 0.9 EN." },
-    activeSkill: { name: "Kiếm Khí Linh Hồn", desc: "Gây 75% ATK lên tất cả mục tiêu, kích hoạt 3 tầng 'Bleeding' và 1 tầng 'Bleeding 2' (40% ATK/hiệp, kéo dài 3 hiệp). Tiêu tốn toàn bộ EN." },
+    normalAttack: { name: "Bá Vương Kích", enGain: 1.6, desc: "Gây 98% ATK lên 1 mục tiêu, hồi 1.6 EN (+0.7 EN v3.3.2)." },
+    activeSkill: { name: "Kiếm Khí Linh Hồn", desc: "Gây 110% ATK lên tất cả mục tiêu, kích hoạt 3 tầng 'Bleeding' và 1 tầng 'Bleeding 2' (40% ATK/hiệp, kéo dài 3 hiệp). Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Huyết Kích & Xuyên Giáp", desc: "Đòn đánh thường áp dụng thêm 1 tầng 'Bleeding 2'. Xuyên giáp +45% (bỏ qua 45% DEF mục tiêu)." },
       { lv: 70, name: "Cường Lực & Kiên Cố", desc: "Khi HP dưới 50%, nhận 'Khiên' bằng 275% ATK, đồng thời đòn đánh thường hồi thêm +0.5 EN, tăng 30% ST (chỉ kích hoạt 1 lần/trận)." },
@@ -1341,8 +1329,8 @@ const HERO_DB = {
     baseSpd: 173,
     enMax: 4,
     hasSpells: true,
-    normalAttack: { name: "Trượng Khí", enGain: 1.1, desc: "Gây 88% ATK lên 1 mục tiêu, hồi 1.1 EN." },
-    activeSkill: { name: "Thiên Sứ Thời Gian", desc: "Hồi HP bằng 150% ATK bản thân cho đồng minh có HP thấp nhất. Tiêu tốn toàn bộ EN." },
+    normalAttack: { name: "Trượng Khí", enGain: 1.8, desc: "Gây 88% ATK lên 1 mục tiêu, hồi 1.8 EN (+0.7 EN v3.3.2)." },
+    activeSkill: { name: "Thiên Sứ Phán Quyết & Thời Gian", desc: "Gây 200% ATK lên toàn bộ mục tiêu, giảm 30% ST mục tiêu trúng đòn trong 3 hiệp. Đồng thời hồi HP toàn team bằng 40% ST gây ra. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Thần Hộ", desc: "Khi dùng kỹ năng chủ động, cung cấp cho toàn đội 'Bảo vệ' trong 2 lượt. Khi nhận ST, hồi phục bằng 45% ATK của Whis." },
       { lv: 70, name: "Suy Giảm", desc: "Đánh thường có 24% cơ hội gây 'Suy giảm' (giảm 20% ATK của mục tiêu trong 3 hiệp)." },
@@ -1365,7 +1353,7 @@ const HERO_DB = {
     baseSpd: 166,
     enMax: 3,
     hasSpells: true,
-    normalAttack: { name: "Lục Đạo Trảm", enGain: 0.9, desc: "Gây 77% ATK lên TOÀN BỘ mục tiêu, hồi 0.9 EN." },
+    normalAttack: { name: "Lục Đạo Trảm", enGain: 1.6, desc: "Gây 77% ATK lên TOÀN BỘ mục tiêu, hồi 1.6 EN (+0.7 EN v3.3.2)." },
     activeSkill: { name: "Địa Bộc Thiên Tinh Vực", desc: "Gây 50% ATK lên toàn bộ mục tiêu, đồng thời khắc +7 tầng 'Lục đạo' lên kẻ trúng đòn. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Ấn Ký Lục Đạo", desc: "Đánh thường có 60% cơ hội khắc +1 tầng 'Lục đạo'. Đủ 10 tầng 'Lục đạo', nổ 1000% ATK lên mục tiêu đó rồi reset tầng." },
@@ -1389,7 +1377,7 @@ const HERO_DB = {
     baseSpd: 165,
     enMax: 4,
     hasSpells: true,
-    normalAttack: { name: "Hắc Bổng Kích", enGain: 1.2, desc: "Gây 45% ATK lên TOÀN BỘ mục tiêu, hồi 1.2 EN." },
+    normalAttack: { name: "Hắc Bổng Kích", enGain: 1.9, desc: "Gây 45% ATK lên TOÀN BỘ mục tiêu, hồi 1.9 EN (+0.7 EN v3.3.2)." },
     activeSkill: { name: "Thần La Thiên Chinh", desc: "Gây 110% ATK lên toàn bộ mục tiêu, có 30% cơ hội gây 'Terror' trong 2 lượt (khiến địch có 30% tỷ lệ bị Choáng). Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Khống Chế Áp Chế", desc: "Khi gây ST lên mục tiêu có 'Kiểm soát' hoặc gây hiệu ứng 'Kiểm soát', giảm 30% ST của mục tiêu trong 2 lượt." },
@@ -1414,7 +1402,7 @@ const HERO_DB = {
     enMax: 6.5,
     atkSpd: 0.30,
     hasSpells: true,
-    normalAttack: { name: "Xích Trảm", enGain: 0.75, desc: "Gây 88% ATK lên toàn bộ mục tiêu. Hồi 0.75 EN." },
+    normalAttack: { name: "Xích Trảm", enGain: 1.45, desc: "Gây 88% ATK lên toàn bộ mục tiêu. Hồi 1.45 EN (+0.7 EN v3.3.2)." },
     activeSkill: { name: "Bạch Kích Hủy Diệt", desc: "Gây 350% ATK lên toàn bộ mục tiêu kèm 'Bốc hoả'. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Gia Tốc Otsutsuki", desc: "Tốc đánh gốc 30%. Mỗi 3 lượt, tốc đánh tăng 5%. Mỗi 25% tốc đánh, bản thân đánh thường thêm 1 lần chen ngang (bị động)." },
@@ -1438,7 +1426,7 @@ const HERO_DB = {
     baseSpd: 156,
     enMax: 8.0,
     hasSpells: true,
-    normalAttack: { name: "Hắc Hỏa Trảm", enGain: 1.0, desc: "Gây 99% ATK lên 1 mục tiêu. Áp dụng 'Bốc hoả' lên bản thân và mục tiêu. Hồi 1 EN." },
+    normalAttack: { name: "Hắc Hỏa Trảm", enGain: 1.7, desc: "Gây 99% ATK lên 1 mục tiêu. Áp dụng 'Bốc hoả' lên bản thân và mục tiêu. Hồi 1.7 EN (+0.7 EN v3.3.2)." },
     activeSkill: { name: "Amaterasu Bất Diệt", desc: "Gây 320% ATK lên 1 mục tiêu. +5 tầng 'Bốc hoả' lên mục tiêu đó. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Hỏa Thần Thiêu Đốt", desc: "Mục tiêu là kẻ địch nhận thêm 130% ST từ 'Bốc hoả' (đốt 3% HP hiện tại mỗi 2 tầng, tối đa 15 tầng)." },
@@ -1456,17 +1444,17 @@ const HERO_DB = {
     name: "Momoshiki Otsutsuki",
     type: "SKL",
     roleDesc: "Tích nộ bùng nổ 80% ST, khiên 30% HP & phóng kích uy áp",
-    baseHp: 576,
+    baseHp: 588,
     baseAtk: 39.0,
     baseDef: 48,
     baseSpd: 175,
     enMax: 6.3,
     rage: 0,
     hasSpells: true,
-    normalAttack: { name: "Thiền Định Tụ Nộ", enGain: 0, desc: "Tự động tích 0.5 Nộ mỗi hiệp (sẵn có). Đánh thường tập trung tích tụ +1.0 Nộ. Đủ 5 Nộ bộc phát tăng 80% ST trong 2 hiệp." },
+    normalAttack: { name: "Thiền Định Tụ Nộ", enGain: 0, desc: "Tự động tích 1 Nộ mỗi lượt. Đánh thường tập trung tích tụ +1.0 Nộ. Đủ 5 Nộ bộc phát tăng 80% ST trong 2 hiệp." },
     activeSkill: { name: "Vô Hạn Hắc Cầu", desc: "Gây 300% ATK + 8% HP tối đa của 1 mục tiêu. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 30, name: "Phóng Kích Nộ Khí", desc: "Khi tích đủ từ 3 Nộ trở lên, tự động gây ST bằng 120% ATK lên 1 mục tiêu." },
+      { lv: 30, name: "Phóng Kích Nộ Khí", desc: "Khi tích đủ từ 3 Nộ trở lên, tự động phóng kích gây 130% ATK kèm 5% HP tối đa lên 1 mục tiêu." },
       { lv: 70, name: "Cổ Thần Hộ Thể", desc: "Khi nhận ST, +1 EN. Mỗi 3 hiệp, nhận 'Khiên' bằng 30% HP còn lại của bản thân vào đầu hiệp (chặn ST, không dính bạo kích)." },
       { lv: 80, name: "Thần Uy Khởi Nguyên", desc: "Ngay đầu trận đấu, Momoshiki cung cấp cho toàn đội +2 EN." },
       { lv: 100, name: "Otsutsuki Uy Áp", desc: "Khi sử dụng Kỹ năng chủ động, Momoshiki tăng 30% sát thương cho toàn đội trong 4 hiệp." }
@@ -1487,7 +1475,7 @@ const HERO_DB = {
     baseSpd: 172,
     enMax: 4.0,
     hasSpells: true,
-    normalAttack: { name: "Thần Kiếm Khí", enGain: 0.7, desc: "Gây 88% ATK lên 1 mục tiêu. Hồi 0.7 EN." },
+    normalAttack: { name: "Thần Kiếm Khí", enGain: 1.4, desc: "Gây 88% ATK lên 1 mục tiêu. Hồi 1.4 EN (+0.7 EN v3.3.2)." },
     activeSkill: { name: "Thần Giới Hộ Thể", desc: "Ban 'Khiên' bằng 30% HP hiện tại của Kaioshin và hồi HP bằng 150% ATK cho toàn đội. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Thánh Thể Miễn Nhiễm", desc: "Bản thân khi có 'Khiên', nhận 'Miễn nhiễm' bất khả xâm phạm trước mọi hiệu ứng debuff." },
@@ -1511,7 +1499,7 @@ const HERO_DB = {
     baseSpd: 166,
     enMax: 2.5,
     hasSpells: true,
-    normalAttack: { name: "Huyền Ma Quyền", enGain: 0.7, desc: "Gây 80% ATK lên 2 mục tiêu, đánh dấu 'Thuật tím' (đủ 3 tầng kích nổ hút HP)." },
+    normalAttack: { name: "Huyền Ma Quyền", enGain: 1.4, desc: "Gây 80% ATK lên 2 mục tiêu, hồi 1.4 EN (+0.7 EN v3.3.2), đánh dấu 'Thuật tím' (đủ 3 tầng kích nổ hút HP)." },
     activeSkill: { name: "Thiên Băng Ma Chấn", desc: "Gây 280% ATK lên 3 mục tiêu. Có cơ hội gây 'Choáng' (Stun) trong 2 lượt. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Thiên Hoàng Giáp", desc: "Khi HP dưới 40%, cứ mỗi 5% HP mất đi, tăng 25% DEF hiện tại." },
@@ -1535,7 +1523,7 @@ const HERO_DB = {
     baseSpd: 162,
     enMax: 4,
     hasSpells: true,
-    normalAttack: { name: "Kim Gây Mê", enGain: 1.2, desc: "Gây 105% ATK lên 1 mục tiêu, hồi 1.2 EN. Có 35% cơ hội gây 'Thuốc ngủ' (Stun 2 lượt, hút 30% ATK mục tiêu trong 3 hiệp)." },
+    normalAttack: { name: "Kim Gây Mê", enGain: 1.9, desc: "Gây 105% ATK lên 1 mục tiêu, hồi 1.9 EN (+0.7 EN v3.3.2). Có 35% cơ hội gây 'Thuốc ngủ' (Stun 2 lượt, hút 30% ATK mục tiêu trong 3 hiệp)." },
     activeSkill: { name: "Cú Sút Siêu Lực", desc: "Gây 350% ATK lên 1 mục tiêu kèm 8% HP tối đa của mục tiêu. Hồi 1.2 EN." },
     passives: [
       { lv: 30, name: "Định Vị Điểm Yếu", desc: "Sau khi tung kỹ năng chủ động, tăng 25% tỉ lệ bạo kích trong 2 lượt tiếp theo." },
@@ -1559,8 +1547,8 @@ const HERO_DB = {
     baseSpd: 168,
     enMax: 4.7,
     hasSpells: true,
-    normalAttack: { name: "Phi Bài Bạc", enGain: 1.2, desc: "Gây 98% ATK lên 3 mục tiêu. Hồi 1.2 EN." },
-    activeSkill: { name: "Ảo Thuật Ánh Trăng", desc: "Gây ST lên 1 mục tiêu 3 lần: Lần 1 (100% ATK + 12% HP max); Lần 2 (100% ATK + 70% Crit cho Lần 3); Lần 3 (65% ATK + 8% HP max + giảm 30% hồi phục 2 hiệp)." },
+    normalAttack: { name: "Phi Bài Bạc", enGain: 1.9, desc: "Gây 98% ATK lên 3 mục tiêu. Hồi 1.9 EN (+0.7 EN v3.3.2)." },
+    activeSkill: { name: "Ảo Thuật Ánh Trăng", desc: "Gây ST lên 1 mục tiêu 3 lần: Lần 1 (100% ATK + 10% HP max); Lần 2 (95% ATK + 60% Crit cho Lần 3); Lần 3 (65% ATK + 8% HP max + giảm 30% hồi phục 2 hiệp)." },
     passives: [
       { lv: 30, name: "Đạo Chích Hồi Năng", desc: "Khi gây ST bạo kích, Kaitou Kid nhận +1.5 EN." },
       { lv: 70, name: "Phục Thù Ảo Ảnh", desc: "Khi mục tiêu gây ST lên bản thân, có 50% cơ hội bản thân phục thù bằng 60% ST mục tiêu vừa gây ra (bị động, có thể bạo kích)." },
@@ -1570,6 +1558,79 @@ const HERO_DB = {
     spells: [
       { lv: 130, name: "Thần Chú 1", desc: "+20% ATK; +18% DEF." },
       { lv: 150, name: "Thần Chú 2", desc: "ST bạo kích +20%." }
+    ]
+  }
+,
+  gaara: {
+    id: "gaara",
+    name: "Gaara Nhất Vĩ",
+    type: "DEF",
+    roleDesc: "Đỡ đòn sa mạc, Khống chế Choáng diện rộng & Điểm Yếu Chí Tử",
+    baseHp: 888,
+    baseAtk: 38.9,
+    baseDef: 52,
+    baseSpd: 177,
+    enMax: 5.5,
+    hasSpells: true,
+    normalAttack: { name: "Sa Đạn", enGain: 2.1, desc: "Gây 77% ATK lên 1 mục tiêu. Hồi 2.1 EN." },
+    activeSkill: { name: "Sa Mạc Đại Táng", desc: "Gây 200% ATK lên toàn bộ mục tiêu. Có 80% cơ hội gây 'Choáng' 3 lượt. Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 30, name: "Sa Bọc Tê Liệt", desc: "Khi đánh thường, có 25% cơ hội 'Choáng' 1 lượt và giảm 100% DEF mục tiêu đó trong 1 lượt." },
+      { lv: 70, name: "Điểm Yếu Chí Tử", desc: "Khi sử dụng kỹ năng chủ động, có 18% cơ hội gây 'Điểm yếu chí tử' (giảm 100% DEF và 80% ATK mục tiêu đó trong 4 lượt)." },
+      { lv: 80, name: "Chân Thể Nhất Vĩ", desc: "Nâng cấp bị động 1: Khi đánh thường, có 35% cơ hội 'Choáng' 1 lượt và giảm 100% DEF mục tiêu đó trong 1 lượt." },
+      { lv: 100, name: "Tuyệt Đối Phòng Ngự", desc: "Khi gây 'Choáng', bản thân cung cấp toàn đội lớp giáp ảo (Khiên) bằng 30% HP tối đa của bản thân (tối đa 1 lần/lượt)." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú 1", desc: "+25% DEF; +20% HP." },
+      { lv: 150, name: "Thần Chú 2", desc: "+5% cơ hội gây ra 'Choáng' của kỹ năng chủ động (đạt 85%)." }
+    ]
+  },
+  hashirama: {
+    id: "hashirama",
+    name: "Senju Hashirama",
+    type: "DEF",
+    roleDesc: "Hokage Đệ Nhất, Mộc Độn áp chế Choáng, Khiên hộ thể & Miễn nhiễm tuyệt đối",
+    baseHp: 680,
+    baseAtk: 43.5,
+    baseDef: 63,
+    baseSpd: 173,
+    enMax: 4.7,
+    hasSpells: true,
+    normalAttack: { name: "Mộc Độn Quyền", enGain: 1.5, desc: "Gây 88% ATK lên 1 mục tiêu. Có 35% cơ hội gây 'Đan Mộc' (Choáng 1 lượt và giảm 50% SPD trong 2 lượt). Hồi 1.5 EN." },
+    activeSkill: { name: "Hoa Thụ Giới Hàng Lâm", desc: "Gây 300% ATK lên 3 mục tiêu đồng thời gây 'Choáng' trong 3 lượt. Cung cấp cho bản thân 'Khiên' bằng 50% tổng ST gây ra. Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 30, name: "Tiên Nhân Thể", desc: "Khi tung chủ động, bản thân hồi 1 EN và nhận Miễn Thương 30% trong 2 lượt." },
+      { lv: 70, name: "Mộc Độn Tái Sinh", desc: "Khi tung đánh thường, có 30% cơ hội hồi phục toàn đội bằng 200% ATK bản thân." },
+      { lv: 80, name: "Chân Thể Tiên Thuật", desc: "Nâng cấp bị động 1: Khi tung chủ động, bản thân hồi 1.4 EN và nhận Miễn Thương 40% trong 2 lượt." },
+      { lv: 100, name: "Sức Sống Vô Hạn", desc: "Bản thân miễn nhiễm mọi hiệu ứng xấu. Giảm 50% ST bạo kích gây lên bản thân." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú 1", desc: "+25% DEF; +18% HP." },
+      { lv: 150, name: "Thần Chú 2", desc: "Khả năng nhận EN từ đánh thường +0.2 EN (đạt 1.7 EN)." }
+    ]
+  },
+  kaguya: {
+    id: "kaguya",
+    name: "Kaguya Otsutsuki",
+    type: "ATK",
+    roleDesc: "Thủy Tổ Chakra, Luân Chuyển Không Gian Băng - Lửa - Sa Mạc & Đòn Đánh Đa Dạng",
+    baseHp: 544,
+    baseAtk: 45.8,
+    baseDef: 41,
+    baseSpd: 166,
+    enMax: 10,
+    hasSpells: true,
+    normalAttack: { name: "Không Gian Công Kích", enGain: 2, desc: "Biến đổi theo Môi Trường (Băng: 140% ST toàn bộ, 25% Đóng Băng Otsu, +2 EN; Lửa: 230% ST toàn bộ, 15 tầng Bốc Hỏa, +3 EN; Sa Mạc: 140% ST 1 mục tiêu, Khát Khô -50% ATK, +1 EN)." },
+    activeSkill: { name: "Thiên Đạo Luân Chuyển", desc: "Thay đổi Môi Trường tuần tự: Băng Tuyết ➔ Núi Lửa ➔ Sa Mạc ➔ Băng Tuyết. Kích hoạt toàn bộ thiên uy của không gian mới! Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 30, name: "Khởi Nguyên Chakra", desc: "Đầu trận đấu, Kaguya nhận sẵn ngay 8 EN." },
+      { lv: 70, name: "Hấp Thu Sinh Lực", desc: "Khi gây ST, hồi phục cho toàn đội bằng 15% ST gây ra." },
+      { lv: 80, name: "Sa Mạc Bất Xâm", desc: "Kaguya miễn nhiễm mọi hiệu ứng bất lợi khi ở môi trường 'Sa Mạc'." },
+      { lv: 100, name: "Thần Mẫu Bất Tử", desc: "Tăng 15% Miễn Thương vĩnh viễn cho Kaguya." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú 1", desc: "+15% DEF; +15% ATK." },
+      { lv: 150, name: "Thần Chú 2", desc: "+20% HP tối đa." }
     ]
   }
 };;
@@ -2061,8 +2122,8 @@ const BEASTS_DB = {
     tier: "S",
     tierColor: "#bc8cff",
     icon: "🦅",
-    desc: "Tăng 1300% HP và ATK theo Level Hiện Tại toàn đội. +30 DEF toàn đội.",
-    stats: { hpPct: 13.0, atkPct: 13.0, defFlat: 30 }
+    desc: "Tăng 1800% HP và ATK theo Level Hiện Tại toàn đội (+500% v3.3.2). +30 DEF toàn đội.",
+    stats: { hpPct: 18.0, atkPct: 18.0, defFlat: 30 }
   },
   thong_linh_thu: {
     id: "thong_linh_thu",
@@ -2070,8 +2131,8 @@ const BEASTS_DB = {
     tier: "S",
     tierColor: "#bc8cff",
     icon: "🐸",
-    desc: "Tăng 1420% HP và ATK theo Level Hiện Tại toàn đội. +15 DEF toàn đội.",
-    stats: { hpPct: 14.2, atkPct: 14.2, defFlat: 15 }
+    desc: "Tăng 1920% HP và ATK theo Level Hiện Tại toàn đội (+500% v3.3.2). +15 DEF toàn đội.",
+    stats: { hpPct: 19.2, atkPct: 19.2, defFlat: 15 }
   },
   bao_ma_thu: {
     id: "bao_ma_thu",
@@ -2079,8 +2140,8 @@ const BEASTS_DB = {
     tier: "S",
     tierColor: "#f85149",
     icon: "🦁",
-    desc: "Tăng 1250% HP và 1500% ATK theo Level Hiện Tại toàn đội. +22 DEF toàn đội.",
-    stats: { hpPct: 12.5, atkPct: 15.0, defFlat: 22 }
+    desc: "Tăng 1750% HP và 2000% ATK theo Level Hiện Tại toàn đội (+500% v3.3.2). +22 DEF toàn đội.",
+    stats: { hpPct: 17.5, atkPct: 20.0, defFlat: 22 }
   },
   tu_phach_thu: {
     id: "tu_phach_thu",
@@ -2088,8 +2149,8 @@ const BEASTS_DB = {
     tier: "S",
     tierColor: "#bc8cff",
     icon: "🦇",
-    desc: "Tăng 1100% HP và ATK theo Level Hiện Tại toàn đội. +25 DEF toàn đội. Đầu trận toàn đội nhận 1 EN.",
-    stats: { hpPct: 11.0, atkPct: 11.0, defFlat: 25, teamStartEn: 1 }
+    desc: "Tăng 1600% HP và ATK theo Level Hiện Tại toàn đội (+500% v3.3.2). +25 DEF toàn đội. Đầu trận toàn đội nhận 1 EN.",
+    stats: { hpPct: 16.0, atkPct: 16.0, defFlat: 25, teamStartEn: 1 }
   },
   susanoo: {
     id: "susanoo",
@@ -2097,11 +2158,11 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#f0883e",
     icon: "⚔️",
-    desc: "Tăng 1650% HP và ATK theo Level Hiện Tại toàn đội. +50 DEF toàn đội.",
+    desc: "Tăng 2150% HP và ATK theo Level Hiện Tại toàn đội (+500% v3.3.2). +50 DEF toàn đội.",
     companion: "madara",
     companionName: "Madara Lục Đạo",
     companionDesc: "Tăng 25% Crit cho Madara. Đầu trận Madara nhận thêm 2 EN.",
-    stats: { hpPct: 16.5, atkPct: 16.5, defFlat: 50 }
+    stats: { hpPct: 21.5, atkPct: 21.5, defFlat: 50 }
   },
   amaterasu: {
     id: "amaterasu",
@@ -2109,11 +2170,11 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#f85149",
     icon: "🔥",
-    desc: "Tăng 1550% HP và ATK theo Level Hiện Tại toàn đội. +45 DEF toàn đội.",
+    desc: "Tăng 2050% HP và ATK theo Level Hiện Tại toàn đội (+500% v3.3.2). +45 DEF toàn đội.",
     companion: "itachi",
     companionName: "Itachi Uế Thổ Chuyển Sinh",
     companionDesc: "Tăng 20% ATK theo Level Hiện Tại cho Itachi. Nâng cấp Tuyệt kỹ: Gây 400% ATK lên 1 mục tiêu, +7 tầng 'Bốc hoả', tiêu tốn toàn bộ EN, sau khi dùng hồi 1.5 EN.",
-    stats: { hpPct: 15.5, atkPct: 15.5, defFlat: 45 }
+    stats: { hpPct: 20.5, atkPct: 20.5, defFlat: 45 }
   },
   rinnegan: {
     id: "rinnegan",
@@ -2121,11 +2182,11 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#d29922",
     icon: "👁️",
-    desc: "Tăng 1800% HP và 1300% ATK theo Level Hiện Tại toàn đội. +60 DEF toàn đội.",
+    desc: "Tăng 2300% HP và 1800% ATK theo Level Hiện Tại toàn đội (+500% v3.3.2). +60 DEF toàn đội.",
     companion: "pain",
     companionName: "Pain (Thiên Đạo)",
     companionDesc: "Tăng thêm 5% tỉ lệ Teleportation của Pain. Mỗi lần Pain sử dụng Teleportation hồi phục toàn đội bằng 10% HP tối đa và tăng 30% ST trong 2 lượt.",
-    stats: { hpPct: 18.0, atkPct: 13.0, defFlat: 60 }
+    stats: { hpPct: 23.0, atkPct: 18.0, defFlat: 60 }
   },
   otsutsuki_blood: {
     id: "otsutsuki_blood",
@@ -2133,11 +2194,11 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#58a6ff",
     icon: "👑",
-    desc: "Tăng 1600% HP và ATK theo Level Hiện Tại toàn đội. +90 DEF toàn đội.",
+    desc: "Tăng 2100% HP và ATK theo Level Hiện Tại toàn đội (+500% v3.3.2). +90 DEF toàn đội.",
     companion: ["isshiki", "momoshiki", "luanhoi"],
     companionName: "Bộ Ba Otsutsuki (Isshiki, Momoshiki, Luân Hồi Tiên Nhân)",
     companionDesc: "Khi cả 3 cùng đội: Đầu trận nhận Khiên bằng 50% HP tối đa của Momoshiki cho toàn đội; Momoshiki mỗi lượt tích 2 Nộ (thay vì 0.5); Luân Hồi Tiên Nhân khi gây ST cấp Khiên cho toàn đội bằng 70% ST gây ra; Isshiki tốc đánh gốc 50%; Khả năng hồi EN đánh thường +0.5 EN cho toàn đội.",
-    stats: { hpPct: 16.0, atkPct: 16.0, defFlat: 90 }
+    stats: { hpPct: 21.0, atkPct: 21.0, defFlat: 90 }
   },
   thien_than_thu: {
     id: "thien_than_thu",
@@ -2145,8 +2206,8 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#ffdf5d",
     icon: "✨",
-    desc: "Tăng 2000% HP và ATK theo Level Hiện Tại toàn đội. Crit +20%. +50 DEF toàn đội. Khả năng hồi EN của đánh thường +1 EN.",
-    stats: { hpPct: 20.0, atkPct: 20.0, defFlat: 50, critRate: 0.20, normalEnGain: 1.0 }
+    desc: "Tăng 2500% HP và ATK theo Level Hiện Tại toàn đội (+500% v3.3.2). Crit +20%. +50 DEF toàn đội. Khả năng hồi EN của đánh thường +1 EN.",
+    stats: { hpPct: 25.0, atkPct: 25.0, defFlat: 50, critRate: 0.20, normalEnGain: 1.0 }
   }
 };
 
@@ -2627,6 +2688,13 @@ function startTrainingBattle(gateType, stage) {
         fighter.en = Math.min(fighter.enMax, 3);
         logCombat(`[Hắc Ám Đoạt Hồn] Phoverus nhận sẵn 3 EN đầu trận!`);
       }
+      if (heroId === "kaguya") {
+        fighter.dimension = "ice";
+        if (stats.level >= 30) {
+          fighter.en = Math.min(fighter.enMax, 8);
+          logCombat(`🌌 [Khởi Nguyên Chakra] Kaguya Otsutsuki nhận sẵn 8 EN đầu trận! Môi trường khởi đầu: Băng Tuyết.`);
+        }
+      }
       if (heroId === "isshiki" && stats.level >= 80) {
         fighter.atkSpd = 0.40;
       }
@@ -2791,6 +2859,13 @@ function startBattle() {
       if (heroId === "phoverus" && stats.level >= 80) {
         fighter.en = Math.min(fighter.enMax, 3);
         logCombat(`[Hắc Ám Đoạt Hồn] Phoverus nhận sẵn 3 EN đầu trận!`);
+      }
+      if (heroId === "kaguya") {
+        fighter.dimension = "ice";
+        if (stats.level >= 30) {
+          fighter.en = Math.min(fighter.enMax, 8);
+          logCombat(`🌌 [Khởi Nguyên Chakra] Kaguya Otsutsuki nhận sẵn 8 EN đầu trận! Môi trường khởi đầu: Băng Tuyết.`);
+        }
       }
       if (heroId === "isshiki" && stats.level >= 80) {
         fighter.atkSpd = 0.40;
@@ -3207,29 +3282,31 @@ function nextTurn() {
 
   // Momoshiki Bị Động & Thần Chú
   if (actor.id === "momoshiki" && actor.hp > 0) {
-    if (actor.level >= 30) {
-      let rGain = 0.5;
-      const hasOtsuTrio = battle.playerTeam.some(p => p && p.id === "isshiki") && 
-                          battle.playerTeam.some(p => p && p.id === "momoshiki") && 
-                          battle.playerTeam.some(p => p && p.id === "luanhoi");
-      if (!actor.isBot && gameState.equippedBeast === "otsutsuki_blood" && hasOtsuTrio) {
-        rGain = 2.0;
-      }
-      actor.rage = +( (actor.rage || 0) + rGain ).toFixed(1);
-      logCombat(`🌀 [Tụ Nộ] Momoshiki tích tụ +${rGain} Nộ (${actor.rage}/5.0)!`);
-      if (actor.rage >= 5.0) {
-        actor.rage = 0;
-        actor.buffs.momoRage = 2;
-        addAnimation(actor, "NỘ PHÁT TỘNG +80% ST!", "#ff9800");
-        logCombat(`🔥💥 [Cuồng Nộ Otsutsuki] Momoshiki bộc phát nộ khí, tăng 80% ST trong 2 hiệp!`);
-      }
+    // v4.0.0: Tự động tích 1.0 Nộ mỗi lượt (Otsutsuki Blood: 2.0 Nộ)
+    let rGain = 1.0;
+    const hasOtsuTrio = battle.playerTeam.some(p => p && p.id === "isshiki") && 
+                        battle.playerTeam.some(p => p && p.id === "momoshiki") && 
+                        battle.playerTeam.some(p => p && p.id === "luanhoi");
+    if (!actor.isBot && gameState.equippedBeast === "otsutsuki_blood" && hasOtsuTrio) {
+      rGain = 2.0;
     }
-    if (actor.level >= 130 && (actor.rage || 0) >= 3.0) {
+    actor.rage = +( (actor.rage || 0) + rGain ).toFixed(1);
+    logCombat(`🌀 [Tụ Nộ] Momoshiki tích tụ +${rGain} Nộ (${actor.rage}/5.0)!`);
+    if (actor.rage >= 5.0) {
+      actor.rage = 0;
+      actor.buffs.momoRage = 2;
+      addAnimation(actor, "NỘ PHÁT TỘNG +80% ST!", "#ff9800");
+      logCombat(`🔥💥 [Cuồng Nộ Otsutsuki] Momoshiki bộc phát nộ khí, tăng 80% ST trong 2 hiệp!`);
+    }
+
+    // v4.0.0: Bị động 1 (Lv.30): Khi tích đủ từ 3 Nộ trở lên, tự động phóng kích gây 130% ATK + 5% HP tối đa
+    if (actor.level >= 30 && (actor.rage || 0) >= 3.0) {
       const enemy = actor.isBot ? battle.playerTeam.find(p => p && p.hp > 0) : battle.botTeam.find(b => b && b.hp > 0);
       if (enemy) {
-        const autoDmg = Math.round(actor.atk * 1.20);
+        const autoDmg = Math.round(actor.atk * 1.30 + enemy.maxHp * 0.05);
         applyDamage(enemy, autoDmg, false, actor);
-        logCombat(`⚡ [Thần Chú 1] Momoshiki phóng thích uy áp tự động gây ${autoDmg} ST lên ${enemy.name}!`);
+        addAnimation(enemy, `PHÓNG KÍCH! -${autoDmg}`, "#ff9800");
+        logCombat(`⚡💥 [Phóng Kích Nộ Khí] Momoshiki phóng kích uy áp gây ${autoDmg.toLocaleString()} ST (130% ATK + 5% Max HP) lên ${enemy.name}!`);
       }
     }
     if (actor.level >= 70 && (battle.roundCount % 3 === 0)) {
@@ -3282,9 +3359,24 @@ function autoChooseAction() {
 
 function updatePlayerSkillCards(actor) {
   const db = HERO_DB[actor.id];
-  const normalEn = actor.extraEnGain ? (db.normalAttack.enGain + actor.extraEnGain) : db.normalAttack.enGain;
+  let normalEn = actor.extraEnGain ? (db.normalAttack.enGain + actor.extraEnGain) : db.normalAttack.enGain;
+  let normalDesc = db.normalAttack.desc;
+
+  // v4.0.0: Hiển thị đòn đánh thường tương ứng theo Môi Trường của Kaguya
+  if (actor.id === "kaguya") {
+    actor.dimension = actor.dimension || "ice";
+    const dimMap = {
+      ice: { en: 2, name: "Băng Tuyết", desc: "Gây 140% ATK lên toàn bộ mục tiêu, 25% Đóng Băng Otsu (+200% ATK & 8% Max HP, Choáng 2 lượt)." },
+      fire: { en: 3, name: "Núi Lửa", desc: "Gây 230% ATK lên toàn bộ mục tiêu, khắc tối đa 15 tầng Bốc Hỏa thiêu đốt % HP." },
+      desert: { en: 1, name: "Sa Mạc", desc: "Gây 140% ATK lên 1 mục tiêu, áp dụng Khát Khô (giảm 50% ATK mục tiêu trong 1 lượt)." }
+    };
+    const cur = dimMap[actor.dimension] || dimMap.ice;
+    normalEn = actor.extraEnGain ? (cur.en + actor.extraEnGain) : cur.en;
+    normalDesc = `[${cur.name}] ${cur.desc}`;
+  }
+
   document.getElementById("cardNormalEn").textContent = `+${normalEn} EN`;
-  document.getElementById("cardNormalDesc").textContent = db.normalAttack.desc;
+  document.getElementById("cardNormalDesc").textContent = normalDesc;
 
   document.getElementById("cardSkillEn").textContent = `Tốn toàn bộ EN (${actor.en}/${actor.enMax})`;
   document.getElementById("cardSkillDesc").textContent = db.activeSkill.desc;
@@ -3326,7 +3418,7 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
     const hpPct = (defender.hp / defender.maxHp) * 100;
     if (hpPct < 40) {
       const missingPct = 40 - hpPct;
-      const steps = Math.floor(missingPct / 5);
+      const steps = Math.floor(missingPct / 4); // v4.0.0: mỗi 4% HP mất tăng 20% DEF
       const baseDef = (HERO_DB && HERO_DB.omega) ? HERO_DB.omega.baseDef : (defender.baseDef || 52);
       effectiveDef += (baseDef * steps * 0.20);
     }
@@ -3447,6 +3539,27 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   }
 
   let finalDmg = amount;
+
+  // v4.0.0: Giảm sát thương bạo kích cho Omega Shenron Lv.150 (-30%) & Hashirama Lv.100 (-50%)
+  if (isCrit) {
+    if (target.id === "omega" && target.level >= 150) {
+      finalDmg = Math.round(finalDmg * 0.70);
+    }
+    if (target.id === "hashirama" && target.level >= 100) {
+      finalDmg = Math.round(finalDmg * 0.50);
+    }
+  }
+
+  // v4.0.0: Miễn thương Hashirama (30% hoặc 40%)
+  if (target.id === "hashirama" && target.buffs && target.buffs.hashiramaDmgReduction) {
+    finalDmg = Math.round(finalDmg * (1 - target.buffs.hashiramaDmgReduction.val));
+  }
+
+  // v4.0.0: Miễn thương Kaguya Lv.100 (+15% Miễn thương)
+  if (target.id === "kaguya" && target.level >= 100) {
+    finalDmg = Math.round(finalDmg * 0.85);
+  }
+
   if (target.shield > 0) {
     if (target.shield >= finalDmg) {
       target.shield -= finalDmg;
@@ -3464,6 +3577,37 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   const color = isCrit ? "#f1e05a" : "#f85149";
   const text = isCrit ? `CRIT! -${finalDmg}` : `-${finalDmg}`;
   addAnimation(target, text, color);
+
+  // v4.0.0: Phoverus Hút máu gốc 8% cho mọi đòn đánh
+  if (attacker && attacker.id === "phoverus" && finalDmg > 0 && attacker.hp > 0) {
+    const pHeal = Math.max(1, Math.round(finalDmg * 0.08));
+    healFighter(attacker, pHeal);
+    addAnimation(attacker, `+${pHeal} HP (Hút Máu 8%)`, "#bc8cff");
+  }
+
+  // v4.0.0: Kaguya Lv.70 hồi phục toàn đội bằng 15% ST gây ra
+  if (attacker && attacker.id === "kaguya" && attacker.level >= 70 && finalDmg > 0) {
+    const kHeal = Math.max(1, Math.round(finalDmg * 0.15));
+    const allyTeam = attacker.isBot ? battle.botTeam : battle.playerTeam;
+    allyTeam.forEach(p => { if (p && p.hp > 0) healFighter(p, kHeal); });
+  }
+
+  // v4.0.0: Omega Shenron Lv.70 [Thiên Mệnh]: Mỗi lần gây ST đánh dấu 1 tầng, đủ 3 tầng cướp 9.5% HP hiện tại mục tiêu
+  if (attacker && attacker.id === "omega" && attacker.level >= 70 && target.hp > 0) {
+    target.buffs = target.buffs || {};
+    target.buffs.thienMenh = (target.buffs.thienMenh || 0) + 1;
+    if (target.buffs.thienMenh >= 3) {
+      target.buffs.thienMenh = 0;
+      const stealHp = Math.round(target.hp * 0.095);
+      if (stealHp > 0) {
+        target.hp = Math.max(0, target.hp - stealHp);
+        healFighter(attacker, stealHp);
+        addAnimation(attacker, `+${stealHp} HP (Thiên Mệnh)`, "#3fb950");
+        addAnimation(target, `-${stealHp} HP (Cướp 9.5%)`, "#f85149");
+        logCombat(`🐉⚡ [Thiên Mệnh] Omega Shenron kích nổ 3 tầng Thiên Mệnh, cướp ${stealHp.toLocaleString()} HP (9.5% HP hiện tại) của ${target.name} để hồi máu!`);
+      }
+    }
+  }
 
   // Kaitou Kid Bị động 1 (Lv.30) & Bị động 3 (Lv.80) khi gây bạo kích
   if (isCrit && attacker && attacker.id === "kid") {
@@ -5660,7 +5804,7 @@ function submitGiftcode() {
     gameState.events.anhHungChiVien.hoPhach += 10000;
     gameState.events.anhHungChiVien.points += 1000000;
 
-    const allHeroes = ["traveler", "madara", "omega", "vegito", "whis", "luanhoi", "pain", "isshiki", "itachi", "momoshiki", "kaioshin", "phoverus", "conan", "kid"];
+    const allHeroes = Object.keys(HERO_DB);
     allHeroes.forEach(hId => {
       if (!gameState.heroes[hId]) gameState.heroes[hId] = { level: 1 };
     });
