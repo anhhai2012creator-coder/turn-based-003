@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Sửa Lỗi v4.0.1 (Sửa Sát Thương 3 Tướng Mới, Mở Khóa Chương 5 & Đột Phá Cấp 350)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Full v4.0.2 (Rework Vegito, Khắc Phục Lỗi Choáng Gaara/Tướng Mới & Tân Binh Phúc Lợi)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -740,13 +739,81 @@
       </div>
       <div class="modal-body">
         <div class="tab-bar">
-          <button class="tab-btn active" id="tabBtnEvent4" onclick="switchEventTab('anhHungChiVien')">🔥 Anh Hùng Chi Viện (SS1)</button>
+          <button class="tab-btn active" id="tabBtnEvent5" onclick="switchEventTab('newbieWelfare')">🎁 Tân Binh Phúc Lợi</button>
+          <button class="tab-btn" id="tabBtnEvent4" onclick="switchEventTab('anhHungChiVien')">🔥 Anh Hùng Chi Viện (SS1)</button>
           <button class="tab-btn" id="tabBtnEvent3" onclick="switchEventTab('midAutumn')">🥮 Đại Tiệc Trung Thu</button>
           <button class="tab-btn" id="tabBtnEvent2" onclick="switchEventTab('autumn')">Mùa Thu Ánh Sao</button>
           <button class="tab-btn" id="tabBtnEvent1" onclick="switchEventTab('starter')">Khởi Đầu Muôn Vạn</button>
         </div>
 
-                <div id="tabContentAnhHungChiVien" style="display:flex; flex-direction:column; gap:12px;">
+                <div id="tabContentNewbieWelfare" style="display:flex; flex-direction:column; gap:12px;">
+          <!-- Header Banner -->
+          <div style="background:linear-gradient(135deg, #1f2a38 0%, #161b22 100%); border:1px solid var(--accent-gold); border-radius:10px; padding:14px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:16px; font-weight:800; color:var(--accent-gold);">🎁 TÂN BINH PHÚC LỢI (GACHA 1/1 DUY NHẤT)</div>
+              <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">
+                Quay miễn phí chọn ngẫu nhiên 1 trong 5 Tướng Siêu Cấp (Tỉ lệ 20% mỗi tướng) + Quà tân thủ độc quyền!
+              </div>
+            </div>
+            <div style="background:#0d1117; padding:8px 14px; border-radius:8px; border:1px solid #30363d; text-align:right;">
+              <div style="font-size:11px; color:var(--text-secondary);">Lượt quay còn lại:</div>
+              <b id="newbieGachaCountText" style="color:var(--accent-green); font-size:15px;">1 / 1</b>
+            </div>
+          </div>
+
+          <!-- Hero Pool Showcase -->
+          <div style="font-size:12px; font-weight:bold; color:var(--text-primary); margin-top:4px;">✨ DANH SÁCH 5 TƯỚNG SIÊU CẤP TRONG BỂ QUAY (TỈ LỆ 20% MỖI TƯỚNG):</div>
+          <div style="display:grid; grid-template-columns:repeat(5, 1fr); gap:8px;">
+            <div style="background:#0d1117; border:1px solid #30363d; border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:26px;">🐉</div>
+              <div style="font-weight:bold; font-size:11px; color:#58a6ff; margin-top:4px;">Omega Shenron</div>
+              <div style="font-size:10px; color:var(--text-secondary);">Hắc Long [DEF]</div>
+              <div style="font-size:10px; color:var(--accent-gold); margin-top:2px;">Tỉ lệ: 20%</div>
+            </div>
+            <div style="background:#0d1117; border:1px solid #30363d; border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:26px;">🪄</div>
+              <div style="font-weight:bold; font-size:11px; color:#bc8cff; margin-top:4px;">Whis</div>
+              <div style="font-size:10px; color:var(--text-secondary);">Thiên Sứ [SKL]</div>
+              <div style="font-size:10px; color:var(--accent-gold); margin-top:2px;">Tỉ lệ: 20%</div>
+            </div>
+            <div style="background:#0d1117; border:1px solid #30363d; border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:26px;">👁️</div>
+              <div style="font-weight:bold; font-size:11px; color:#ff9800; margin-top:4px;">Pain Thiên Đạo</div>
+              <div style="font-size:10px; color:var(--text-secondary);">Thần Phạt [ATK]</div>
+              <div style="font-size:10px; color:var(--accent-gold); margin-top:2px;">Tỉ lệ: 20%</div>
+            </div>
+            <div style="background:#0d1117; border:1px solid #30363d; border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:26px;">🟣</div>
+              <div style="font-weight:bold; font-size:11px; color:#bc8cff; margin-top:4px;">Phoverus</div>
+              <div style="font-size:10px; color:var(--text-secondary);">Huyền Ma [SKL]</div>
+              <div style="font-size:10px; color:var(--accent-gold); margin-top:2px;">Tỉ lệ: 20%</div>
+            </div>
+            <div style="background:#0d1117; border:1px solid #30363d; border-radius:8px; padding:10px; text-align:center;">
+              <div style="font-size:26px;">🔥</div>
+              <div style="font-weight:bold; font-size:11px; color:#f85149; margin-top:4px;">Itachi Uế Thổ</div>
+              <div style="font-size:10px; color:var(--text-secondary);">Amaterasu [ATK]</div>
+              <div style="font-size:10px; color:var(--accent-gold); margin-top:2px;">Tỉ lệ: 20%</div>
+            </div>
+          </div>
+
+          <!-- Bonus Gift Info -->
+          <div style="background:#161b22; border:1px dashed var(--accent-green); border-radius:8px; padding:10px; display:flex; align-items:center; gap:12px;">
+            <div style="font-size:24px;">🎁</div>
+            <div style="font-size:12px; color:var(--text-primary);">
+              <b>Quà tặng kèm nhận cùng lúc:</b> <span style="color:#58a6ff; font-weight:bold;">+8,000 VPNC</span> (Vật phẩm nâng cấp) & <span style="color:var(--accent-gold); font-weight:bold;">+10,000 Vàng</span>!
+            </div>
+          </div>
+
+          <!-- Gacha Result & Action Box -->
+          <div id="newbieGachaResultBox" style="min-height:50px; display:flex; align-items:center; justify-content:center;"></div>
+          <div style="display:flex; justify-content:center; margin-top:6px;">
+            <button id="btnRollNewbieGacha" class="btn btn-gold" style="font-size:15px; padding:12px 28px; font-weight:bold;" onclick="rollNewbieGacha()">
+              🎰 KHỞI QUAY TÂN BINH (MIỄN PHÍ 1/1)
+            </button>
+          </div>
+        </div>
+
+        <div id="tabContentAnhHungChiVien" style="display:flex; flex-direction:column; gap:12px;">
           <!-- Top Event Header & Wallet -->
           <div style="background:linear-gradient(135deg, #1f1b2e 0%, #161b22 100%); border:1px solid #a371f7; border-radius:10px; padding:14px; display:flex; justify-content:space-between; align-items:center;">
             <div>
@@ -1299,24 +1366,24 @@ const HERO_DB = {
     id: "vegito",
     name: "Vegito",
     type: "SKL",
-    roleDesc: "Chiến thần tốc độ, 'Bleeding' đa tầng & kích hoạt khiên hộ mệnh",
-    baseHp: 556,
-    baseAtk: 39.0,
-    baseDef: 45,
+    roleDesc: "Chiến thần tốc độ, 'Bleeding' hủy diệt & Miễn thương đặc biệt",
+    baseHp: 577,
+    baseAtk: 41.0,
+    baseDef: 47,
     baseSpd: 170,
-    enMax: 3,
+    enMax: 6,
     hasSpells: true,
-    normalAttack: { name: "Bá Vương Kích", enGain: 1.6, desc: "Gây 98% ATK lên 1 mục tiêu, hồi 1.6 EN (+0.7 EN v3.3.2)." },
-    activeSkill: { name: "Kiếm Khí Linh Hồn", desc: "Gây 110% ATK lên tất cả mục tiêu, kích hoạt 3 tầng 'Bleeding' và 1 tầng 'Bleeding 2' (40% ATK/hiệp, kéo dài 3 hiệp). Tiêu tốn toàn bộ EN." },
+    normalAttack: { name: "Bá Vương Kích", enGain: 1.5, desc: "Gây 77% ATK lên 3 mục tiêu. Hồi 1.5 EN." },
+    activeSkill: { name: "Kiếm Khí Linh Hồn", desc: "Gây 280% ATK lên 3 mục tiêu, áp dụng 10 tầng nội tại 'Bleeding'. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 30, name: "Huyết Kích & Xuyên Giáp", desc: "Đòn đánh thường áp dụng thêm 1 tầng 'Bleeding 2'. Xuyên giáp +45% (bỏ qua 45% DEF mục tiêu)." },
-      { lv: 70, name: "Cường Lực & Kiên Cố", desc: "Khi HP dưới 50%, nhận 'Khiên' bằng 275% ATK, đồng thời đòn đánh thường hồi thêm +0.5 EN, tăng 30% ST (chỉ kích hoạt 1 lần/trận)." },
-      { lv: 80, name: "Song Tầng Huyết Kích", desc: "Nâng cấp Bị động 1: Đánh thường áp dụng thêm 2 tầng Bleeding 2. Xuyên giáp +58%." },
-      { lv: 100, name: "Chiến Thần Thức Tỉnh", desc: "Nâng cấp Bị động 2: Khi HP dưới 50%, nhận Khiên bằng 320% ATK, đòn đánh thường hồi thêm +0.7 EN, tăng 45% ST." }
+      { lv: 30, name: "Huyết Kích & Xuyên Giáp", desc: "Đánh thường +1 tầng 'Bleeding'. Xuyên giáp gốc +30%." },
+      { lv: 70, name: "Miễn Thương Đặc Biệt", desc: "Sau khi sử dụng kỹ năng chủ động, bản thân nhận trạng thái 'Miễn thương đặc biệt' trong 2 lượt và hồi 2 EN. 'Miễn dịch đặc biệt': chỉ nhận ST tối đa bằng 30% HP tối đa bản thân mỗi đòn." },
+      { lv: 80, name: "Khởi Đầu Bộc Phá", desc: "Đầu trận nhận 4 EN và tăng 30% ST trong 3 hiệp đầu." },
+      { lv: 100, name: "Bản Năng Vô Cực", desc: "Những đòn đánh có sát thương lớn hơn 40% HP tối đa bản thân giúp bản thân có thêm 60% tỉ lệ né đòn." }
     ],
     spells: [
-      { lv: 130, name: "Thần Chú 1", desc: "Tăng 10% ST của hiệu ứng 'Bleeding 2'." },
-      { lv: 150, name: "Thần Chú 2", desc: "ATK tăng 25%; HP tăng 14%." }
+      { lv: 130, name: "Thần Chú 1", desc: "+15% ST gây ra từ 'Bleeding'; +20% DEF." },
+      { lv: 150, name: "Thần Chú 2", desc: "+20% HP." }
     ]
   },
   whis: {
@@ -1579,7 +1646,7 @@ const HERO_DB = {
       { lv: 30, name: "Sa Bọc Tê Liệt", desc: "Khi đánh thường, có 25% cơ hội 'Choáng' 1 lượt và giảm 100% DEF mục tiêu đó trong 1 lượt." },
       { lv: 70, name: "Điểm Yếu Chí Tử", desc: "Khi sử dụng kỹ năng chủ động, có 18% cơ hội gây 'Điểm yếu chí tử' (giảm 100% DEF và 80% ATK mục tiêu đó trong 4 lượt)." },
       { lv: 80, name: "Chân Thể Nhất Vĩ", desc: "Nâng cấp bị động 1: Khi đánh thường, có 35% cơ hội 'Choáng' 1 lượt và giảm 100% DEF mục tiêu đó trong 1 lượt." },
-      { lv: 100, name: "Tuyệt Đối Phòng Ngự", desc: "Khi gây 'Choáng', bản thân cung cấp toàn đội lớp giáp ảo (Khiên) bằng 30% HP tối đa của bản thân (tối đa 1 lần/lượt)." }
+      { lv: 100, name: "Tuyệt Đối Phòng Ngự", desc: "Khi gây 'Choáng', bản thân cung cấp toàn đội lớp giáp ảo (Khiên) bằng 20% HP tối đa của bản thân (tối đa 1 lần/lượt)." }
     ],
     spells: [
       { lv: 130, name: "Thần Chú 1", desc: "+25% DEF; +20% HP." },
@@ -1662,7 +1729,8 @@ let gameState = {
   events: {
     starterClaimed: false,
     autumnChestNextAvailable: 0,
-    luanHoiExchanged: false
+    luanHoiExchanged: false,
+    newbieGachaClaimed: false
   },
   // Retention: Check-in & Quests
   checkin: {
@@ -1931,7 +1999,7 @@ function getHeroStats(heroId, customLv = null) {
   let critDmg = 3.0;
   let armorPen = 0;
   if (heroId === "vegito" && lv >= 30) {
-    armorPen += 0.45;
+    armorPen += 0.30;
   }
 
   if (db.hasSpells) {
@@ -1944,13 +2012,14 @@ function getHeroStats(heroId, customLv = null) {
       else if (heroId === "phoverus") { hp = Math.round(hp * 1.25); def = Math.round(def * 1.18); }
       else if (heroId === "conan") { atk = +(atk * 1.20).toFixed(1); def = Math.round(def * 1.18); }
       else if (heroId === "kid") { atk = +(atk * 1.20).toFixed(1); def = Math.round(def * 1.18); }
+      else if (heroId === "vegito") { def = Math.round(def * 1.20); }
     }
     if (lv >= 150) {
       if (heroId === "madara") { critRate += 0.15; critDmg += 0.50; }
       else if (heroId === "omega") { armorPen += 0.10; }
       else if (heroId === "conan") { armorPen += 0.25; critRate += 0.08; }
       else if (heroId === "kid") { critDmg += 0.20; }
-      else if (heroId === "vegito") { atk = +(atk * 1.25).toFixed(1); hp = Math.round(hp * 1.14); }
+      else if (heroId === "vegito") { hp = Math.round(hp * 1.20); }
       else if (heroId === "luanhoi") { hp = Math.round(hp * 1.10); atk = +(atk * 1.14).toFixed(1); def = Math.round(def * 1.18); }
       else if (heroId === "pain") { hp = Math.round(hp * 1.10); def = Math.round(def * 1.10); }
       else if (heroId === "isshiki") { atk = +(atk * 1.18).toFixed(1); }
@@ -2748,6 +2817,11 @@ function startTrainingBattle(gateType, stage) {
         fighter.en = Math.min(fighter.enMax, 3);
         logCombat(`[Hắc Ám Đoạt Hồn] Phoverus nhận sẵn 3 EN đầu trận!`);
       }
+      if (heroId === "vegito" && stats.level >= 80) {
+        fighter.en = Math.min(fighter.enMax, 4);
+        fighter.buffs.vegitoDmgBoost = 3;
+        logCombat(`⚡🔥 [Khởi Đầu Bộc Phá] Vegito nhận sẵn 4 EN và tăng 30% ST trong 3 hiệp đầu!`);
+      }
       if (heroId === "kaguya") {
         fighter.dimension = "ice";
         if (stats.level >= 30) {
@@ -2919,6 +2993,11 @@ function startBattle() {
       if (heroId === "phoverus" && stats.level >= 80) {
         fighter.en = Math.min(fighter.enMax, 3);
         logCombat(`[Hắc Ám Đoạt Hồn] Phoverus nhận sẵn 3 EN đầu trận!`);
+      }
+      if (heroId === "vegito" && stats.level >= 80) {
+        fighter.en = Math.min(fighter.enMax, 4);
+        fighter.buffs.vegitoDmgBoost = 3;
+        logCombat(`⚡🔥 [Khởi Đầu Bộc Phá] Vegito nhận sẵn 4 EN và tăng 30% ST trong 3 hiệp đầu!`);
       }
       if (heroId === "kaguya") {
         fighter.dimension = "ice";
@@ -3249,7 +3328,7 @@ function nextTurn() {
         logCombat(`[Điều Tức] ${f.name} nhận 2 EN!`);
       }
       // Decrement duration of buffs
-      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff"].forEach(k => {
+      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "stun", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff", "mienThuongDacBiet", "vegitoDmgBoost"].forEach(k => {
         if (f.buffs[k]) {
           f.buffs[k]--;
           if (f.buffs[k] <= 0) delete f.buffs[k];
@@ -3266,8 +3345,8 @@ function nextTurn() {
     return;
   }
 
-  // Check Choáng
-  if (actor.buffs.choang && actor.buffs.choang > 0) {
+  // Check Choáng (choang & stun)
+  if ((actor.buffs.choang && actor.buffs.choang > 0) || (actor.buffs.stun && actor.buffs.stun > 0)) {
     logCombat(`💫 ["Choáng"] ${actor.name} bị choáng, mất lượt hành động!`);
     addAnimation(actor, "BỊ CHOÁNG!", "#f1e05a");
     setTimeout(() => {
@@ -3286,12 +3365,12 @@ function nextTurn() {
     logCombat(`🔥 ["Rực Lửa"] ${actor.name} chịu ${dmg} ST!`);
   }
   if (actor.buffs.bleeding && actor.buffs.bleeding.stacks > 0) {
-    const stacks = actor.buffs.bleeding.stacks;
-    const dmg = Math.round(actor.maxHp * (stacks * 0.008));
+    const b = actor.buffs.bleeding;
+    const dmg = Math.round((b.dmgPerStack || (actor.maxHp * 0.008)) * b.stacks);
     dotDamage += dmg;
-    actor.buffs.bleeding.duration--;
-    logCombat(`🩸 ["Bleeding"] ${actor.name} chịu ${dmg} ST!`);
-    if (actor.buffs.bleeding.duration <= 0) delete actor.buffs.bleeding;
+    b.duration--;
+    logCombat(`🩸 ["Bleeding"] ${actor.name} chịu ${dmg.toLocaleString()} ST (${b.stacks} tầng)!`);
+    if (b.duration <= 0) delete actor.buffs.bleeding;
   }
   if (actor.buffs.bleeding2 && actor.buffs.bleeding2.duration > 0) {
     const dmg = actor.buffs.bleeding2.damage;
@@ -3501,8 +3580,7 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
   if (attacker.buffs.momoTeamBuff) dmg *= 1.30;
   if (attacker.buffs.isshikiReviveDmg) dmg *= 2.00;
   if (attacker.buffs.rinneganDmgBoost) dmg *= 1.30;
-  if (attacker.buffs.vegitoDmgBoost) dmg *= attacker.buffs.vegitoDmgBoost;
-  else if (attacker.id === "vegito" && attacker.level >= 70) dmg *= 1.30;
+  if (attacker.buffs.vegitoDmgBoost && attacker.buffs.vegitoDmgBoost > 0) dmg *= 1.30;
 
   // Madara Huyết Kích (Dưới 45% HP: tăng 3% ST mỗi 1% HP mất nếu Lv >= 70; tăng 4% nếu Lv >= 100)
   if (attacker.id === "madara" && attacker.level >= 70) {
@@ -3533,6 +3611,12 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
 function applyDamage(target, amount, isCrit = false, attacker = null) {
   // Cơ chế Né Đòn (Teleportation): 13% cơ bản cho mọi nhân vật
   let dodgeRate = target.dodgeRate || 0.13;
+  // Vegito Bị động 4 (Lv 100): Đòn đánh > 40% HP tối đa bản thân tăng thêm 60% tỉ lệ né đòn
+  if ((target.id === "vegito" || target.heroId === "vegito") && target.level >= 100) {
+    if (amount > target.maxHp * 0.40) {
+      dodgeRate += 0.60;
+    }
+  }
   if (target.id === "pain") {
     if (target.level >= 70) dodgeRate += 0.15;
     if (target.level >= 130) dodgeRate += 0.10;
@@ -3618,6 +3702,16 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   // v4.0.0: Miễn thương Kaguya Lv.100 (+15% Miễn thương)
   if (target.id === "kaguya" && target.level >= 100) {
     finalDmg = Math.round(finalDmg * 0.85);
+  }
+
+  // Vegito Bị động 2 (Lv 70): Miễn thương đặc biệt (Damage Cap = 30% Max HP)
+  if (target.buffs && target.buffs.mienThuongDacBiet && target.buffs.mienThuongDacBiet > 0) {
+    const maxCap = Math.round(target.maxHp * 0.30);
+    if (finalDmg > maxCap) {
+      finalDmg = maxCap;
+      addAnimation(target, `CAP 30% HP: ${finalDmg.toLocaleString()}`, "#39c5bb");
+      logCombat(`🛡️✨ [Miễn Thương Đặc Biệt] ${target.name} khống chế sát thương, chỉ nhận tối đa 30% HP (${finalDmg.toLocaleString()} ST)!`);
+    }
   }
 
   if (target.shield > 0) {
@@ -3844,11 +3938,16 @@ function executePlayerAction(type) {
       logCombat(`[Long Cốt Kích] Omega Shenron gây ${damage} ST lên ${target.name}.`);
       applyOmegaPassive2(actor, target);
     } else if (actor.id === "vegito") {
-      const raw = actor.atk * 0.98;
-      const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`[Bá Vương Kích] Vegito gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 30) applyBleeding2(actor, target);
+      const targets = battle.botTeam.filter(b => b.hp > 0).slice(0, 3);
+      const raw = actor.atk * 0.77;
+      let totalDmg = 0;
+      const pen = (actor.level >= 30) ? 0.30 : (actor.armorPen || 0);
+      targets.forEach(t => {
+        const { damage, isCrit } = calculateDamage(actor, t, raw, pen);
+        totalDmg += applyDamage(t, damage, isCrit, actor);
+        if (actor.level >= 30) applyBleeding(actor, t, 1);
+      });
+      logCombat(`🗡️ [Bá Vương Kích] Vegito quét kiếm lên 3 mục tiêu gây ${totalDmg.toLocaleString()} ST!`);
     } else if (actor.id === "whis") {
       const raw = actor.atk * 0.88;
       const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -4010,15 +4109,16 @@ function executePlayerAction(type) {
       let stunChance = (actor.level >= 80) ? 0.35 : ((actor.level >= 30) ? 0.25 : 0);
       if (stunChance > 0 && Math.random() < stunChance) {
         target.buffs = target.buffs || {};
-        target.buffs.stun = Math.max(target.buffs.stun || 0, 1);
+        target.buffs.choang = Math.max(target.buffs.choang || 0, 1);
+        target.buffs.stun = target.buffs.choang;
         target.buffs.defShred100 = 1;
         target.def = 0;
         addAnimation(target, "CHOÁNG & -100% DEF!", "#f85149");
         logCombat(`🏜️ [Sa Bọc Tê Liệt] Gaara đánh thường làm ${target.name} bị Choáng 1 lượt và giảm 100% DEF!`);
         if (actor.level >= 100) {
-          const sVal = Math.round(actor.maxHp * 0.30);
+          const sVal = Math.round(actor.maxHp * 0.20);
           grantTeamShield(sVal);
-          logCombat(`🛡️ [Tuyệt Đối Phòng Ngự] Gaara gây Choáng, cấp lớp Khiên ${sVal.toLocaleString()} HP (30% Max HP) cho toàn đội!`);
+          logCombat(`🛡️ [Tuyệt Đối Phòng Ngự] Gaara gây Choáng, cấp lớp Khiên ${sVal.toLocaleString()} HP (20% Max HP) cho toàn đội!`);
         }
       }
       const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -4029,7 +4129,8 @@ function executePlayerAction(type) {
       const raw = actor.atk * 0.88;
       if (Math.random() < 0.35) {
         target.buffs = target.buffs || {};
-        target.buffs.stun = Math.max(target.buffs.stun || 0, 1);
+        target.buffs.choang = Math.max(target.buffs.choang || 0, 1);
+        target.buffs.stun = target.buffs.choang;
         target.spd = Math.max(1, Math.round(target.spd * 0.50));
         addAnimation(target, "ĐAN MỘC: CHOÁNG & -50% TỐC!", "#3fb950");
         logCombat(`🌲 [Đan Mộc] Mộc Độn của Hashirama trói chặt ${target.name}, dính Choáng 1 lượt và giảm 50% tốc chạy trong 2 hiệp!`);
@@ -4053,10 +4154,11 @@ function executePlayerAction(type) {
         battle.botTeam.filter(b => b.hp > 0).forEach(t => {
           if (Math.random() < 0.25) {
             t.buffs = t.buffs || {};
-            t.buffs.stun = Math.max(t.buffs.stun || 0, 2);
+            t.buffs.choang = Math.max(t.buffs.choang || 0, 2);
+            t.buffs.stun = t.buffs.choang;
             const extraDmg = Math.round(actor.atk * 2.00 + t.maxHp * 0.08);
             applyDamage(t, extraDmg, false, actor);
-            addAnimation(t, "ĐÓNG BĂNG OTSU! STUN 2 LƯỢT", "#58a6ff");
+            addAnimation(t, "ĐÓNG BĂNG OTSU! CHOÁNG 2 LƯỢT", "#58a6ff");
             logCombat(`❄️🧊 [Đóng Băng Otsu] ${t.name} bị đóng băng 2 lượt và chịu thêm ${extraDmg.toLocaleString()} ST!`);
           }
           const { damage, isCrit } = calculateDamage(actor, t, raw);
@@ -4121,17 +4223,23 @@ function executePlayerAction(type) {
         applyOmegaPassive2(actor, lowestBot);
       }
     } else if (actor.id === "vegito") {
+      const targets = battle.botTeam.filter(b => b.hp > 0).slice(0, 3);
+      const raw = actor.atk * 2.80;
       let totalDmg = 0;
-      battle.botTeam.forEach(bot => {
-        if (bot.hp > 0) {
-          const raw = actor.atk * 0.75;
-          const { damage, isCrit } = calculateDamage(actor, bot, raw, actor.armorPen);
-          totalDmg += applyDamage(bot, damage, isCrit, actor);
-          applyBleeding(bot, 3);
-          applyBleeding2(actor, bot);
-        }
+      const pen = (actor.level >= 30) ? 0.30 : (actor.armorPen || 0);
+      targets.forEach(t => {
+        const { damage, isCrit } = calculateDamage(actor, t, raw, pen);
+        totalDmg += applyDamage(t, damage, isCrit, actor);
+        applyBleeding(actor, t, 10);
       });
-      logCombat(`🗡️ [Kiếm Khí Linh Hồn] Vegito chém toàn thể, kích hoạt 3 tầng "Bleeding" & "Bleeding 2"!`);
+      logCombat(`🗡️💥 [Kiếm Khí Linh Hồn] Vegito tung kiếm khí lên 3 mục tiêu gây ${totalDmg.toLocaleString()} ST và áp 10 tầng Bleeding!`);
+      if (actor.level >= 70) {
+        actor.en = Math.min(actor.enMax, +(actor.en + 2.0).toFixed(1));
+        actor.buffs = actor.buffs || {};
+        actor.buffs.mienThuongDacBiet = 2;
+        addAnimation(actor, "MIỄN THƯƠNG ĐẶC BIỆT & +2 EN!", "#39c5bb");
+        logCombat(`🛡️✨ [Miễn Thương Đặc Biệt] Vegito nhận bảo hộ trong 2 lượt (ST nhận tối đa 30% Max HP) và hồi 2 EN!`);
+      }
     } else if (actor.id === "whis") {
       const alivePlayers = battle.playerTeam.filter(p => p && p.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp));
       if (alivePlayers.length > 0) {
@@ -4332,7 +4440,8 @@ function executePlayerAction(type) {
         if (Math.random() < stunRate) {
           anyStun = true;
           t.buffs = t.buffs || {};
-          t.buffs.stun = Math.max(t.buffs.stun || 0, 3);
+          t.buffs.choang = Math.max(t.buffs.choang || 0, 3);
+          t.buffs.stun = t.buffs.choang;
           addAnimation(t, "CHOÁNG 3 LƯỢT!", "#f85149");
         }
         const { damage, isCrit } = calculateDamage(actor, t, raw);
@@ -4340,9 +4449,9 @@ function executePlayerAction(type) {
       });
       logCombat(`🏜️💥 [Sa Mạc Đại Táng] Gaara chôn vùi toàn bộ kẻ địch, gây ${totalDmgGaara} ST và áp chế Choáng 3 lượt!`);
       if (anyStun && actor.level >= 100) {
-        const sVal = Math.round(actor.maxHp * 0.30);
+        const sVal = Math.round(actor.maxHp * 0.20);
         grantTeamShield(sVal);
-        logCombat(`🛡️ [Tuyệt Đối Phòng Ngự] Sa Mạc Đại Táng gây Choáng, cấp lớp Khiên ${sVal.toLocaleString()} HP cho toàn đội!`);
+        logCombat(`🛡️ [Tuyệt Đối Phòng Ngự] Sa Mạc Đại Táng gây Choáng, cấp lớp Khiên ${sVal.toLocaleString()} HP (20% Max HP) cho toàn đội!`);
       }
     } else if (actor.id === "hashirama") {
       // Hashirama: Gây 300% ATK lên 3 mục tiêu + Choáng 3 lượt + Khiên 50% tổng ST
@@ -4351,7 +4460,8 @@ function executePlayerAction(type) {
       let totalDmgHashi = 0;
       targets.forEach(t => {
         t.buffs = t.buffs || {};
-        t.buffs.stun = Math.max(t.buffs.stun || 0, 3);
+        t.buffs.choang = Math.max(t.buffs.choang || 0, 3);
+        t.buffs.stun = t.buffs.choang;
         addAnimation(t, "CHOÁNG 3 LƯỢT!", "#3fb950");
         const { damage, isCrit } = calculateDamage(actor, t, raw);
         totalDmgHashi += applyDamage(t, damage, isCrit, actor);
@@ -4410,13 +4520,22 @@ function applyBocHoa(target, stacks) {
   addAnimation(target, `BỐC HOẢ x${target.buffs.bocHoa.stacks}`, "#ff5722");
 }
 
-function applyBleeding(target, addStacks) {
-  if (!target.buffs.bleeding) {
-    target.buffs.bleeding = { stacks: Math.min(5, addStacks), duration: 3 };
-  } else {
-    target.buffs.bleeding.stacks = Math.min(5, target.buffs.bleeding.stacks + addStacks);
-    target.buffs.bleeding.duration = 3;
-  }
+function applyBleeding(attacker, target, addStacks) {
+  if (!target || target.hp <= 0) return;
+  target.buffs = target.buffs || {};
+  let currentStacks = target.buffs.bleeding ? target.buffs.bleeding.stacks : 0;
+  let newStacks = Math.min(25, currentStacks + addStacks);
+  let bonusDmgPct = (attacker && attacker.level >= 130) ? 1.15 : 1.0;
+  let atkVal = attacker ? attacker.atk : 41.0;
+  let maxHpVal = attacker ? attacker.maxHp : 577;
+  let dmgPerStack = (atkVal * 0.25 + maxHpVal * 0.025) * bonusDmgPct;
+  target.buffs.bleeding = {
+    stacks: newStacks,
+    duration: 3,
+    dmgPerStack: dmgPerStack,
+    sourceAttacker: attacker
+  };
+  addAnimation(target, `+${addStacks} BLEED (${newStacks}/25)`, "#da3633");
 }
 
 function applyBleeding2(attacker, target) {
@@ -4533,15 +4652,22 @@ function executeHeroBotAction(actor, alivePlayers) {
         applyOmegaPassive2(actor, lowestPlayer);
       }
     } else if (actor.heroId === "vegito") {
+      const targets = alivePlayers.slice(0, 3);
+      const raw = actor.atk * 2.80;
       let totalDmg = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 0.75;
-        const { damage, isCrit } = calculateDamage(actor, p, raw, actor.armorPen);
-        totalDmg += applyDamage(p, damage, isCrit, actor);
-        applyBleeding(p, 3);
-        applyBleeding2(actor, p);
+      const pen = (actor.level >= 30) ? 0.30 : (actor.armorPen || 0);
+      targets.forEach(t => {
+        const { damage, isCrit } = calculateDamage(actor, t, raw, pen);
+        totalDmg += applyDamage(t, damage, isCrit, actor);
+        applyBleeding(actor, t, 10);
       });
-      logCombat(`🗡️ [Địch: Kiếm Khí Linh Hồn] ${actor.name} chém toàn thể, kích hoạt Bleeding!`);
+      logCombat(`🗡️💥 [Địch: Kiếm Khí Linh Hồn] ${actor.name} chém 3 mục tiêu gây ${totalDmg.toLocaleString()} ST và áp 10 tầng Bleeding!`);
+      if (actor.level >= 70) {
+        actor.en = Math.min(actor.enMax, +(actor.en + 2.0).toFixed(1));
+        actor.buffs = actor.buffs || {};
+        actor.buffs.mienThuongDacBiet = 2;
+        addAnimation(actor, "MIỄN THƯƠNG ĐẶC BIỆT & +2 EN!", "#39c5bb");
+      }
     } else if (actor.heroId === "whis") {
       const aliveBots = battle.botTeam.filter(b => b && b.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp));
       if (aliveBots.length > 0) {
@@ -4660,7 +4786,8 @@ function executeHeroBotAction(actor, alivePlayers) {
         totalD += applyDamage(p, damage, isCrit, actor);
         if (Math.random() < 0.60) {
           p.buffs = p.buffs || {};
-          p.buffs.stun = Math.max(p.buffs.stun || 0, 2);
+          p.buffs.choang = Math.max(p.buffs.choang || 0, 2);
+          p.buffs.stun = p.buffs.choang;
           addAnimation(p, "BỊ CHOÁNG 2 LƯỢT", "#f85149");
         }
       });
@@ -4673,7 +4800,8 @@ function executeHeroBotAction(actor, alivePlayers) {
         const { damage, isCrit } = calculateDamage(actor, p, raw);
         totalD += applyDamage(p, damage, isCrit, actor);
         p.buffs = p.buffs || {};
-        p.buffs.stun = Math.max(p.buffs.stun || 0, 2);
+        p.buffs.choang = Math.max(p.buffs.choang || 0, 2);
+        p.buffs.stun = p.buffs.choang;
       });
       actor.shield = (actor.shield || 0) + Math.round(totalD * 0.50);
       logCombat(`🌺 [Địch: Hoa Thụ Giới Hàng Lâm] ${actor.name} gây ${totalD} ST và tạo Khiên Mộc Độn!`);
@@ -4712,11 +4840,16 @@ function executeHeroBotAction(actor, alivePlayers) {
       logCombat(`[Địch: Long Cốt Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
       applyOmegaPassive2(actor, target);
     } else if (actor.heroId === "vegito") {
-      const raw = actor.atk * 0.98;
-      const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`[Địch: Bá Vương Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 30) applyBleeding2(actor, target);
+      const targets = alivePlayers.slice(0, 3);
+      const raw = actor.atk * 0.77;
+      let totalDmg = 0;
+      const pen = (actor.level >= 30) ? 0.30 : (actor.armorPen || 0);
+      targets.forEach(t => {
+        const { damage, isCrit } = calculateDamage(actor, t, raw, pen);
+        totalDmg += applyDamage(t, damage, isCrit, actor);
+        if (actor.level >= 30) applyBleeding(actor, t, 1);
+      });
+      logCombat(`🗡️ [Địch: Bá Vương Kích] ${actor.name} chém 3 mục tiêu gây ${totalDmg.toLocaleString()} ST!`);
     } else if (actor.heroId === "whis") {
       const raw = actor.atk * 0.88;
       const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -5063,7 +5196,7 @@ function drawCharacter(f) {
     if (f.buffs.bleeding) { drawBadge(x + badgeOffset, y - 56, `🩸x${f.buffs.bleeding.stacks}`, "#da3633"); badgeOffset += 30; }
     if (f.buffs.bleeding2) { drawBadge(x + badgeOffset, y - 56, `🗡️B2`, "#ff7b72"); badgeOffset += 30; }
     if (f.buffs.luanHoi) { drawBadge(x + badgeOffset, y - 56, `🔯x${f.buffs.luanHoi}`, "#ff9800"); badgeOffset += 30; }
-    if (f.buffs.choang) { drawBadge(x + badgeOffset, y - 56, `💫Choáng`, "#f1e05a"); badgeOffset += 30; }
+    if (f.buffs.choang || f.buffs.stun) { drawBadge(x + badgeOffset, y - 56, `💫Choáng`, "#f1e05a"); badgeOffset += 30; }
     if (f.buffs.terror) { drawBadge(x + badgeOffset, y - 56, `😱Terror`, "#bf3989"); badgeOffset += 30; }
     if (f.buffs.suyGiam) { drawBadge(x + badgeOffset, y - 56, `🌀-20%`, "#8b949e"); badgeOffset += 30; }
     if (f.buffs.thienDaoDebuff) { drawBadge(x + badgeOffset, y - 56, `👁️-30%`, "#39c5bb"); badgeOffset += 30; }
@@ -5485,7 +5618,7 @@ function buyItemShop(type) {
 /* ==========================================================================
    SỰ KIỆN MÙA THU & KHỞI ĐẦU
    ========================================================================== */
-function openEventsModal() { updateEventUI(); switchEventTab("anhHungChiVien"); openModal("modalEvents"); }
+function openEventsModal() { updateEventUI(); const defaultTab = (gameState.events && !gameState.events.newbieGachaClaimed) ? "newbieWelfare" : "anhHungChiVien"; switchEventTab(defaultTab); openModal("modalEvents"); }
 
 
 // ==================== SỰ KIỆN ANH HÙNG CHI VIỆN (MÙA SS1) ====================
@@ -5833,14 +5966,85 @@ function switchEventTab(tab) {
   document.getElementById("tabBtnEvent2").classList.toggle("active", tab === "autumn");
   if (document.getElementById("tabBtnEvent3")) document.getElementById("tabBtnEvent3").classList.toggle("active", tab === "midAutumn");
   if (document.getElementById("tabBtnEvent4")) document.getElementById("tabBtnEvent4").classList.toggle("active", tab === "anhHungChiVien");
+  if (document.getElementById("tabBtnEvent5")) document.getElementById("tabBtnEvent5").classList.toggle("active", tab === "newbieWelfare");
 
   document.getElementById("tabContentStarter").style.display = tab === "starter" ? "flex" : "none";
   document.getElementById("tabContentAutumn").style.display = tab === "autumn" ? "flex" : "none";
   if (document.getElementById("tabContentMidAutumn")) document.getElementById("tabContentMidAutumn").style.display = tab === "midAutumn" ? "flex" : "none";
   if (document.getElementById("tabContentAnhHungChiVien")) document.getElementById("tabContentAnhHungChiVien").style.display = tab === "anhHungChiVien" ? "flex" : "none";
+  if (document.getElementById("tabContentNewbieWelfare")) document.getElementById("tabContentNewbieWelfare").style.display = tab === "newbieWelfare" ? "flex" : "none";
 
+  if (tab === "newbieWelfare") renderNewbieWelfareUI();
   if (tab === "midAutumn") renderMidAutumnUI();
   if (tab === "anhHungChiVien") renderAnhHungChiVienUI();
+}
+
+function renderNewbieWelfareUI() {
+  const isClaimed = !!(gameState.events && gameState.events.newbieGachaClaimed);
+  const countEl = document.getElementById("newbieGachaCountText");
+  const btnEl = document.getElementById("btnRollNewbieGacha");
+  if (countEl) {
+    countEl.textContent = isClaimed ? "0 / 1" : "1 / 1";
+    countEl.style.color = isClaimed ? "var(--text-secondary)" : "var(--accent-green)";
+  }
+  if (btnEl) {
+    if (isClaimed) {
+      btnEl.disabled = true;
+      btnEl.className = "btn";
+      btnEl.textContent = "✅ ĐÃ NHẬN PHÚC LỢI TÂN BINH (1/1 DUY NHẤT)";
+    } else {
+      btnEl.disabled = false;
+      btnEl.className = "btn btn-gold";
+      btnEl.textContent = "🎰 KHỞI QUAY TÂN BINH (MIỄN PHÍ 1/1)";
+    }
+  }
+}
+
+function rollNewbieGacha() {
+  gameState.events = gameState.events || {};
+  if (gameState.events.newbieGachaClaimed) {
+    toast("Bạn đã nhận gói Tân Binh Phúc Lợi rồi!");
+    return;
+  }
+  const pool = [
+    { id: "omega", name: "Omega Shenron", role: "Hắc Long Siêu Cấp [DEF]", icon: "🐉" },
+    { id: "whis", name: "Whis", role: "Thiên Sứ Tối Thượng [SKL]", icon: "🪄" },
+    { id: "pain", name: "Pain Thiên Đạo", role: "Thần Phạt Siêu Cấp [ATK]", icon: "👁️" },
+    { id: "phoverus", name: "Phoverus", role: "Huyền Ma Hắc Ám [SKL]", icon: "🟣" },
+    { id: "itachi", name: "Itachi (Uế Thổ)", role: "Nhẫn Giả Thiên Tài [ATK]", icon: "🔥" }
+  ];
+  const picked = pool[Math.floor(Math.random() * pool.length)];
+
+  if (!gameState.heroes[picked.id]) {
+    gameState.heroes[picked.id] = { level: 1 };
+  } else {
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 20;
+  }
+
+  gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 8000;
+  gameState.resources.gold = (gameState.resources.gold || 0) + 10000;
+  gameState.events.newbieGachaClaimed = true;
+
+  saveGame();
+  updateTopBarUI();
+  renderNewbieWelfareUI();
+
+  const resBox = document.getElementById("newbieGachaResultBox");
+  if (resBox) {
+    resBox.innerHTML = `
+      <div style="background:linear-gradient(135deg, #1b2533 0%, #0d1117 100%); border:1px solid var(--accent-gold); border-radius:10px; padding:14px; text-align:center; width:100%; animation:fadeIn 0.3s ease;">
+        <div style="font-size:36px; margin-bottom:4px;">${picked.icon}</div>
+        <div style="font-size:16px; font-weight:bold; color:var(--accent-gold);">CHÚC MỪNG CHIÊU MỘ THÀNH CÔNG: ${picked.name.toUpperCase()}!</div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:8px;">${picked.role}</div>
+        <div style="background:#161b22; display:inline-flex; gap:16px; padding:8px 16px; border-radius:8px; border:1px solid #30363d; font-size:12px;">
+          <div>🌟 Nhân vật: <b style="color:#bc8cff;">${picked.name}</b> (Lv.1)</div>
+          <div>💎 VPNC: <b style="color:#58a6ff;">+8,000</b></div>
+          <div>🪙 Vàng: <b style="color:var(--accent-gold);">+10,000</b></div>
+        </div>
+      </div>
+    `;
+  }
+  toast(`🎉 Chiêu mộ thành công ${picked.name} + 8,000 VPNC + 10,000 Vàng!`);
 }
 
 function updateEventUI() {
@@ -6138,6 +6342,7 @@ function submitGiftcode() {
         starterClaimed: false,
         autumnChestNextAvailable: 0,
         luanHoiExchanged: false,
+    newbieGachaClaimed: false,
         midAutumn: {
           playTimeMinutes: 0,
           playTimeSeconds: 0,
