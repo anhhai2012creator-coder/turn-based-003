@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Full v4.0.0 (Gaara, Hashirama, Kaguya & Tái Cân Bằng Toàn Diện)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Sửa Lỗi v4.0.1 (Sửa Sát Thương 3 Tướng Mới, Mở Khóa Chương 5 & Đột Phá Cấp 350)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -496,7 +497,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v4.0.0 Full: Đại Cập Nhật 3 Tướng Mới (Gaara, Hashirama, Kaguya) | Tái Cân Bằng Sức Mạnh Toàn Diện</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v4.0.1 Full: Sửa Lỗi Sát Thương Gaara, Hashirama, Kaguya | Khởi Tranh Chương 5 & Đột Phá Giới Hạn Cấp 350</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -1911,12 +1912,14 @@ function getHeroStats(heroId, customLv = null) {
   if (!db) return null;
   const lv = customLv !== null ? customLv : (gameState.heroes[heroId]?.level || 1);
 
-  // Tăng 15% mỗi level (Lv 1 - 250); Từ Lv 250 trở đi tăng 22% mỗi level (Lv 250 - 300)
+  // v4.0.1: Tăng 15% (Lv 1 - 250); +22% (Lv 250 - 300); +30% (Lv 300 - 350)
   let statMult = 1.0;
   if (lv <= 250) {
     statMult = 1 + (lv - 1) * 0.15;
-  } else {
+  } else if (lv <= 300) {
     statMult = 1 + (249 * 0.15) + (lv - 250) * 0.22;
+  } else {
+    statMult = 1 + (249 * 0.15) + (50 * 0.22) + (lv - 300) * 0.30;
   }
 
   let hp = Math.round(db.baseHp * statMult);
@@ -1981,18 +1984,34 @@ function getHeroUpgradeCost(currentLv) {
    BOT SCALING
    ========================================================================== */
 function getBotScalingFactor(chapter, stage) {
-  if (chapter === 4) {
-    let c3_10 = 1.0;
-    for (let c = 1; c <= 3; c++) {
-      for (let s = 1; s <= 10; s++) {
-        if (c === 1 && s === 1) continue;
-        if (s === 1) c3_10 *= 1.40;
-        else c3_10 *= 1.15;
-      }
+  let c3_10 = 1.0;
+  for (let c = 1; c <= 3; c++) {
+    for (let s = 1; s <= 10; s++) {
+      if (c === 1 && s === 1) continue;
+      if (s === 1) c3_10 *= 1.40;
+      else c3_10 *= 1.15;
     }
-    // Ải 1 chương 4 mạnh hơn 80% so với ải cuối chương 3
-    let factor = c3_10 * 1.80;
-    // Mỗi ải sau mạnh hơn ải trước 18%
+  }
+
+  // Ải cuối chương 4 (c4_10):
+  let c4_1 = c3_10 * 1.80;
+  let c4_10 = c4_1;
+  for (let s = 2; s <= 10; s++) {
+    c4_10 *= 1.18;
+  }
+
+  if (chapter === 5) {
+    // v4.0.1: Ải 1 chương 5 mạnh hơn ải cuối chương 4 đúng 20%
+    let factor = c4_10 * 1.20;
+    // Mỗi ải sau mạnh hơn ải trước 18% (hệ số tương tự chương 4)
+    for (let s = 2; s <= stage; s++) {
+      factor *= 1.18;
+    }
+    return factor;
+  }
+
+  if (chapter === 4) {
+    let factor = c4_1;
     for (let s = 2; s <= stage; s++) {
       factor *= 1.18;
     }
@@ -2013,6 +2032,47 @@ function getBotScalingFactor(chapter, stage) {
 
 function generateBotTeam(chapter, stage) {
   const factor = getBotScalingFactor(chapter, stage);
+
+  if (chapter === 5) {
+    // v4.0.1: Đội hình Chương 5 (Có sự xuất hiện của Gaara, Hashirama, Kaguya)
+    const equivLevel = Math.round(1 + (factor - 1) / 0.08);
+    const ch5Teams = [
+      ["gaara", "traveler", "whis"],
+      ["gaara", "vegito", "pain"],
+      ["hashirama", "itachi", "momoshiki"],
+      ["hashirama", "omega", "kaioshin"],
+      ["kaguya", "isshiki", "phoverus"],
+      ["kaguya", "madara", "conan"],
+      ["gaara", "hashirama", "kid"],
+      ["hashirama", "kaguya", "luanhoi"],
+      ["gaara", "kaguya", "isshiki"],
+      ["gaara", "hashirama", "kaguya"]
+    ];
+    const heroIds = ch5Teams[stage - 1] || ["gaara", "hashirama", "kaguya"];
+    return heroIds.map((hId, slot) => {
+      const stats = getHeroStats(hId, equivLevel);
+      const fighter = {
+        ...stats,
+        id: hId,
+        heroId: hId,
+        name: `${stats.name} (C.5-${stage})`,
+        slot: slot,
+        isBot: true,
+        en: 0,
+        dimension: (hId === "kaguya") ? "ice" : undefined,
+        shield: (hId === "omega" && stats.level >= 30) ? Math.round(stats.maxHp * 1.10) : 0,
+        en: (hId === "itachi" && stats.level >= 80) ? 2 : ((hId === "luanhoi" && stats.level >= 80) ? 1.5 : ((hId === "phoverus" && stats.level >= 80) ? Math.min(stats.enMax, 3) : ((hId === "kaguya" && stats.level >= 30) ? 8 : 0))),
+        atkSpd: (hId === "isshiki" && stats.level >= 80) ? 0.40 : (stats.db.atkSpd || 0),
+        buffs: {},
+        isAlive: true,
+        extraEnGain: 0,
+        vegitoPassiveTriggered: false,
+        atkSpd: stats.db.atkSpd || 0,
+        rage: 0
+      };
+      return fighter;
+    });
+  }
 
   if (chapter === 4) {
     const equivLevel = Math.round(1 + (factor - 1) / 0.08);
@@ -3128,7 +3188,7 @@ function handleVictory() {
     gameState.dailyQuests.progress.newStages++;
     if (battle.stage < 10) {
       gameState.progress.maxStage++;
-    } else if (battle.chapter < 4) {
+    } else if (battle.chapter < 5) {
       gameState.progress.maxChapter++;
       gameState.progress.maxStage = 1;
       if (battle.chapter === 3 && battle.stage === 10) {
@@ -3944,6 +4004,88 @@ function executePlayerAction(type) {
         }
       });
       logCombat(`🟣 [Huyền Ma Quyền] Phoverus tấn công 2 mục tiêu gây ${totalDmg} ST!`);
+    } else if (actor.id === "gaara") {
+      // Gaara: Gây 77% ATK lên 1 mục tiêu, hồi 2.1 EN
+      const raw = actor.atk * 0.77;
+      let stunChance = (actor.level >= 80) ? 0.35 : ((actor.level >= 30) ? 0.25 : 0);
+      if (stunChance > 0 && Math.random() < stunChance) {
+        target.buffs = target.buffs || {};
+        target.buffs.stun = Math.max(target.buffs.stun || 0, 1);
+        target.buffs.defShred100 = 1;
+        target.def = 0;
+        addAnimation(target, "CHOÁNG & -100% DEF!", "#f85149");
+        logCombat(`🏜️ [Sa Bọc Tê Liệt] Gaara đánh thường làm ${target.name} bị Choáng 1 lượt và giảm 100% DEF!`);
+        if (actor.level >= 100) {
+          const sVal = Math.round(actor.maxHp * 0.30);
+          grantTeamShield(sVal);
+          logCombat(`🛡️ [Tuyệt Đối Phòng Ngự] Gaara gây Choáng, cấp lớp Khiên ${sVal.toLocaleString()} HP (30% Max HP) cho toàn đội!`);
+        }
+      }
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`🏜️ [Sa Đạn] Gaara bắn đạn cát gây ${damage} ST lên ${target.name}.`);
+    } else if (actor.id === "hashirama") {
+      // Hashirama: Gây 88% ATK lên 1 mục tiêu
+      const raw = actor.atk * 0.88;
+      if (Math.random() < 0.35) {
+        target.buffs = target.buffs || {};
+        target.buffs.stun = Math.max(target.buffs.stun || 0, 1);
+        target.spd = Math.max(1, Math.round(target.spd * 0.50));
+        addAnimation(target, "ĐAN MỘC: CHOÁNG & -50% TỐC!", "#3fb950");
+        logCombat(`🌲 [Đan Mộc] Mộc Độn của Hashirama trói chặt ${target.name}, dính Choáng 1 lượt và giảm 50% tốc chạy trong 2 hiệp!`);
+      }
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`🌿 [Mộc Độn Quyền] Hashirama tung quyền Mộc Độn gây ${damage} ST lên ${target.name}.`);
+      if (actor.level >= 70 && Math.random() < 0.30) {
+        const healAmt = Math.round(actor.atk * 2.00);
+        battle.playerTeam.forEach(p => { if (p && p.hp > 0) healFighter(p, healAmt); });
+        addAnimation(actor, `HỒI PHỤC ĐỘI +${healAmt}`, "#3fb950");
+        logCombat(`🌸 [Mộc Độn Tái Sinh] Sức sống Tiên Thuật hồi phục ${healAmt.toLocaleString()} HP cho toàn đội!`);
+      }
+    } else if (actor.id === "kaguya") {
+      // Kaguya: Biến đổi theo 3 môi trường: Băng -> Lửa -> Sa Mạc
+      actor.dimension = actor.dimension || "ice";
+      if (actor.dimension === "ice") {
+        // Dạng 1: Băng tuyết: gây 140% ATK toàn bộ, 25% Đóng Băng Otsu
+        const raw = actor.atk * 1.40;
+        let totalD = 0;
+        battle.botTeam.filter(b => b.hp > 0).forEach(t => {
+          if (Math.random() < 0.25) {
+            t.buffs = t.buffs || {};
+            t.buffs.stun = Math.max(t.buffs.stun || 0, 2);
+            const extraDmg = Math.round(actor.atk * 2.00 + t.maxHp * 0.08);
+            applyDamage(t, extraDmg, false, actor);
+            addAnimation(t, "ĐÓNG BĂNG OTSU! STUN 2 LƯỢT", "#58a6ff");
+            logCombat(`❄️🧊 [Đóng Băng Otsu] ${t.name} bị đóng băng 2 lượt và chịu thêm ${extraDmg.toLocaleString()} ST!`);
+          }
+          const { damage, isCrit } = calculateDamage(actor, t, raw);
+          totalD += applyDamage(t, damage, isCrit, actor);
+        });
+        logCombat(`❄️ [Không Gian Băng Tuyết] Kaguya phủ bão tuyết gây ${totalD} ST lên toàn bộ quân địch!`);
+      } else if (actor.dimension === "fire") {
+        // Dạng 2: Núi lửa: gây 230% ATK toàn bộ, tối đa 15 tầng Bốc Hỏa
+        const raw = actor.atk * 2.30;
+        let totalD = 0;
+        battle.botTeam.filter(b => b.hp > 0).forEach(t => {
+          t.buffs = t.buffs || {};
+          t.buffs.bocHoa = { stacks: 15, duration: 3 };
+          addAnimation(t, "MAX 15 TẦNG BỐC HỎA!", "#f85149");
+          const { damage, isCrit } = calculateDamage(actor, t, raw);
+          totalD += applyDamage(t, damage, isCrit, actor);
+        });
+        logCombat(`🌋🔥 [Không Gian Núi Lửa] Kaguya dội biển nham thạch gây ${totalD} ST và thiêu đốt 15 tầng Bốc Hỏa lên toàn bộ địch!`);
+      } else {
+        // Dạng 3: Sa Mạc: gây 140% ATK 1 mục tiêu, Khát Khô -50% ATK trong 1 lượt
+        const raw = actor.atk * 1.40;
+        target.buffs = target.buffs || {};
+        target.buffs.khatKho = 1;
+        target.buffs.suyGiam = 1;
+        addAnimation(target, "KHÁT KHÔ! -50% ATK", "#d29922");
+        logCombat(`🏜️ [Khát Khô Sa Mạc] Kaguya rút cạn năng lượng khiến ${target.name} bị Khát Khô, giảm 50% ATK trong 1 lượt!`);
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+      }
     }
   } else if (type === "skill") {
     if (actor.en < actor.enMax) return;
@@ -4172,6 +4314,79 @@ function executePlayerAction(type) {
         }
       });
       logCombat(`💥 [Thiên Băng Ma Chấn] Phoverus oanh kích 3 mục tiêu gây ${totalDmg} ST!`);
+    } else if (actor.id === "gaara") {
+      // Gaara: Gây 200% ATK lên toàn bộ mục tiêu. 80% (85% với Thần chú 2) Choáng 3 lượt. 18% Điểm Yếu Chí Tử
+      const raw = actor.atk * 2.00;
+      const stunRate = (actor.level >= 150) ? 0.85 : 0.80;
+      let anyStun = false;
+      let totalDmgGaara = 0;
+      battle.botTeam.filter(b => b.hp > 0).forEach(t => {
+        if (actor.level >= 70 && Math.random() < 0.18) {
+          t.buffs = t.buffs || {};
+          t.buffs.defShred100 = 4;
+          t.buffs.suyGiam = 4; // giảm 80% ATK trong 4 lượt
+          t.def = 0;
+          addAnimation(t, "ĐIỂM YẾU CHÍ TỬ!", "#f85149");
+          logCombat(`⚠️💀 [Điểm Yếu Chí Tử] Gaara làm lộ điểm yếu chí tử của ${t.name}! Giảm 100% DEF và 80% ATK trong 4 hiệp!`);
+        }
+        if (Math.random() < stunRate) {
+          anyStun = true;
+          t.buffs = t.buffs || {};
+          t.buffs.stun = Math.max(t.buffs.stun || 0, 3);
+          addAnimation(t, "CHOÁNG 3 LƯỢT!", "#f85149");
+        }
+        const { damage, isCrit } = calculateDamage(actor, t, raw);
+        totalDmgGaara += applyDamage(t, damage, isCrit, actor);
+      });
+      logCombat(`🏜️💥 [Sa Mạc Đại Táng] Gaara chôn vùi toàn bộ kẻ địch, gây ${totalDmgGaara} ST và áp chế Choáng 3 lượt!`);
+      if (anyStun && actor.level >= 100) {
+        const sVal = Math.round(actor.maxHp * 0.30);
+        grantTeamShield(sVal);
+        logCombat(`🛡️ [Tuyệt Đối Phòng Ngự] Sa Mạc Đại Táng gây Choáng, cấp lớp Khiên ${sVal.toLocaleString()} HP cho toàn đội!`);
+      }
+    } else if (actor.id === "hashirama") {
+      // Hashirama: Gây 300% ATK lên 3 mục tiêu + Choáng 3 lượt + Khiên 50% tổng ST
+      const raw = actor.atk * 3.00;
+      const targets = battle.botTeam.filter(b => b.hp > 0).slice(0, 3);
+      let totalDmgHashi = 0;
+      targets.forEach(t => {
+        t.buffs = t.buffs || {};
+        t.buffs.stun = Math.max(t.buffs.stun || 0, 3);
+        addAnimation(t, "CHOÁNG 3 LƯỢT!", "#3fb950");
+        const { damage, isCrit } = calculateDamage(actor, t, raw);
+        totalDmgHashi += applyDamage(t, damage, isCrit, actor);
+      });
+      const shieldVal = Math.round(totalDmgHashi * 0.50);
+      actor.shield = (actor.shield || 0) + shieldVal;
+      addAnimation(actor, `+${shieldVal} KHIÊN MỘC ĐỘN`, "#3fb950");
+      logCombat(`🌺🛡️ [Hoa Thụ Giới Hàng Lâm] Hashirama gây ${totalDmgHashi} ST lên 3 mục tiêu, Choáng 3 lượt và tạo Khiên ${shieldVal.toLocaleString()} HP!`);
+      if (actor.level >= 30) {
+        const enBack = (actor.level >= 80) ? 1.4 : 1.0;
+        const mitVal = (actor.level >= 80) ? 0.40 : 0.30;
+        actor.en = Math.min(actor.enMax, +(actor.en + enBack).toFixed(1));
+        actor.buffs = actor.buffs || {};
+        actor.buffs.hashiramaDmgReduction = { turns: 2, val: mitVal };
+        addAnimation(actor, `+${enBack} EN & MIỄN THƯƠNG ${Math.round(mitVal*100)}%`, "#3fb950");
+        logCombat(`🌿 [Tiên Nhân Thể] Hashirama hồi phục +${enBack} EN và kích hoạt Miễn Thương ${Math.round(mitVal*100)}% trong 2 lượt!`);
+      }
+    } else if (actor.id === "kaguya") {
+      // Kaguya: Thay đổi môi trường tuần tự: Băng Tuyết -> Núi Lửa -> Sa Mạc -> Băng Tuyết
+      actor.dimension = actor.dimension || "ice";
+      let nextDim = "fire";
+      let nextDimName = "Núi Lửa (Dung Nham)";
+      if (actor.dimension === "ice") {
+        nextDim = "fire";
+        nextDimName = "Núi Lửa (Dung Nham)";
+      } else if (actor.dimension === "fire") {
+        nextDim = "desert";
+        nextDimName = "Sa Mạc Khô Cằn";
+      } else {
+        nextDim = "ice";
+        nextDimName = "Băng Tuyết Vĩnh Cửu";
+      }
+      actor.dimension = nextDim;
+      addAnimation(actor, `KHÔNG GIAN: ${nextDim.toUpperCase()}`, "#bc8cff");
+      logCombat(`🌌🌀 [Thiên Đạo Luân Chuyển] Kaguya Otsutsuki mở cổng không gian, dịch chuyển toàn bộ sàn đấu sang Môi Trường: ${nextDimName}!`);
     }
   }
 
@@ -4437,6 +4652,41 @@ function executeHeroBotAction(actor, alivePlayers) {
       });
       actor.shield += stolen;
       logCombat(`🕊️🎩 [Địch: Ảo Thuật Ánh Trăng] ${actor.name} càn quét toàn đội gây ${totalDmg} ST và hút ${stolen} Khiên!`);
+    } else if (actor.heroId === "gaara") {
+      let totalD = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 2.00;
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalD += applyDamage(p, damage, isCrit, actor);
+        if (Math.random() < 0.60) {
+          p.buffs = p.buffs || {};
+          p.buffs.stun = Math.max(p.buffs.stun || 0, 2);
+          addAnimation(p, "BỊ CHOÁNG 2 LƯỢT", "#f85149");
+        }
+      });
+      logCombat(`🏜️💥 [Địch: Sa Mạc Đại Táng] ${actor.name} gây ${totalD} ST lên toàn đội!`);
+    } else if (actor.heroId === "hashirama") {
+      let totalD = 0;
+      const targets = alivePlayers.slice(0, 3);
+      targets.forEach(p => {
+        const raw = actor.atk * 3.00;
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalD += applyDamage(p, damage, isCrit, actor);
+        p.buffs = p.buffs || {};
+        p.buffs.stun = Math.max(p.buffs.stun || 0, 2);
+      });
+      actor.shield = (actor.shield || 0) + Math.round(totalD * 0.50);
+      logCombat(`🌺 [Địch: Hoa Thụ Giới Hàng Lâm] ${actor.name} gây ${totalD} ST và tạo Khiên Mộc Độn!`);
+    } else if (actor.heroId === "kaguya") {
+      let totalD = 0;
+      alivePlayers.forEach(p => {
+        const raw = actor.atk * 2.30;
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalD += applyDamage(p, damage, isCrit, actor);
+        p.buffs = p.buffs || {};
+        p.buffs.bocHoa = { stacks: 10, duration: 2 };
+      });
+      logCombat(`🌋🔥 [Địch: Thiên Đạo Luân Chuyển] ${actor.name} dội bão lửa gây ${totalD} ST và khắc 10 tầng Bốc Hỏa!`);
     }
   } else {
     // Normal attack
@@ -4559,6 +4809,24 @@ function executeHeroBotAction(actor, alivePlayers) {
       target.en = Math.max(0, +(target.en - 0.8).toFixed(1));
       actor.en = Math.min(actor.enMax, +(actor.en + s).toFixed(1));
       logCombat(`🃏 [Địch: Phi Bài Bạc] ${actor.name} gây ${damage} ST và cướp ${s} EN từ ${target.name}!`);
+    } else if (actor.heroId === "gaara") {
+      const raw = actor.atk * 0.77;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`🏜️ [Địch: Sa Đạn] ${actor.name} bắn đạn cát gây ${damage} ST lên ${target.name}.`);
+    } else if (actor.heroId === "hashirama") {
+      const raw = actor.atk * 0.88;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`🌿 [Địch: Mộc Độn Quyền] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+    } else if (actor.heroId === "kaguya") {
+      const raw = actor.atk * 1.40;
+      let totalD = 0;
+      alivePlayers.forEach(p => {
+        const { damage, isCrit } = calculateDamage(actor, p, raw);
+        totalD += applyDamage(p, damage, isCrit, actor);
+      });
+      logCombat(`❄️ [Địch: Không Gian Kaguya] ${actor.name} càn quét toàn đội gây ${totalD} ST!`);
     }
   }
 
@@ -5951,7 +6219,7 @@ function openBattleStageModal() {
 function renderChapterTabs() {
   const container = document.getElementById("chapterTabsContainer");
   container.innerHTML = "";
-  for (let c = 1; c <= 4; c++) {
+  for (let c = 1; c <= 5; c++) {
     const btn = document.createElement("button");
     btn.className = `btn ${c === selectedChapter ? "btn-accent" : ""}`;
     btn.textContent = `Chương ${c}${c > gameState.progress.maxChapter ? " 🔒" : ""}`;
@@ -6123,6 +6391,7 @@ function renderHeroDetails(heroId) {
   }
 
   const isLocked250 = (currentLv === 250 && !gameState.heroes[heroId]?.breakthrough250);
+  const isLocked300 = (currentLv === 300 && !gameState.heroes[heroId]?.breakthrough300);
 
   let upgradeSectionHtml = "";
   if (isLocked250) {
@@ -6142,16 +6411,33 @@ function renderHeroDetails(heroId) {
         </div>
       </div>
     `;
+  } else if (isLocked300) {
+    upgradeSectionHtml = `
+      <div style="width:100%; background:#1c1214; border:1px solid #f85149; border-radius:8px; padding:10px;">
+        <div style="font-weight:700; color:#f85149; font-size:12px; margin-bottom:3px;">🔒 CẦN ĐỘT PHÁ CẤP 300 ĐỂ MỞ RỘNG LÊN CẤP 350!</div>
+        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">
+          Từ Cấp 300 trở đi, mỗi cấp tăng <b>+30% chỉ số gốc</b>. Chọn 1 trong 2 loại Thiên Thạch để mở khóa:
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn" style="flex:1; padding:6px; background:#2c1524; border-color:var(--accent-pink); color:var(--accent-pink); font-size:11px; font-weight:bold;" onclick="breakthroughHero300('${heroId}', 'pink')">
+            Đột Phá: 180 ☄️ Thiên Thạch Hồng
+          </button>
+          <button class="btn" style="flex:1; padding:6px; background:#11222e; border-color:var(--accent-cyan); color:var(--accent-cyan); font-size:11px; font-weight:bold;" onclick="breakthroughHero300('${heroId}', 'blue')">
+            Đột Phá: 390 🔷 Thiên Thạch Xanh
+          </button>
+        </div>
+      </div>
+    `;
   } else {
     upgradeSectionHtml = `
       <div style="font-size:11px;">
         Chi phí: <b style="color:var(--accent-green)">${vpncCost.toLocaleString()} VPNC</b>, <b style="color:var(--accent-gold)">${goldCost.toLocaleString()} Vàng</b>
       </div>
       <div style="display:flex; gap:6px;">
-        <button class="btn btn-primary" style="padding:5px 10px;" onclick="upgradeHero('${heroId}')" ${currentLv >= 300 ? "disabled" : ""}>
-          ${currentLv >= 300 ? "Đạt Max Cấp" : "Nâng (+1 Lv)"}
+        <button class="btn btn-primary" style="padding:5px 10px;" onclick="upgradeHero('${heroId}')" ${currentLv >= 350 ? "disabled" : ""}>
+          ${currentLv >= 350 ? "Đạt Max Cấp (350)" : "Nâng (+1 Lv)"}
         </button>
-        <button class="btn btn-accent" style="padding:5px 10px;" onclick="upgradeHero10('${heroId}')" ${currentLv >= 300 ? "disabled" : ""}>
+        <button class="btn btn-accent" style="padding:5px 10px;" onclick="upgradeHero10('${heroId}')" ${currentLv >= 350 ? "disabled" : ""}>
           +10 Lv
         </button>
       </div>
@@ -6164,7 +6450,7 @@ function renderHeroDetails(heroId) {
         <h3 style="font-size:15px; font-weight:700;">${stats.name}</h3>
         <span style="font-size:10px; color:var(--text-secondary);">${db.roleDesc}</span>
       </div>
-      <span class="level-badge">Lv. ${currentLv}/300 ${gameState.heroes[heroId]?.breakthrough250 ? "⭐" : ""}</span>
+      <span class="level-badge">Lv. ${currentLv}/350 ${gameState.heroes[heroId]?.breakthrough250 ? "⭐" : ""}</span>
     </div>
 
     <!-- v3.2.2: Hiển thị chỉ số Level Hiện Tại kèm buff Linh Thú -->
@@ -6227,9 +6513,13 @@ function renderHeroDetails(heroId) {
 
 function upgradeHero(heroId) {
   const currentLv = gameState.heroes[heroId].level;
-  if (currentLv >= 300) { toast("Nhân vật đã đạt cấp tối đa (Lv. 300)!", true); return; }
+  if (currentLv >= 350) { toast("Nhân vật đã đạt cấp tối đa (Lv. 350)!", true); return; }
   if (currentLv === 250 && !gameState.heroes[heroId]?.breakthrough250) {
     toast("Cần Đột Phá Cấp 250 bằng 45 Thiên Thạch Hồng hoặc 95 Thiên Thạch Xanh để nâng cấp tiếp!", true);
+    return;
+  }
+  if (currentLv === 300 && !gameState.heroes[heroId]?.breakthrough300) {
+    toast("Cần Đột Phá Cấp 300 bằng 180 Thiên Thạch Hồng hoặc 390 Thiên Thạch Xanh để nâng cấp tiếp lên Cấp 350!", true);
     return;
   }
   const { vpncCost, goldCost } = getHeroUpgradeCost(currentLv);
@@ -6254,13 +6544,22 @@ function upgradeHero(heroId) {
 
 function upgradeHero10(heroId) {
   const currentLv = gameState.heroes[heroId].level;
-  if (currentLv >= 300) return;
+  if (currentLv >= 350) return;
   if (currentLv === 250 && !gameState.heroes[heroId]?.breakthrough250) {
     toast("Cần Đột Phá Cấp 250 bằng 45 Thiên Thạch Hồng hoặc 95 Thiên Thạch Xanh để nâng cấp tiếp!", true);
     return;
   }
+  if (currentLv === 300 && !gameState.heroes[heroId]?.breakthrough300) {
+    toast("Cần Đột Phá Cấp 300 bằng 180 Thiên Thạch Hồng hoặc 390 Thiên Thạch Xanh để nâng cấp tiếp lên Cấp 350!", true);
+    return;
+  }
 
-  const maxAllowed = (!gameState.heroes[heroId]?.breakthrough250 && currentLv < 250) ? 250 : 300;
+  let maxAllowed = 350;
+  if (!gameState.heroes[heroId]?.breakthrough250 && currentLv < 250) {
+    maxAllowed = 250;
+  } else if (!gameState.heroes[heroId]?.breakthrough300 && currentLv < 300) {
+    maxAllowed = 300;
+  }
   const targetLv = Math.min(maxAllowed, currentLv + 10);
   let totalVpnc = 0;
   let totalGold = 0;
@@ -6325,6 +6624,42 @@ function breakthroughHero(heroId, type) {
   renderHeroesList();
   renderHeroDetails(heroId);
 }
+
+function breakthroughHero300(heroId, type) {
+  if (!gameState.heroes[heroId]) return;
+  if (gameState.heroes[heroId].level < 300) {
+    toast("Nhân vật chưa đạt Cấp 300 để đột phá!", true);
+    return;
+  }
+  if (gameState.heroes[heroId].breakthrough300) {
+    toast("Nhân vật đã đột phá Cấp 300 rồi!", true);
+    return;
+  }
+
+  if (type === "pink") {
+    if ((gameState.resources.pinkMeteor || 0) < 180) {
+      toast("Không đủ Thiên Thạch Hồng (Cần 180 ☄️)!", true);
+      return;
+    }
+    gameState.resources.pinkMeteor -= 180;
+  } else if (type === "blue") {
+    if ((gameState.resources.blueMeteor || 0) < 390) {
+      toast("Không đủ Thiên Thạch Xanh (Cần 390 🔷)!", true);
+      return;
+    }
+    gameState.resources.blueMeteor -= 390;
+  } else {
+    return;
+  }
+
+  gameState.heroes[heroId].breakthrough300 = true;
+  saveGame();
+  updateTopBarUI();
+  toast(`🎉 Đột Phá Thần Cấp thành công! ${HERO_DB[heroId].name} mở khóa giới hạn lên Cấp 350 (+30% chỉ số/Lv)!`);
+  renderHeroesList();
+  renderHeroDetails(heroId);
+}
+
 /* ==========================================================================
    SỰ KIỆN: ĐẠI TIỆC TRUNG THU v2.0.0
    ========================================================================== */
