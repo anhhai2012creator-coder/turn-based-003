@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Chiến Thuật Luân Hồi - Bản Cập Nhật Full v3.2.2 (Chuẩn Hóa % Linh Thú Theo Level Hiện Tại & Đồng Bộ Chỉ Số Toàn Diện)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Khắc Phục v3.3.1 (Khôi Phục Dữ Liệu & Chống Treo Nút Bấm Toàn Diện)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -496,7 +497,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v3.2.2 Full: Chuẩn Hóa Tăng % Linh Thú Theo Level Hiện Tại | Đồng Bộ Chỉ Số Ra Giao Diện Tướng & Đội Hình</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v3.3.1 Hotfix: Khắc Phục Toàn Diện Sự Cố Tải Game & Chống Treo Nút Bấm | Khôi Phục Dữ Liệu An Toàn</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -1083,7 +1084,18 @@
         <button class="modal-close" onclick="closeModal('modalGiftcode')">&times;</button>
       </div>
       <div class="modal-body">
-        <input type="text" id="giftcodeInput" placeholder="VD: TANTHU001, TRUNGTHU2026..." style="width:100%; padding:10px; background:#0d1117; border:1px solid var(--border-color); border-radius:8px; color:#fff; font-size:13px; text-transform:uppercase;">
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:6px;">Nhập mã Giftcode quà tặng hoặc sử dụng nút khôi phục bên dưới:</div>
+        <input type="text" id="giftcodeInput" placeholder="VD: TANTHU001, COLLAB, TEST002..." style="width:100%; padding:10px; background:#0d1117; border:1px solid var(--border-color); border-radius:8px; color:#fff; font-size:13px; text-transform:uppercase;">
+        
+        <div style="margin-top:12px; padding:10px; background:#161b22; border:1px dashed #3fb950; border-radius:8px;">
+          <div style="font-size:12px; font-weight:700; color:var(--accent-green); margin-bottom:4px;">🔄 Khôi Phục Nhanh Tiến Độ Thử Nghiệm:</div>
+          <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">
+            Nếu game bị reset hoặc đổi trình duyệt: Nhấn nút bên dưới để nhận ngay <b>10 TỶ Tài Nguyên</b>, mở khóa toàn bộ <b>14 Tướng Max Cấp 300</b>, mở trọn bộ <b>9 Linh Thú (kể cả Thiên Thần Thú SS)</b> và mở Max Chương 4!
+          </div>
+          <button class="btn btn-primary" style="width:100%; padding:8px; font-weight:700;" onclick="submitGiftcodeQuick('TEST002')">
+            ⚡ Khôi Phục Toàn Diện (Tương Đương Mã TEST002)
+          </button>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn" onclick="closeModal('modalGiftcode')">Hủy</button>
@@ -1611,29 +1623,99 @@ let gameState = {
   }
 };
 
+function safeDeepMerge(target, source) {
+  if (!source || typeof source !== 'object') return target;
+  for (const key of Object.keys(source)) {
+    if (source[key] !== null && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+      if (!target[key] || typeof target[key] !== 'object' || Array.isArray(target[key])) target[key] = {};
+      safeDeepMerge(target[key], source[key]);
+    } else if (source[key] !== undefined && source[key] !== null) {
+      target[key] = source[key];
+    }
+  }
+  return target;
+}
+
 function saveGame() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
+  } catch(e) {
+    console.error("Lỗi khi lưu game:", e);
+  }
   updateTopBarUI();
 }
 
 function loadGame() {
-  const data = localStorage.getItem(STORAGE_KEY);
-  if (data) {
-    try {
-      const parsed = JSON.parse(data);
-      gameState = Object.assign(gameState, parsed);
-    } catch(e) { console.error(e); }
+  try {
+    const possibleKeys = [
+      "TURN_BASED_GAME_SAVE_V130",
+      "TURN_BASED_GAME_SAVE_V120",
+      "TURN_BASED_GAME_SAVE",
+      "LUAN_HOI_GAME_SAVE"
+    ];
+
+    let foundData = null;
+    for (const k of possibleKeys) {
+      const d = localStorage.getItem(k);
+      if (d) {
+        foundData = d;
+        break;
+      }
+    }
+
+    if (foundData) {
+      try {
+        const parsed = JSON.parse(foundData);
+        safeDeepMerge(gameState, parsed);
+      } catch(e) { console.error("Lỗi phân tích save data:", e); }
+    }
+  } catch (err) {
+    console.error("Lỗi truy xuất localStorage:", err);
   }
-  // Initialize new properties if absent
+
+  // Khôi phục và đảm bảo toàn vẹn cấu trúc dữ liệu không bao giờ bị undefined
+  if (!gameState.player) gameState.player = { level: 1, exp: 0, maxLevel: 150 };
+  if (!gameState.player.level) gameState.player.level = 1;
+  if (!gameState.player.exp) gameState.player.exp = 0;
+  if (!gameState.player.maxLevel) gameState.player.maxLevel = 150;
+
+  if (!gameState.resources) gameState.resources = {};
+  const defaultRes = {
+    anhSao: 50,
+    kimCuong: 120,
+    vpnc: 800,
+    gold: 2000,
+    banhTrungThu: 0,
+    keoBanh: 0,
+    pinkMeteor: 0,
+    pinkShard: 0,
+    blueMeteor: 0,
+    blueShard: 0
+  };
+  for (const k in defaultRes) {
+    if (gameState.resources[k] === undefined || gameState.resources[k] === null || isNaN(gameState.resources[k])) {
+      gameState.resources[k] = defaultRes[k];
+    }
+  }
+
+  if (!gameState.progress) gameState.progress = { maxChapter: 1, maxStage: 1 };
+  if (!gameState.progress.maxChapter) gameState.progress.maxChapter = 1;
+  if (!gameState.progress.maxStage) gameState.progress.maxStage = 1;
+
+  if (!gameState.heroes || typeof gameState.heroes !== 'object') gameState.heroes = { traveler: { level: 1 } };
+  if (!gameState.heroes.traveler) gameState.heroes.traveler = { level: 1 };
+
+  if (!gameState.team || !Array.isArray(gameState.team) || gameState.team.length < 3) {
+    gameState.team = ["traveler", null, null];
+  }
+
   if (!gameState.training) gameState.training = { goldMaxStage: 1, resMaxStage: 1 };
   if (!gameState.training.goldMaxStage) gameState.training.goldMaxStage = 1;
   if (!gameState.training.resMaxStage) gameState.training.resMaxStage = 1;
-  if (!gameState.ownedBeasts) gameState.ownedBeasts = [];
-  if (!gameState.resources.pinkMeteor) gameState.resources.pinkMeteor = 0;
-  if (!gameState.resources.pinkShard) gameState.resources.pinkShard = 0;
-  if (!gameState.resources.blueMeteor) gameState.resources.blueMeteor = 0;
-  if (!gameState.resources.blueShard) gameState.resources.blueShard = 0;
-  if (gameState.resources.keoBanh === undefined) gameState.resources.keoBanh = 0;
+
+  if (!gameState.ownedBeasts || !Array.isArray(gameState.ownedBeasts)) gameState.ownedBeasts = [];
+
+  if (!gameState.events) gameState.events = {};
   if (!gameState.events.midAutumn) {
     gameState.events.midAutumn = {
       playTimeMinutes: 0,
@@ -1651,9 +1733,7 @@ function loadGame() {
       gachaBoxClaimed: false
     };
   }
-  ["isshiki", "itachi", "momoshiki", "kaioshin", "phoverus"].forEach(hId => {
-    if (!gameState.heroes[hId]) gameState.heroes[hId] = { level: 1 };
-  });
+
   if (!gameState.checkin) gameState.checkin = { currentCycleDay: 0, lastClaimDate: "", cycleStartDate: "" };
   if (!gameState.dailyQuests) {
     gameState.dailyQuests = {
@@ -1662,7 +1742,13 @@ function loadGame() {
       claimedQuests: []
     };
   }
-  checkDailyReset();
+
+  try {
+    checkDailyReset();
+  } catch(e) {
+    console.error("Lỗi checkDailyReset:", e);
+  }
+
   updateTopBarUI();
 }
 
@@ -1722,20 +1808,38 @@ function addPlayerExp(amount) {
 }
 
 function updateTopBarUI() {
-  document.getElementById("uiPlayerLevel").textContent = `Lv. ${gameState.player.level}`;
-  const reqExp = getExpRequiredForLevel(gameState.player.level);
-  document.getElementById("uiExpText").textContent = `${gameState.player.exp}/${reqExp}`;
-  const pct = Math.min(100, Math.floor((gameState.player.exp / reqExp) * 100));
-  document.getElementById("uiExpBar").style.width = `${pct}%`;
+  try {
+    const pLv = (gameState.player && gameState.player.level) ? gameState.player.level : 1;
+    const pExp = (gameState.player && gameState.player.exp) ? gameState.player.exp : 0;
+    const reqExp = getExpRequiredForLevel(pLv);
+    const pct = Math.min(100, Math.floor((pExp / reqExp) * 100));
 
-  document.getElementById("uiAnhSao").textContent = gameState.resources.anhSao.toLocaleString();
-  document.getElementById("uiKimCuong").textContent = gameState.resources.kimCuong.toLocaleString();
-  document.getElementById("uiVpnc").textContent = gameState.resources.vpnc.toLocaleString();
-  document.getElementById("uiGold").textContent = gameState.resources.gold.toLocaleString();
-  document.getElementById("uiBanhTrungThu").textContent = (gameState.resources.banhTrungThu || 0).toLocaleString();
-  document.getElementById("uiPinkMeteor").textContent = (gameState.resources.pinkMeteor || 0).toLocaleString();
-  document.getElementById("uiBlueMeteor").textContent = (gameState.resources.blueMeteor || 0).toLocaleString();
-  if (document.getElementById("uiKeoBanh")) document.getElementById("uiKeoBanh").textContent = (gameState.resources.keoBanh || 0).toLocaleString();
+    const elLevel = document.getElementById("uiPlayerLevel");
+    if (elLevel) elLevel.textContent = `Lv. ${pLv}`;
+
+    const elExp = document.getElementById("uiExpText");
+    if (elExp) elExp.textContent = `${pExp}/${reqExp}`;
+
+    const elExpBar = document.getElementById("uiExpBar");
+    if (elExpBar) elExpBar.style.width = `${pct}%`;
+
+    const res = gameState.resources || {};
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = (Number(val) || 0).toLocaleString();
+    };
+
+    setVal("uiAnhSao", res.anhSao);
+    setVal("uiKimCuong", res.kimCuong);
+    setVal("uiVpnc", res.vpnc);
+    setVal("uiGold", res.gold);
+    setVal("uiBanhTrungThu", res.banhTrungThu);
+    setVal("uiPinkMeteor", res.pinkMeteor);
+    setVal("uiBlueMeteor", res.blueMeteor);
+    setVal("uiKeoBanh", res.keoBanh);
+  } catch (err) {
+    console.error("Lỗi trong updateTopBarUI:", err);
+  }
 }
 
 /* ==========================================================================
@@ -5479,9 +5583,15 @@ function exchangeLuanHoi() {
 // openBeastModal handled above with renderBeastModal()
 function openGiftcodeModal() { openModal("modalGiftcode"); }
 
+function submitGiftcodeQuick(codeVal) {
+  const input = document.getElementById("giftcodeInput");
+  if (input) input.value = codeVal;
+  submitGiftcode();
+}
+
 function submitGiftcode() {
   const input = document.getElementById("giftcodeInput");
-  const code = input.value.trim().toUpperCase();
+  const code = input ? input.value.trim().toUpperCase() : "";
   if (!code) return;
 
   if (code === "CONAN") {
@@ -5695,8 +5805,7 @@ function openBattleStageModal() {
 }
 
 function renderChapterTabs() {
-  const container = document.get
-ElementById("chapterTabsContainer");
+  const container = document.getElementById("chapterTabsContainer");
   container.innerHTML = "";
   for (let c = 1; c <= 4; c++) {
     const btn = document.createElement("button");
@@ -6386,9 +6495,25 @@ function openMidAutumnHeroBox() {
   renderMidAutumnUI();
 }
 
-window.onload = () => {
-  loadGame();
-};
+function initGame() {
+  try {
+    loadGame();
+  } catch (err) {
+    console.error("Lỗi khi khởi chạy loadGame:", err);
+  }
+  try {
+    updateTopBarUI();
+  } catch (err) {
+    console.error("Lỗi khi khởi chạy updateTopBarUI:", err);
+  }
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initGame);
+} else {
+  initGame();
+}
+window.onload = initGame;
 </script>
 </body>
 </html>
