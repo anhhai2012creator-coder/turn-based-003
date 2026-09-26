@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Chiến Thuật Luân Hồi - Bản Cập Nhật Full v3.2.1 (Sửa Lỗi Tỉ Lệ Linh Thú Theo Level Hiện Tại & Thêm Banner Trận)</title>
+<title>Chiến Thuật Luân Hồi - Chiến Thuật Luân Hồi - Bản Cập Nhật Full v3.2.2 (Chuẩn Hóa % Linh Thú Theo Level Hiện Tại & Đồng Bộ Chỉ Số Toàn Diện)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -496,7 +496,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v3.2.1 Full: Sửa Lỗi Linh Thú Tăng % Theo Chỉ Số Level Hiện Tại | Hiển Thị Trực Quan Trận Đấu</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v3.2.2 Full: Chuẩn Hóa Tăng % Linh Thú Theo Level Hiện Tại | Đồng Bộ Chỉ Số Ra Giao Diện Tướng & Đội Hình</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -1957,7 +1957,7 @@ const BEASTS_DB = {
     tier: "S",
     tierColor: "#bc8cff",
     icon: "🦅",
-    desc: "Tăng 1300% HP và ATK gốc toàn đội. +30 DEF toàn đội.",
+    desc: "Tăng 1300% HP và ATK theo Level Hiện Tại toàn đội. +30 DEF toàn đội.",
     stats: { hpPct: 13.0, atkPct: 13.0, defFlat: 30 }
   },
   thong_linh_thu: {
@@ -1966,7 +1966,7 @@ const BEASTS_DB = {
     tier: "S",
     tierColor: "#bc8cff",
     icon: "🐸",
-    desc: "Tăng 1420% HP và ATK gốc toàn đội. +15 DEF toàn đội.",
+    desc: "Tăng 1420% HP và ATK theo Level Hiện Tại toàn đội. +15 DEF toàn đội.",
     stats: { hpPct: 14.2, atkPct: 14.2, defFlat: 15 }
   },
   bao_ma_thu: {
@@ -1975,7 +1975,7 @@ const BEASTS_DB = {
     tier: "S",
     tierColor: "#f85149",
     icon: "🦁",
-    desc: "Tăng 1250% HP và 1500% ATK gốc toàn đội. +22 DEF toàn đội.",
+    desc: "Tăng 1250% HP và 1500% ATK theo Level Hiện Tại toàn đội. +22 DEF toàn đội.",
     stats: { hpPct: 12.5, atkPct: 15.0, defFlat: 22 }
   },
   tu_phach_thu: {
@@ -1984,7 +1984,7 @@ const BEASTS_DB = {
     tier: "S",
     tierColor: "#bc8cff",
     icon: "🦇",
-    desc: "Tăng 1100% HP và ATK gốc toàn đội. +25 DEF toàn đội. Đầu trận toàn đội nhận 1 EN.",
+    desc: "Tăng 1100% HP và ATK theo Level Hiện Tại toàn đội. +25 DEF toàn đội. Đầu trận toàn đội nhận 1 EN.",
     stats: { hpPct: 11.0, atkPct: 11.0, defFlat: 25, teamStartEn: 1 }
   },
   susanoo: {
@@ -1993,7 +1993,7 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#f0883e",
     icon: "⚔️",
-    desc: "Tăng 1650% HP và ATK gốc toàn đội. +50 DEF toàn đội.",
+    desc: "Tăng 1650% HP và ATK theo Level Hiện Tại toàn đội. +50 DEF toàn đội.",
     companion: "madara",
     companionName: "Madara Lục Đạo",
     companionDesc: "Tăng 25% Crit cho Madara. Đầu trận Madara nhận thêm 2 EN.",
@@ -2005,10 +2005,10 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#f85149",
     icon: "🔥",
-    desc: "Tăng 1550% HP và ATK gốc toàn đội. +45 DEF toàn đội.",
+    desc: "Tăng 1550% HP và ATK theo Level Hiện Tại toàn đội. +45 DEF toàn đội.",
     companion: "itachi",
     companionName: "Itachi Uế Thổ Chuyển Sinh",
-    companionDesc: "Tăng 20% ATK gốc cho Itachi. Nâng cấp Tuyệt kỹ: Gây 400% ATK lên 1 mục tiêu, +7 tầng 'Bốc hoả', tiêu tốn toàn bộ EN, sau khi dùng hồi 1.5 EN.",
+    companionDesc: "Tăng 20% ATK theo Level Hiện Tại cho Itachi. Nâng cấp Tuyệt kỹ: Gây 400% ATK lên 1 mục tiêu, +7 tầng 'Bốc hoả', tiêu tốn toàn bộ EN, sau khi dùng hồi 1.5 EN.",
     stats: { hpPct: 15.5, atkPct: 15.5, defFlat: 45 }
   },
   rinnegan: {
@@ -2017,7 +2017,7 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#d29922",
     icon: "👁️",
-    desc: "Tăng 1800% HP và 1300% ATK gốc toàn đội. +60 DEF toàn đội.",
+    desc: "Tăng 1800% HP và 1300% ATK theo Level Hiện Tại toàn đội. +60 DEF toàn đội.",
     companion: "pain",
     companionName: "Pain (Thiên Đạo)",
     companionDesc: "Tăng thêm 5% tỉ lệ Teleportation của Pain. Mỗi lần Pain sử dụng Teleportation hồi phục toàn đội bằng 10% HP tối đa và tăng 30% ST trong 2 lượt.",
@@ -2029,7 +2029,7 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#58a6ff",
     icon: "👑",
-    desc: "Tăng 1600% HP và ATK gốc toàn đội. +90 DEF toàn đội.",
+    desc: "Tăng 1600% HP và ATK theo Level Hiện Tại toàn đội. +90 DEF toàn đội.",
     companion: ["isshiki", "momoshiki", "luanhoi"],
     companionName: "Bộ Ba Otsutsuki (Isshiki, Momoshiki, Luân Hồi Tiên Nhân)",
     companionDesc: "Khi cả 3 cùng đội: Đầu trận nhận Khiên bằng 50% HP tối đa của Momoshiki cho toàn đội; Momoshiki mỗi lượt tích 2 Nộ (thay vì 0.5); Luân Hồi Tiên Nhân khi gây ST cấp Khiên cho toàn đội bằng 70% ST gây ra; Isshiki tốc đánh gốc 50%; Khả năng hồi EN đánh thường +0.5 EN cho toàn đội.",
@@ -2041,7 +2041,7 @@ const BEASTS_DB = {
     tier: "SS",
     tierColor: "#ffdf5d",
     icon: "✨",
-    desc: "Tăng 2000% HP và ATK gốc toàn đội. Crit +20%. +50 DEF toàn đội. Khả năng hồi EN của đánh thường +1 EN.",
+    desc: "Tăng 2000% HP và ATK theo Level Hiện Tại toàn đội. Crit +20%. +50 DEF toàn đội. Khả năng hồi EN của đánh thường +1 EN.",
     stats: { hpPct: 20.0, atkPct: 20.0, defFlat: 50, critRate: 0.20, normalEnGain: 1.0 }
   }
 };
@@ -2095,6 +2095,21 @@ function renderBeastModal() {
         ${curBeast ? `<button class="btn btn-secondary" onclick="equipBeast(null)" style="padding:4px 12px; font-size:12px;">Tháo Ra</button>` : ''}
       </div>
       ${curBeast ? `<div style="font-size:12px; color:var(--accent-green); margin-top:6px;">${curBeast.desc}</div>` : ''}
+      ${curBeast ? `
+        <div style="margin-top:10px; padding:8px 10px; background:#161b22; border-radius:6px; border-left:3px solid ${curBeast.tierColor}; font-size:11px;">
+          <div style="font-weight:700; color:#ffdf5d; margin-bottom:4px;">Chỉ Số Đội Hình Sau Khi Được ${curBeast.name} Phù Trợ (+${Math.round(curBeast.stats.hpPct*100)}% Level Hiện Tại):</div>
+          ${gameState.team.map((hId, idx) => {
+            if (!hId || !gameState.heroes[hId]) return `<div style="color:var(--text-secondary);">Ô ${idx+1}: Trống</div>`;
+            const st = getHeroStats(hId);
+            const boostedHp = st.hp + Math.round(st.hp * curBeast.stats.hpPct);
+            const boostedAtk = +(st.atk + st.atk * curBeast.stats.atkPct).toFixed(1);
+            return `<div style="margin-bottom:2px; display:flex; justify-content:space-between;">
+              <span><b>${st.name}</b> (Lv.${st.level}):</span>
+              <span style="color:#ffdf5d;">HP: ${boostedHp.toLocaleString()} | ATK: ${boostedAtk.toLocaleString()}</span>
+            </div>`;
+          }).join('')}
+        </div>
+      ` : ''}
     </div>
 
     <!-- MỤC 1: LINH THÚ ĐÃ SỞ HỮU -->
@@ -5680,7 +5695,8 @@ function openBattleStageModal() {
 }
 
 function renderChapterTabs() {
-  const container = document.getElementById("chapterTabsContainer");
+  const container = document.get
+ElementById("chapterTabsContainer");
   container.innerHTML = "";
   for (let c = 1; c <= 4; c++) {
     const btn = document.createElement("button");
@@ -5709,8 +5725,7 @@ function renderStageGrid() {
     if (isUnlocked) {
       box.onclick = () => { selectedStage = s; renderStageGrid(); };
     } else {
-      box.onclick = () => { toast("Ải này đang bị khóa! Hãy vượ
-t qua ải trước để mở khóa.", true); };
+      box.onclick = () => { toast("Ải này đang bị khóa! Hãy vượt qua ải trước để mở khóa.", true); };
     }
     container.appendChild(box);
   }
@@ -5730,6 +5745,7 @@ function openTeamSetupModal() {
 let activeSlotToAssign = 0;
 
 function renderTeamSlots() {
+  const beast = (gameState.equippedBeast && BEASTS_DB[gameState.equippedBeast]) ? BEASTS_DB[gameState.equippedBeast] : null;
   for (let i = 0; i < 3; i++) {
     const heroId = gameState.team[i];
     const slotCard = document.getElementById(`teamSlot${i}`);
@@ -5740,7 +5756,13 @@ function renderTeamSlots() {
       const stats = getHeroStats(heroId);
       slotCard.className = "slot-card filled";
       nameEl.textContent = stats.name;
-      roleEl.textContent = `Lv.${stats.level} | [${stats.type}]`;
+      if (beast) {
+        const totalHp = stats.hp + Math.round(stats.hp * beast.stats.hpPct);
+        const totalAtk = +(stats.atk + stats.atk * beast.stats.atkPct).toFixed(0);
+        roleEl.innerHTML = `Lv.${stats.level} | [${stats.type}]<br><span style="color:#ffdf5d; font-size:10px; font-weight:700;">HP: ${totalHp.toLocaleString()} | ATK: ${totalAtk.toLocaleString()}</span>`;
+      } else {
+        roleEl.textContent = `Lv.${stats.level} | [${stats.type}]`;
+      }
     } else {
       slotCard.className = "slot-card";
       nameEl.textContent = "(Trống)";
@@ -5819,6 +5841,13 @@ function renderHeroDetails(heroId) {
   const currentLv = stats.level;
   const { vpncCost, goldCost } = getHeroUpgradeCost(currentLv);
 
+  // v3.2.2: Tính toán chỉ số cộng thêm từ Linh Thú theo Level Hiện Tại
+  const beast = (gameState.equippedBeast && BEASTS_DB[gameState.equippedBeast]) ? BEASTS_DB[gameState.equippedBeast] : null;
+  const beastHpBonus = beast ? Math.round(stats.hp * beast.stats.hpPct) : 0;
+  const beastAtkBonus = beast ? +(stats.atk * beast.stats.atkPct).toFixed(1) : 0;
+  const beastDefBonus = beast ? (beast.stats.defFlat || 0) : 0;
+  const beastCritBonus = beast ? (beast.stats.critRate || 0) : 0;
+
   let passivesHtml = db.passives.map(p => `
     <div style="margin-bottom:3px; font-size:11px;">
       <span style="font-weight:bold; color:${currentLv >= p.lv ? "var(--accent-green)" : "var(--text-secondary)"}">
@@ -5885,14 +5914,45 @@ function renderHeroDetails(heroId) {
       <span class="level-badge">Lv. ${currentLv}/300 ${gameState.heroes[heroId]?.breakthrough250 ? "⭐" : ""}</span>
     </div>
 
+    <!-- v3.2.2: Hiển thị chỉ số Level Hiện Tại kèm buff Linh Thú -->
     <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px; background:#161b22; padding:8px; border-radius:8px;">
-      <div class="stat-row"><span>HP:</span><span class="stat-val">${stats.hp.toLocaleString()}</span></div>
-      <div class="stat-row"><span>ATK:</span><span class="stat-val">${stats.atk.toLocaleString()}</span></div>
-      <div class="stat-row" title="Cố định"><span>DEF:</span><span class="stat-val">${stats.def}</span></div>
-      <div class="stat-row"><span>SPD:</span><span class="stat-val">${stats.spd}</span></div>
-      <div class="stat-row"><span>EN Max:</span><span class="stat-val">${stats.enMax}</span></div>
-      <div class="stat-row"><span>Crit:</span><span class="stat-val">${Math.round(stats.critRate*100)}% (x${stats.critDmg})</span></div>
+      <div class="stat-row">
+        <span>HP:</span>
+        <span class="stat-val">
+          ${stats.hp.toLocaleString()}
+          ${beastHpBonus ? `<span style="color:#ffdf5d; font-size:10px; display:block;" title="Buff từ ${beast.name}">+${beastHpBonus.toLocaleString()}</span>` : ""}
+        </span>
+      </div>
+      <div class="stat-row">
+        <span>ATK:</span>
+        <span class="stat-val">
+          ${stats.atk.toLocaleString()}
+          ${beastAtkBonus ? `<span style="color:#ffdf5d; font-size:10px; display:block;" title="Buff từ ${beast.name}">+${beastAtkBonus.toLocaleString()}</span>` : ""}
+        </span>
+      </div>
+      <div class="stat-row" title="Phòng thủ">
+        <span>DEF:</span>
+        <span class="stat-val">
+          ${stats.def}
+          ${beastDefBonus ? `<span style="color:#ffdf5d; font-size:10px; display:block;">+${beastDefBonus}</span>` : ""}
+        </span>
+      </div>
+      <div class="stat-row" title="Tốc độ đánh"><span>SPD:</span><span class="stat-val">${stats.spd}</span></div>
+      <div class="stat-row" title="Năng lượng tối đa"><span>EN Max:</span><span class="stat-val">${stats.enMax}</span></div>
+      <div class="stat-row" title="Tỉ lệ bạo kích">
+        <span>Crit:</span>
+        <span class="stat-val">
+          ${Math.round((stats.critRate + beastCritBonus) * 100)}% (x${stats.critDmg})
+          ${beastCritBonus ? `<span style="color:#ffdf5d; font-size:10px; display:block;">+${Math.round(beastCritBonus * 100)}%</span>` : ""}
+        </span>
+      </div>
     </div>
+    ${beast ? `
+      <div style="margin-top:6px; padding:6px 10px; background:rgba(255,223,93,0.08); border:1px solid ${beast.tierColor}; border-radius:6px; font-size:11px; color:#ffdf5d; display:flex; align-items:center; justify-content:space-between;">
+        <span>${beast.icon} <b>${beast.name} [${beast.tier}]</b> đang hộ mệnh:</span>
+        <span style="font-weight:700; color:#fff;">+${Math.round(beast.stats.hpPct * 100)}% HP & ATK theo Level Hiện Tại</span>
+      </div>
+    ` : ""}
 
     <div style="background:#161b22; padding:6px 8px; border-radius:8px;">
       <div style="font-weight:700; font-size:11px; color:var(--accent-blue);">Kỹ Năng:</div>
