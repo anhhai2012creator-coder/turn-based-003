@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -460,6 +461,50 @@
   }
   #toast.show { transform: translateX(-50%) translateY(0); }
   #toast.toast-error { background: #da3633; }
+
+  /* v5.0.0: NỀN TRÒ CHƠI & HIỆU ỨNG ĐẶC BIỆT */
+  body.theme-fire {
+    --bg-main: #1f0b08;
+    --bg-card: #2d120c;
+    --bg-card-hover: #3d1a12;
+    --border-color: #ff5722;
+    background: radial-gradient(circle at 50% 10%, #4a150a 0%, #1a0604 100%) !important;
+  }
+  body.theme-fire::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    background: radial-gradient(ellipse at bottom, rgba(255, 87, 34, 0.15) 0%, transparent 70%);
+    animation: flameFlicker 3s infinite alternate;
+    z-index: 0;
+  }
+  @keyframes flameFlicker {
+    0% { opacity: 0.7; }
+    100% { opacity: 1.0; }
+  }
+
+  body.theme-ice {
+    --bg-main: #061524;
+    --bg-card: #0c2338;
+    --bg-card-hover: #123352;
+    --border-color: #38bdf8;
+    background: radial-gradient(circle at 50% 10%, #0a2e4c 0%, #030d17 100%) !important;
+  }
+  body.theme-ice::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    background: radial-gradient(ellipse at top, rgba(56, 189, 248, 0.18) 0%, transparent 75%);
+    animation: frostPulse 4s infinite alternate;
+    z-index: 0;
+  }
+  @keyframes frostPulse {
+    0% { opacity: 0.6; }
+    100% { opacity: 0.95; }
+  }
+
 </style>
 </head>
 <body>
@@ -496,7 +541,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v4.0.4 Full: Chuẩn Hóa Mục Tiêu Bot (Hàng Trước Ô 1->2->3) | Tăng 40% DEF & 30% HP Tướng DEF | Rework Vegito & Tân Binh</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.0.0 SIÊU BẢN CẬP NHẬT: Sổ Sứ Mệnh Mùa II (Pass 1-60) | 2 Tướng Mới Tsunade & Shisui | 4 Đại Trụ Cột | Đổi Nền & Cân Bằng Meta</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -505,6 +550,22 @@
         <button class="btn btn-gold" onclick="openTrainingGateModal()">
           <span class="btn-icon">⛩️</span>
           <span>Đấu Luyện</span>
+        </button>
+        <button class="btn btn-accent" onclick="openEndlessTowerModal()">
+          <span class="btn-icon">🏰</span>
+          <span>Tháp Vô Hạn</span>
+        </button>
+        <button class="btn btn-pink" onclick="openWorldBossModal()">
+          <span class="btn-icon">👹</span>
+          <span>Boss Thế Giới</span>
+        </button>
+        <button class="btn btn-gold" onclick="openRookieCarnivalModal()">
+          <span class="btn-icon">🎖️</span>
+          <span>7 Ngày Tân Thủ</span>
+        </button>
+        <button class="btn" onclick="openThemeSelectModal()">
+          <span class="btn-icon">🎨</span>
+          <span>Đổi Nền</span>
         </button>
         <button class="btn" onclick="openHeroesModal()">
           <span class="btn-icon">👥</span>
@@ -635,13 +696,14 @@
   <div class="modal-overlay" id="modalPass">
     <div class="modal-card" style="width:740px;">
       <div class="modal-header">
-        <div class="modal-title">📜 Sổ Sứ Mệnh Mùa I (Gacha Triệu Hồi)</div>
+        <div class="modal-title">📜 Sổ Sứ Mệnh MÙA II (Vòng Quay & Lộ Trình Cấp 1–60)</div>
         <button class="modal-close" onclick="closeModal('modalPass')">&times;</button>
       </div>
       <div class="modal-body">
         <div class="tab-bar">
-          <button class="tab-btn active" id="tabBtnSpecialPass" onclick="switchPassTab('special')">⭐ Sổ Đặc Biệt (Madara & Pain)</button>
-          <button class="tab-btn" id="tabBtnNormalPass" onclick="switchPassTab('normal')">🔷 Sổ Thường (Vegito & Whis)</button>
+          <button class="tab-btn active" id="tabBtnSpecialPass" onclick="switchPassTab('special')">⭐ Sổ Cao Cấp Gacha (Kaguya & Hashirama)</button>
+          <button class="tab-btn" id="tabBtnNormalPass" onclick="switchPassTab('normal')">🔷 Sổ Thường Gacha (Kid & Isshiki)</button>
+          <button class="tab-btn" id="tabBtnPassRoadmap" onclick="switchPassTab('roadmap')">📈 Lộ Trình Tích Cấp (Lv 1–60)</button>
         </div>
 
         <!-- Nội dung Tab Gacha -->
@@ -649,7 +711,7 @@
           <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
             <div>
               <div style="font-weight:700; font-size:14px;" id="gachaBannerTitle">Sổ Sứ Mệnh Đặc Biệt Mùa I</div>
-              <div style="font-size:11px; color:var(--text-secondary);" id="gachaBannerDesc">Cơ hội nhận Pain Thiên Đạo (0.35%), Madara Lục Đạo (0.35%) cùng nhiều Mảnh Thiên Thạch & Ánh Sao.</div>
+              <div style="font-size:11px; color:var(--text-secondary);" id="gachaBannerDesc">Cơ hội nhận Kaguya Otsutsuki (0.4%), Senju Hashirama (0.4%) cùng Thiên Thạch Hoàng Kim & Ánh Sao Thần Thoại. Bảo hiểm 99 lượt chắc chắn nhận tướng!</div>
             </div>
             <div style="display:flex; gap:8px;">
               <button class="btn btn-accent" style="padding:8px 12px;" onclick="performGacha(1)">Quay 1 Lần<br><span style="font-size:10px;" id="gachaCost1">1 ☄️</span></button>
@@ -662,6 +724,20 @@
             <div style="font-size:13px; color:var(--text-secondary);" id="gachaPlaceholderText">Chọn "Quay 1 Lần" hoặc "Quay 10 Lần" để bắt đầu quay Sổ Sứ Mệnh...</div>
             <div id="gachaActiveCard" style="display:none;"></div>
             <button class="btn btn-primary" id="btnNextGachaItem" onclick="showNextGachaItem()" style="display:none; margin-top:10px; padding:6px 16px;">Xem Tiếp ➔</button>
+          </div>
+        </div>
+
+        <!-- Nội dung Tab Lộ Trình Tích Cấp Sổ Sứ Mệnh Mùa II -->
+        <div id="passRoadmapSection" style="display:none; flex-direction:column; gap:10px;">
+          <div style="background:#0d1117; border:1px solid var(--accent-gold); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-weight:700; font-size:14px; color:var(--accent-gold);">Cấp Sổ Sứ Mệnh: <span id="uiPassLevelDisplay">1</span>/60 (<span id="uiPassExpDisplay">0</span>/100 EXP)</div>
+              <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Trạng thái: <b id="uiPassStatusDisplay" style="color:var(--accent-blue);">Sổ Thường Miễn Phí</b></div>
+            </div>
+            <button class="btn btn-gold" id="btnActivatePassPremium" onclick="activatePremiumPass()">⭐ Kích Hoạt Cao Cấp (5,999 ⭐)</button>
+          </div>
+          <div id="passTiersListContainer" style="display:flex; flex-direction:column; gap:6px; max-height:280px; overflow-y:auto; padding-right:4px;">
+            <!-- Rendered in JS -->
           </div>
         </div>
       </div>
@@ -1289,7 +1365,24 @@ const GIFTCODES = {
   "TRUNGTHU2026": { anhSao: 500 },
   "CH4START": { desc: "Mở đúng Chương 4 Ải 1 để test mở từng ải" },
   "TEST001": { test: true },
-  "RESET001": { reset: true }
+  "TEST002": { test2: true },
+  "RESET001": { reset: true },
+  // v5.0.0: 15 Giftcode mới ẩn (nhận VPNC, Ánh Sao, Vàng, Kim Cương)
+  "V5UPDATE": { kimCuong: 500, anhSao: 100, gold: 50000, vpnc: 500 },
+  "TSUNADE2026": { kimCuong: 800, anhSao: 200, gold: 100000, vpnc: 1000 },
+  "SHISUIKOTO": { kimCuong: 800, anhSao: 200, gold: 100000, vpnc: 1000 },
+  "PASSSEASON2": { kimCuong: 500, blueMeteor: 5 },
+  "ENDLESSTOWER": { kimCuong: 300, anhSao: 50, vpnc: 2000 },
+  "WORLDBOSS": { kimCuong: 400, anhSao: 100, gold: 200000 },
+  "NEWBIE999": { kimCuong: 1000, anhSao: 300, gold: 100000, vpnc: 1500 },
+  "VIP888": { kimCuong: 888, anhSao: 188, gold: 88888, vpnc: 888 },
+  "CHIENBINH500": { kimCuong: 500, anhSao: 150, gold: 50000 },
+  "SUPERTANK": { kimCuong: 400, anhSao: 100, vpnc: 800 },
+  "CHIDORIKIRIN": { kimCuong: 600, anhSao: 120, vpnc: 1000 },
+  "HOKAGE777": { kimCuong: 777, anhSao: 177, gold: 77777 },
+  "THIENHOA99": { kimCuong: 999, anhSao: 250, gold: 99999 },
+  "DONGMINH50": { kimCuong: 500, anhSao: 100, gold: 50000 },
+  "LUDOCAP5": { kimCuong: 1000, anhSao: 200, pinkMeteor: 3 }
 };
 
 const HERO_DB = {
@@ -1463,9 +1556,9 @@ const HERO_DB = {
     name: "Isshiki Otsutsuki",
     type: "ATK",
     roleDesc: "Càn quét diện rộng, tăng tốc đánh & đánh chen ngang liên hoàn",
-    baseHp: 554,
+    baseHp: 635,
     baseAtk: 50.0,
-    baseDef: 33,
+    baseDef: 48,
     baseSpd: 159,
     enMax: 6.5,
     atkSpd: 0.30,
@@ -1492,7 +1585,7 @@ const HERO_DB = {
     baseAtk: 42.2,
     baseDef: 41,
     baseSpd: 156,
-    enMax: 8.0,
+    enMax: 5.5,
     hasSpells: true,
     normalAttack: { name: "Hắc Hỏa Trảm", enGain: 1.7, desc: "Gây 99% ATK lên 1 mục tiêu. Áp dụng 'Bốc hoả' lên bản thân và mục tiêu. Hồi 1.7 EN (+0.7 EN v3.3.2)." },
     activeSkill: { name: "Amaterasu Bất Diệt", desc: "Gây 320% ATK lên 1 mục tiêu. +5 tầng 'Bốc hoả' lên mục tiêu đó. Tiêu tốn toàn bộ EN." },
@@ -1621,7 +1714,7 @@ const HERO_DB = {
       { lv: 30, name: "Đạo Chích Hồi Năng", desc: "Khi gây ST bạo kích, Kaitou Kid nhận +1.5 EN." },
       { lv: 70, name: "Phục Thù Ảo Ảnh", desc: "Khi mục tiêu gây ST lên bản thân, có 50% cơ hội bản thân phục thù bằng 60% ST mục tiêu vừa gây ra (bị động, có thể bạo kích)." },
       { lv: 80, name: "Bạo Lực Vĩnh Cửu", desc: "Khi gây ST bạo kích, ST bạo kích +30% vĩnh viễn (cộng dồn vô hạn)." },
-      { lv: 100, name: "Màn Biểu Diễn Bất Diệt", desc: "Khi HP = 0, Kaitou không chết hẳn mà vẫn đứng trên sân, đóng băng toàn bộ kẻ địch trong 3 lượt và nhận Hút Máu +120% trong 3 lượt." }
+      { lv: 100, name: "Màn Biểu Diễn Bất Diệt", desc: "Khi HP = 0, Kaitou không chết hẳn mà vẫn đứng trên sân, đóng băng toàn bộ kẻ địch trong 3 lượt và nhận Hút Máu +50% trong 3 lượt." }
     ],
     spells: [
       { lv: 130, name: "Thần Chú 1", desc: "+20% ATK; +18% DEF." },
@@ -1633,24 +1726,24 @@ const HERO_DB = {
     id: "gaara",
     name: "Gaara Nhất Vĩ",
     type: "DEF",
-    roleDesc: "Đỡ đòn sa mạc, Khống chế Choáng diện rộng & Điểm Yếu Chí Tử",
+    roleDesc: "Đỡ đòn sa mạc, Khống chế Choáng diện rộng & Điểm Yếu Chí Tử (v5.0.0 Cân Bằng)",
     baseHp: 1154,
     baseAtk: 38.9,
     baseDef: 73,
-    baseSpd: 177,
+    baseSpd: 165,
     enMax: 5.5,
     hasSpells: true,
-    normalAttack: { name: "Sa Đạn", enGain: 2.1, desc: "Gây 77% ATK lên 1 mục tiêu. Hồi 2.1 EN." },
-    activeSkill: { name: "Sa Mạc Đại Táng", desc: "Gây 200% ATK lên toàn bộ mục tiêu. Có 80% cơ hội gây 'Choáng' 3 lượt. Tiêu tốn toàn bộ EN." },
+    normalAttack: { name: "Sa Đạn", enGain: 1.5, desc: "Gây 77% ATK lên 1 mục tiêu. Hồi 1.5 EN." },
+    activeSkill: { name: "Sa Mạc Đại Táng", desc: "Gây 200% ATK lên toàn bộ mục tiêu. Có 80% cơ hội gây 'Choáng' 2 lượt. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 30, name: "Sa Bọc Tê Liệt", desc: "Khi đánh thường, có 25% cơ hội 'Choáng' 1 lượt và giảm 100% DEF mục tiêu đó trong 1 lượt." },
+      { lv: 30, name: "Sa Bọc Tê Liệt", desc: "Khi đánh thường, có 25% cơ hội 'Choáng' 1 lượt và giảm 50% DEF mục tiêu đó trong 1 lượt." },
       { lv: 70, name: "Điểm Yếu Chí Tử", desc: "Khi sử dụng kỹ năng chủ động, có 18% cơ hội gây 'Điểm yếu chí tử' (giảm 100% DEF và 80% ATK mục tiêu đó trong 4 lượt)." },
-      { lv: 80, name: "Chân Thể Nhất Vĩ", desc: "Nâng cấp bị động 1: Khi đánh thường, có 35% cơ hội 'Choáng' 1 lượt và giảm 100% DEF mục tiêu đó trong 1 lượt." },
+      { lv: 80, name: "Chân Thể Nhất Vĩ", desc: "Nâng cấp bị động 1: Khi đánh thường, có 35% cơ hội 'Choáng' 1 lượt và giảm 60% DEF mục tiêu đó trong 1 lượt." },
       { lv: 100, name: "Tuyệt Đối Phòng Ngự", desc: "Khi gây 'Choáng', bản thân cung cấp toàn đội lớp giáp ảo (Khiên) bằng 20% HP tối đa của bản thân (tối đa 1 lần/lượt)." }
     ],
     spells: [
       { lv: 130, name: "Thần Chú 1", desc: "+25% DEF; +20% HP." },
-      { lv: 150, name: "Thần Chú 2", desc: "+5% cơ hội gây ra 'Choáng' của kỹ năng chủ động (đạt 85%)." }
+      { lv: 150, name: "Thần Chú 2", desc: "+5% cơ hội gây ra 'Choáng' của kỹ năng chủ động." }
     ]
   },
   hashirama: {
@@ -1700,8 +1793,56 @@ const HERO_DB = {
       { lv: 130, name: "Thần Chú 1", desc: "+15% DEF; +15% ATK." },
       { lv: 150, name: "Thần Chú 2", desc: "+20% HP tối đa." }
     ]
+  },
+  tsunade: {
+    id: "tsunade",
+    name: "Tsunade",
+    type: "DEF",
+    roleDesc: "Hokage Đệ Ngũ, Hồi phục sinh mệnh 400% ATK, Miễn thương 15% toàn đội & Bách Hào Thuật",
+    baseHp: 790,
+    baseAtk: 42.0,
+    baseDef: 82,
+    baseSpd: 161,
+    enMax: 4,
+    hasSpells: true,
+    normalAttack: { name: "Quái Lực Quyền", enGain: 1.4, desc: "Gây 98% ATK lên 1 mục tiêu. Hồi 1.4 EN." },
+    activeSkill: { name: "Sáng Tạo Tái Sinh", desc: "Hồi phục cho 1 đồng minh bằng 400% ATK bản thân kèm 5% HP tối đa bản thân. Đồng thời tăng 40% ST của đồng minh đó trong 2 lượt. Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 30, name: "Y Thuật Tinh Thông", desc: "Mỗi khi đồng đội hoặc bản thân nhận ST, tăng 5% khả năng hồi phục (tối đa 80%)." },
+      { lv: 70, name: "Bách Hào Thuật Sơ Cấp", desc: "Khi HP dưới 30%, hồi 50% HP còn lại kèm 12% HP tối đa. Đồng thời DEF bản thân +50% trong 5 lượt." },
+      { lv: 80, name: "Hào Quang Hokage", desc: "Khi bản thân còn sống, toàn đội nhận miễn thương 15%." },
+      { lv: 100, name: "Bách Hào Thuật Hoàn Hảo", desc: "Nâng cấp bị động 2: Khi HP dưới 45%, hồi 50% HP còn lại kèm 18% HP tối đa. Đồng thời DEF bản thân +60% trong 5 lượt." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú 1", desc: "+20% HP; +15% DEF." },
+      { lv: 150, name: "Thần Chú 2", desc: "+12% ATK." }
+    ]
+  },
+  shisui: {
+    id: "shisui",
+    name: "Uchiha Shisui",
+    type: "ATK",
+    roleDesc: "Thuấn Thân Shisui, 5 đòn Thiên Hỏa liên tiếp, Sát thương chuẩn 100% & Phản đòn 88%",
+    baseHp: 580,
+    baseAtk: 51.5,
+    baseDef: 48,
+    baseSpd: 171,
+    enMax: 5,
+    hasSpells: true,
+    normalAttack: { name: "Hỏa Độn Kiếm", enGain: 1.0, desc: "Gây 99% ATK lên 1 mục tiêu. Hồi 1.0 EN." },
+    activeSkill: { name: "Thiên Hỏa Liệt Diễm", desc: "Bắn 1 Thiên Hỏa tới 1 mục tiêu và gây ST 5 lần liên tiếp: L1 (40% ATK + 5% MaxHP, +20% crit L5), L2 (50% ATK + 5% MaxHP, +15% crit L5), L3 (60% ATK + 7% MaxHP, +10% crit L5), L4 (70% ATK + 5% MaxHP), L5 (100% ATK Sát thương chuẩn). Tiêu tốn toàn bộ EN." },
+    passives: [
+      { lv: 30, name: "Thiêu Đốt Trị Liệu", desc: "Chủ động lần 1 có tỉ lệ gây hiệu ứng giảm 50% khả năng hồi máu của mục tiêu." },
+      { lv: 70, name: "Phục Kích Thuấn Thân", desc: "Khi nhận ST, có tỉ lệ 18% phản ST bằng 88% ST mục tiêu đó gây ra cho bản thân." },
+      { lv: 80, name: "Ý Chí Hỏa Ảnh", desc: "Khi nhận được hiệu ứng hồi máu, bản thân nhận tăng 15% ST gây ra trong 2 lượt." },
+      { lv: 100, name: "Huyết Kế Sharingan", desc: "Khi HP trên 80%, nhận miễn thương 25%." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú 1", desc: "+10% ATK; +25% DEF." },
+      { lv: 150, name: "Thần Chú 2", desc: "+18% HP." }
+    ]
   }
-};;
+};
 
 /* ==========================================================================
    STATE MANAGEMENT & STORAGE v1.3.0
@@ -2100,6 +2241,54 @@ function getBotScalingFactor(chapter, stage) {
 }
 
 function generateBotTeam(chapter, stage) {
+  if (battle.mode === "endlessTower") {
+    const f = battle.stage;
+    const equivLevel = Math.min(350, Math.round(20 + f * 3));
+    const pool = ["madara", "hashirama", "kaguya", "omega", "isshiki", "pain", "tsunade", "shisui"];
+    const h1 = pool[f % pool.length];
+    const h2 = pool[(f + 2) % pool.length];
+    const h3 = pool[(f + 4) % pool.length];
+    return [h1, h2, h3].map((hId, slot) => {
+      const stats = getHeroStats(hId, equivLevel);
+      return {
+        ...stats,
+        id: hId,
+        heroId: hId,
+        name: `${stats.name} (T.${f})`,
+        slot: slot,
+        isBot: true,
+        en: 0,
+        buffs: {},
+        isAlive: true,
+        atkSpd: 0,
+        shield: 0
+      };
+    });
+  }
+
+  if (battle.mode === "worldBoss") {
+    // Boss Thập Vĩ Giáng Thế
+    const bossStats = {
+      id: "ten_tails",
+      heroId: "omega",
+      name: "Thần Ma Thập Vĩ (World Boss)",
+      type: "DEF",
+      hp: 50000000,
+      maxHp: 50000000,
+      atk: 180,
+      def: 60,
+      spd: 120,
+      en: 0,
+      enMax: 5,
+      slot: 0,
+      isBot: true,
+      buffs: {},
+      isAlive: true,
+      atkSpd: 0,
+      shield: 0
+    };
+    return [bossStats];
+  }
   const factor = getBotScalingFactor(chapter, stage);
 
   if (chapter === 5) {
@@ -3200,6 +3389,25 @@ function checkBattleEnd() {
 }
 
 function handleVictory() {
+  if (battle.mode === "endlessTower") {
+    gameState.endlessTower = gameState.endlessTower || { currentFloor: 1, maxCleared: 0, lastSweepDate: "" };
+    gameState.endlessTower.maxCleared = Math.max(gameState.endlessTower.maxCleared, battle.stage);
+    gameState.endlessTower.currentFloor = Math.min(100, battle.stage + 1);
+    addPassExp(60);
+    recordQuestProgress("anyBattles", 1);
+    recordQuestProgress("towerOrBossAttempt", 1);
+    saveGame();
+    toast(`🎉 VƯỢT THÁP TẦNG ${battle.stage} THÀNH CÔNG!`);
+  }
+  if (battle.mode === "worldBoss") {
+    gameState.worldBoss = gameState.worldBoss || { attemptsLeft: 3, lastDate: "", highestDmg: 0, claimedMilestones: [] };
+    gameState.worldBoss.highestDmg = Math.max(gameState.worldBoss.highestDmg, battle.bossTotalDmg || 0);
+    addPassExp(80);
+    recordQuestProgress("anyBattles", 1);
+    recordQuestProgress("towerOrBossAttempt", 1);
+    saveGame();
+    toast(`👹 KHIÊU CHIẾN BOSS KẾT THÚC: Tổng ST ${ (battle.bossTotalDmg || 0).toLocaleString() }!`);
+  }
   // CỔNG ẢI VÀNG (Demo v3.1.0: Hệ số mới có hãm phanh & khóa trần 20M)
   if (battle.chapter === 0 && battle.mode === 'goldGate') {
     const s = battle.stage;
@@ -3863,6 +4071,50 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
     target.en = Math.min(target.enMax, +(target.en + gain).toFixed(1));
   }
   checkDefenderTriggers(target, finalDmg);
+  if (battle.mode === "worldBoss" && target.isBot) {
+    battle.bossTotalDmg = (battle.bossTotalDmg || 0) + finalDmg;
+    recordQuestProgress("dailyDamageDealt", finalDmg);
+  } else if (!target.isBot) {
+    // player damage tracking
+  } else {
+    recordQuestProgress("dailyDamageDealt", finalDmg);
+  }
+  // v5.0.0: Bị động Tsunade & Shisui
+  if (target.id === "tsunade" || target.heroId === "tsunade") {
+    // Bị động 2 (Lv 70) & Bị động 4 (Lv 100)
+    const threshold = (target.level >= 100) ? 0.45 : 0.30;
+    if (target.level >= 70 && !target.tsunadeByakugouTriggered && (target.hp / target.maxHp) < threshold && target.hp > 0) {
+      target.tsunadeByakugouTriggered = true;
+      const healPct = (target.level >= 100) ? 0.18 : 0.12;
+      const recovered = Math.round(target.hp * 0.50 + target.maxHp * healPct);
+      target.hp = Math.min(target.maxHp, target.hp + recovered);
+      const defBonus = (target.level >= 100) ? 0.60 : 0.50;
+      target.def = Math.round(target.def * (1 + defBonus));
+      target.buffs = target.buffs || {};
+      target.buffs.defBuff = 5;
+      addAnimation(target, `BÁCH HÀO THUẬT: +${recovered} HP & +DEF!`, "#3fb950");
+      logCombat(`🩺✨ [Bách Hào Thuật] Tsunade kích hoạt ấn Chú, lập tức hồi ${recovered} HP và tăng ${Math.round(defBonus * 100)}% DEF trong 5 hiệp!`);
+    }
+  }
+
+  // Tsunade Bị Động 1: Khi đồng đội hoặc bản thân nhận ST, tăng 5% khả năng hồi phục (tối đa 80%)
+  const teamOfTarget = target.isBot ? battle.botTeam : battle.playerTeam;
+  const tsunadeFighter = teamOfTarget.find(f => f && f.hp > 0 && (f.id === "tsunade" || f.heroId === "tsunade") && f.level >= 30);
+  if (tsunadeFighter) {
+    tsunadeFighter.buffs = tsunadeFighter.buffs || {};
+    tsunadeFighter.buffs.healBoost = Math.min(0.80, +( (tsunadeFighter.buffs.healBoost || 0) + 0.05 ).toFixed(2));
+  }
+
+  // Shisui Bị Động 2: Phản 88% ST với 18% cơ hội
+  if ((target.id === "shisui" || target.heroId === "shisui") && target.level >= 70 && attacker && attacker.hp > 0) {
+    if (Math.random() < 0.18) {
+      const reflectDmg = Math.max(1, Math.round(finalDmg * 0.88));
+      attacker.hp = Math.max(0, attacker.hp - reflectDmg);
+      addAnimation(attacker, `PHẢN ĐÒN: -${reflectDmg} HP!`, "#f85149");
+      logCombat(`⚡🛡️ [Phục Kích Thuấn Thân] Shisui phản lại ${reflectDmg} ST (88%) lên ${attacker.name}!`);
+    }
+  }
+
 
   // Xử lý Hồi Sinh tự động (Omega Shenron, Isshiki, Whis, Kaitou Kid)
   if (target.hp === 0) {
@@ -3872,7 +4124,7 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
       target.hp = 1;
       if (!target.buffs) target.buffs = {};
       target.buffs.kidLifesteal = 3;
-      target.buffs.kidLifestealRate = 1.20;
+      target.buffs.kidLifestealRate = 0.50;
 
       const enemies = target.isBot ? battle.playerTeam : battle.botTeam;
       enemies.forEach(e => {
@@ -3881,8 +4133,8 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
           addAnimation(e, "BỊ ĐÓNG BĂNG 3 LƯỢT!", "#58a6ff");
         }
       });
-      addAnimation(target, "BẤT DIỆT! HÚT MÁU 120%", "#3fb950");
-      logCombat(`🕊️❄️ [Màn Biểu Diễn Bất Diệt] Kaitou Kid không chết hẳn, đóng băng toàn bộ đội hình địch trong 3 lượt và nhận Hút Máu 120% trong 3 lượt!`);
+      addAnimation(target, "BẤT DIỆT! HÚT MÁU 50%", "#3fb950");
+      logCombat(`🕊️❄️ [Màn Biểu Diễn Bất Diệt] Kaitou Kid không chết hẳn, đóng băng toàn bộ đội hình địch trong 3 lượt và nhận Hút Máu 50% trong 3 lượt!`);
       return finalDmg;
     }
     if (target.id === "omega" && target.level >= 100 && !target.omegaRevived) {
@@ -3955,7 +4207,7 @@ function executePlayerAction(type) {
   if (!actor || actor.isBot) return;
 
   let target = battle.botTeam[battle.selectedTargetIndex];
-  if (!target || target.hp <= 0) target = battle.botTeam.find(b => b.hp > 0);
+  if (!target || target.hp <= 0) target = getBotDefaultTarget(battle.botTeam.filter(b => b && b.hp > 0));
   if (!target) {
     checkBattleEnd();
     return;
@@ -4156,17 +4408,18 @@ function executePlayerAction(type) {
       });
       logCombat(`🟣 [Huyền Ma Quyền] Phoverus tấn công 2 mục tiêu gây ${totalDmg} ST!`);
     } else if (actor.id === "gaara") {
-      // Gaara: Gây 77% ATK lên 1 mục tiêu, hồi 2.1 EN
+      // Gaara (v5.0.0 Cân bằng): Gây 77% ATK lên 1 mục tiêu, hồi 1.5 EN
       const raw = actor.atk * 0.77;
       let stunChance = (actor.level >= 80) ? 0.35 : ((actor.level >= 30) ? 0.25 : 0);
       if (stunChance > 0 && Math.random() < stunChance) {
         target.buffs = target.buffs || {};
         target.buffs.choang = Math.max(target.buffs.choang || 0, 1);
         target.buffs.stun = target.buffs.choang;
-        target.buffs.defShred100 = 1;
-        target.def = 0;
-        addAnimation(target, "CHOÁNG & -100% DEF!", "#f85149");
-        logCombat(`🏜️ [Sa Bọc Tê Liệt] Gaara đánh thường làm ${target.name} bị Choáng 1 lượt và giảm 100% DEF!`);
+        const shred = (actor.level >= 80) ? 0.60 : 0.50;
+        target.buffs.defShred = { turns: 1, rate: shred };
+        target.def = Math.max(0, Math.round(target.def * (1 - shred)));
+        addAnimation(target, `CHOÁNG & -${Math.round(shred * 100)}% DEF!`, "#f85149");
+        logCombat(`🏜️ [Sa Bọc Tê Liệt] Gaara đánh thường làm ${target.name} bị Choáng 1 lượt và giảm ${Math.round(shred * 100)}% DEF!`);
         if (actor.level >= 100) {
           const sVal = Math.round(actor.maxHp * 0.20);
           grantTeamShield(sVal);
@@ -4240,6 +4493,18 @@ function executePlayerAction(type) {
         const { damage, isCrit } = calculateDamage(actor, target, raw);
         applyDamage(target, damage, isCrit, actor);
       }
+    } else if (actor.id === "tsunade") {
+      // Tsunade: Gây 98% ATK lên 1 mục tiêu. Hồi 1.4 EN
+      const raw = actor.atk * 0.98;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`👊 [Quái Lực Quyền] Tsunade tung cú đấm cực mạnh gây ${damage} ST lên ${target.name}.`);
+    } else if (actor.id === "shisui") {
+      // Shisui: Gây 99% ATK lên 1 mục tiêu. Hồi 1.0 EN
+      const raw = actor.atk * 0.99;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`🗡️ [Hỏa Độn Kiếm] Shisui chém kiếm lửa gây ${damage} ST lên ${target.name}.`);
     }
   } else if (type === "skill") {
     if (actor.en < actor.enMax) return;
@@ -4492,9 +4757,9 @@ function executePlayerAction(type) {
         if (Math.random() < stunRate) {
           anyStun = true;
           t.buffs = t.buffs || {};
-          t.buffs.choang = Math.max(t.buffs.choang || 0, 3);
+          t.buffs.choang = Math.max(t.buffs.choang || 0, 2);
           t.buffs.stun = t.buffs.choang;
-          addAnimation(t, "CHOÁNG 3 LƯỢT!", "#f85149");
+          addAnimation(t, "CHOÁNG 2 LƯỢT!", "#f85149");
         }
         const { damage, isCrit } = calculateDamage(actor, t, raw);
         totalDmgGaara += applyDamage(t, damage, isCrit, actor);
@@ -4512,7 +4777,7 @@ function executePlayerAction(type) {
       let totalDmgHashi = 0;
       targets.forEach(t => {
         t.buffs = t.buffs || {};
-        t.buffs.choang = Math.max(t.buffs.choang || 0, 3);
+        t.buffs.choang = Math.max(t.buffs.choang || 0, 2);
         t.buffs.stun = t.buffs.choang;
         addAnimation(t, "CHOÁNG 3 LƯỢT!", "#3fb950");
         const { damage, isCrit } = calculateDamage(actor, t, raw);
@@ -4549,6 +4814,62 @@ function executePlayerAction(type) {
       actor.dimension = nextDim;
       addAnimation(actor, `KHÔNG GIAN: ${nextDim.toUpperCase()}`, "#bc8cff");
       logCombat(`🌌🌀 [Thiên Đạo Luân Chuyển] Kaguya Otsutsuki mở cổng không gian, dịch chuyển toàn bộ sàn đấu sang Môi Trường: ${nextDimName}!`);
+    } else if (actor.id === "tsunade") {
+      // Tsunade: Hồi phục cho 1 đồng minh bằng 400% ATK + 5% HP tối đa. Tăng 40% ST trong 2 lượt
+      const healTarget = battle.playerTeam.filter(p => p && p.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0] || actor;
+      let healAmt = Math.round(actor.atk * 4.00 + actor.maxHp * 0.05);
+      if (actor.buffs && actor.buffs.healBoost) {
+        healAmt = Math.round(healAmt * (1 + actor.buffs.healBoost));
+      }
+      healTarget.hp = Math.min(healTarget.maxHp, healTarget.hp + healAmt);
+      healTarget.buffs = healTarget.buffs || {};
+      healTarget.buffs.dmgBuff = 2;
+      healTarget.buffs.dmgBuffRate = 0.40;
+      addAnimation(healTarget, `HỒI +${healAmt} HP & +40% ST!`, "#3fb950");
+      logCombat(`💚✨ [Sáng Tạo Tái Sinh] Tsunade hồi phục thần tốc ${healAmt} HP cho ${healTarget.name} và tăng 40% ST trong 2 lượt!`);
+    } else if (actor.id === "shisui") {
+      let totalD = 0;
+      let critBonusL5 = 0;
+      const t = target;
+      if (t) {
+        const raw1 = actor.atk * 0.40 + t.maxHp * 0.05;
+        const hit1 = calculateDamage(actor, t, raw1);
+        totalD += applyDamage(t, hit1.damage, hit1.isCrit, actor);
+        critBonusL5 += 0.20;
+        if (actor.level >= 30) {
+          t.buffs = t.buffs || {};
+          t.buffs.healReduction = 0.50;
+          addAnimation(t, "GIẢM 50% HỒI MÁU", "#f85149");
+        }
+        if (t.hp > 0) {
+          const raw2 = actor.atk * 0.50 + t.maxHp * 0.05;
+          const hit2 = calculateDamage(actor, t, raw2);
+          totalD += applyDamage(t, hit2.damage, hit2.isCrit, actor);
+          critBonusL5 += 0.15;
+        }
+        if (t.hp > 0) {
+          const raw3 = actor.atk * 0.60 + t.maxHp * 0.07;
+          const hit3 = calculateDamage(actor, t, raw3);
+          totalD += applyDamage(t, hit3.damage, hit3.isCrit, actor);
+          critBonusL5 += 0.10;
+        }
+        if (t.hp > 0) {
+          const raw4 = actor.atk * 0.70 + t.maxHp * 0.05;
+          const hit4 = calculateDamage(actor, t, raw4);
+          totalD += applyDamage(t, hit4.damage, hit4.isCrit, actor);
+        }
+        if (t.hp > 0) {
+          let raw5 = actor.atk * 1.00;
+          let isCrit5 = (Math.random() < ((actor.critRate || 0.15) + critBonusL5));
+          if (isCrit5) raw5 *= (actor.critDmg || 1.5);
+          let red = t.buffs && t.buffs.dmgReduction ? t.buffs.dmgReduction : 0;
+          let dmg5 = Math.max(1, Math.round(raw5 * (1 - red)));
+          t.hp = Math.max(0, t.hp - dmg5);
+          totalD += dmg5;
+          addAnimation(t, `ST CHUẨN: ${dmg5}!`, "#f1e05a");
+        }
+        logCombat(`🔥⚡ [Thiên Hỏa Liệt Diễm] Shisui trút 5 đòn bão lửa liên hoàn lên ${t.name}, tổng cộng ${totalD} ST!`);
+      }
     }
   }
 
@@ -5022,6 +5343,16 @@ function executeHeroBotAction(actor, alivePlayers) {
         totalD += applyDamage(p, damage, isCrit, actor);
       });
       logCombat(`❄️ [Địch: Không Gian Kaguya] ${actor.name} càn quét toàn đội gây ${totalD} ST!`);
+    } else if (actor.heroId === "tsunade") {
+      const raw = actor.atk * 0.98;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`👊 [Địch: Quái Lực Quyền] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+    } else if (actor.heroId === "shisui") {
+      const raw = actor.atk * 0.99;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`🗡️ [Địch: Hỏa Độn Kiếm] ${actor.name} gây ${damage} ST lên ${target.name}.`);
     }
   }
 
@@ -5252,33 +5583,59 @@ function drawCharacter(f) {
     ctx.fillStyle = "#8b949e";
     ctx.fillText(`${f.hp}/${f.maxHp}`, x, enBarY + 14);
 
-    // Buff & Debuff Badges
-    let badgeOffset = -30;
-    if (f.buffs.burn) { drawBadge(x + badgeOffset, y - 56, `🔥x${f.buffs.burn}`, "#f85149"); badgeOffset += 30; }
-    if (f.buffs.bleeding) { drawBadge(x + badgeOffset, y - 56, `🩸x${f.buffs.bleeding.stacks}`, "#da3633"); badgeOffset += 30; }
-    if (f.buffs.bleeding2) { drawBadge(x + badgeOffset, y - 56, `🗡️B2`, "#ff7b72"); badgeOffset += 30; }
-    if (f.buffs.luanHoi) { drawBadge(x + badgeOffset, y - 56, `🔯x${f.buffs.luanHoi}`, "#ff9800"); badgeOffset += 30; }
-    if (f.buffs.choang || f.buffs.stun) { drawBadge(x + badgeOffset, y - 56, `💫Choáng`, "#f1e05a"); badgeOffset += 30; }
-    if (f.buffs.terror) { drawBadge(x + badgeOffset, y - 56, `😱Terror`, "#bf3989"); badgeOffset += 30; }
-    if (f.buffs.suyGiam) { drawBadge(x + badgeOffset, y - 56, `🌀-20%`, "#8b949e"); badgeOffset += 30; }
-    if (f.buffs.thienDaoDebuff) { drawBadge(x + badgeOffset, y - 56, `👁️-30%`, "#39c5bb"); badgeOffset += 30; }
-    if (f.buffs.whisProtect) { drawBadge(x + badgeOffset, y - 56, `🛡️Hộ`, "#39c5bb"); }
+    // v5.0.0: Hiển thị đầy đủ mọi hiệu ứng: Icon + Tên hiệu ứng + Số tầng/Lượt
+    const activeBadges = [];
+    if (f.buffs) {
+      if (f.buffs.burn) activeBadges.push({ text: `🔥 Thiêu Đốt x${f.buffs.burn}`, color: "#f85149" });
+      if (f.buffs.bleeding) activeBadges.push({ text: `🩸 Chảy Máu x${f.buffs.bleeding.stacks || 1}`, color: "#da3633" });
+      if (f.buffs.choang || f.buffs.stun) activeBadges.push({ text: `💫 Choáng (${f.buffs.choang || f.buffs.stun}L)`, color: "#f1e05a" });
+      if (f.buffs.defShred || f.buffs.defShred100) activeBadges.push({ text: `🛡️ Giảm Giáp`, color: "#ff7b72" });
+      if (f.buffs.suyGiam) activeBadges.push({ text: `🌀 Giảm Công`, color: "#8b949e" });
+      if (f.buffs.terror) activeBadges.push({ text: `😱 Khủng Hoảng`, color: "#bf3989" });
+      if (f.buffs.luanHoi) activeBadges.push({ text: `🔯 Lục Đạo x${f.buffs.luanHoi}`, color: "#ff9800" });
+      if (f.buffs.bocHoa) activeBadges.push({ text: `🌋 Bốc Hỏa x${f.buffs.bocHoa.stacks}`, color: "#e36209" });
+      if (f.buffs.healBoost) activeBadges.push({ text: `💚 Tăng Hồi +${Math.round(f.buffs.healBoost * 100)}%`, color: "#3fb950" });
+      if (f.buffs.healReduction) activeBadges.push({ text: `💔 Giảm Hồi 50%`, color: "#f85149" });
+      if (f.buffs.defBuff) activeBadges.push({ text: `🛡️ Tăng DEF`, color: "#58a6ff" });
+      if (f.buffs.dmgBuff) activeBadges.push({ text: `⚔️ Tăng ST +${Math.round((f.buffs.dmgBuffRate || 0.4) * 100)}%`, color: "#e3b341" });
+      if (f.buffs.whisProtect) activeBadges.push({ text: `🛡️ Bảo Hộ Whis`, color: "#39c5bb" });
+      if (f.buffs.kidLifesteal) activeBadges.push({ text: `🧛 Hút Máu 50%`, color: "#a371f7" });
+      if (f.buffs.khatKho) activeBadges.push({ text: `🏜️ Khát Khô`, color: "#d29922" });
+    }
+
+    if (activeBadges.length > 0) {
+      const badgeH = 13;
+      const startBadgeY = y - 56;
+      activeBadges.slice(0, 3).forEach((b, bIdx) => {
+        drawDetailedBadge(x, startBadgeY - (bIdx * 15), b.text, b.color);
+      });
+    }
   }
 
   ctx.restore();
 }
 
-function drawBadge(bx, by, text, bg) {
+function drawDetailedBadge(bx, by, text, bg) {
   ctx.save();
-  ctx.fillStyle = bg;
-  ctx.beginPath();
-  ctx.roundRect(bx - 14, by - 7, 28, 14, 4);
-  ctx.fill();
-  ctx.fillStyle = "#fff";
   ctx.font = "bold 9px sans-serif";
+  const metrics = ctx.measureText(text);
+  const w = Math.max(36, metrics.width + 10);
+  ctx.fillStyle = "rgba(13, 17, 23, 0.85)";
+  ctx.strokeStyle = bg;
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  if (ctx.roundRect) ctx.roundRect(bx - w / 2, by - 7, w, 14, 4);
+  else ctx.rect(bx - w / 2, by - 7, w, 14);
+  ctx.fill();
+  ctx.stroke();
+  ctx.fillStyle = bg;
   ctx.textAlign = "center";
-  ctx.fillText(text, bx, by + 3);
+  ctx.fillText(text, bx, by + 3.5);
   ctx.restore();
+}
+
+function drawBadge(bx, by, text, bg) {
+  drawDetailedBadge(bx, by, text, bg);
 }
 
 canvas.addEventListener("click", (e) => {
@@ -5376,17 +5733,15 @@ function claimTodayCheckin() {
 /* ==========================================================================
    RETENTION 2: NHIỆM VỤ MỖI NGÀY & CỘT MỐC (RESET MỖI NGÀY)
    ========================================================================== */
+// v5.0.0: Hệ thống nhiệm vụ tuần hoàn thông minh (Không còn lo kẹt ải đối với Pro & Newbie)
 const DAILY_QUESTS_CONFIG = [
-  { id: "training_stage_2", name: "Vượt qua 2 ải đấu luyện mới", target: 2, key: "newTrainingStages", rewardText: "300 💎", type: "kimCuong", val: 300, pts: 2 },
-  { id: "new_stage_2", name: "Vượt qua 2 ải mới", target: 2, key: "newStages", rewardText: "300 💎", type: "kimCuong", val: 300, pts: 2 },
-  { id: "new_stage_4", name: "Vượt qua 4 ải mới", target: 4, key: "newStages", rewardText: "800 💎", type: "kimCuong", val: 800, pts: 2 },
-  { id: "old_stage_3", name: "Vượt qua 3 ải cũ (trong 6 ải gần nhất)", target: 3, key: "oldStagesNear6", rewardText: "100 💎", type: "kimCuong", val: 100, pts: 2 },
-  { id: "old_stage_6", name: "Vượt qua 6 ải cũ (trong 8 ải gần nhất)", target: 6, key: "oldStagesNear8", rewardText: "200 💎", type: "kimCuong", val: 200, pts: 2 },
-  { id: "lvl_10", name: "Nâng cấp nhân vật thêm 10 level", target: 10, key: "levelsUpgraded", rewardText: "50 ⭐", type: "anhSao", val: 50, pts: 2 },
-  { id: "lvl_15", name: "Nâng cấp nhân vật thêm 15 level", target: 15, key: "levelsUpgraded", rewardText: "80 ⭐", type: "anhSao", val: 80, pts: 3 },
-  { id: "lvl_20", name: "Nâng cấp nhân vật thêm 20 level", target: 20, key: "levelsUpgraded", rewardText: "110 ⭐", type: "anhSao", val: 110, pts: 3 },
-  { id: "chest_1", name: "Mở hòm mùa thu 1 lần", target: 1, key: "chestOpened", rewardText: "80 ⭐", type: "anhSao", val: 80, pts: 2 },
-  { id: "chest_4", name: "Mở hòm mùa thu 4 lần", target: 4, key: "chestOpened", rewardText: "300 ⭐", type: "anhSao", val: 300, pts: 6 }
+  { id: "battle_any_3", name: "Hoàn thành 3 trận đấu bất kỳ (Ải / Đấu Luyện / Tháp / Boss)", target: 3, key: "anyBattles", rewardText: "300 💎 + 50 EXP Pass", type: "kimCuong", val: 300, pts: 3, passExp: 50 },
+  { id: "total_damage_100k", name: "Gây tổng cộng 100,000 sát thương trong ngày", target: 100000, key: "dailyDamageDealt", rewardText: "400 💎 + 50 EXP Pass", type: "kimCuong", val: 400, pts: 3, passExp: 50 },
+  { id: "cast_skill_5", name: "Kích hoạt 5 lần Kỹ Năng Tuyệt Kỹ trong chiến đấu", target: 5, key: "skillsCast", rewardText: "300 💎 + 40 EXP Pass", type: "kimCuong", val: 300, pts: 3, passExp: 40 },
+  { id: "upgrade_any_3", name: "Cường hóa nhân vật hoặc linh thú 3 lần", target: 3, key: "levelsUpgraded", rewardText: "80 ⭐ Ánh sao", type: "anhSao", val: 80, pts: 3, passExp: 30 },
+  { id: "tower_or_boss_1", name: "Khiêu chiến 1 lượt Tháp Vô Hạn hoặc Boss Thế Giới", target: 1, key: "towerOrBossAttempt", rewardText: "100 ⭐ + 1 Mảnh Xanh", type: "anhSao", val: 100, pts: 4, passExp: 60 },
+  { id: "pass_roll_1", name: "Quay Sổ Sứ Mệnh Mùa II 1 lần", target: 1, key: "passRollsToday", rewardText: "100 ⭐ Ánh sao", type: "anhSao", val: 100, pts: 3, passExp: 40 },
+  { id: "survive_10_turns", name: "Trụ vững qua 10 hiệp trong bất kỳ trận chiến nào", target: 1, key: "survived10Turns", rewardText: "200 💎 Kim cương", type: "kimCuong", val: 200, pts: 3, passExp: 30 }
 ];
 
 const QUEST_MILESTONES = [
@@ -5492,31 +5847,31 @@ let gachaQueue = [];
 let currentGachaIndex = 0;
 
 const GACHA_SPECIAL_RATES = [
-  { name: "Madara (Lục đạo) [Đặc biệt]", type: "hero", id: "madara", rate: 0.0035, color: "var(--accent-red)" },
-  { name: "Pain Thiên Đạo [Đặc biệt]", type: "hero", id: "pain", rate: 0.0035, color: "var(--accent-purple)" },
-  { name: "50 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 50, rate: 0.05, color: "var(--accent-gold)" },
-  { name: "40 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 40, rate: 0.14, color: "var(--accent-gold)" },
-  { name: "30 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 30, rate: 0.13, color: "var(--accent-gold)" },
-  { name: "1 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 1, rate: 0.10, color: "var(--accent-pink)" },
-  { name: "3 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 3, rate: 0.103, color: "var(--accent-pink)" },
-  { name: "5 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 5, rate: 0.11, color: "var(--accent-pink)" },
-  { name: "10 Mảnh Thiên Thạch Hồng", type: "res", res: "pinkShard", amt: 10, rate: 0.06, color: "var(--accent-pink)" },
-  { name: "100 💎 Kim cương", type: "res", res: "kimCuong", amt: 100, rate: 0.15, color: "var(--accent-cyan)" },
-  { name: "200 💎 Kim cương", type: "res", res: "kimCuong", amt: 200, rate: 0.15, color: "var(--accent-cyan)" }
+  { name: "Kaguya Otsutsuki [Thần Thoại Mùa II]", type: "hero", id: "kaguya", rate: 0.004, color: "var(--accent-red)" },
+  { name: "Senju Hashirama [Thần Thoại Mùa II]", type: "hero", id: "hashirama", rate: 0.004, color: "var(--accent-gold)" },
+  { name: "100 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 100, rate: 0.05, color: "var(--accent-gold)" },
+  { name: "60 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 60, rate: 0.15, color: "var(--accent-gold)" },
+  { name: "40 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 40, rate: 0.15, color: "var(--accent-gold)" },
+  { name: "2 Mảnh Thiên Thạch Hoàng Kim", type: "res", res: "pinkShard", amt: 2, rate: 0.15, color: "var(--accent-gold)" },
+  { name: "5 Mảnh Thiên Thạch Hoàng Kim", type: "res", res: "pinkShard", amt: 5, rate: 0.15, color: "var(--accent-gold)" },
+  { name: "10 Mảnh Thiên Thạch Hoàng Kim", type: "res", res: "pinkShard", amt: 10, rate: 0.10, color: "var(--accent-gold)" },
+  { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.15, color: "var(--accent-cyan)" },
+  { name: "600 💎 Kim cương", type: "res", res: "kimCuong", amt: 600, rate: 0.12, color: "var(--accent-cyan)" },
+  { name: "1,000 💎 Kim cương", type: "res", res: "kimCuong", amt: 1000, rate: 0.022, color: "var(--accent-cyan)" }
 ];
 
 const GACHA_NORMAL_RATES = [
-  { name: "Vegito [SKL]", type: "hero", id: "vegito", rate: 0.008, color: "var(--accent-purple)" },
-  { name: "Whis [SKL]", type: "hero", id: "whis", rate: 0.008, color: "var(--accent-cyan)" },
-  { name: "50 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 50, rate: 0.15, color: "var(--accent-gold)" },
-  { name: "40 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 40, rate: 0.12, color: "var(--accent-gold)" },
-  { name: "30 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 30, rate: 0.11, color: "var(--accent-gold)" },
-  { name: "1 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 1, rate: 0.11, color: "var(--accent-cyan)" },
+  { name: "Kaitou Kid [SSR Mùa II]", type: "hero", id: "kid", rate: 0.008, color: "var(--accent-purple)" },
+  { name: "Otsutsuki Isshiki [SSR Mùa II]", type: "hero", id: "isshiki", rate: 0.008, color: "var(--accent-cyan)" },
+  { name: "50 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 50, rate: 0.12, color: "var(--accent-gold)" },
+  { name: "30 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 30, rate: 0.15, color: "var(--accent-gold)" },
+  { name: "1 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 1, rate: 0.12, color: "var(--accent-cyan)" },
   { name: "3 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 3, rate: 0.12, color: "var(--accent-cyan)" },
-  { name: "5 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 5, rate: 0.12, color: "var(--accent-cyan)" },
-  { name: "10 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 10, rate: 0.15, color: "var(--accent-cyan)" },
-  { name: "100 💎 Kim cương", type: "res", res: "kimCuong", amt: 100, rate: 0.054, color: "var(--accent-cyan)" },
-  { name: "200 💎 Kim cương", type: "res", res: "kimCuong", amt: 200, rate: 0.05, color: "var(--accent-cyan)" }
+  { name: "5 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 5, rate: 0.10, color: "var(--accent-cyan)" },
+  { name: "10 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 10, rate: 0.10, color: "var(--accent-cyan)" },
+  { name: "150 💎 Kim cương", type: "res", res: "kimCuong", amt: 150, rate: 0.15, color: "var(--accent-cyan)" },
+  { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.12, color: "var(--accent-cyan)" },
+  { name: "500 💎 Kim cương", type: "res", res: "kimCuong", amt: 500, rate: 0.024, color: "var(--accent-cyan)" }
 ];
 
 function openPassModal() {
@@ -5524,23 +5879,152 @@ function openPassModal() {
   openModal("modalPass");
 }
 
+
 function switchPassTab(tab) {
   activePassTab = tab;
   document.getElementById("tabBtnSpecialPass").classList.toggle("active", tab === "special");
   document.getElementById("tabBtnNormalPass").classList.toggle("active", tab === "normal");
+  const btnRoadmap = document.getElementById("tabBtnPassRoadmap");
+  if (btnRoadmap) btnRoadmap.classList.toggle("active", tab === "roadmap");
 
-  if (tab === "special") {
-    document.getElementById("gachaBannerTitle").textContent = "Sổ Sứ Mệnh Đặc Biệt Mùa I";
-    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Pain Thiên Đạo (0.35%), Madara Lục Đạo (0.35%) cùng nhiều Mảnh Thiên Thạch & Ánh Sao.";
-    document.getElementById("gachaCost1").textContent = "1 ☄️ Thiên Thạch Hồng";
-    document.getElementById("gachaCost10").textContent = "9 ☄️ (Ưu đãi 10 lượt)";
+  const gachaContainer = document.getElementById("gachaRevealBox").parentElement;
+  const roadmapSection = document.getElementById("passRoadmapSection");
+
+  if (tab === "roadmap") {
+    if (gachaContainer) gachaContainer.style.display = "none";
+    if (roadmapSection) roadmapSection.style.display = "flex";
+    renderPassRoadmapUI();
   } else {
-    document.getElementById("gachaBannerTitle").textContent = "Sổ Sứ Mệnh Thường Mùa I";
-    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Vegito (0.8%), Whis (0.8%) cùng nhiều Mảnh Thiên Thạch Xanh & Ánh Sao.";
-    document.getElementById("gachaCost1").textContent = "1 🔷 Thiên Thạch Xanh";
-    document.getElementById("gachaCost10").textContent = "9 🔷 (Ưu đãi 10 lượt)";
+    if (gachaContainer) gachaContainer.style.display = "flex";
+    if (roadmapSection) roadmapSection.style.display = "none";
+    if (tab === "special") {
+      document.getElementById("gachaBannerTitle").textContent = "⭐ Sổ Sứ Mệnh Cao Cấp Mùa II";
+      document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Kaguya Otsutsuki (0.4%), Senju Hashirama (0.4%) cùng Thiên Thạch Hoàng Kim & Ánh Sao Thần Thoại. Bảo hiểm 99 lượt chắc chắn nhận tướng!";
+      document.getElementById("gachaCost1").textContent = "1 ☄️ Thiên Thạch Hoàng Kim";
+      document.getElementById("gachaCost10").textContent = "9 ☄️ (Ưu đãi 10 lượt)";
+    } else {
+      document.getElementById("gachaBannerTitle").textContent = "🔷 Sổ Sứ Mệnh Thường Mùa II";
+      document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Kaitou Kid (0.8%), Otsutsuki Isshiki (0.8%) cùng Thiên Thạch Xanh & Kim Cương. Bảo hiểm 99 lượt chắc chắn ra nhân vật!";
+      document.getElementById("gachaCost1").textContent = "1 🔷 Thiên Thạch Xanh";
+      document.getElementById("gachaCost10").textContent = "9 🔷 (Ưu đãi 10 lượt)";
+    }
   }
 }
+
+function renderPassRoadmapUI() {
+  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
+  document.getElementById("uiPassLevelDisplay").textContent = gameState.seasonPass.level;
+  document.getElementById("uiPassExpDisplay").textContent = gameState.seasonPass.exp;
+
+  const statusEl = document.getElementById("uiPassStatusDisplay");
+  const activateBtn = document.getElementById("btnActivatePassPremium");
+  if (gameState.seasonPass.isPremium) {
+    statusEl.textContent = "⭐ ĐÃ KÍCH HOẠT CAO CẤP (X3 THƯỞNG)";
+    statusEl.style.color = "var(--accent-gold)";
+    activateBtn.disabled = true;
+    activateBtn.textContent = "✓ Đã Kích Hoạt Cao Cấp";
+  } else {
+    statusEl.textContent = "🔷 Sổ Thường Miễn Phí";
+    statusEl.style.color = "var(--accent-blue)";
+    activateBtn.disabled = false;
+    activateBtn.textContent = "⭐ Kích Hoạt Cao Cấp (5,999 ⭐)";
+  }
+
+  const container = document.getElementById("passTiersListContainer");
+  container.innerHTML = "";
+
+  // Render key tiers up to 60 (steps of 5 or all tiers)
+  for (let lv = 1; lv <= 60; lv++) {
+    const isUnlocked = (gameState.seasonPass.level >= lv);
+    const claimedF = gameState.seasonPass.claimedFree.includes(lv);
+    const claimedP = gameState.seasonPass.claimedPremium.includes(lv);
+
+    const isSpecialLv = (lv === 30 || lv === 50 || lv === 60);
+
+    const row = document.createElement("div");
+    row.style.background = isSpecialLv ? "#1e1b2e" : "#0d1117";
+    row.style.border = `1px solid ${isSpecialLv ? 'var(--accent-gold)' : 'var(--border-color)'}`;
+    row.style.borderRadius = "8px";
+    row.style.padding = "6px 12px";
+    row.style.display = "flex";
+    row.style.justifyContent = "space-between";
+    row.style.alignItems = "center";
+
+    // Free reward
+    const freeText = (lv === 60) ? "300 💎 + 5 🔷" : (lv % 10 === 0 ? "100 💎 + Bụi Thần Bí" : `${lv * 5000} 🪙 + EXP`);
+    // Premium reward
+    let premText = `x3: ${lv * 15000} 🪙 + ${lv * 20} 💎`;
+    if (lv === 30) premText = "❄️ Mở Khóa Nền Đóng Băng Mùa II + 500 💎";
+    else if (lv === 50) premText = "🎁 Rương Tự Chọn Tướng Cấp 50 (Gaara/Phoverus/Itachi)";
+    else if (lv === 60) premText = "👑 Rương Sổ Sứ Mệnh Mùa II + 1,000 💎 + 10 ☄️";
+
+    row.innerHTML = `
+      <div style="flex:1;">
+        <div style="font-size:12px; font-weight:700; color:${isUnlocked ? 'var(--accent-green)' : 'var(--text-secondary)'};">
+          ${isSpecialLv ? '⭐' : '📜'} Cấp ${lv} ${isSpecialLv ? '[ĐẶC BIỆT]' : ''}
+        </div>
+        <div style="font-size:11px; color:var(--accent-blue);">🔷 Miễn Phí: ${freeText}</div>
+        <div style="font-size:11px; color:var(--accent-gold);">⭐ Cao Cấp: ${premText}</div>
+      </div>
+      <div style="display:flex; gap:6px;">
+        <button class="btn ${isUnlocked && !claimedF ? 'btn-accent' : ''}" style="padding:4px 8px; font-size:10px;" ${!isUnlocked || claimedF ? 'disabled' : ''} onclick="claimPassTier(${lv}, false)">
+          ${claimedF ? '✓ Nhận Thường' : 'Nhận Thường'}
+        </button>
+        <button class="btn ${isUnlocked && gameState.seasonPass.isPremium && !claimedP ? 'btn-gold' : ''}" style="padding:4px 8px; font-size:10px;" ${!isUnlocked || !gameState.seasonPass.isPremium || claimedP ? 'disabled' : ''} onclick="claimPassTier(${lv}, true)">
+          ${claimedP ? '✓ Nhận Cao Cấp' : 'Nhận Cao Cấp'}
+        </button>
+      </div>
+    `;
+    container.appendChild(row);
+  }
+}
+
+function claimPassTier(lv, isPremiumTier) {
+  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
+  if (gameState.seasonPass.level < lv) return;
+
+  if (isPremiumTier) {
+    if (!gameState.seasonPass.isPremium) return;
+    if (gameState.seasonPass.claimedPremium.includes(lv)) return;
+
+    if (lv === 30) {
+      gameState.unlockedThemes = gameState.unlockedThemes || ["default"];
+      if (!gameState.unlockedThemes.includes("ice")) gameState.unlockedThemes.push("ice");
+      gameState.resources.kimCuong += 500;
+      toast("❄️ Đã mở khóa Nền ĐÓNG BĂNG Mùa II + 500 💎 Kim cương!");
+    } else if (lv === 50) {
+      openHeroSelectorModal("pass");
+    } else if (lv === 60) {
+      gameState.resources.kimCuong += 1000;
+      gameState.resources.pinkMeteor += 10;
+      toast("👑 Nhận Rương Sổ Sứ Mệnh Mùa II: +1,000 💎 & +10 ☄️ Thiên Thạch Hoàng Kim!");
+    } else {
+      gameState.resources.gold += lv * 15000;
+      gameState.resources.kimCuong += lv * 20;
+      toast(`Nhận thưởng Cao Cấp Cấp ${lv}: +${(lv * 15000).toLocaleString()} 🪙 & +${lv * 20} 💎!`);
+    }
+    gameState.seasonPass.claimedPremium.push(lv);
+  } else {
+    if (gameState.seasonPass.claimedFree.includes(lv)) return;
+    if (lv === 60) {
+      gameState.resources.kimCuong += 300;
+      gameState.resources.blueMeteor += 5;
+    } else if (lv % 10 === 0) {
+      gameState.resources.kimCuong += 100;
+      gameState.resources.vpnc += 500;
+    } else {
+      gameState.resources.gold += lv * 5000;
+      gameState.player.exp += lv * 50;
+    }
+    gameState.seasonPass.claimedFree.push(lv);
+    toast(`Nhận thưởng Miễn Phí Cấp ${lv} thành công!`);
+  }
+
+  saveGame();
+  updateTopBarUI();
+  renderPassRoadmapUI();
+}
+
 
 function performGacha(times) {
   const cost = times === 1 ? 1 : 9;
@@ -5627,17 +6111,17 @@ function buyItemShop(type) {
     if ((gameState.resources.pinkShard || 0) < 15) { toast("Không đủ Mảnh Thiên Thạch Hồng (Cần 15)!", true); return; }
     gameState.resources.pinkShard -= 15;
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
-    toast("Đổi thành công 1 ☄️ Thiên Thạch Hồng!");
+    toast("Đổi thành công 1 ☄️ Thiên Thạch Hoàng Kim!");
   } else if (type === "pink_star") {
     if (gameState.resources.anhSao < 380) { toast("Không đủ Ánh sao (Cần 380 ⭐)!", true); return; }
     gameState.resources.anhSao -= 380;
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
-    toast("Mua thành công 1 ☄️ Thiên Thạch Hồng!");
+    toast("Mua thành công 1 ☄️ Thiên Thạch Hoàng Kim!");
   } else if (type === "pink_dia") {
     if (gameState.resources.kimCuong < 2050) { toast("Không đủ Kim cương (Cần 2,050 💎)!", true); return; }
     gameState.resources.kimCuong -= 2050;
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
-    toast("Mua thành công 1 ☄️ Thiên Thạch Hồng!");
+    toast("Mua thành công 1 ☄️ Thiên Thạch Hoàng Kim!");
   } else if (type === "blue_shard") {
     if ((gameState.resources.blueShard || 0) < 15) { toast("Không đủ Mảnh Thiên Thạch Xanh (Cần 15)!", true); return; }
     gameState.resources.blueShard -= 15;
@@ -6366,32 +6850,45 @@ function submitGiftcode() {
     toast("🎉 Kích hoạt mã TEST002: Nhận 10 Tỷ toàn bộ tài nguyên, mở khóa toàn bộ 14 nhân vật & 9 Linh Thú!", false);
     return;
   }
-  if (code === "TEST001") {
-    const ONE_BILLION = 1000000000;
-    Object.keys(gameState.resources).forEach(k => {
-      gameState.resources[k] = (gameState.resources[k] || 0) + ONE_BILLION;
-    });
-    gameState.resources.anhSao = Math.max(gameState.resources.anhSao, ONE_BILLION);
-    gameState.resources.kimCuong = Math.max(gameState.resources.kimCuong, ONE_BILLION);
-    gameState.resources.vpnc = Math.max(gameState.resources.vpnc, ONE_BILLION);
-    gameState.resources.gold = Math.max(gameState.resources.gold, ONE_BILLION);
-    gameState.resources.banhTrungThu = Math.max(gameState.resources.banhTrungThu, ONE_BILLION);
-    gameState.resources.pinkMeteor = Math.max(gameState.resources.pinkMeteor, ONE_BILLION);
-    gameState.resources.pinkShard = Math.max(gameState.resources.pinkShard, ONE_BILLION);
-    gameState.resources.blueMeteor = Math.max(gameState.resources.blueMeteor, ONE_BILLION);
-    gameState.resources.blueShard = Math.max(gameState.resources.blueShard, ONE_BILLION);
-    gameState.resources.keoBanh = Math.max(gameState.resources.keoBanh, ONE_BILLION);
+    if (code === "TEST001") {
+    // v5.0.0: Mở khóa Nền Bốc Cháy + Tài nguyên thử nghiệm
+    gameState.unlockedThemes = gameState.unlockedThemes || ["default"];
+    if (!gameState.unlockedThemes.includes("fire")) gameState.unlockedThemes.push("fire");
+    gameState.currentTheme = "fire";
+    applyGameTheme("fire");
 
-    Object.keys(HERO_DB).forEach(hId => {
-      if (!gameState.heroes[hId]) {
-        gameState.heroes[hId] = { level: 1 };
-      }
-    });
+    gameState.resources.kimCuong += 5000;
+    gameState.resources.anhSao += 1000;
+    gameState.resources.gold += 500000;
+    gameState.resources.vpnc += 5000;
+    gameState.resources.pinkMeteor += 10;
+
     saveGame();
     input.value = "";
     closeModal("modalGiftcode");
     updateTopBarUI();
-    toast("Kích hoạt TEST001: Nhận 1 TỶ toàn bộ vật phẩm & Mở khóa TOÀN BỘ tướng!");
+    toast("🎉 Kích hoạt TEST001: Mở khóa Nền BỐC CHÁY 🔥 + 5,000 💎 + 1,000 ⭐ + 500K Vàng + 5,000 VPNC + 10 ☄️ Thiên Thạch Hoàng Kim!");
+    return;
+  }
+
+  if (code === "TEST002") {
+    // v5.0.0: Mở khóa Nền Đóng Băng + Tài nguyên thử nghiệm
+    gameState.unlockedThemes = gameState.unlockedThemes || ["default"];
+    if (!gameState.unlockedThemes.includes("ice")) gameState.unlockedThemes.push("ice");
+    gameState.currentTheme = "ice";
+    applyGameTheme("ice");
+
+    gameState.resources.kimCuong += 10000;
+    gameState.resources.anhSao += 2000;
+    gameState.resources.gold += 1000000;
+    gameState.resources.vpnc += 10000;
+    gameState.resources.blueMeteor += 20;
+
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🎉 Kích hoạt TEST002: Mở khóa Nền ĐÓNG BĂNG ❄️ + 10,000 💎 + 2,000 ⭐ + 1M Vàng + 10,000 VPNC + 20 🔷 Thiên Thạch Xanh Mùa II!");
     return;
   }
 
@@ -6457,6 +6954,10 @@ function submitGiftcode() {
   let rewardText = "";
   if (reward.anhSao) { gameState.resources.anhSao += reward.anhSao; rewardText += `${reward.anhSao} Ánh sao `; }
   if (reward.kimCuong) { gameState.resources.kimCuong += reward.kimCuong; rewardText += `${reward.kimCuong} Kim cương `; }
+  if (reward.gold) { gameState.resources.gold += reward.gold; rewardText += `${reward.gold.toLocaleString()} Vàng `; }
+  if (reward.vpnc) { gameState.resources.vpnc += reward.vpnc; rewardText += `${reward.vpnc} VPNC `; }
+  if (reward.blueMeteor) { gameState.resources.blueMeteor += reward.blueMeteor; rewardText += `${reward.blueMeteor} 🔷 Thiên Thạch Xanh `; }
+  if (reward.pinkMeteor) { gameState.resources.pinkMeteor += reward.pinkMeteor; rewardText += `${reward.pinkMeteor} ☄️ Thiên Thạch Hoàng Kim `; }
 
   gameState.usedCodes.push(code);
   saveGame();
