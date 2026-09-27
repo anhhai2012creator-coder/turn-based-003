@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Sửa Lỗi v4.0.3 (Khắc Phục Triệt Để Xung Đột Đấu Ải & Luyện Ải)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Full v4.0.4 (Quy Tắc Mục Tiêu Bot Ô 1->2->3 & Tăng 40% DEF, 30% HP Tướng Đỡ Đòn)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -497,7 +496,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v4.0.3 Full: Khắc Phục Triệt Để Xung Đột Đấu Ải & Luyện Ải | Mở Khóa Tiến Độ Ải 5 | Rework Vegito & Tân Binh Phúc Lợi</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v4.0.4 Full: Chuẩn Hóa Mục Tiêu Bot (Hàng Trước Ô 1->2->3) | Tăng 40% DEF & 30% HP Tướng DEF | Rework Vegito & Tân Binh</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -1344,9 +1343,9 @@ const HERO_DB = {
     name: "Omega Shenron",
     type: "DEF",
     roleDesc: "Phòng ngự tối thượng, khiên đầu trận & cướp sinh lực",
-    baseHp: 650,
+    baseHp: 845,
     baseAtk: 28.6,
-    baseDef: 52,
+    baseDef: 73,
     baseSpd: 152,
     enMax: 4,
     hasSpells: true,
@@ -1416,9 +1415,9 @@ const HERO_DB = {
     name: "Luân Hồi Tiên Nhân",
     type: "DEF",
     roleDesc: "Tướng giới hạn, nổ 1000% ATK Lục Đạo & ban khiên toàn đội",
-    baseHp: 710,
+    baseHp: 923,
     baseAtk: 36.4,
-    baseDef: 62,
+    baseDef: 87,
     baseSpd: 166,
     enMax: 3,
     hasSpells: true,
@@ -1562,9 +1561,9 @@ const HERO_DB = {
     name: "Phoverus",
     type: "DEF",
     roleDesc: "Pháo đài tím, hút 25% HP 'Thuật Tím', Choáng 3 mục tiêu & phòng thủ Thiên Hoàng",
-    baseHp: 666,
+    baseHp: 866,
     baseAtk: 40.4,
-    baseDef: 58,
+    baseDef: 81,
     baseSpd: 166,
     enMax: 2.5,
     hasSpells: true,
@@ -1635,9 +1634,9 @@ const HERO_DB = {
     name: "Gaara Nhất Vĩ",
     type: "DEF",
     roleDesc: "Đỡ đòn sa mạc, Khống chế Choáng diện rộng & Điểm Yếu Chí Tử",
-    baseHp: 888,
+    baseHp: 1154,
     baseAtk: 38.9,
-    baseDef: 52,
+    baseDef: 73,
     baseSpd: 177,
     enMax: 5.5,
     hasSpells: true,
@@ -1659,9 +1658,9 @@ const HERO_DB = {
     name: "Senju Hashirama",
     type: "DEF",
     roleDesc: "Hokage Đệ Nhất, Mộc Độn áp chế Choáng, Khiên hộ thể & Miễn nhiễm tuyệt đối",
-    baseHp: 680,
+    baseHp: 884,
     baseAtk: 43.5,
-    baseDef: 63,
+    baseDef: 88,
     baseSpd: 173,
     enMax: 4.7,
     hasSpells: true,
@@ -4632,8 +4631,17 @@ function applyOmegaPassive2(omega, target) {
   }
 }
 
+
+function getBotDefaultTarget(alivePlayers) {
+  if (!alivePlayers || alivePlayers.length === 0) return null;
+  // v4.0.4: Quy tắc tấn công đơn mục tiêu của Bot: Hàng trước Ô 1 (slot 0) -> Ô 2 (slot 1) -> Hàng sau Ô 3 (slot 2)
+  const sorted = alivePlayers.slice().sort((a, b) => a.slot - b.slot);
+  return sorted[0];
+}
+
 function executeBotAction(bot) {
-  const alivePlayers = battle.playerTeam.filter(p => p && p.hp > 0);
+  // v4.0.4: Sắp xếp danh sách người chơi theo thứ tự slot 0 (Ô 1) -> slot 1 (Ô 2) -> slot 2 (Ô 3)
+  const alivePlayers = battle.playerTeam.filter(p => p && p.hp > 0).sort((a, b) => a.slot - b.slot);
   if (alivePlayers.length === 0) {
     checkBattleEnd();
     return;
@@ -4645,7 +4653,7 @@ function executeBotAction(bot) {
     return;
   }
 
-  let target = alivePlayers.find(p => p.slot === 0) || alivePlayers[0];
+  let target = getBotDefaultTarget(alivePlayers);
   bot.en = Math.min(bot.enMax, bot.en + 1);
 
   if (bot.en >= bot.enMax) {
@@ -4672,7 +4680,8 @@ function executeBotAction(bot) {
 }
 
 function executeHeroBotAction(actor, alivePlayers) {
-  let target = alivePlayers[Math.floor(Math.random() * alivePlayers.length)];
+  // v4.0.4: Đơn mục tiêu mặc định luôn đánh Ô 1 -> Ô 2 -> Ô 3 (trừ kỹ năng có cơ chế riêng)
+  let target = getBotDefaultTarget(alivePlayers);
   const isSkill = (actor.en >= actor.enMax);
 
   if (isSkill) {
