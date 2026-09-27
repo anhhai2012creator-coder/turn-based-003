@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Full v4.0.2 (Rework Vegito, Khắc Phục Lỗi Choáng Gaara/Tướng Mới & Tân Binh Phúc Lợi)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Sửa Lỗi v4.0.3 (Khắc Phục Triệt Để Xung Đột Đấu Ải & Luyện Ải)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -497,7 +497,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v4.0.1 Full: Sửa Lỗi Sát Thương Gaara, Hashirama, Kaguya | Khởi Tranh Chương 5 & Đột Phá Giới Hạn Cấp 350</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v4.0.3 Full: Khắc Phục Triệt Để Xung Đột Đấu Ải & Luyện Ải | Mở Khóa Tiến Độ Ải 5 | Rework Vegito & Tân Binh Phúc Lợi</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -1270,7 +1270,7 @@
         <div class="modal-title" id="battleResultTitle">KẾT QUẢ</div>
       </div>
       <div class="modal-body" id="battleResultBody"></div>
-      <div class="modal-footer" style="justify-content:center;">
+      <div class="modal-footer" id="battleResultFooter" style="justify-content:center; gap:8px;">
         <button class="btn btn-primary" onclick="exitBattleToHub()">Về Màn Hình Chính</button>
       </div>
     </div>
@@ -2183,6 +2183,41 @@ function generateBotTeam(chapter, stage) {
     });
   }
 
+  // v4.0.3: Cân bằng độ khó nhập môn cho tài khoản mới (Chương 1 ải 1 và ải 2)
+  if (chapter === 1) {
+    if (stage === 1) {
+      // Ải 1-1: 1 quái hướng dẫn (1 vs 1)
+      return [
+        {
+          id: "bot_0", name: "Quái Hộ Vệ C.1-1", type: "DEF",
+          maxHp: Math.round(190 * factor), hp: Math.round(190 * factor),
+          atk: +(10.0 * factor).toFixed(1), def: 20,
+          spd: 120, enMax: 4, en: 0, critRate: 0.10, critDmg: 2.0,
+          armorPen: 0, isBot: true, shield: 0, buffs: {}, slot: 0
+        }
+      ];
+    }
+    if (stage === 2) {
+      // Ải 1-2: 2 quái tân thủ (1 vs 2, chỉ số vừa phải giúp vượt ải thuận lợi)
+      return [
+        {
+          id: "bot_0", name: "Quái Hộ Vệ C.1-2", type: "DEF",
+          maxHp: Math.round(210 * factor), hp: Math.round(210 * factor),
+          atk: +(11.0 * factor).toFixed(1), def: 24,
+          spd: 122, enMax: 4, en: 0, critRate: 0.10, critDmg: 2.0,
+          armorPen: 0, isBot: true, shield: 0, buffs: {}, slot: 0
+        },
+        {
+          id: "bot_1", name: "Chiến Binh C.1-2", type: "ATK",
+          maxHp: Math.round(170 * factor), hp: Math.round(170 * factor),
+          atk: +(13.5 * factor).toFixed(1), def: 20,
+          spd: 125, enMax: 4, en: 0, critRate: 0.12, critDmg: 2.2,
+          armorPen: 0, isBot: true, shield: 0, buffs: {}, slot: 1
+        }
+      ];
+    }
+  }
+
   return [
     {
       id: "bot_0", name: `Quái Hộ Vệ C.${chapter}-${stage}`, type: "DEF",
@@ -2521,6 +2556,8 @@ let currentGateTab = 'goldGate';
 let currentSelectedStage = 1;
 
 function openTrainingGateModal() {
+  battle.mode = currentGateTab || 'goldGate';
+  battle.chapter = 0;
   if (!gameState.training) {
     gameState.training = { goldMaxStage: 1, resMaxStage: 1 };
   }
@@ -3028,6 +3065,7 @@ function startBattle() {
   const bTeam = generateBotTeam(selectedChapter, selectedStage);
 
   battle.active = true;
+  battle.mode = 'campaign';
   battle.chapter = selectedChapter;
   battle.stage = selectedStage;
   battle.playerTeam = pTeam;
@@ -3164,7 +3202,7 @@ function checkBattleEnd() {
 
 function handleVictory() {
   // CỔNG ẢI VÀNG (Demo v3.1.0: Hệ số mới có hãm phanh & khóa trần 20M)
-  if (battle.mode === 'goldGate') {
+  if (battle.chapter === 0 && battle.mode === 'goldGate') {
     const s = battle.stage;
     const rObj = getTrainingGateRewards('goldGate', s);
     const rGold = rObj.gold;
@@ -3194,7 +3232,7 @@ function handleVictory() {
   }
 
   // CỔNG ẢI TÀI NGUYÊN (Demo v3.1.0: Hệ số mới có hãm phanh & khóa trần)
-  if (battle.mode === 'resGate') {
+  if (battle.chapter === 0 && battle.mode === 'resGate') {
     const s = battle.stage;
     const rObj = getTrainingGateRewards('resGate', s);
     const rAnhSao = rObj.anhSao;
@@ -3260,16 +3298,16 @@ function handleVictory() {
     gameState.events.anhHungChiVien.dailyQuestProgress.anhSaoEarned = (gameState.events.anhHungChiVien.dailyQuestProgress.anhSaoEarned || 0) + rAnhSao;
   }
 
-  // Check Quests Tracking
+  // Check Quests Tracking (v4.0.3: Khắc phục triệt để lỗi thăng tiến ải)
   const isNewStage = (battle.chapter > gameState.progress.maxChapter) ||
-                     (battle.chapter === gameState.progress.maxChapter && battle.stage === gameState.progress.maxStage);
+                     (battle.chapter === gameState.progress.maxChapter && battle.stage >= gameState.progress.maxStage);
 
   if (isNewStage) {
     gameState.dailyQuests.progress.newStages++;
     if (battle.stage < 10) {
-      gameState.progress.maxStage++;
+      gameState.progress.maxStage = Math.max(gameState.progress.maxStage, battle.stage + 1);
     } else if (battle.chapter < 5) {
-      gameState.progress.maxChapter++;
+      gameState.progress.maxChapter = Math.max(gameState.progress.maxChapter, battle.chapter + 1);
       gameState.progress.maxStage = 1;
       if (battle.chapter === 3 && battle.stage === 10) {
         if (!gameState.ownedBeasts) gameState.ownedBeasts = [];
@@ -3301,20 +3339,34 @@ function handleVictory() {
       <div>📈 EXP Tài khoản: <b>+${rExp}</b></div>
     </div>
   `;
+  const footerEl = document.getElementById("battleResultFooter");
+  if (footerEl) {
+    footerEl.innerHTML = `
+      <button class="btn btn-primary" style="padding:10px 20px; font-weight:bold;" onclick="goToNextStage()">⚔️ Ải Tiếp Theo</button>
+      <button class="btn" onclick="exitBattleToHub()">Về Màn Hình Chính</button>
+    `;
+  }
   openModal("modalBattleResult");
 }
 
 function handleDefeat() {
   document.getElementById("battleResultTitle").innerHTML = "<span style='color:var(--accent-red)'>THẤT BẠI!</span>";
   let defeatMsg = "Toàn đội đã bị hạ gục. Thất bại không nhận thưởng. Hãy nâng cấp nhân vật để thử lại!";
-  if (battle.mode === 'goldGate') {
+  if (battle.chapter === 0 && battle.mode === 'goldGate') {
     defeatMsg = `Toàn đội đã bị hạ gục tại Ải ${battle.stage} Cổng Ải Vàng! Hãy cường hóa nhân vật và thử lại.`;
-  } else if (battle.mode === 'resGate') {
+  } else if (battle.chapter === 0 && battle.mode === 'resGate') {
     defeatMsg = `Toàn đội đã bị hạ gục tại Ải ${battle.stage} Cổng Ải Tài Nguyên! Hãy cường hóa nhân vật và thử lại.`;
   }
   document.getElementById("battleResultBody").innerHTML = `
     <p style="color:var(--text-secondary);">${defeatMsg}</p>
   `;
+  const footerElDefeat = document.getElementById("battleResultFooter");
+  if (footerElDefeat) {
+    footerElDefeat.innerHTML = `
+      <button class="btn btn-primary" onclick="retryCurrentBattle()">🔄 Thử Lại</button>
+      <button class="btn" onclick="exitBattleToHub()">Về Màn Hình Chính</button>
+    `;
+  }
   openModal("modalBattleResult");
 }
 
@@ -4588,7 +4640,7 @@ function executeBotAction(bot) {
   }
 
   // Chapter 4 & Cổng Ải Đấu Luyện: Hero Bot logic
-  if ((battle.chapter === 4 || battle.mode === 'goldGate' || battle.mode === 'resGate') && bot.heroId) {
+  if ((battle.chapter >= 4 || battle.mode === 'goldGate' || battle.mode === 'resGate') && bot.heroId) {
     executeHeroBotAction(bot, alivePlayers);
     return;
   }
@@ -6018,6 +6070,13 @@ function rollNewbieGacha() {
 
   if (!gameState.heroes[picked.id]) {
     gameState.heroes[picked.id] = { level: 1 };
+    // v4.0.3: Tự động gán vào ô đội hình còn trống cho tài khoản mới
+    for (let slot = 0; slot < 3; slot++) {
+      if (gameState.team[slot] === null) {
+        gameState.team[slot] = picked.id;
+        break;
+      }
+    }
   } else {
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 20;
   }
@@ -6072,6 +6131,13 @@ function updateEventUI() {
 function claimStarterHero(heroId) {
   if (gameState.events.starterClaimed) return;
   gameState.heroes[heroId] = { level: 1 };
+  // v4.0.3: Tự động gán vào ô đội hình còn trống
+  for (let slot = 0; slot < 3; slot++) {
+    if (gameState.team[slot] === null) {
+      gameState.team[slot] = heroId;
+      break;
+    }
+  }
   gameState.resources.gold += 20000;
   gameState.resources.vpnc += 1000;
   gameState.events.starterClaimed = true;
@@ -6402,8 +6468,45 @@ function switchScreen(screenId) {
 function openModal(id) { document.getElementById(id).classList.add("active"); }
 function closeModal(id) { document.getElementById(id).classList.remove("active"); }
 
+
+function goToNextStage() {
+  closeModal("modalBattleResult");
+  if (!battle.chapter || battle.mode === 'goldGate' || battle.mode === 'resGate') {
+    exitBattleToHub();
+    return;
+  }
+  let nextC = battle.chapter;
+  let nextS = battle.stage + 1;
+  if (nextS > 10) {
+    if (nextC < 5) {
+      nextC++;
+      nextS = 1;
+    } else {
+      toast("🎉 Bạn đã hoàn thành toàn bộ cốt truyện Chương 5!", false);
+      exitBattleToHub();
+      return;
+    }
+  }
+  selectedChapter = nextC;
+  selectedStage = nextS;
+  startBattle();
+}
+
+function retryCurrentBattle() {
+  closeModal("modalBattleResult");
+  if (battle.chapter === 0 && (battle.mode === 'goldGate' || battle.mode === 'resGate')) {
+    startTrainingBattle(battle.mode, battle.stage);
+  } else {
+    startBattle();
+  }
+}
+
 function exitBattleToHub() {
   closeModal("modalBattleResult");
+  battle.active = false;
+  battle.mode = 'campaign';
+  battle.chapter = selectedChapter || 1;
+  battle.stage = selectedStage || 1;
   switchScreen("screenHub");
   updateTopBarUI();
 }
@@ -6415,6 +6518,7 @@ let selectedChapter = 1;
 let selectedStage = 1;
 
 function openBattleStageModal() {
+  battle.mode = 'campaign';
   selectedChapter = gameState.progress.maxChapter;
   selectedStage = (selectedChapter === gameState.progress.maxChapter) ? gameState.progress.maxStage : 1;
   renderChapterTabs();
