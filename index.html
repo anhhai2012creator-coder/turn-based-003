@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Full v5.1.0 (Fix Lỗi Trận Đấu, Hệ AS Sát Thủ, Trụ Cột, Đấu Luyện Mới, C.6-7 & Max Level 300)</title>
+<title>Chiến Thuật Luân Hồi v5.2.1 [ĐÃ CÂN BẰNG CHUẨN BOSS C.5-10: 3.68M HP]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -540,7 +541,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.2.0: Chuẩn Hóa Đấu Ải C.4 - C.7 (Độ Khựng Chiến Thuật Chuẩn) | Tăng +30% HP & +20% ATK Người Chơi | Max Level 500</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.2.1 FIX LỖI: Boss Ải 5-10 Đã Cân Bằng (3.68M HP thay vì 18M) | Tăng +30% HP & +20% ATK Người Chơi | Max Level 500</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -595,6 +596,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
+            <div style="font-size:10px; color:#3fb950; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.2.1 (BOSS 5-10: 3.68M HP)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -3390,6 +3392,11 @@ function startBattle() {
   battle.animations = [];
   battle.selectedTargetIndex = 0;
 
+  // v5.2.1: Ghi log xác nhận chỉ số đối thủ đã được cân bằng
+  bTeam.forEach(b => {
+    if (b) logCombat(`⚔️ [v5.2.1 Đối Thủ] ${b.name} | HP: ${b.hp.toLocaleString()} | ATK: ${b.atk.toLocaleString()}`);
+  });
+
   // ================= KÍCH HOẠT LINH THÚ TRONG TRẬN ĐẤU (v3.0.0) =================
   if (gameState.equippedBeast && BEASTS_DB[gameState.equippedBeast]) {
     const beast = BEASTS_DB[gameState.equippedBeast];
@@ -5427,7 +5434,9 @@ function drawCharacter(f) {
   ctx.fillStyle = isDead ? "#484f58" : "#f0f6fc";
   ctx.font = "bold 11px sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText(f.name.substring(0, 10), x, y + 4);
+  let labelName = f.name.replace(/ \(C\.\d+-\d+\)/, '');
+  if (labelName.length > 13) labelName = labelName.substring(0, 13);
+  ctx.fillText(labelName, x, y + 4);
 
   ctx.font = "bold 10px sans-serif";
   ctx.fillStyle = f.type === "DEF" ? "#58a6ff" : (f.type === "ATK" ? "#f85149" : (f.type === "SKL" ? "#39c5bb" : "#ff0055"));
