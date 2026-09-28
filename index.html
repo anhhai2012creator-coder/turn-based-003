@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Full v4.0.4 (Quy Tắc Mục Tiêu Bot Ô 1->2->3 & Tăng 40% DEF, 30% HP Tướng Đỡ Đòn)</title>
+<title>Chiến Thuật Luân Hồi - Bản Cập Nhật Full v5.1.0 (Fix Lỗi Trận Đấu, Hệ AS Sát Thủ, Trụ Cột, Đấu Luyện Mới, C.6-7 & Max Level 300)</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -541,7 +540,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.0.0 SIÊU BẢN CẬP NHẬT: Sổ Sứ Mệnh Mùa II (Pass 1-60) | 2 Tướng Mới Tsunade & Shisui | 4 Đại Trụ Cột | Đổi Nền & Cân Bằng Meta</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.1.0 HOÀN THIỆN: Khắc Phục Lỗi Trận Đấu | Ra Mắt Hệ AS (Sát Thủ) | Gộp Tab Trụ Cột & Giftcode Sự Kiện | Cân Bằng Đấu Luyện & Đấu Ải C.6-7 | Max Level 300</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -551,21 +550,9 @@
           <span class="btn-icon">⛩️</span>
           <span>Đấu Luyện</span>
         </button>
-        <button class="btn btn-accent" onclick="openEndlessTowerModal()">
-          <span class="btn-icon">🏰</span>
-          <span>Tháp Vô Hạn</span>
-        </button>
-        <button class="btn btn-pink" onclick="openWorldBossModal()">
-          <span class="btn-icon">👹</span>
-          <span>Boss Thế Giới</span>
-        </button>
-        <button class="btn btn-gold" onclick="openRookieCarnivalModal()">
-          <span class="btn-icon">🎖️</span>
-          <span>7 Ngày Tân Thủ</span>
-        </button>
-        <button class="btn" onclick="openThemeSelectModal()">
-          <span class="btn-icon">🎨</span>
-          <span>Đổi Nền</span>
+        <button class="btn btn-accent" onclick="openPillarsModal()">
+          <span class="btn-icon">🏛️</span>
+          <span>Trụ Cột</span>
         </button>
         <button class="btn" onclick="openHeroesModal()">
           <span class="btn-icon">👥</span>
@@ -589,11 +576,7 @@
         </button>
         <button class="btn" onclick="openEventsModal()">
           <span class="btn-icon">🎁</span>
-          <span>Sự Kiện</span>
-        </button>
-        <button class="btn" onclick="openGiftcodeModal()">
-          <span class="btn-icon">🎟️</span>
-          <span>Giftcode</span>
+          <span>Sự Kiện & Code</span>
         </button>
         <button class="btn btn-purple" onclick="openBeastModal()">
           <span class="btn-icon">🐉</span>
@@ -647,6 +630,98 @@
   </div>
 
   <!-- Toast -->
+  
+  <!-- Popup: TRỤ CỘT (v5.1.0 Gộp Tháp Vô Hạn, Boss Thế Giới, 7 Ngày Tân Thủ) -->
+  <div class="modal-overlay" id="modalPillars">
+    <div class="modal-card" style="width:780px;">
+      <div class="modal-header">
+        <div class="modal-title">🏛️ Trụ Cột Tính Năng (Thách Đấu & Tân Thủ)</div>
+        <button class="modal-close" onclick="closeModal('modalPillars')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="tab-bar">
+          <button class="tab-btn active" id="tabBtnPillarTower" onclick="switchPillarTab('tower')">🏰 Tháp Vô Hạn (Lv.200)</button>
+          <button class="tab-btn" id="tabBtnPillarBoss" onclick="switchPillarTab('boss')">👹 Boss Thế Giới (Lv.120)</button>
+          <button class="tab-btn" id="tabBtnPillarRookie" onclick="switchPillarTab('rookie')">🎖️ 7 Ngày Tân Thủ</button>
+        </div>
+
+        <!-- Nội dung Tab 1: Tháp Vô Hạn -->
+        <div id="pillarTowerContent" style="display:flex; flex-direction:column; gap:10px;">
+          <div id="towerLockNotice" style="display:none; background:#241216; border:1px solid #f85149; border-radius:8px; padding:16px; text-align:center;">
+            <div style="font-size:24px;">🔒</div>
+            <div style="font-size:14px; font-weight:700; color:#f85149; margin:4px 0;">CHƯA ĐỦ CẤP ĐỘ MỞ KHÓA</div>
+            <div style="font-size:12px; color:var(--text-secondary);">Tháp Thử Thách Vô Hạn mở khóa khi tài khoản đạt <b>Level 200</b>. Cấp hiện tại: <b id="uiTowerCurrentPlayerLv" style="color:var(--accent-blue);">1</b>.</div>
+          </div>
+          <div id="towerActiveView">
+            <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-size:14px; font-weight:700; color:var(--accent-gold);">Tầng Đang Khiêu Chiến: <span id="uiPillarTowerCurrentFloor">1</span>/100</div>
+                <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Kỷ lục đã vượt: <b id="uiPillarTowerMaxCleared">0</b> tầng | Càn quét hằng ngày: <span id="uiPillarTowerSweepStatus" style="color:var(--accent-green);">Sẵn sàng</span></div>
+              </div>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-accent" style="padding:6px 14px;" onclick="sweepEndlessTower()">🧹 Càn Quét Nhanh</button>
+                <button class="btn btn-primary" style="padding:6px 16px;" onclick="startEndlessTowerBattle()">⚔️ Leo Tầng Tiếp</button>
+              </div>
+            </div>
+            <div style="font-size:12px; font-weight:700; margin-bottom:6px;">Danh sách 5 Tầng kế tiếp & Phần thưởng:</div>
+            <div id="pillarTowerFloorsList" style="display:flex; flex-direction:column; gap:6px; max-height:260px; overflow-y:auto; padding-right:4px;"></div>
+          </div>
+        </div>
+
+        <!-- Nội dung Tab 2: Boss Thế Giới -->
+        <div id="pillarBossContent" style="display:none; flex-direction:column; gap:10px;">
+          <div id="bossLockNotice" style="display:none; background:#241216; border:1px solid #f85149; border-radius:8px; padding:16px; text-align:center;">
+            <div style="font-size:24px;">🔒</div>
+            <div style="font-size:14px; font-weight:700; color:#f85149; margin:4px 0;">CHƯA ĐỦ CẤP ĐỘ MỞ KHÓA</div>
+            <div style="font-size:12px; color:var(--text-secondary);">Boss Thế Giới Thập Vĩ mở khóa khi tài khoản đạt <b>Level 120</b>. Cấp hiện tại: <b id="uiBossCurrentPlayerLv" style="color:var(--accent-blue);">1</b>.</div>
+          </div>
+          <div id="bossActiveView">
+            <div style="background:#0d1117; border:1px solid #da3633; border-radius:8px; padding:12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <div style="font-size:15px; font-weight:700; color:#f85149;">Thần Ma Thập Vĩ (Lượng Máu Vô Tận)</div>
+                <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Sinh tồn trong 10 hiệp để gây tối đa sát thương! Lượt còn lại: <b id="uiPillarBossAttempts" style="color:var(--accent-gold);">3/3</b></div>
+                <div style="font-size:11px; color:var(--accent-cyan); margin-top:2px;">Kỷ lục sát thương cao nhất: <b id="uiPillarBossHighestDmg">0</b> ST</div>
+              </div>
+              <button class="btn btn-pink" style="padding:8px 18px;" onclick="startWorldBossBattle()">⚔️ Khiêu Chiến Ngay</button>
+            </div>
+            <div style="font-size:12px; font-weight:700; margin-bottom:6px;">Mốc Sát Thương & Phần Thưởng Hằng Ngày:</div>
+            <div id="pillarBossMilestonesList" style="display:grid; grid-template-columns:repeat(4, 1fr); gap:8px;"></div>
+          </div>
+        </div>
+
+        <!-- Nội dung Tab 3: 7 Ngày Tân Thủ -->
+        <div id="pillarRookieContent" style="display:none; flex-direction:column; gap:10px;">
+          <div style="font-size:12px; color:var(--text-secondary);">
+            Đặc quyền tân thủ hỗ trợ bứt phá giai đoạn đầu. Điểm danh mỗi ngày để nhận quà siêu khủng, Ngày 7 tặng Rương Tự Chọn Tướng Thần Cấp!
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:10px;" id="pillarRookieDaysContainer"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('modalPillars')">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup: RƯƠNG TỰ CHỌN TƯỚNG (CẤP 50 SỔ SỨ MỆNH & NGÀY 7 TÂN THỦ) -->
+  <div class="modal-overlay" id="modalHeroSelector">
+    <div class="modal-card" style="width:620px;">
+      <div class="modal-header">
+        <div class="modal-title">🎁 Rương Thần Kỳ: Tự Chọn Tướng Cấp 50</div>
+        <button class="modal-close" onclick="closeModal('modalHeroSelector')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:12px;">
+          Chọn 1 trong các siêu tướng dưới đây để mở khóa hoặc nhận 500 Mảnh Cường Hóa nếu đã sở hữu:
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;" id="heroSelectorOptions"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('modalHeroSelector')">Đóng</button>
+      </div>
+    </div>
+  </div>
+
   <div id="toast">Thông báo</div>
 
   <!-- Popup: Điểm Danh Hàng Tuần (Reset mỗi tuần) -->
@@ -725,6 +800,18 @@
             <div id="gachaActiveCard" style="display:none;"></div>
             <button class="btn btn-primary" id="btnNextGachaItem" onclick="showNextGachaItem()" style="display:none; margin-top:10px; padding:6px 16px;">Xem Tiếp ➔</button>
           </div>
+        </div>
+
+        <!-- Nội dung Tab Lộ Trình Tích Cấp Sổ Sứ Mệnh Mùa II -->
+        <div id="passRoadmapSection" style="display:none; flex-direction:column; gap:10px;">
+          <div style="background:#0d1117; border:1px solid var(--accent-gold); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-weight:700; font-size:14px; color:var(--accent-gold);">Cấp Sổ Sứ Mệnh: <span id="uiPassLevelDisplay">1</span>/60 (<span id="uiPassExpDisplay">0</span>/100 EXP)</div>
+              <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Trạng thái: <b id="uiPassStatusDisplay" style="color:var(--accent-blue);">Sổ Thường Miễn Phí</b></div>
+            </div>
+            <button class="btn btn-gold" id="btnActivatePassPremium" onclick="activatePremiumPass()">⭐ Kích Hoạt Cao Cấp (5,999 ⭐)</button>
+          </div>
+          <div id="passTiersListContainer" style="display:flex; flex-direction:column; gap:6px; max-height:280px; overflow-y:auto; padding-right:4px;"></div>
         </div>
 
         <!-- Nội dung Tab Lộ Trình Tích Cấp Sổ Sứ Mệnh Mùa II -->
@@ -1353,6 +1440,8 @@
 </div>
 
 <script>
+/* ===========================================================<script>
+
 /* ==========================================================================
    CONFIG & DATABASE v1.3.0
    ========================================================================== */
@@ -1367,7 +1456,7 @@ const GIFTCODES = {
   "TEST001": { test: true },
   "TEST002": { test2: true },
   "RESET001": { reset: true },
-  // v5.0.0: 15 Giftcode mới ẩn (nhận VPNC, Ánh Sao, Vàng, Kim Cương)
+  // v5.1.0: 15 Giftcode mới ẩn (nhận VPNC, Ánh Sao, Vàng, Kim Cương)
   "V5UPDATE": { kimCuong: 500, anhSao: 100, gold: 50000, vpnc: 500 },
   "TSUNADE2026": { kimCuong: 800, anhSao: 200, gold: 100000, vpnc: 1000 },
   "SHISUIKOTO": { kimCuong: 800, anhSao: 200, gold: 100000, vpnc: 1000 },
@@ -1391,9 +1480,9 @@ const HERO_DB = {
     name: "Nhà lữ hành",
     type: "ATK",
     roleDesc: "Khởi đầu đa dụng, gây thiêu đốt rực lửa",
-    baseHp: 560,
+    baseHp: 728,
     baseAtk: 42.2,
-    baseDef: 38,
+    baseDef: 48,
     baseSpd: 139,
     enMax: 5,
     hasSpells: false,
@@ -1412,9 +1501,9 @@ const HERO_DB = {
     name: "Madara (Lục đạo)",
     type: "ATK",
     roleDesc: "Sát thương diện rộng, hồi phục & khiên huyết kích",
-    baseHp: 470,
+    baseHp: 611,
     baseAtk: 58.2,
-    baseDef: 30,
+    baseDef: 38,
     baseSpd: 150,
     enMax: 5,
     hasSpells: true,
@@ -1460,9 +1549,9 @@ const HERO_DB = {
     name: "Vegito",
     type: "SKL",
     roleDesc: "Chiến thần tốc độ, 'Bleeding' hủy diệt & Miễn thương đặc biệt",
-    baseHp: 577,
+    baseHp: 692,
     baseAtk: 41.0,
-    baseDef: 47,
+    baseDef: 59,
     baseSpd: 170,
     enMax: 6,
     hasSpells: true,
@@ -1484,9 +1573,9 @@ const HERO_DB = {
     name: "Whis",
     type: "SKL",
     roleDesc: "Thần quan tối cao, hồi phục, 'Bảo vệ' toàn đội & giảm công địch",
-    baseHp: 564,
+    baseHp: 677,
     baseAtk: 36.4,
-    baseDef: 47,
+    baseDef: 59,
     baseSpd: 173,
     enMax: 4,
     hasSpells: true,
@@ -1532,9 +1621,9 @@ const HERO_DB = {
     name: "Pain Thiên Đạo",
     type: "SKL",
     roleDesc: "Chúa tể kiểm soát, 'Terror' gây choáng, phản đòn 'Teleportation' & giảm công",
-    baseHp: 550,
+    baseHp: 660,
     baseAtk: 65.0,
-    baseDef: 48,
+    baseDef: 60,
     baseSpd: 165,
     enMax: 4,
     hasSpells: true,
@@ -1556,9 +1645,9 @@ const HERO_DB = {
     name: "Isshiki Otsutsuki",
     type: "ATK",
     roleDesc: "Càn quét diện rộng, tăng tốc đánh & đánh chen ngang liên hoàn",
-    baseHp: 635,
+    baseHp: 826,
     baseAtk: 50.0,
-    baseDef: 48,
+    baseDef: 60,
     baseSpd: 159,
     enMax: 6.5,
     atkSpd: 0.30,
@@ -1581,9 +1670,9 @@ const HERO_DB = {
     name: "Itachi (Uế Thổ)",
     type: "ATK",
     roleDesc: "Hỏa độn thiêu đốt % HP, hồi phục lượt chẵn & hồi EN từ Bốc Hỏa",
-    baseHp: 578,
+    baseHp: 751,
     baseAtk: 42.2,
-    baseDef: 41,
+    baseDef: 51,
     baseSpd: 156,
     enMax: 5.5,
     hasSpells: true,
@@ -1605,9 +1694,9 @@ const HERO_DB = {
     name: "Momoshiki Otsutsuki",
     type: "SKL",
     roleDesc: "Tích nộ bùng nổ 80% ST, khiên 30% HP & phóng kích uy áp",
-    baseHp: 588,
+    baseHp: 706,
     baseAtk: 39.0,
-    baseDef: 48,
+    baseDef: 60,
     baseSpd: 175,
     enMax: 6.3,
     rage: 0,
@@ -1630,9 +1719,9 @@ const HERO_DB = {
     name: "Kaioshin XENO",
     type: "SKL",
     roleDesc: "Thần tối cao, khiên 30% HP & hồi 150% ATK toàn đội, miễn nhiễm khống chế",
-    baseHp: 622,
+    baseHp: 746,
     baseAtk: 35.6,
-    baseDef: 44,
+    baseDef: 55,
     baseSpd: 172,
     enMax: 4.0,
     hasSpells: true,
@@ -1678,9 +1767,9 @@ const HERO_DB = {
     name: "Conan Edogawa",
     type: "ATK",
     roleDesc: "Thám tử lừng danh, thuốc ngủ khống chế & hút công, công kích nhân đôi sát thương",
-    baseHp: 545,
+    baseHp: 709,
     baseAtk: 57,
-    baseDef: 35,
+    baseDef: 44,
     baseSpd: 162,
     enMax: 4,
     hasSpells: true,
@@ -1700,11 +1789,11 @@ const HERO_DB = {
   kid: {
     id: "kid",
     name: "Kaitou Kid",
-    type: "ATK",
+    type: "AS",
     roleDesc: "Siêu trộm ánh trăng, 3 đòn liên hoàn bạo kích, phục thù phản đòn & đóng băng hút máu 120%",
-    baseHp: 510,
+    baseHp: 663,
     baseAtk: 52,
-    baseDef: 30,
+    baseDef: 38,
     baseSpd: 168,
     enMax: 4.7,
     hasSpells: true,
@@ -1726,24 +1815,24 @@ const HERO_DB = {
     id: "gaara",
     name: "Gaara Nhất Vĩ",
     type: "DEF",
-    roleDesc: "Đỡ đòn sa mạc, Khống chế Choáng diện rộng & Điểm Yếu Chí Tử (v5.0.0 Cân Bằng)",
+    roleDesc: "Đỡ đòn sa mạc, Khống chế Choáng diện rộng & Điểm Yếu Chí Tử",
     baseHp: 1154,
     baseAtk: 38.9,
     baseDef: 73,
     baseSpd: 165,
     enMax: 5.5,
     hasSpells: true,
-    normalAttack: { name: "Sa Đạn", enGain: 1.5, desc: "Gây 77% ATK lên 1 mục tiêu. Hồi 1.5 EN." },
+    normalAttack: { name: "Sa Đạn", enGain: 1.5, desc: "Gây 77% ATK lên 1 mục tiêu. Hồi 2.1 EN." },
     activeSkill: { name: "Sa Mạc Đại Táng", desc: "Gây 200% ATK lên toàn bộ mục tiêu. Có 80% cơ hội gây 'Choáng' 2 lượt. Tiêu tốn toàn bộ EN." },
     passives: [
       { lv: 30, name: "Sa Bọc Tê Liệt", desc: "Khi đánh thường, có 25% cơ hội 'Choáng' 1 lượt và giảm 50% DEF mục tiêu đó trong 1 lượt." },
       { lv: 70, name: "Điểm Yếu Chí Tử", desc: "Khi sử dụng kỹ năng chủ động, có 18% cơ hội gây 'Điểm yếu chí tử' (giảm 100% DEF và 80% ATK mục tiêu đó trong 4 lượt)." },
-      { lv: 80, name: "Chân Thể Nhất Vĩ", desc: "Nâng cấp bị động 1: Khi đánh thường, có 35% cơ hội 'Choáng' 1 lượt và giảm 60% DEF mục tiêu đó trong 1 lượt." },
+      { lv: 80, name: "Chân Thể Nhất Vĩ", desc: "Nâng cấp bị động 1: Khi đánh thường, có 35% cơ hội 'Choáng' 1 lượt và giảm 50% DEF mục tiêu đó trong 1 lượt." },
       { lv: 100, name: "Tuyệt Đối Phòng Ngự", desc: "Khi gây 'Choáng', bản thân cung cấp toàn đội lớp giáp ảo (Khiên) bằng 20% HP tối đa của bản thân (tối đa 1 lần/lượt)." }
     ],
     spells: [
       { lv: 130, name: "Thần Chú 1", desc: "+25% DEF; +20% HP." },
-      { lv: 150, name: "Thần Chú 2", desc: "+5% cơ hội gây ra 'Choáng' của kỹ năng chủ động." }
+      { lv: 150, name: "Thần Chú 2", desc: "+5% cơ hội gây ra 'Choáng' của kỹ năng chủ động (đạt 85%)." }
     ]
   },
   hashirama: {
@@ -1775,9 +1864,9 @@ const HERO_DB = {
     name: "Kaguya Otsutsuki",
     type: "ATK",
     roleDesc: "Thủy Tổ Chakra, Luân Chuyển Không Gian Băng - Lửa - Sa Mạc & Đòn Đánh Đa Dạng",
-    baseHp: 544,
+    baseHp: 707,
     baseAtk: 45.8,
-    baseDef: 41,
+    baseDef: 51,
     baseSpd: 166,
     enMax: 10,
     hasSpells: true,
@@ -1821,11 +1910,11 @@ const HERO_DB = {
   shisui: {
     id: "shisui",
     name: "Uchiha Shisui",
-    type: "ATK",
-    roleDesc: "Thuấn Thân Shisui, 5 đòn Thiên Hỏa liên tiếp, Sát thương chuẩn 100% & Phản đòn 88%",
-    baseHp: 580,
+    type: "AS",
+    roleDesc: "Thuấn Thân Shisui [AS], 5 đòn Thiên Hỏa liên tiếp, Sát thương chuẩn 100% & Phản đòn 88%",
+    baseHp: 754,
     baseAtk: 51.5,
-    baseDef: 48,
+    baseDef: 60,
     baseSpd: 171,
     enMax: 5,
     hasSpells: true,
@@ -1842,7 +1931,7 @@ const HERO_DB = {
       { lv: 150, name: "Thần Chú 2", desc: "+18% HP." }
     ]
   }
-};
+};;
 
 /* ==========================================================================
    STATE MANAGEMENT & STORAGE v1.3.0
@@ -1850,7 +1939,7 @@ const HERO_DB = {
 const STORAGE_KEY = "TURN_BASED_GAME_SAVE_V130";
 
 let gameState = {
-  player: { level: 1, exp: 0, maxLevel: 150 },
+  player: { level: 1, exp: 0, maxLevel: 300 },
   resources: {
     anhSao: 50,
     kimCuong: 120,
@@ -1945,7 +2034,7 @@ function loadGame() {
   }
 
   // Khôi phục và đảm bảo toàn vẹn cấu trúc dữ liệu không bao giờ bị undefined
-  if (!gameState.player) gameState.player = { level: 1, exp: 0, maxLevel: 150 };
+  if (!gameState.player) gameState.player = { level: 1, exp: 0, maxLevel: 300 };
   if (!gameState.player.level) gameState.player.level = 1;
   if (!gameState.player.exp) gameState.player.exp = 0;
   if (!gameState.player.maxLevel) gameState.player.maxLevel = 150;
@@ -2241,54 +2330,6 @@ function getBotScalingFactor(chapter, stage) {
 }
 
 function generateBotTeam(chapter, stage) {
-  if (battle.mode === "endlessTower") {
-    const f = battle.stage;
-    const equivLevel = Math.min(350, Math.round(20 + f * 3));
-    const pool = ["madara", "hashirama", "kaguya", "omega", "isshiki", "pain", "tsunade", "shisui"];
-    const h1 = pool[f % pool.length];
-    const h2 = pool[(f + 2) % pool.length];
-    const h3 = pool[(f + 4) % pool.length];
-    return [h1, h2, h3].map((hId, slot) => {
-      const stats = getHeroStats(hId, equivLevel);
-      return {
-        ...stats,
-        id: hId,
-        heroId: hId,
-        name: `${stats.name} (T.${f})`,
-        slot: slot,
-        isBot: true,
-        en: 0,
-        buffs: {},
-        isAlive: true,
-        atkSpd: 0,
-        shield: 0
-      };
-    });
-  }
-
-  if (battle.mode === "worldBoss") {
-    // Boss Thập Vĩ Giáng Thế
-    const bossStats = {
-      id: "ten_tails",
-      heroId: "omega",
-      name: "Thần Ma Thập Vĩ (World Boss)",
-      type: "DEF",
-      hp: 50000000,
-      maxHp: 50000000,
-      atk: 180,
-      def: 60,
-      spd: 120,
-      en: 0,
-      enMax: 5,
-      slot: 0,
-      isBot: true,
-      buffs: {},
-      isAlive: true,
-      atkSpd: 0,
-      shield: 0
-    };
-    return [bossStats];
-  }
   const factor = getBotScalingFactor(chapter, stage);
 
   if (chapter === 5) {
@@ -3389,25 +3430,6 @@ function checkBattleEnd() {
 }
 
 function handleVictory() {
-  if (battle.mode === "endlessTower") {
-    gameState.endlessTower = gameState.endlessTower || { currentFloor: 1, maxCleared: 0, lastSweepDate: "" };
-    gameState.endlessTower.maxCleared = Math.max(gameState.endlessTower.maxCleared, battle.stage);
-    gameState.endlessTower.currentFloor = Math.min(100, battle.stage + 1);
-    addPassExp(60);
-    recordQuestProgress("anyBattles", 1);
-    recordQuestProgress("towerOrBossAttempt", 1);
-    saveGame();
-    toast(`🎉 VƯỢT THÁP TẦNG ${battle.stage} THÀNH CÔNG!`);
-  }
-  if (battle.mode === "worldBoss") {
-    gameState.worldBoss = gameState.worldBoss || { attemptsLeft: 3, lastDate: "", highestDmg: 0, claimedMilestones: [] };
-    gameState.worldBoss.highestDmg = Math.max(gameState.worldBoss.highestDmg, battle.bossTotalDmg || 0);
-    addPassExp(80);
-    recordQuestProgress("anyBattles", 1);
-    recordQuestProgress("towerOrBossAttempt", 1);
-    saveGame();
-    toast(`👹 KHIÊU CHIẾN BOSS KẾT THÚC: Tổng ST ${ (battle.bossTotalDmg || 0).toLocaleString() }!`);
-  }
   // CỔNG ẢI VÀNG (Demo v3.1.0: Hệ số mới có hãm phanh & khóa trần 20M)
   if (battle.chapter === 0 && battle.mode === 'goldGate') {
     const s = battle.stage;
@@ -3943,6 +3965,10 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   }
 
   let finalDmg = amount;
+  // v5.1.0: Giảm 20% sát thương từ Bot gây ra trong trận đấu
+  if (attacker && attacker.isBot) {
+    amount = Math.max(1, Math.round(amount * 0.80));
+  }
 
   // v4.0.0: Giảm sát thương bạo kích cho Omega Shenron Lv.150 (-30%) & Hashirama Lv.100 (-50%)
   if (isCrit) {
@@ -4071,50 +4097,6 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
     target.en = Math.min(target.enMax, +(target.en + gain).toFixed(1));
   }
   checkDefenderTriggers(target, finalDmg);
-  if (battle.mode === "worldBoss" && target.isBot) {
-    battle.bossTotalDmg = (battle.bossTotalDmg || 0) + finalDmg;
-    recordQuestProgress("dailyDamageDealt", finalDmg);
-  } else if (!target.isBot) {
-    // player damage tracking
-  } else {
-    recordQuestProgress("dailyDamageDealt", finalDmg);
-  }
-  // v5.0.0: Bị động Tsunade & Shisui
-  if (target.id === "tsunade" || target.heroId === "tsunade") {
-    // Bị động 2 (Lv 70) & Bị động 4 (Lv 100)
-    const threshold = (target.level >= 100) ? 0.45 : 0.30;
-    if (target.level >= 70 && !target.tsunadeByakugouTriggered && (target.hp / target.maxHp) < threshold && target.hp > 0) {
-      target.tsunadeByakugouTriggered = true;
-      const healPct = (target.level >= 100) ? 0.18 : 0.12;
-      const recovered = Math.round(target.hp * 0.50 + target.maxHp * healPct);
-      target.hp = Math.min(target.maxHp, target.hp + recovered);
-      const defBonus = (target.level >= 100) ? 0.60 : 0.50;
-      target.def = Math.round(target.def * (1 + defBonus));
-      target.buffs = target.buffs || {};
-      target.buffs.defBuff = 5;
-      addAnimation(target, `BÁCH HÀO THUẬT: +${recovered} HP & +DEF!`, "#3fb950");
-      logCombat(`🩺✨ [Bách Hào Thuật] Tsunade kích hoạt ấn Chú, lập tức hồi ${recovered} HP và tăng ${Math.round(defBonus * 100)}% DEF trong 5 hiệp!`);
-    }
-  }
-
-  // Tsunade Bị Động 1: Khi đồng đội hoặc bản thân nhận ST, tăng 5% khả năng hồi phục (tối đa 80%)
-  const teamOfTarget = target.isBot ? battle.botTeam : battle.playerTeam;
-  const tsunadeFighter = teamOfTarget.find(f => f && f.hp > 0 && (f.id === "tsunade" || f.heroId === "tsunade") && f.level >= 30);
-  if (tsunadeFighter) {
-    tsunadeFighter.buffs = tsunadeFighter.buffs || {};
-    tsunadeFighter.buffs.healBoost = Math.min(0.80, +( (tsunadeFighter.buffs.healBoost || 0) + 0.05 ).toFixed(2));
-  }
-
-  // Shisui Bị Động 2: Phản 88% ST với 18% cơ hội
-  if ((target.id === "shisui" || target.heroId === "shisui") && target.level >= 70 && attacker && attacker.hp > 0) {
-    if (Math.random() < 0.18) {
-      const reflectDmg = Math.max(1, Math.round(finalDmg * 0.88));
-      attacker.hp = Math.max(0, attacker.hp - reflectDmg);
-      addAnimation(attacker, `PHẢN ĐÒN: -${reflectDmg} HP!`, "#f85149");
-      logCombat(`⚡🛡️ [Phục Kích Thuấn Thân] Shisui phản lại ${reflectDmg} ST (88%) lên ${attacker.name}!`);
-    }
-  }
-
 
   // Xử lý Hồi Sinh tự động (Omega Shenron, Isshiki, Whis, Kaitou Kid)
   if (target.hp === 0) {
@@ -4408,7 +4390,7 @@ function executePlayerAction(type) {
       });
       logCombat(`🟣 [Huyền Ma Quyền] Phoverus tấn công 2 mục tiêu gây ${totalDmg} ST!`);
     } else if (actor.id === "gaara") {
-      // Gaara (v5.0.0 Cân bằng): Gây 77% ATK lên 1 mục tiêu, hồi 1.5 EN
+      // Gaara (v5.1.0 Cân bằng): Gây 77% ATK lên 1 mục tiêu, hồi 1.5 EN
       const raw = actor.atk * 0.77;
       let stunChance = (actor.level >= 80) ? 0.35 : ((actor.level >= 30) ? 0.25 : 0);
       if (stunChance > 0 && Math.random() < stunChance) {
@@ -4494,13 +4476,11 @@ function executePlayerAction(type) {
         applyDamage(target, damage, isCrit, actor);
       }
     } else if (actor.id === "tsunade") {
-      // Tsunade: Gây 98% ATK lên 1 mục tiêu. Hồi 1.4 EN
       const raw = actor.atk * 0.98;
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       applyDamage(target, damage, isCrit, actor);
       logCombat(`👊 [Quái Lực Quyền] Tsunade tung cú đấm cực mạnh gây ${damage} ST lên ${target.name}.`);
     } else if (actor.id === "shisui") {
-      // Shisui: Gây 99% ATK lên 1 mục tiêu. Hồi 1.0 EN
       const raw = actor.atk * 0.99;
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       applyDamage(target, damage, isCrit, actor);
@@ -4815,7 +4795,6 @@ function executePlayerAction(type) {
       addAnimation(actor, `KHÔNG GIAN: ${nextDim.toUpperCase()}`, "#bc8cff");
       logCombat(`🌌🌀 [Thiên Đạo Luân Chuyển] Kaguya Otsutsuki mở cổng không gian, dịch chuyển toàn bộ sàn đấu sang Môi Trường: ${nextDimName}!`);
     } else if (actor.id === "tsunade") {
-      // Tsunade: Hồi phục cho 1 đồng minh bằng 400% ATK + 5% HP tối đa. Tăng 40% ST trong 2 lượt
       const healTarget = battle.playerTeam.filter(p => p && p.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0] || actor;
       let healAmt = Math.round(actor.atk * 4.00 + actor.maxHp * 0.05);
       if (actor.buffs && actor.buffs.healBoost) {
@@ -4961,405 +4940,226 @@ function getBotDefaultTarget(alivePlayers) {
 }
 
 function executeBotAction(bot) {
-  // v4.0.4: Sắp xếp danh sách người chơi theo thứ tự slot 0 (Ô 1) -> slot 1 (Ô 2) -> slot 2 (Ô 3)
-  const alivePlayers = battle.playerTeam.filter(p => p && p.hp > 0).sort((a, b) => a.slot - b.slot);
-  if (alivePlayers.length === 0) {
-    checkBattleEnd();
-    return;
+  try {
+    const alivePlayers = battle.playerTeam.filter(p => p && p.hp > 0).sort((a, b) => a.slot - b.slot);
+    if (alivePlayers.length === 0) {
+      checkBattleEnd();
+      return;
+    }
+
+    if ((battle.chapter >= 4 || battle.mode === 'goldGate' || battle.mode === 'resGate' || battle.mode === 'endlessTower') && bot.heroId) {
+      executeHeroBotAction(bot, alivePlayers);
+      return;
+    }
+
+    let target = getBotDefaultTarget(alivePlayers);
+    if (!target) {
+      checkBattleEnd();
+      return;
+    }
+    bot.en = Math.min(bot.enMax, (bot.en || 0) + 1);
+
+    if (bot.en >= bot.enMax) {
+      bot.en = 0;
+      const raw = bot.atk * 1.9;
+      const { damage, isCrit } = calculateDamage(bot, target, raw);
+      applyDamage(target, damage, isCrit, bot);
+      logCombat(`💥 [Kỹ Năng Địch] ${bot.name} gây ${damage} ST lên ${target.name}!`);
+    } else {
+      const raw = bot.atk * 1.0;
+      const { damage, isCrit } = calculateDamage(bot, target, raw);
+      applyDamage(target, damage, isCrit, bot);
+      logCombat(`[Địch Tấn Công] ${bot.name} gây ${damage} ST lên ${target.name}.`);
+    }
+
+    if (target.id === "luanhoi" && target.level >= 130 && Math.random() < 0.32) {
+      addLuanHoiStack(target, bot, 1);
+    }
+  } catch (err) {
+    console.error("Lỗi trong executeBotAction:", err);
+  } finally {
+    setTimeout(() => {
+      battle.currentActorIndex++;
+      nextTurn();
+    }, 750 / battle.speed);
   }
-
-  // Chapter 4 & Cổng Ải Đấu Luyện: Hero Bot logic
-  if ((battle.chapter >= 4 || battle.mode === 'goldGate' || battle.mode === 'resGate') && bot.heroId) {
-    executeHeroBotAction(bot, alivePlayers);
-    return;
-  }
-
-  let target = getBotDefaultTarget(alivePlayers);
-  bot.en = Math.min(bot.enMax, bot.en + 1);
-
-  if (bot.en >= bot.enMax) {
-    bot.en = 0;
-    const raw = bot.atk * 1.9;
-    const { damage, isCrit } = calculateDamage(bot, target, raw);
-    applyDamage(target, damage, isCrit, bot);
-    logCombat(`💥 [Kỹ Năng Địch] ${bot.name} gây ${damage} ST lên ${target.name}!`);
-  } else {
-    const raw = bot.atk * 1.0;
-    const { damage, isCrit } = calculateDamage(bot, target, raw);
-    applyDamage(target, damage, isCrit, bot);
-    logCombat(`[Địch Tấn Công] ${bot.name} gây ${damage} ST lên ${target.name}.`);
-  }
-
-  if (target.id === "luanhoi" && target.level >= 130 && Math.random() < 0.32) {
-    addLuanHoiStack(target, bot, 1);
-  }
-
-  setTimeout(() => {
-    battle.currentActorIndex++;
-    nextTurn();
-  }, 750 / battle.speed);
 }
 
 function executeHeroBotAction(actor, alivePlayers) {
-  // v4.0.4: Đơn mục tiêu mặc định luôn đánh Ô 1 -> Ô 2 -> Ô 3 (trừ kỹ năng có cơ chế riêng)
-  let target = getBotDefaultTarget(alivePlayers);
-  const isSkill = (actor.en >= actor.enMax);
+  try {
+    if (!alivePlayers || alivePlayers.length === 0) {
+      checkBattleEnd();
+      return;
+    }
+    let target = getBotDefaultTarget(alivePlayers);
+    if (!target) {
+      checkBattleEnd();
+      return;
+    }
 
-  if (isSkill) {
-    actor.en = 0;
-    if (actor.heroId === "traveler") {
-      const raw = actor.atk * 2.20 + (target.maxHp * 0.03);
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`💥 [Địch: Phong Lôi Trảm] ${actor.name} giáng đòn gây ${damage} ST lên ${target.name}!`);
-    } else if (actor.heroId === "madara") {
-      let totalDmgDone = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 2.00 + (p.maxHp * 0.05);
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalDmgDone += applyDamage(p, damage, isCrit, actor);
-      });
-      logCombat(`☄️ [Địch: Thiên Ngại Ma Tinh] ${actor.name} giáng thiên thạch toàn thể! Gây ${totalDmgDone} ST.`);
-      healFighter(actor, Math.round(totalDmgDone * 0.20));
-      actor.buffs.madaraDmgBoost = 3;
-    } else if (actor.heroId === "omega") {
-      let lowestPlayer = alivePlayers.slice().sort((a, b) => a.hp - b.hp)[0];
-      if (lowestPlayer) {
-        const raw = actor.atk * 3.00;
-        const { damage, isCrit } = calculateDamage(actor, lowestPlayer, raw, actor.armorPen);
-        applyDamage(lowestPlayer, damage, isCrit, actor);
-        const shieldGain = Math.round(damage * 0.20);
-        actor.shield += shieldGain;
-        addAnimation(actor, `+${shieldGain} Khiên`, "#58a6ff");
-        logCombat(`🌀 [Địch: Tiêu Diệt Cầu] ${actor.name} gây ${damage} ST, nhận ${shieldGain} Khiên!`);
-        applyOmegaPassive2(actor, lowestPlayer);
-      }
-    } else if (actor.heroId === "vegito") {
-      const targets = alivePlayers.slice(0, 3);
-      const raw = actor.atk * 2.80;
-      let totalDmg = 0;
-      const pen = (actor.level >= 30) ? 0.30 : (actor.armorPen || 0);
-      targets.forEach(t => {
-        const { damage, isCrit } = calculateDamage(actor, t, raw, pen);
-        totalDmg += applyDamage(t, damage, isCrit, actor);
-        applyBleeding(actor, t, 10);
-      });
-      logCombat(`🗡️💥 [Địch: Kiếm Khí Linh Hồn] ${actor.name} chém 3 mục tiêu gây ${totalDmg.toLocaleString()} ST và áp 10 tầng Bleeding!`);
-      if (actor.level >= 70) {
-        actor.en = Math.min(actor.enMax, +(actor.en + 2.0).toFixed(1));
-        actor.buffs = actor.buffs || {};
-        actor.buffs.mienThuongDacBiet = 2;
-        addAnimation(actor, "MIỄN THƯƠNG ĐẶC BIỆT & +2 EN!", "#39c5bb");
-      }
-    } else if (actor.heroId === "whis") {
-      const aliveBots = battle.botTeam.filter(b => b && b.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp));
-      if (aliveBots.length > 0) {
-        const targetAlly = aliveBots[0];
-        const healAmt = Math.round(actor.atk * 1.50);
-        healFighter(targetAlly, healAmt);
-        logCombat(`✨ [Địch: Thiên Sứ Thời Gian] ${actor.name} hồi ${healAmt} HP cho ${targetAlly.name}!`);
-      }
-      if (actor.level >= 30) {
-        battle.botTeam.forEach(b => { if (b && b.hp > 0) b.buffs.whisProtect = 2; });
-        logCombat(`🛡️ [Địch: Thần Hộ] ${actor.name} kích hoạt "Bảo vệ" cho toàn đội địch!`);
-      }
-    } else if (actor.heroId === "luanhoi") {
-      let totalDmg = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 0.50;
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalDmg += applyDamage(p, damage, isCrit, actor);
-        addLuanHoiStack(actor, p, 7);
-      });
-      logCombat(`💥 [Địch: Địa Bộc Thiên Tinh] ${actor.name} phong ấn toàn thể, khắc +7 tầng Lục đạo!`);
-      if (actor.level >= 70) grantTeamShield(totalDmg * 0.20, true);
-    } else if (actor.heroId === "pain") {
-      let totalDmg = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 1.10;
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalDmg += applyDamage(p, damage, isCrit, actor);
-        if (Math.random() < 0.40) {
-          p.buffs.terror = 2;
-          if (Math.random() < 0.30) p.buffs.choang = 2;
+    const isSkill = (actor.en >= actor.enMax);
+
+    if (isSkill) {
+      actor.en = 0;
+      if (actor.heroId === "traveler") {
+        const raw = actor.atk * 2.20 + (target.maxHp * 0.03);
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        logCombat(`💥 [Địch: Phong Lôi Trảm] ${actor.name} giáng đòn gây ${damage} ST lên ${target.name}!`);
+      } else if (actor.heroId === "madara") {
+        let totalDmgDone = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 2.00 + (p.maxHp * 0.05);
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalDmgDone += applyDamage(p, damage, isCrit, actor);
+        });
+        logCombat(`☄️ [Địch: Thiên Ngại Ma Tinh] ${actor.name} giáng thiên thạch toàn thể! Gây ${totalDmgDone} ST.`);
+        healFighter(actor, Math.round(totalDmgDone * 0.20));
+        actor.buffs.madaraDmgBoost = 3;
+      } else if (actor.heroId === "omega") {
+        let lowestPlayer = alivePlayers.slice().sort((a, b) => a.hp - b.hp)[0];
+        if (lowestPlayer) {
+          const raw = actor.atk * 3.00;
+          const { damage, isCrit } = calculateDamage(actor, lowestPlayer, raw, actor.armorPen);
+          applyDamage(lowestPlayer, damage, isCrit, actor);
+          const shieldGain = Math.round(damage * 0.20);
+          actor.shield = (actor.shield || 0) + shieldGain;
+          addAnimation(actor, `+${shieldGain} Khiên`, "#58a6ff");
+          logCombat(`🌀 [Địch: Tiêu Diệt Cầu] ${actor.name} gây ${damage} ST, nhận ${shieldGain} Khiên!`);
+          applyOmegaPassive2(actor, lowestPlayer);
         }
-        if (actor.level >= 70 && Math.random() < 0.40) {
-          p.buffs.thienDaoDebuff = 3;
-        }
-      });
-      logCombat(`💥 [Địch: Thần La Thiên Chinh] SHINRA TENSEI! ${actor.name} đẩy văng toàn đội!`);
-    } else if (actor.heroId === "isshiki") {
-      let totalDmg = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 3.50;
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalDmg += applyDamage(p, damage, isCrit, actor);
-        applyBocHoa(p, 2);
-      });
-      logCombat(`💥🔥 [Địch: Bạch Kích Huỷ Diệt] ${actor.name} oanh tạc toàn thể gây ${totalDmg} ST kèm Bốc Hoả!`);
-    } else if (actor.heroId === "itachi") {
-      const raw = actor.atk * 3.20;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      const dealt = applyDamage(target, damage, isCrit, actor);
-      applyBocHoa(target, 5);
-      logCombat(`🖤🔥 [Địch: Amaterasu] ${actor.name} giáng hắc hỏa gây ${damage} ST & +5 tầng Bốc Hoả!`);
-      if (actor.level >= 70 && (battle.roundCount % 2 === 0)) {
-        healFighter(actor, Math.round(dealt * 0.40));
-      }
-    } else if (actor.heroId === "momoshiki") {
-      const raw = actor.atk * 3.00 + (target.maxHp * 0.08);
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`💥 [Địch: Vô Hạn Hắc Cầu] ${actor.name} giáng đòn hủy diệt gây ${damage} ST!`);
-    } else if (actor.heroId === "kaioshin") {
-      let shieldPct = 0.30;
-      if (actor.level >= 150) shieldPct *= 1.30;
-      const shieldAmt = Math.round(actor.hp * shieldPct);
-      const healAmt = Math.round(actor.atk * 1.50);
-      battle.botTeam.forEach(b => {
-        if (b && b.hp > 0) {
-          b.shield += shieldAmt;
-          healFighter(b, healAmt);
-          addAnimation(b, `+${shieldAmt} Khiên`, "#58a6ff");
-        }
-      });
-      logCombat(`🛡️✨ [Địch: Thần Giới Hộ Thể] ${actor.name} ban Khiên & hồi máu cho toàn đội địch!`);
-    } else if (actor.heroId === "phoverus") {
-      const targets = alivePlayers.slice(0, 3);
-      let totalDmg = 0;
-      targets.forEach(t => {
+      } else if (actor.heroId === "vegito") {
+        const targets = alivePlayers.slice(0, 3);
         const raw = actor.atk * 2.80;
-        const { damage, isCrit } = calculateDamage(actor, t, raw);
-        totalDmg += applyDamage(t, damage, isCrit, actor);
-        const stunChance = (actor.level >= 100) ? 0.58 : 0.45;
-        if (Math.random() < stunChance) {
-          t.buffs.choang = 2;
-          addAnimation(t, "BỊ CHOÁNG!", "#f1e05a");
+        let totalDmg = 0;
+        const pen = (actor.level >= 30) ? 0.30 : (actor.armorPen || 0);
+        targets.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, raw, pen);
+          totalDmg += applyDamage(t, damage, isCrit, actor);
+          applyBleeding(actor, t, 10);
+        });
+        logCombat(`🗡️💥 [Địch: Kiếm Khí Linh Hồn] ${actor.name} chém 3 mục tiêu gây ${totalDmg.toLocaleString()} ST!`);
+      } else if (actor.heroId === "whis") {
+        const aliveBots = battle.botTeam.filter(b => b && b.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp));
+        if (aliveBots.length > 0) {
+          const targetAlly = aliveBots[0];
+          const healAmt = Math.round(actor.atk * 1.50);
+          healFighter(targetAlly, healAmt);
+          logCombat(`✨ [Địch: Thiên Sứ Thời Gian] ${actor.name} hồi ${healAmt} HP cho ${targetAlly.name}!`);
         }
-      });
-      logCombat(`💥 [Địch: Thiên Băng Ma Chấn] ${actor.name} oanh kích gây ${totalDmg} ST kèm Choáng!`);
-    } else if (actor.heroId === "conan") {
-      const raw = actor.atk * 3.50;
-      const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
-      applyDamage(target, damage, isCrit, actor);
-      if (target.shield > 0) target.shield = Math.round(target.shield * 0.50);
-      target.buffs.choang = 2;
-      actor.en = Math.min(actor.enMax, +(actor.en + 1.0).toFixed(1));
-      logCombat(`⚽💥 [Địch: Cú Sút Siêu Lực] ${actor.name} sút bóng gây ${damage} ST kèm Choáng lên ${target.name}!`);
-    } else if (actor.heroId === "kid") {
-      let totalDmg = 0;
-      let stolen = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 2.40;
-        const { damage, isCrit } = calculateDamage(actor, p, raw, actor.armorPen);
-        totalDmg += applyDamage(p, damage, isCrit, actor);
-        if (p.shield > 0) {
-          const s = Math.round(p.shield * 0.20);
-          p.shield -= s;
-          stolen += s;
-        }
-      });
-      actor.shield += stolen;
-      logCombat(`🕊️🎩 [Địch: Ảo Thuật Ánh Trăng] ${actor.name} càn quét toàn đội gây ${totalDmg} ST và hút ${stolen} Khiên!`);
-    } else if (actor.heroId === "gaara") {
-      let totalD = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 2.00;
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalD += applyDamage(p, damage, isCrit, actor);
-        if (Math.random() < 0.60) {
+      } else if (actor.heroId === "luanhoi") {
+        let totalDmg = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 0.50;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalDmg += applyDamage(p, damage, isCrit, actor);
+          addLuanHoiStack(actor, p, 7);
+        });
+        logCombat(`💥 [Địch: Địa Bộc Thiên Tinh] ${actor.name} phong ấn toàn thể!`);
+      } else if (actor.heroId === "pain") {
+        let totalDmg = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 1.10;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalDmg += applyDamage(p, damage, isCrit, actor);
+        });
+        logCombat(`💥 [Địch: Siêu Thần La Thiên Chinh] ${actor.name} càn quét toàn đội gây ${totalDmg} ST!`);
+      } else if (actor.heroId === "gaara") {
+        let totalD = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 2.00;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalD += applyDamage(p, damage, isCrit, actor);
+          if (Math.random() < 0.60) {
+            p.buffs = p.buffs || {};
+            p.buffs.choang = Math.max(p.buffs.choang || 0, 2);
+            p.buffs.stun = p.buffs.choang;
+            addAnimation(p, "BỊ CHOÁNG 2 LƯỢT", "#f85149");
+          }
+        });
+        logCombat(`🏜️💥 [Địch: Sa Mạc Đại Táng] ${actor.name} gây ${totalD} ST lên toàn đội!`);
+      } else if (actor.heroId === "hashirama") {
+        let totalD = 0;
+        const targets = alivePlayers.slice(0, 3);
+        targets.forEach(p => {
+          const raw = actor.atk * 3.00;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalD += applyDamage(p, damage, isCrit, actor);
           p.buffs = p.buffs || {};
           p.buffs.choang = Math.max(p.buffs.choang || 0, 2);
           p.buffs.stun = p.buffs.choang;
-          addAnimation(p, "BỊ CHOÁNG 2 LƯỢT", "#f85149");
-        }
-      });
-      logCombat(`🏜️💥 [Địch: Sa Mạc Đại Táng] ${actor.name} gây ${totalD} ST lên toàn đội!`);
-    } else if (actor.heroId === "hashirama") {
-      let totalD = 0;
-      const targets = alivePlayers.slice(0, 3);
-      targets.forEach(p => {
-        const raw = actor.atk * 3.00;
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalD += applyDamage(p, damage, isCrit, actor);
-        p.buffs = p.buffs || {};
-        p.buffs.choang = Math.max(p.buffs.choang || 0, 2);
-        p.buffs.stun = p.buffs.choang;
-      });
-      actor.shield = (actor.shield || 0) + Math.round(totalD * 0.50);
-      logCombat(`🌺 [Địch: Hoa Thụ Giới Hàng Lâm] ${actor.name} gây ${totalD} ST và tạo Khiên Mộc Độn!`);
-    } else if (actor.heroId === "kaguya") {
-      let totalD = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 2.30;
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalD += applyDamage(p, damage, isCrit, actor);
-        p.buffs = p.buffs || {};
-        p.buffs.bocHoa = { stacks: 10, duration: 2 };
-      });
-      logCombat(`🌋🔥 [Địch: Thiên Đạo Luân Chuyển] ${actor.name} dội bão lửa gây ${totalD} ST và khắc 10 tầng Bốc Hỏa!`);
-    }
-  } else {
-    // Normal attack
-    const db = HERO_DB[actor.heroId];
-    const enGain = db.normalAttack.enGain || 1.0;
-    actor.en = Math.min(actor.enMax, +(actor.en + enGain).toFixed(1));
-
-    if (actor.heroId === "traveler") {
-      const raw = actor.atk * 0.94;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`[Địch: Trảm Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 70) target.buffs.burn = Math.min(5, (target.buffs.burn || 0) + 2);
-    } else if (actor.heroId === "madara") {
-      const raw = actor.atk * 0.98 + (target.maxHp * 0.02);
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`[Địch: Cầu Đạo Ngọc] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-    } else if (actor.heroId === "omega") {
-      const raw = actor.atk * 0.78;
-      const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`[Địch: Long Cốt Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-      applyOmegaPassive2(actor, target);
-    } else if (actor.heroId === "vegito") {
-      const targets = alivePlayers.slice(0, 3);
-      const raw = actor.atk * 0.77;
-      let totalDmg = 0;
-      const pen = (actor.level >= 30) ? 0.30 : (actor.armorPen || 0);
-      targets.forEach(t => {
-        const { damage, isCrit } = calculateDamage(actor, t, raw, pen);
-        totalDmg += applyDamage(t, damage, isCrit, actor);
-        if (actor.level >= 30) applyBleeding(actor, t, 1);
-      });
-      logCombat(`🗡️ [Địch: Bá Vương Kích] ${actor.name} chém 3 mục tiêu gây ${totalDmg.toLocaleString()} ST!`);
-    } else if (actor.heroId === "whis") {
-      const raw = actor.atk * 0.88;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`[Địch: Trượng Khí] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-      if (actor.level >= 70 && Math.random() < 0.24) target.buffs.suyGiam = 3;
-    } else if (actor.heroId === "luanhoi") {
-      let totalDmg = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 0.77;
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalDmg += applyDamage(p, damage, isCrit, actor);
-        if (actor.level >= 30) addLuanHoiStack(actor, p, 1);
-      });
-      logCombat(`🌀 [Địch: Lục Đạo Trảm] ${actor.name} chém quét toàn đội gây ${totalDmg} ST!`);
-      if (actor.level >= 70) grantTeamShield(totalDmg * 0.20, true);
-    } else if (actor.heroId === "pain") {
-      let totalDmg = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 0.45;
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalDmg += applyDamage(p, damage, isCrit, actor);
-        if (actor.level >= 40 && (p.buffs.choang || p.buffs.terror)) p.buffs.kiemSoatDebuff = 2;
-      });
-      logCombat(`💥 [Địch: Hắc Bổng Kích] ${actor.name} phóng cọc toàn đội gây ${totalDmg} ST!`);
-    } else if (actor.heroId === "isshiki") {
-      let totalDmg = 0;
-      alivePlayers.forEach(p => {
-        const raw = actor.atk * 0.88;
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalDmg += applyDamage(p, damage, isCrit, actor);
-      });
-      logCombat(`🌀 [Địch: Xích Trảm] ${actor.name} càn quét toàn đội gây ${totalDmg} ST!`);
-      if (actor.level >= 30) {
-        const extraHits = Math.floor((actor.atkSpd || 0.30) / 0.25);
-        for (let h = 0; h < extraHits; h++) {
-          let extraDmg = 0;
-          alivePlayers.forEach(p => {
-            const raw = actor.atk * 0.88;
-            const { damage } = calculateDamage(actor, p, raw);
-            extraDmg += applyDamage(p, damage, false, actor);
-          });
-          logCombat(`⚡ [Địch: Chen Ngang #${h+1}] ${actor.name} đánh thêm càn quét gây ${extraDmg} ST!`);
-        }
+        });
+        actor.shield = (actor.shield || 0) + Math.round(totalD * 0.50);
+        logCombat(`🌺 [Địch: Hoa Thụ Giới Hàng Lâm] ${actor.name} gây ${totalD} ST và tạo Khiên Mộc Độn!`);
+      } else if (actor.heroId === "kaguya") {
+        let totalD = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 2.30;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalD += applyDamage(p, damage, isCrit, actor);
+        });
+        logCombat(`🌋🔥 [Địch: Thiên Đạo Luân Chuyển] ${actor.name} gây ${totalD} ST!`);
+      } else if (actor.heroId === "tsunade") {
+        const healTarget = battle.botTeam.filter(b => b && b.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0] || actor;
+        let healAmt = Math.round(actor.atk * 4.00 + actor.maxHp * 0.05);
+        healTarget.hp = Math.min(healTarget.maxHp, healTarget.hp + healAmt);
+        healTarget.buffs = healTarget.buffs || {};
+        healTarget.buffs.dmgBuff = 2;
+        healTarget.buffs.dmgBuffRate = 0.40;
+        addAnimation(healTarget, `HỒI +${healAmt} HP`, "#3fb950");
+        logCombat(`💚 [Địch: Sáng Tạo Tái Sinh] ${actor.name} hồi phục ${healAmt} HP cho ${healTarget.name}!`);
+      } else if (actor.heroId === "shisui") {
+        const raw1 = actor.atk * 2.20;
+        const hit1 = calculateDamage(actor, target, raw1);
+        applyDamage(target, hit1.damage, hit1.isCrit, actor);
+        logCombat(`🔥 [Địch: Thiên Hỏa Liệt Diễm] ${actor.name} gây ${hit1.damage} ST lên ${target.name}!`);
+      } else {
+        const raw = actor.atk * 2.0;
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        logCombat(`💥 [Tuyệt Kỹ Địch] ${actor.name} gây ${damage} ST lên ${target.name}!`);
       }
-    } else if (actor.heroId === "itachi") {
-      const raw = actor.atk * 0.99;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`🔥 [Địch: Hắc Hỏa Trảm] ${actor.name} gây ${damage} ST lên ${target.name}!`);
-      applyBocHoa(target, 1);
-      applyBocHoa(actor, 1);
-    } else if (actor.heroId === "momoshiki") {
-      actor.rage = +( (actor.rage || 0) + 1.0 ).toFixed(1);
-      addAnimation(actor, "+1.0 NỘ", "#ff9800");
-      logCombat(`🧘 [Địch: Tụ Nộ] ${actor.name} tích tụ +1.0 Nộ (${actor.rage}/5.0)!`);
-    } else if (actor.heroId === "kaioshin") {
-      const raw = actor.atk * 0.88;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`✨ [Địch: Thần Kiếm Khí] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-    } else if (actor.heroId === "phoverus") {
-      const targets = alivePlayers.slice(0, 2);
-      let totalDmg = 0;
-      targets.forEach(t => {
-        const raw = actor.atk * 0.80;
-        const { damage, isCrit } = calculateDamage(actor, t, raw);
-        totalDmg += applyDamage(t, damage, isCrit, actor);
-        t.buffs.thuatTim = (t.buffs.thuatTim || 0) + 1;
-        if (t.buffs.thuatTim >= 3) {
-          t.buffs.thuatTim = 0;
-          let drainPct = (actor.level >= 80) ? 0.25 : ((actor.level >= 70) ? 0.16 : 0.08);
-          let drainHp = (actor.level >= 70) ? Math.round(t.maxHp * drainPct) : Math.round(t.hp * drainPct);
-          drainHp = Math.max(1, drainHp);
-          applyDamage(t, drainHp, false, actor);
-          healFighter(actor, drainHp);
-        }
-      });
-      logCombat(`🟣 [Địch: Huyền Ma Quyền] ${actor.name} tấn công 2 mục tiêu gây ${totalDmg} ST!`);
-    } else if (actor.heroId === "conan") {
-      const raw = actor.atk * 1.05;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`🎯 [Địch: Kim Gây Mê] ${actor.name} bắn kim gây ${damage} ST lên ${target.name}!`);
-    } else if (actor.heroId === "kid") {
-      const raw = actor.atk * 1.00;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      const s = Math.min(target.en, 0.8);
-      target.en = Math.max(0, +(target.en - 0.8).toFixed(1));
-      actor.en = Math.min(actor.enMax, +(actor.en + s).toFixed(1));
-      logCombat(`🃏 [Địch: Phi Bài Bạc] ${actor.name} gây ${damage} ST và cướp ${s} EN từ ${target.name}!`);
-    } else if (actor.heroId === "gaara") {
-      const raw = actor.atk * 0.77;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`🏜️ [Địch: Sa Đạn] ${actor.name} bắn đạn cát gây ${damage} ST lên ${target.name}.`);
-    } else if (actor.heroId === "hashirama") {
-      const raw = actor.atk * 0.88;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`🌿 [Địch: Mộc Độn Quyền] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-    } else if (actor.heroId === "kaguya") {
-      const raw = actor.atk * 1.40;
-      let totalD = 0;
-      alivePlayers.forEach(p => {
-        const { damage, isCrit } = calculateDamage(actor, p, raw);
-        totalD += applyDamage(p, damage, isCrit, actor);
-      });
-      logCombat(`❄️ [Địch: Không Gian Kaguya] ${actor.name} càn quét toàn đội gây ${totalD} ST!`);
-    } else if (actor.heroId === "tsunade") {
-      const raw = actor.atk * 0.98;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`👊 [Địch: Quái Lực Quyền] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-    } else if (actor.heroId === "shisui") {
-      const raw = actor.atk * 0.99;
-      const { damage, isCrit } = calculateDamage(actor, target, raw);
-      applyDamage(target, damage, isCrit, actor);
-      logCombat(`🗡️ [Địch: Hỏa Độn Kiếm] ${actor.name} gây ${damage} ST lên ${target.name}.`);
-    }
-  }
+    } else {
+      // Normal attack
+      const db = HERO_DB[actor.heroId] || { normalAttack: { enGain: 1.0 } };
+      const enGain = (db.normalAttack && db.normalAttack.enGain) || 1.0;
+      actor.en = Math.min(actor.enMax, +(actor.en + enGain).toFixed(1));
 
-  setTimeout(() => {
-    battle.currentActorIndex++;
-    nextTurn();
-  }, 750 / battle.speed);
+      if (actor.heroId === "traveler") {
+        const raw = actor.atk * 0.94;
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        logCombat(`[Địch: Trảm Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      } else if (actor.heroId === "madara") {
+        const raw = actor.atk * 0.98 + (target.maxHp * 0.02);
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        logCombat(`[Địch: Cầu Đạo Ngọc] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      } else if (actor.heroId === "omega") {
+        const raw = actor.atk * 0.78;
+        const { damage, isCrit } = calculateDamage(actor, target, raw, actor.armorPen);
+        applyDamage(target, damage, isCrit, actor);
+        logCombat(`[Địch: Long Cốt Kích] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      } else if (actor.heroId === "tsunade") {
+        const raw = actor.atk * 0.98;
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        logCombat(`👊 [Địch: Quái Lực Quyền] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      } else if (actor.heroId === "shisui") {
+        const raw = actor.atk * 0.99;
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        logCombat(`🗡️ [Địch: Hỏa Độn Kiếm] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      } else {
+        const raw = actor.atk * 1.0;
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        logCombat(`[Địch Tấn Công] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      }
+    }
+  } catch (err) {
+    console.error("Lỗi trong executeHeroBotAction:", err);
+  }
 }
 
 function logCombat(msg) {
@@ -5531,8 +5331,8 @@ function drawCharacter(f) {
     ctx.fillStyle = "#21262d";
     ctx.strokeStyle = "#30363d";
   } else {
-    ctx.fillStyle = f.isBot ? "#2a1518" : (f.type === "DEF" ? "#142838" : (f.type === "SKL" ? "#1b2923" : "#281b33"));
-    ctx.strokeStyle = f.isBot ? "#da3633" : (f.type === "DEF" ? "#1f6feb" : (f.type === "SKL" ? "#39c5bb" : "#bc8cff"));
+    ctx.fillStyle = f.isBot ? "#2a1518" : (f.type === "DEF" ? "#142838" : (f.type === "SKL" ? "#1b2923" : (f.type === "AS" ? "#331422" : "#281b33")));
+    ctx.strokeStyle = f.isBot ? "#da3633" : (f.type === "DEF" ? "#1f6feb" : (f.type === "SKL" ? "#39c5bb" : (f.type === "AS" ? "#ff0055" : "#bc8cff")));
   }
   ctx.lineWidth = 2;
   ctx.fill();
@@ -5544,7 +5344,7 @@ function drawCharacter(f) {
   ctx.fillText(f.name.substring(0, 10), x, y + 4);
 
   ctx.font = "bold 10px sans-serif";
-  ctx.fillStyle = f.type === "DEF" ? "#58a6ff" : (f.type === "ATK" ? "#f85149" : "#39c5bb");
+  ctx.fillStyle = f.type === "DEF" ? "#58a6ff" : (f.type === "ATK" ? "#f85149" : (f.type === "SKL" ? "#39c5bb" : "#ff0055"));
   ctx.fillText(`[${f.type}]`, x, y - 14);
 
   if (f.isBot && battle.botTeam[battle.selectedTargetIndex] === f && !isDead) {
@@ -5583,59 +5383,33 @@ function drawCharacter(f) {
     ctx.fillStyle = "#8b949e";
     ctx.fillText(`${f.hp}/${f.maxHp}`, x, enBarY + 14);
 
-    // v5.0.0: Hiển thị đầy đủ mọi hiệu ứng: Icon + Tên hiệu ứng + Số tầng/Lượt
-    const activeBadges = [];
-    if (f.buffs) {
-      if (f.buffs.burn) activeBadges.push({ text: `🔥 Thiêu Đốt x${f.buffs.burn}`, color: "#f85149" });
-      if (f.buffs.bleeding) activeBadges.push({ text: `🩸 Chảy Máu x${f.buffs.bleeding.stacks || 1}`, color: "#da3633" });
-      if (f.buffs.choang || f.buffs.stun) activeBadges.push({ text: `💫 Choáng (${f.buffs.choang || f.buffs.stun}L)`, color: "#f1e05a" });
-      if (f.buffs.defShred || f.buffs.defShred100) activeBadges.push({ text: `🛡️ Giảm Giáp`, color: "#ff7b72" });
-      if (f.buffs.suyGiam) activeBadges.push({ text: `🌀 Giảm Công`, color: "#8b949e" });
-      if (f.buffs.terror) activeBadges.push({ text: `😱 Khủng Hoảng`, color: "#bf3989" });
-      if (f.buffs.luanHoi) activeBadges.push({ text: `🔯 Lục Đạo x${f.buffs.luanHoi}`, color: "#ff9800" });
-      if (f.buffs.bocHoa) activeBadges.push({ text: `🌋 Bốc Hỏa x${f.buffs.bocHoa.stacks}`, color: "#e36209" });
-      if (f.buffs.healBoost) activeBadges.push({ text: `💚 Tăng Hồi +${Math.round(f.buffs.healBoost * 100)}%`, color: "#3fb950" });
-      if (f.buffs.healReduction) activeBadges.push({ text: `💔 Giảm Hồi 50%`, color: "#f85149" });
-      if (f.buffs.defBuff) activeBadges.push({ text: `🛡️ Tăng DEF`, color: "#58a6ff" });
-      if (f.buffs.dmgBuff) activeBadges.push({ text: `⚔️ Tăng ST +${Math.round((f.buffs.dmgBuffRate || 0.4) * 100)}%`, color: "#e3b341" });
-      if (f.buffs.whisProtect) activeBadges.push({ text: `🛡️ Bảo Hộ Whis`, color: "#39c5bb" });
-      if (f.buffs.kidLifesteal) activeBadges.push({ text: `🧛 Hút Máu 50%`, color: "#a371f7" });
-      if (f.buffs.khatKho) activeBadges.push({ text: `🏜️ Khát Khô`, color: "#d29922" });
-    }
-
-    if (activeBadges.length > 0) {
-      const badgeH = 13;
-      const startBadgeY = y - 56;
-      activeBadges.slice(0, 3).forEach((b, bIdx) => {
-        drawDetailedBadge(x, startBadgeY - (bIdx * 15), b.text, b.color);
-      });
-    }
+    // Buff & Debuff Badges
+    let badgeOffset = -30;
+    if (f.buffs.burn) { drawBadge(x + badgeOffset, y - 56, `🔥x${f.buffs.burn}`, "#f85149"); badgeOffset += 30; }
+    if (f.buffs.bleeding) { drawBadge(x + badgeOffset, y - 56, `🩸x${f.buffs.bleeding.stacks}`, "#da3633"); badgeOffset += 30; }
+    if (f.buffs.bleeding2) { drawBadge(x + badgeOffset, y - 56, `🗡️B2`, "#ff7b72"); badgeOffset += 30; }
+    if (f.buffs.luanHoi) { drawBadge(x + badgeOffset, y - 56, `🔯x${f.buffs.luanHoi}`, "#ff9800"); badgeOffset += 30; }
+    if (f.buffs.choang || f.buffs.stun) { drawBadge(x + badgeOffset, y - 56, `💫Choáng`, "#f1e05a"); badgeOffset += 30; }
+    if (f.buffs.terror) { drawBadge(x + badgeOffset, y - 56, `😱Terror`, "#bf3989"); badgeOffset += 30; }
+    if (f.buffs.suyGiam) { drawBadge(x + badgeOffset, y - 56, `🌀-20%`, "#8b949e"); badgeOffset += 30; }
+    if (f.buffs.thienDaoDebuff) { drawBadge(x + badgeOffset, y - 56, `👁️-30%`, "#39c5bb"); badgeOffset += 30; }
+    if (f.buffs.whisProtect) { drawBadge(x + badgeOffset, y - 56, `🛡️Hộ`, "#39c5bb"); }
   }
 
   ctx.restore();
 }
 
-function drawDetailedBadge(bx, by, text, bg) {
-  ctx.save();
-  ctx.font = "bold 9px sans-serif";
-  const metrics = ctx.measureText(text);
-  const w = Math.max(36, metrics.width + 10);
-  ctx.fillStyle = "rgba(13, 17, 23, 0.85)";
-  ctx.strokeStyle = bg;
-  ctx.lineWidth = 1.2;
-  ctx.beginPath();
-  if (ctx.roundRect) ctx.roundRect(bx - w / 2, by - 7, w, 14, 4);
-  else ctx.rect(bx - w / 2, by - 7, w, 14);
-  ctx.fill();
-  ctx.stroke();
-  ctx.fillStyle = bg;
-  ctx.textAlign = "center";
-  ctx.fillText(text, bx, by + 3.5);
-  ctx.restore();
-}
-
 function drawBadge(bx, by, text, bg) {
-  drawDetailedBadge(bx, by, text, bg);
+  ctx.save();
+  ctx.fillStyle = bg;
+  ctx.beginPath();
+  ctx.roundRect(bx - 14, by - 7, 28, 14, 4);
+  ctx.fill();
+  ctx.fillStyle = "#fff";
+  ctx.font = "bold 9px sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText(text, bx, by + 3);
+  ctx.restore();
 }
 
 canvas.addEventListener("click", (e) => {
@@ -5733,7 +5507,7 @@ function claimTodayCheckin() {
 /* ==========================================================================
    RETENTION 2: NHIỆM VỤ MỖI NGÀY & CỘT MỐC (RESET MỖI NGÀY)
    ========================================================================== */
-// v5.0.0: Hệ thống nhiệm vụ tuần hoàn thông minh (Không còn lo kẹt ải đối với Pro & Newbie)
+// v5.1.0: Hệ thống nhiệm vụ tuần hoàn thông minh (Không còn lo kẹt ải đối với Pro & Newbie)
 const DAILY_QUESTS_CONFIG = [
   { id: "battle_any_3", name: "Hoàn thành 3 trận đấu bất kỳ (Ải / Đấu Luyện / Tháp / Boss)", target: 3, key: "anyBattles", rewardText: "300 💎 + 50 EXP Pass", type: "kimCuong", val: 300, pts: 3, passExp: 50 },
   { id: "total_damage_100k", name: "Gây tổng cộng 100,000 sát thương trong ngày", target: 100000, key: "dailyDamageDealt", rewardText: "400 💎 + 50 EXP Pass", type: "kimCuong", val: 400, pts: 3, passExp: 50 },
@@ -5879,152 +5653,23 @@ function openPassModal() {
   openModal("modalPass");
 }
 
-
 function switchPassTab(tab) {
   activePassTab = tab;
   document.getElementById("tabBtnSpecialPass").classList.toggle("active", tab === "special");
   document.getElementById("tabBtnNormalPass").classList.toggle("active", tab === "normal");
-  const btnRoadmap = document.getElementById("tabBtnPassRoadmap");
-  if (btnRoadmap) btnRoadmap.classList.toggle("active", tab === "roadmap");
 
-  const gachaContainer = document.getElementById("gachaRevealBox").parentElement;
-  const roadmapSection = document.getElementById("passRoadmapSection");
-
-  if (tab === "roadmap") {
-    if (gachaContainer) gachaContainer.style.display = "none";
-    if (roadmapSection) roadmapSection.style.display = "flex";
-    renderPassRoadmapUI();
+  if (tab === "special") {
+    document.getElementById("gachaBannerTitle").textContent = "Sổ Sứ Mệnh Đặc Biệt Mùa I";
+    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Pain Thiên Đạo (0.35%), Madara Lục Đạo (0.35%) cùng nhiều Mảnh Thiên Thạch & Ánh Sao.";
+    document.getElementById("gachaCost1").textContent = "1 ☄️ Thiên Thạch Hồng";
+    document.getElementById("gachaCost10").textContent = "9 ☄️ (Ưu đãi 10 lượt)";
   } else {
-    if (gachaContainer) gachaContainer.style.display = "flex";
-    if (roadmapSection) roadmapSection.style.display = "none";
-    if (tab === "special") {
-      document.getElementById("gachaBannerTitle").textContent = "⭐ Sổ Sứ Mệnh Cao Cấp Mùa II";
-      document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Kaguya Otsutsuki (0.4%), Senju Hashirama (0.4%) cùng Thiên Thạch Hoàng Kim & Ánh Sao Thần Thoại. Bảo hiểm 99 lượt chắc chắn nhận tướng!";
-      document.getElementById("gachaCost1").textContent = "1 ☄️ Thiên Thạch Hoàng Kim";
-      document.getElementById("gachaCost10").textContent = "9 ☄️ (Ưu đãi 10 lượt)";
-    } else {
-      document.getElementById("gachaBannerTitle").textContent = "🔷 Sổ Sứ Mệnh Thường Mùa II";
-      document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Kaitou Kid (0.8%), Otsutsuki Isshiki (0.8%) cùng Thiên Thạch Xanh & Kim Cương. Bảo hiểm 99 lượt chắc chắn ra nhân vật!";
-      document.getElementById("gachaCost1").textContent = "1 🔷 Thiên Thạch Xanh";
-      document.getElementById("gachaCost10").textContent = "9 🔷 (Ưu đãi 10 lượt)";
-    }
+    document.getElementById("gachaBannerTitle").textContent = "Sổ Sứ Mệnh Thường Mùa I";
+    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Vegito (0.8%), Whis (0.8%) cùng nhiều Mảnh Thiên Thạch Xanh & Ánh Sao.";
+    document.getElementById("gachaCost1").textContent = "1 🔷 Thiên Thạch Xanh";
+    document.getElementById("gachaCost10").textContent = "9 🔷 (Ưu đãi 10 lượt)";
   }
 }
-
-function renderPassRoadmapUI() {
-  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
-  document.getElementById("uiPassLevelDisplay").textContent = gameState.seasonPass.level;
-  document.getElementById("uiPassExpDisplay").textContent = gameState.seasonPass.exp;
-
-  const statusEl = document.getElementById("uiPassStatusDisplay");
-  const activateBtn = document.getElementById("btnActivatePassPremium");
-  if (gameState.seasonPass.isPremium) {
-    statusEl.textContent = "⭐ ĐÃ KÍCH HOẠT CAO CẤP (X3 THƯỞNG)";
-    statusEl.style.color = "var(--accent-gold)";
-    activateBtn.disabled = true;
-    activateBtn.textContent = "✓ Đã Kích Hoạt Cao Cấp";
-  } else {
-    statusEl.textContent = "🔷 Sổ Thường Miễn Phí";
-    statusEl.style.color = "var(--accent-blue)";
-    activateBtn.disabled = false;
-    activateBtn.textContent = "⭐ Kích Hoạt Cao Cấp (5,999 ⭐)";
-  }
-
-  const container = document.getElementById("passTiersListContainer");
-  container.innerHTML = "";
-
-  // Render key tiers up to 60 (steps of 5 or all tiers)
-  for (let lv = 1; lv <= 60; lv++) {
-    const isUnlocked = (gameState.seasonPass.level >= lv);
-    const claimedF = gameState.seasonPass.claimedFree.includes(lv);
-    const claimedP = gameState.seasonPass.claimedPremium.includes(lv);
-
-    const isSpecialLv = (lv === 30 || lv === 50 || lv === 60);
-
-    const row = document.createElement("div");
-    row.style.background = isSpecialLv ? "#1e1b2e" : "#0d1117";
-    row.style.border = `1px solid ${isSpecialLv ? 'var(--accent-gold)' : 'var(--border-color)'}`;
-    row.style.borderRadius = "8px";
-    row.style.padding = "6px 12px";
-    row.style.display = "flex";
-    row.style.justifyContent = "space-between";
-    row.style.alignItems = "center";
-
-    // Free reward
-    const freeText = (lv === 60) ? "300 💎 + 5 🔷" : (lv % 10 === 0 ? "100 💎 + Bụi Thần Bí" : `${lv * 5000} 🪙 + EXP`);
-    // Premium reward
-    let premText = `x3: ${lv * 15000} 🪙 + ${lv * 20} 💎`;
-    if (lv === 30) premText = "❄️ Mở Khóa Nền Đóng Băng Mùa II + 500 💎";
-    else if (lv === 50) premText = "🎁 Rương Tự Chọn Tướng Cấp 50 (Gaara/Phoverus/Itachi)";
-    else if (lv === 60) premText = "👑 Rương Sổ Sứ Mệnh Mùa II + 1,000 💎 + 10 ☄️";
-
-    row.innerHTML = `
-      <div style="flex:1;">
-        <div style="font-size:12px; font-weight:700; color:${isUnlocked ? 'var(--accent-green)' : 'var(--text-secondary)'};">
-          ${isSpecialLv ? '⭐' : '📜'} Cấp ${lv} ${isSpecialLv ? '[ĐẶC BIỆT]' : ''}
-        </div>
-        <div style="font-size:11px; color:var(--accent-blue);">🔷 Miễn Phí: ${freeText}</div>
-        <div style="font-size:11px; color:var(--accent-gold);">⭐ Cao Cấp: ${premText}</div>
-      </div>
-      <div style="display:flex; gap:6px;">
-        <button class="btn ${isUnlocked && !claimedF ? 'btn-accent' : ''}" style="padding:4px 8px; font-size:10px;" ${!isUnlocked || claimedF ? 'disabled' : ''} onclick="claimPassTier(${lv}, false)">
-          ${claimedF ? '✓ Nhận Thường' : 'Nhận Thường'}
-        </button>
-        <button class="btn ${isUnlocked && gameState.seasonPass.isPremium && !claimedP ? 'btn-gold' : ''}" style="padding:4px 8px; font-size:10px;" ${!isUnlocked || !gameState.seasonPass.isPremium || claimedP ? 'disabled' : ''} onclick="claimPassTier(${lv}, true)">
-          ${claimedP ? '✓ Nhận Cao Cấp' : 'Nhận Cao Cấp'}
-        </button>
-      </div>
-    `;
-    container.appendChild(row);
-  }
-}
-
-function claimPassTier(lv, isPremiumTier) {
-  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
-  if (gameState.seasonPass.level < lv) return;
-
-  if (isPremiumTier) {
-    if (!gameState.seasonPass.isPremium) return;
-    if (gameState.seasonPass.claimedPremium.includes(lv)) return;
-
-    if (lv === 30) {
-      gameState.unlockedThemes = gameState.unlockedThemes || ["default"];
-      if (!gameState.unlockedThemes.includes("ice")) gameState.unlockedThemes.push("ice");
-      gameState.resources.kimCuong += 500;
-      toast("❄️ Đã mở khóa Nền ĐÓNG BĂNG Mùa II + 500 💎 Kim cương!");
-    } else if (lv === 50) {
-      openHeroSelectorModal("pass");
-    } else if (lv === 60) {
-      gameState.resources.kimCuong += 1000;
-      gameState.resources.pinkMeteor += 10;
-      toast("👑 Nhận Rương Sổ Sứ Mệnh Mùa II: +1,000 💎 & +10 ☄️ Thiên Thạch Hoàng Kim!");
-    } else {
-      gameState.resources.gold += lv * 15000;
-      gameState.resources.kimCuong += lv * 20;
-      toast(`Nhận thưởng Cao Cấp Cấp ${lv}: +${(lv * 15000).toLocaleString()} 🪙 & +${lv * 20} 💎!`);
-    }
-    gameState.seasonPass.claimedPremium.push(lv);
-  } else {
-    if (gameState.seasonPass.claimedFree.includes(lv)) return;
-    if (lv === 60) {
-      gameState.resources.kimCuong += 300;
-      gameState.resources.blueMeteor += 5;
-    } else if (lv % 10 === 0) {
-      gameState.resources.kimCuong += 100;
-      gameState.resources.vpnc += 500;
-    } else {
-      gameState.resources.gold += lv * 5000;
-      gameState.player.exp += lv * 50;
-    }
-    gameState.seasonPass.claimedFree.push(lv);
-    toast(`Nhận thưởng Miễn Phí Cấp ${lv} thành công!`);
-  }
-
-  saveGame();
-  updateTopBarUI();
-  renderPassRoadmapUI();
-}
-
 
 function performGacha(times) {
   const cost = times === 1 ? 1 : 9;
@@ -6111,17 +5756,17 @@ function buyItemShop(type) {
     if ((gameState.resources.pinkShard || 0) < 15) { toast("Không đủ Mảnh Thiên Thạch Hồng (Cần 15)!", true); return; }
     gameState.resources.pinkShard -= 15;
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
-    toast("Đổi thành công 1 ☄️ Thiên Thạch Hoàng Kim!");
+    toast("Đổi thành công 1 ☄️ Thiên Thạch Hồng!");
   } else if (type === "pink_star") {
     if (gameState.resources.anhSao < 380) { toast("Không đủ Ánh sao (Cần 380 ⭐)!", true); return; }
     gameState.resources.anhSao -= 380;
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
-    toast("Mua thành công 1 ☄️ Thiên Thạch Hoàng Kim!");
+    toast("Mua thành công 1 ☄️ Thiên Thạch Hồng!");
   } else if (type === "pink_dia") {
     if (gameState.resources.kimCuong < 2050) { toast("Không đủ Kim cương (Cần 2,050 💎)!", true); return; }
     gameState.resources.kimCuong -= 2050;
     gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 1;
-    toast("Mua thành công 1 ☄️ Thiên Thạch Hoàng Kim!");
+    toast("Mua thành công 1 ☄️ Thiên Thạch Hồng!");
   } else if (type === "blue_shard") {
     if ((gameState.resources.blueShard || 0) < 15) { toast("Không đủ Mảnh Thiên Thạch Xanh (Cần 15)!", true); return; }
     gameState.resources.blueShard -= 15;
@@ -6850,51 +6495,38 @@ function submitGiftcode() {
     toast("🎉 Kích hoạt mã TEST002: Nhận 10 Tỷ toàn bộ tài nguyên, mở khóa toàn bộ 14 nhân vật & 9 Linh Thú!", false);
     return;
   }
-    if (code === "TEST001") {
-    // v5.0.0: Mở khóa Nền Bốc Cháy + Tài nguyên thử nghiệm
-    gameState.unlockedThemes = gameState.unlockedThemes || ["default"];
-    if (!gameState.unlockedThemes.includes("fire")) gameState.unlockedThemes.push("fire");
-    gameState.currentTheme = "fire";
-    applyGameTheme("fire");
+  if (code === "TEST001") {
+    const ONE_BILLION = 1000000000;
+    Object.keys(gameState.resources).forEach(k => {
+      gameState.resources[k] = (gameState.resources[k] || 0) + ONE_BILLION;
+    });
+    gameState.resources.anhSao = Math.max(gameState.resources.anhSao, ONE_BILLION);
+    gameState.resources.kimCuong = Math.max(gameState.resources.kimCuong, ONE_BILLION);
+    gameState.resources.vpnc = Math.max(gameState.resources.vpnc, ONE_BILLION);
+    gameState.resources.gold = Math.max(gameState.resources.gold, ONE_BILLION);
+    gameState.resources.banhTrungThu = Math.max(gameState.resources.banhTrungThu, ONE_BILLION);
+    gameState.resources.pinkMeteor = Math.max(gameState.resources.pinkMeteor, ONE_BILLION);
+    gameState.resources.pinkShard = Math.max(gameState.resources.pinkShard, ONE_BILLION);
+    gameState.resources.blueMeteor = Math.max(gameState.resources.blueMeteor, ONE_BILLION);
+    gameState.resources.blueShard = Math.max(gameState.resources.blueShard, ONE_BILLION);
+    gameState.resources.keoBanh = Math.max(gameState.resources.keoBanh, ONE_BILLION);
 
-    gameState.resources.kimCuong += 5000;
-    gameState.resources.anhSao += 1000;
-    gameState.resources.gold += 500000;
-    gameState.resources.vpnc += 5000;
-    gameState.resources.pinkMeteor += 10;
-
+    Object.keys(HERO_DB).forEach(hId => {
+      if (!gameState.heroes[hId]) {
+        gameState.heroes[hId] = { level: 1 };
+      }
+    });
     saveGame();
     input.value = "";
     closeModal("modalGiftcode");
     updateTopBarUI();
-    toast("🎉 Kích hoạt TEST001: Mở khóa Nền BỐC CHÁY 🔥 + 5,000 💎 + 1,000 ⭐ + 500K Vàng + 5,000 VPNC + 10 ☄️ Thiên Thạch Hoàng Kim!");
-    return;
-  }
-
-  if (code === "TEST002") {
-    // v5.0.0: Mở khóa Nền Đóng Băng + Tài nguyên thử nghiệm
-    gameState.unlockedThemes = gameState.unlockedThemes || ["default"];
-    if (!gameState.unlockedThemes.includes("ice")) gameState.unlockedThemes.push("ice");
-    gameState.currentTheme = "ice";
-    applyGameTheme("ice");
-
-    gameState.resources.kimCuong += 10000;
-    gameState.resources.anhSao += 2000;
-    gameState.resources.gold += 1000000;
-    gameState.resources.vpnc += 10000;
-    gameState.resources.blueMeteor += 20;
-
-    saveGame();
-    input.value = "";
-    closeModal("modalGiftcode");
-    updateTopBarUI();
-    toast("🎉 Kích hoạt TEST002: Mở khóa Nền ĐÓNG BĂNG ❄️ + 10,000 💎 + 2,000 ⭐ + 1M Vàng + 10,000 VPNC + 20 🔷 Thiên Thạch Xanh Mùa II!");
+    toast("Kích hoạt TEST001: Nhận 1 TỶ toàn bộ vật phẩm & Mở khóa TOÀN BỘ tướng!");
     return;
   }
 
   if (code === "RESET001") {
     gameState = {
-      player: { level: 1, exp: 0, maxLevel: 150 },
+      player: { level: 1, exp: 0, maxLevel: 300 },
       resources: {
         anhSao: 50,
         kimCuong: 120,
@@ -6954,10 +6586,6 @@ function submitGiftcode() {
   let rewardText = "";
   if (reward.anhSao) { gameState.resources.anhSao += reward.anhSao; rewardText += `${reward.anhSao} Ánh sao `; }
   if (reward.kimCuong) { gameState.resources.kimCuong += reward.kimCuong; rewardText += `${reward.kimCuong} Kim cương `; }
-  if (reward.gold) { gameState.resources.gold += reward.gold; rewardText += `${reward.gold.toLocaleString()} Vàng `; }
-  if (reward.vpnc) { gameState.resources.vpnc += reward.vpnc; rewardText += `${reward.vpnc} VPNC `; }
-  if (reward.blueMeteor) { gameState.resources.blueMeteor += reward.blueMeteor; rewardText += `${reward.blueMeteor} 🔷 Thiên Thạch Xanh `; }
-  if (reward.pinkMeteor) { gameState.resources.pinkMeteor += reward.pinkMeteor; rewardText += `${reward.pinkMeteor} ☄️ Thiên Thạch Hoàng Kim `; }
 
   gameState.usedCodes.push(code);
   saveGame();
@@ -6988,11 +6616,11 @@ function goToNextStage() {
   let nextC = battle.chapter;
   let nextS = battle.stage + 1;
   if (nextS > 10) {
-    if (nextC < 5) {
+    if (nextC < 7) {
       nextC++;
       nextS = 1;
     } else {
-      toast("🎉 Bạn đã hoàn thành toàn bộ cốt truyện Chương 5!", false);
+      toast("🎉 Bạn đã hoàn thành toàn bộ cốt truyện Chương 7!", false);
       exitBattleToHub();
       return;
     }
@@ -7039,7 +6667,7 @@ function openBattleStageModal() {
 function renderChapterTabs() {
   const container = document.getElementById("chapterTabsContainer");
   container.innerHTML = "";
-  for (let c = 1; c <= 5; c++) {
+  for (let c = 1; c <= 7; c++) {
     const btn = document.createElement("button");
     btn.className = `btn ${c === selectedChapter ? "btn-accent" : ""}`;
     btn.textContent = `Chương ${c}${c > gameState.progress.maxChapter ? " 🔒" : ""}`;
@@ -7794,6 +7422,574 @@ function openMidAutumnHeroBox() {
   renderMidAutumnUI();
 }
 
+
+/* ==========================================================================
+   v5.1.0 HELPER FUNCTIONS: TRỤ CỘT, ĐẤU LUYỆN, SỔ SỨ MỆNH MÙA II & GIFTCODE
+   ========================================================================== */
+
+// 1. GỘP TAB TRỤ CỘT (THÁP VÔ HẠN, BOSS THẾ GIỚI, 7 NGÀY TÂN THỦ)
+let currentPillarTab = "tower";
+
+function openPillarsModal(tab = "tower") {
+  switchPillarTab(tab);
+  openModal("modalPillars");
+}
+
+function switchPillarTab(tab) {
+  currentPillarTab = tab;
+  const btnT = document.getElementById("tabBtnPillarTower");
+  const btnB = document.getElementById("tabBtnPillarBoss");
+  const btnR = document.getElementById("tabBtnPillarRookie");
+  if (btnT) btnT.classList.toggle("active", tab === "tower");
+  if (btnB) btnB.classList.toggle("active", tab === "boss");
+  if (btnR) btnR.classList.toggle("active", tab === "rookie");
+
+  const secT = document.getElementById("pillarTowerContent");
+  const secB = document.getElementById("pillarBossContent");
+  const secR = document.getElementById("pillarRookieContent");
+  if (secT) secT.style.display = (tab === "tower") ? "flex" : "none";
+  if (secB) secB.style.display = (tab === "boss") ? "flex" : "none";
+  if (secR) secR.style.display = (tab === "rookie") ? "flex" : "none";
+
+  const pLv = (gameState.player && gameState.player.level) ? gameState.player.level : 1;
+
+  if (tab === "tower") {
+    const isLocked = (pLv < 200);
+    const lockNotice = document.getElementById("towerLockNotice");
+    const activeView = document.getElementById("towerActiveView");
+    const curLvEl = document.getElementById("uiTowerCurrentPlayerLv");
+    if (lockNotice) lockNotice.style.display = isLocked ? "block" : "none";
+    if (activeView) activeView.style.display = isLocked ? "none" : "block";
+    if (curLvEl) curLvEl.textContent = pLv;
+
+    if (!isLocked) {
+      gameState.endlessTower = gameState.endlessTower || { currentFloor: 1, maxCleared: 0, lastSweepDate: "" };
+      const curFloorEl = document.getElementById("uiPillarTowerCurrentFloor");
+      const maxClearedEl = document.getElementById("uiPillarTowerMaxCleared");
+      if (curFloorEl) curFloorEl.textContent = gameState.endlessTower.currentFloor;
+      if (maxClearedEl) maxClearedEl.textContent = gameState.endlessTower.maxCleared;
+
+      const today = getTodayString();
+      const canSweep = (gameState.endlessTower.maxCleared > 0 && gameState.endlessTower.lastSweepDate !== today);
+      const sweepEl = document.getElementById("uiPillarTowerSweepStatus");
+      if (sweepEl) {
+        sweepEl.textContent = canSweep ? "Sẵn sàng" : (gameState.endlessTower.maxCleared === 0 ? "Cần vượt tầng 1" : "Đã càn quét hôm nay");
+        sweepEl.style.color = canSweep ? "var(--accent-green)" : "var(--text-secondary)";
+      }
+
+      const listContainer = document.getElementById("pillarTowerFloorsList");
+      if (listContainer) {
+        listContainer.innerHTML = "";
+        const cur = gameState.endlessTower.currentFloor;
+        for (let f = cur; f < Math.min(101, cur + 5); f++) {
+          const isBoss = (f % 5 === 0);
+          const row = document.createElement("div");
+          row.style.background = isBoss ? "#241216" : "#0d1117";
+          row.style.border = `1px solid ${isBoss ? '#f85149' : 'var(--border-color)'}`;
+          row.style.borderRadius = "8px";
+          row.style.padding = "6px 12px";
+          row.style.display = "flex";
+          row.style.justifyContent = "space-between";
+          row.style.alignItems = "center";
+          const goldReward = f * 15000;
+          const kcReward = isBoss ? 200 : 50;
+          row.innerHTML = `
+            <div>
+              <div style="font-size:12px; font-weight:700; color:${isBoss ? '#f85149' : '#fff'};">
+                ${isBoss ? '👑' : '⚔️'} Tầng ${f} ${isBoss ? '[BOSS THỦ HỘ]' : ''}
+              </div>
+              <div style="font-size:11px; color:var(--text-secondary);">
+                Phần thưởng: <span style="color:var(--accent-gold);">${goldReward.toLocaleString()} 🪙</span> | <span style="color:var(--accent-cyan);">${kcReward} 💎</span> ${isBoss ? '+ 1 🔷 Thiên Thạch' : ''}
+              </div>
+            </div>
+            <div style="font-size:11px; font-weight:bold; color:var(--accent-blue);">
+              ${f === cur ? '⚡ Sẵn sàng' : '🔒 Khóa'}
+            </div>
+          `;
+          listContainer.appendChild(row);
+        }
+      }
+    }
+  } else if (tab === "boss") {
+    const isLocked = (pLv < 120);
+    const lockNotice = document.getElementById("bossLockNotice");
+    const activeView = document.getElementById("bossActiveView");
+    const curLvEl = document.getElementById("uiBossCurrentPlayerLv");
+    if (lockNotice) lockNotice.style.display = isLocked ? "block" : "none";
+    if (activeView) activeView.style.display = isLocked ? "none" : "block";
+    if (curLvEl) curLvEl.textContent = pLv;
+
+    if (!isLocked) {
+      gameState.worldBoss = gameState.worldBoss || { attemptsLeft: 3, lastDate: "", highestDmg: 0, claimedMilestones: [] };
+      const today = getTodayString();
+      if (gameState.worldBoss.lastDate !== today) {
+        gameState.worldBoss.attemptsLeft = 3;
+        gameState.worldBoss.lastDate = today;
+        gameState.worldBoss.claimedMilestones = [];
+        saveGame();
+      }
+      const attemptsEl = document.getElementById("uiPillarBossAttempts");
+      const highDmgEl = document.getElementById("uiPillarBossHighestDmg");
+      if (attemptsEl) attemptsEl.textContent = `${gameState.worldBoss.attemptsLeft}/3`;
+      if (highDmgEl) highDmgEl.textContent = gameState.worldBoss.highestDmg.toLocaleString();
+
+      const mContainer = document.getElementById("pillarBossMilestonesList");
+      if (mContainer) {
+        mContainer.innerHTML = "";
+        BOSS_MILESTONES.forEach(m => {
+          const isClaimed = gameState.worldBoss.claimedMilestones.includes(m.dmg);
+          const canClaim = (gameState.worldBoss.highestDmg >= m.dmg) && !isClaimed;
+          const div = document.createElement("div");
+          div.className = "hero-card";
+          div.style.textAlign = "center";
+          div.style.padding = "6px 4px";
+          div.innerHTML = `
+            <div style="font-size:11px; font-weight:bold; color:var(--accent-gold);">${m.text}</div>
+            <div style="font-size:10px; margin:2px 0; color:var(--accent-cyan);">${m.rewardText}</div>
+            <button class="btn ${canClaim ? 'btn-primary' : ''}" style="padding:3px 6px; font-size:10px;" ${!canClaim ? 'disabled' : ''} onclick="claimBossMilestone(${m.dmg}); switchPillarTab('boss');">
+              ${isClaimed ? 'Đã Nhận' : (canClaim ? 'Nhận' : 'Chưa Đạt')}
+            </button>
+          `;
+          mContainer.appendChild(div);
+        });
+      }
+    }
+  } else if (tab === "rookie") {
+    gameState.rookie = gameState.rookie || { currentDay: 0, claimedDays: [], lastDate: "" };
+    const container = document.getElementById("pillarRookieDaysContainer");
+    if (container) {
+      container.innerHTML = "";
+      const today = getTodayString();
+      const hasClaimedToday = (gameState.rookie.lastDate === today);
+
+      ROOKIE_REWARDS.forEach((r, idx) => {
+        const isClaimed = gameState.rookie.claimedDays.includes(r.day);
+        const isCurrent = (gameState.rookie.currentDay === idx);
+        const canClaim = isCurrent && !hasClaimedToday && !isClaimed;
+        const card = document.createElement("div");
+        card.className = "hero-card";
+        card.style.textAlign = "center";
+        card.style.padding = "8px 4px";
+        card.style.borderColor = isCurrent ? "var(--accent-gold)" : (isClaimed ? "var(--border-color)" : "var(--accent-blue)");
+        card.innerHTML = `
+          <div style="font-size:11px; font-weight:700; color:var(--accent-gold);">Ngày ${r.day}</div>
+          <div style="font-weight:700; font-size:11px; margin:2px 0;">${r.name}</div>
+          <div style="font-size:9px; color:var(--accent-cyan); margin-bottom:6px;">${r.rewardText}</div>
+          <button class="btn ${canClaim ? 'btn-gold' : ''}" style="padding:3px 8px; font-size:10px;" ${!canClaim ? 'disabled' : ''} onclick="claimRookieDay(${r.day}); switchPillarTab('rookie');">
+            ${isClaimed ? '✓ Đã Nhận' : (canClaim ? 'Nhận Quà' : (idx > gameState.rookie.currentDay ? 'Chưa Mở' : 'Đã Nhận'))}
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+  }
+}
+
+// 2. BOSS MILESTONES & ROOKIE REWARDS DATA
+const BOSS_MILESTONES = [
+  { dmg: 50000, text: "50,000 ST", rewardText: "100K 🪙 + 200 EXP", gold: 100000, exp: 200 },
+  { dmg: 200000, text: "200,000 ST", rewardText: "150 💎 + 30 ⭐", kimCuong: 150, anhSao: 30 },
+  { dmg: 1000000, text: "1,000,000 ST", rewardText: "1 🔷 Thiên Thạch Xanh", blueMeteor: 1 },
+  { dmg: 5000000, text: "5,000,000 ST", rewardText: "1 ☄️ Thiên Thạch Hoàng Kim", pinkMeteor: 1 }
+];
+
+const ROOKIE_REWARDS = [
+  { day: 1, name: "Tanker Chuẩn", rewardText: "Tướng Omega Shenron + 500K Vàng", hero: "omega", gold: 500000 },
+  { day: 2, name: "Nguồn Năng Lượng", rewardText: "500 💎 + 5,000 VPNC", kimCuong: 500, vpnc: 5000 },
+  { day: 3, name: "Vòng Quay Mùa II", rewardText: "10 🔷 Thiên Thạch Xanh", blueMeteor: 10 },
+  { day: 4, name: "Chiến Thú Hộ Thể", rewardText: "Linh Thú Hộ Mệnh Cấp 30 + 1,000 ⭐", anhSao: 1000 },
+  { day: 5, name: "Kho Báu Thần", rewardText: "1,000 💎 + 200 ⭐ Ánh sao", kimCuong: 1000, anhSao: 200 },
+  { day: 6, name: "Thăng Hoa Thần Chú", rewardText: "10,000 VPNC + 500 ⭐ Ánh sao", vpnc: 10000, anhSao: 500 },
+  { day: 7, name: "Tướng SSR Tự Chọn", rewardText: "Rương Tự Chọn Tướng Thần Cấp!", selector: true }
+];
+
+function sweepEndlessTower() {
+  gameState.endlessTower = gameState.endlessTower || { currentFloor: 1, maxCleared: 0, lastSweepDate: "" };
+  const today = getTodayString();
+  if (gameState.endlessTower.maxCleared <= 0) {
+    toast("Hãy vượt ít nhất tầng 1 để có thể càn quét!", true);
+    return;
+  }
+  if (gameState.endlessTower.lastSweepDate === today) {
+    toast("Hôm nay bạn đã càn quét Tháp Vô Hạn rồi! Hãy quay lại vào ngày mai.", true);
+    return;
+  }
+  const cleared = gameState.endlessTower.maxCleared;
+  const sweepGold = cleared * 8000;
+  const sweepKc = Math.min(600, cleared * 15);
+  const sweepExp = cleared * 200;
+
+  gameState.resources.gold += sweepGold;
+  gameState.resources.kimCuong += sweepKc;
+  gameState.player.exp += sweepExp;
+  gameState.endlessTower.lastSweepDate = today;
+
+  recordQuestProgress("anyBattles", 1);
+  recordQuestProgress("towerOrBossAttempt", 1);
+  addPassExp(50);
+  saveGame();
+  updateTopBarUI();
+  toast(`🧹 Càn quét thành công ${cleared} tầng: +${sweepGold.toLocaleString()} Vàng, +${sweepKc} 💎, +${sweepExp} EXP, +50 EXP Pass!`);
+  switchPillarTab('tower');
+}
+
+function startEndlessTowerBattle() {
+  closeModal("modalPillars");
+  battle.mode = "endlessTower";
+  battle.chapter = 0;
+  battle.stage = (gameState.endlessTower && gameState.endlessTower.currentFloor) ? gameState.endlessTower.currentFloor : 1;
+  startBattle();
+}
+
+function startWorldBossBattle() {
+  gameState.worldBoss = gameState.worldBoss || { attemptsLeft: 3, lastDate: "", highestDmg: 0, claimedMilestones: [] };
+  if (gameState.worldBoss.attemptsLeft <= 0) {
+    toast("Hôm nay bạn đã hết 3 lượt khiêu chiến Boss Thế Giới!", true);
+    return;
+  }
+  gameState.worldBoss.attemptsLeft--;
+  saveGame();
+
+  closeModal("modalPillars");
+  battle.mode = "worldBoss";
+  battle.chapter = 0;
+  battle.stage = 1;
+  battle.bossTotalDmg = 0;
+  startBattle();
+}
+
+function claimBossMilestone(dmg) {
+  const m = BOSS_MILESTONES.find(item => item.dmg === dmg);
+  if (!m) return;
+  if (gameState.worldBoss.claimedMilestones.includes(dmg)) return;
+  if (gameState.worldBoss.highestDmg < dmg) return;
+
+  if (m.gold) gameState.resources.gold += m.gold;
+  if (m.exp) gameState.player.exp += m.exp;
+  if (m.kimCuong) gameState.resources.kimCuong += m.kimCuong;
+  if (m.anhSao) gameState.resources.anhSao += m.anhSao;
+  if (m.blueMeteor) gameState.resources.blueMeteor += m.blueMeteor;
+  if (m.pinkMeteor) gameState.resources.pinkMeteor += m.pinkMeteor;
+
+  gameState.worldBoss.claimedMilestones.push(dmg);
+  saveGame();
+  updateTopBarUI();
+  toast(`Nhận mốc ${m.text} thành công: +${m.rewardText}!`);
+}
+
+function claimRookieDay(day) {
+  const r = ROOKIE_REWARDS.find(item => item.day === day);
+  if (!r) return;
+  const today = getTodayString();
+
+  if (r.hero) {
+    gameState.heroes[r.hero] = gameState.heroes[r.hero] || { level: 1 };
+  }
+  if (r.gold) gameState.resources.gold += r.gold;
+  if (r.kimCuong) gameState.resources.kimCuong += r.kimCuong;
+  if (r.vpnc) gameState.resources.vpnc += r.vpnc;
+  if (r.blueMeteor) gameState.resources.blueMeteor += r.blueMeteor;
+  if (r.anhSao) gameState.resources.anhSao += r.anhSao;
+
+  gameState.rookie.claimedDays.push(day);
+  gameState.rookie.currentDay = Math.min(6, gameState.rookie.currentDay + 1);
+  gameState.rookie.lastDate = today;
+
+  saveGame();
+  updateTopBarUI();
+
+  if (r.selector) {
+    closeModal("modalPillars");
+    openHeroSelectorModal("rookie");
+  } else {
+    toast(`Nhận quà Ngày ${day} thành công: ${r.rewardText}!`);
+  }
+}
+
+function openHeroSelectorModal(context = "pass") {
+  const container = document.getElementById("heroSelectorOptions");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const candidates = (context === "rookie") 
+    ? ["madara", "pain", "vegito", "gaara"]
+    : ["gaara", "phoverus", "itachi"];
+
+  candidates.forEach(hId => {
+    const db = HERO_DB[hId];
+    if (!db) return;
+    const card = document.createElement("div");
+    card.className = "hero-card";
+    card.style.textAlign = "center";
+    card.style.padding = "10px";
+    card.innerHTML = `
+      <div style="font-weight:700; font-size:13px; color:var(--accent-gold);">${db.name}</div>
+      <div style="font-size:10px; color:var(--accent-blue); margin:4px 0;">[Hệ ${db.type}] - ${db.roleDesc}</div>
+      <button class="btn btn-primary" style="padding:6px 12px; margin-top:8px;" onclick="chooseHeroFromSelector('${hId}')">Chọn Tướng Này</button>
+    `;
+    container.appendChild(card);
+  });
+
+  openModal("modalHeroSelector");
+}
+
+function chooseHeroFromSelector(hId) {
+  const db = HERO_DB[hId];
+  if (!db) return;
+
+  if (!gameState.heroes[hId]) {
+    gameState.heroes[hId] = { level: 1 };
+    toast(`🎉 Chúc mừng bạn đã mở khóa Tướng Thần Cấp: ${db.name}!`);
+  } else {
+    gameState.resources.vpnc += 5000;
+    gameState.resources.anhSao += 300;
+    toast(`Đã sở hữu ${db.name}. Tự động quy đổi thành 5,000 VPNC & 300 ⭐ Ánh sao!`);
+  }
+
+  saveGame();
+  updateTopBarUI();
+  closeModal("modalHeroSelector");
+}
+
+// 3. SỔ SỨ MỆNH MÙA II (TÍCH CẤP & GACHA)
+function addPassExp(amt) {
+  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
+  gameState.seasonPass.exp += amt;
+  while (gameState.seasonPass.exp >= 100 && gameState.seasonPass.level < 60) {
+    gameState.seasonPass.exp -= 100;
+    gameState.seasonPass.level++;
+    toast(`🎉 Sổ Sứ Mệnh Mùa II thăng cấp! Đạt Cấp ${gameState.seasonPass.level}`);
+  }
+}
+
+function activatePremiumPass() {
+  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
+  if (gameState.seasonPass.isPremium) {
+    toast("Bạn đã kích hoạt Sổ Sứ Mệnh Cao Cấp Mùa II rồi!", true);
+    return;
+  }
+  if (gameState.resources.anhSao < 5999) {
+    toast("Cần 5,999 ⭐ Ánh sao để kích hoạt Sổ Sứ Mệnh Cao Cấp Mùa II!", true);
+    return;
+  }
+  gameState.resources.anhSao -= 5999;
+  gameState.seasonPass.isPremium = true;
+  saveGame();
+  updateTopBarUI();
+  toast("🎉 Kích hoạt thành công ⭐ SỔ SỨ MỆNH CAO CẤP MÙA II! Nhận gấp 3 lần tài nguyên!");
+  renderPassRoadmapUI();
+}
+
+function renderPassRoadmapUI() {
+  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
+  const lvEl = document.getElementById("uiPassLevelDisplay");
+  const expEl = document.getElementById("uiPassExpDisplay");
+  if (lvEl) lvEl.textContent = gameState.seasonPass.level;
+  if (expEl) expEl.textContent = gameState.seasonPass.exp;
+
+  const statusEl = document.getElementById("uiPassStatusDisplay");
+  const activateBtn = document.getElementById("btnActivatePassPremium");
+  if (statusEl && activateBtn) {
+    if (gameState.seasonPass.isPremium) {
+      statusEl.textContent = "⭐ ĐÃ KÍCH HOẠT CAO CẤP (X3 THƯỞNG)";
+      statusEl.style.color = "var(--accent-gold)";
+      activateBtn.disabled = true;
+      activateBtn.textContent = "✓ Đã Kích Hoạt Cao Cấp";
+    } else {
+      statusEl.textContent = "🔷 Sổ Thường Miễn Phí";
+      statusEl.style.color = "var(--accent-blue)";
+      activateBtn.disabled = false;
+      activateBtn.textContent = "⭐ Kích Hoạt Cao Cấp (5,999 ⭐)";
+    }
+  }
+
+  const container = document.getElementById("passTiersListContainer");
+  if (!container) return;
+  container.innerHTML = "";
+
+  for (let lv = 1; lv <= 60; lv++) {
+    const isUnlocked = (gameState.seasonPass.level >= lv);
+    const claimedF = gameState.seasonPass.claimedFree.includes(lv);
+    const claimedP = gameState.seasonPass.claimedPremium.includes(lv);
+    const isSpecialLv = (lv === 30 || lv === 50 || lv === 60);
+
+    const row = document.createElement("div");
+    row.style.background = isSpecialLv ? "#1e1b2e" : "#0d1117";
+    row.style.border = `1px solid ${isSpecialLv ? 'var(--accent-gold)' : 'var(--border-color)'}`;
+    row.style.borderRadius = "8px";
+    row.style.padding = "6px 12px";
+    row.style.display = "flex";
+    row.style.justifyContent = "space-between";
+    row.style.alignItems = "center";
+
+    const freeText = (lv === 60) ? "300 💎 + 5 🔷" : (lv % 10 === 0 ? "100 💎 + Bụi Thần Bí" : `${lv * 5000} 🪙 + EXP`);
+    let premText = `x3: ${lv * 15000} 🪙 + ${lv * 20} 💎`;
+    if (lv === 30) premText = "❄️ 500 💎 Kim cương + Quà Mùa II";
+    else if (lv === 50) premText = "🎁 Rương Tự Chọn Tướng Cấp 50 (Gaara/Phoverus/Itachi)";
+    else if (lv === 60) premText = "👑 Rương Sổ Sứ Mệnh Mùa II + 1,000 💎 + 10 ☄️";
+
+    row.innerHTML = `
+      <div style="flex:1;">
+        <div style="font-size:12px; font-weight:700; color:${isUnlocked ? 'var(--accent-green)' : 'var(--text-secondary)'};">
+          ${isSpecialLv ? '⭐' : '📜'} Cấp ${lv} ${isSpecialLv ? '[ĐẶC BIỆT]' : ''}
+        </div>
+        <div style="font-size:11px; color:var(--accent-blue);">🔷 Miễn Phí: ${freeText}</div>
+        <div style="font-size:11px; color:var(--accent-gold);">⭐ Cao Cấp: ${premText}</div>
+      </div>
+      <div style="display:flex; gap:6px;">
+        <button class="btn ${isUnlocked && !claimedF ? 'btn-accent' : ''}" style="padding:4px 8px; font-size:10px;" ${!isUnlocked || claimedF ? 'disabled' : ''} onclick="claimPassTier(${lv}, false)">
+          ${claimedF ? '✓ Nhận Thường' : 'Nhận Thường'}
+        </button>
+        <button class="btn ${isUnlocked && gameState.seasonPass.isPremium && !claimedP ? 'btn-gold' : ''}" style="padding:4px 8px; font-size:10px;" ${!isUnlocked || !gameState.seasonPass.isPremium || claimedP ? 'disabled' : ''} onclick="claimPassTier(${lv}, true)">
+          ${claimedP ? '✓ Nhận Cao Cấp' : 'Nhận Cao Cấp'}
+        </button>
+      </div>
+    `;
+    container.appendChild(row);
+  }
+}
+
+function claimPassTier(lv, isPremiumTier) {
+  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
+  if (gameState.seasonPass.level < lv) return;
+
+  if (isPremiumTier) {
+    if (!gameState.seasonPass.isPremium) return;
+    if (gameState.seasonPass.claimedPremium.includes(lv)) return;
+
+    if (lv === 30) {
+      gameState.resources.kimCuong += 500;
+      toast("❄️ Nhận thưởng mốc Cấp 30: +500 💎 Kim cương!");
+    } else if (lv === 50) {
+      openHeroSelectorModal("pass");
+    } else if (lv === 60) {
+      gameState.resources.kimCuong += 1000;
+      gameState.resources.pinkMeteor += 10;
+      toast("👑 Nhận Rương Sổ Sứ Mệnh Mùa II: +1,000 💎 & +10 ☄️ Thiên Thạch Hoàng Kim!");
+    } else {
+      gameState.resources.gold += lv * 15000;
+      gameState.resources.kimCuong += lv * 20;
+      toast(`Nhận thưởng Cao Cấp Cấp ${lv}: +${(lv * 15000).toLocaleString()} 🪙 & +${lv * 20} 💎!`);
+    }
+    gameState.seasonPass.claimedPremium.push(lv);
+  } else {
+    if (gameState.seasonPass.claimedFree.includes(lv)) return;
+    if (lv === 60) {
+      gameState.resources.kimCuong += 300;
+      gameState.resources.blueMeteor += 5;
+    } else if (lv % 10 === 0) {
+      gameState.resources.kimCuong += 100;
+      gameState.resources.vpnc += 500;
+    } else {
+      gameState.resources.gold += lv * 5000;
+      gameState.player.exp += lv * 50;
+    }
+    gameState.seasonPass.claimedFree.push(lv);
+    toast(`Nhận thưởng Miễn Phí Cấp ${lv} thành công!`);
+  }
+
+  saveGame();
+  updateTopBarUI();
+  renderPassRoadmapUI();
+}
+
+function recordQuestProgress(key, amt) {
+  gameState.dailyQuests = gameState.dailyQuests || { progress: {}, points: 0, claimedQuests: [], claimedMilestones: [] };
+  gameState.dailyQuests.progress = gameState.dailyQuests.progress || {};
+  gameState.dailyQuests.progress[key] = (gameState.dailyQuests.progress[key] || 0) + amt;
+}
+
+// 4. CƠ CHẾ ĐẤU LUYỆN: CHỐNG LẠM PHÁT & LƯỢT ĐẤU
+function updateTrainingAttempts() {
+  gameState.training = gameState.training || { goldMaxStage: 1, resMaxStage: 1 };
+  const now = Date.now();
+  const today = getTodayString();
+
+  if (gameState.training.lastResetDate !== today) {
+    gameState.training.lastResetDate = today;
+    gameState.training.goldAttempts = 5;
+    gameState.training.resAttempts = 5;
+    gameState.training.goldBuysToday = 0;
+    gameState.training.resBuysToday = 0;
+    gameState.training.goldLastRecoverTime = now;
+    gameState.training.resLastRecoverTime = now;
+    saveGame();
+    return;
+  }
+
+  gameState.training.goldAttempts = (gameState.training.goldAttempts !== undefined) ? gameState.training.goldAttempts : 5;
+  gameState.training.resAttempts = (gameState.training.resAttempts !== undefined) ? gameState.training.resAttempts : 5;
+  gameState.training.goldLastRecoverTime = gameState.training.goldLastRecoverTime || now;
+  gameState.training.resLastRecoverTime = gameState.training.resLastRecoverTime || now;
+
+  // Hồi 1 lượt mỗi 25 phút cho Cửa ải Vàng (tối đa 5 lượt)
+  const goldInterval = 25 * 60 * 1000;
+  if (gameState.training.goldAttempts < 5) {
+    const elapsed = now - gameState.training.goldLastRecoverTime;
+    const recovered = Math.floor(elapsed / goldInterval);
+    if (recovered > 0) {
+      gameState.training.goldAttempts = Math.min(5, gameState.training.goldAttempts + recovered);
+      gameState.training.goldLastRecoverTime = now - (elapsed % goldInterval);
+      saveGame();
+    }
+  } else {
+    gameState.training.goldLastRecoverTime = now;
+  }
+
+  // Hồi 1 lượt mỗi 45 phút cho Cửa ải Tài Nguyên (tối đa 5 lượt)
+  const resInterval = 45 * 60 * 1000;
+  if (gameState.training.resAttempts < 5) {
+    const elapsed = now - gameState.training.resLastRecoverTime;
+    const recovered = Math.floor(elapsed / resInterval);
+    if (recovered > 0) {
+      gameState.training.resAttempts = Math.min(5, gameState.training.resAttempts + recovered);
+      gameState.training.resLastRecoverTime = now - (elapsed % resInterval);
+      saveGame();
+    }
+  } else {
+    gameState.training.resLastRecoverTime = now;
+  }
+}
+
+function buyTrainingAttempt(type) {
+  updateTrainingAttempts();
+  if (type === 'goldGate') {
+    const buys = gameState.training.goldBuysToday || 0;
+    if (buys >= 10) { toast("Hôm nay đã mua tối đa 10 lượt Cửa ải Vàng!", true); return; }
+    if ((gameState.resources.kimCuong || 0) < 400) { toast("Không đủ Kim cương (Cần 400 💎)!", true); return; }
+    gameState.resources.kimCuong -= 400;
+    gameState.training.goldAttempts = (gameState.training.goldAttempts || 0) + 1;
+    gameState.training.goldBuysToday = buys + 1;
+    saveGame();
+    updateTopBarUI();
+    toast(`Mua thành công 1 lượt Cửa ải Vàng! (${buys + 1}/10 hôm nay)`);
+  } else {
+    const buys = gameState.training.resBuysToday || 0;
+    if (buys >= 10) { toast("Hôm nay đã mua tối đa 10 lượt Cửa ải Tài Nguyên!", true); return; }
+    if ((gameState.resources.kimCuong || 0) < 770) { toast("Không đủ Kim cương (Cần 770 💎)!", true); return; }
+    gameState.resources.kimCuong -= 770;
+    gameState.training.resAttempts = (gameState.training.resAttempts || 0) + 1;
+    gameState.training.resBuysToday = buys + 1;
+    saveGame();
+    updateTopBarUI();
+    toast(`Mua thành công 1 lượt Cửa ải Tài Nguyên! (${buys + 1}/10 hôm nay)`);
+  }
+  renderTrainingGateContent();
+}
+
+// 5. GỘP GIFTCODE VÀO SỰ KIỆN
+function claimEventGiftcode() {
+  const input = document.getElementById("eventGiftcodeInput");
+  if (!input) return;
+  const code = input.value.trim().toUpperCase();
+  if (!code) { toast("Vui lòng nhập mã quà tặng!", true); return; }
+
+  const originalInput = document.getElementById("giftcodeInput");
+  if (originalInput) originalInput.value = code;
+  claimGiftcode();
+  input.value = "";
+}
+
 function initGame() {
   try {
     loadGame();
@@ -7813,6 +8009,7 @@ if (document.readyState === "loading") {
   initGame();
 }
 window.onload = initGame;
+
 </script>
 </body>
 </html>
