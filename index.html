@@ -532,7 +532,6 @@
       <div class="currency-item" title="Bánh Trung Thu Ngọt"><span style="color:var(--accent-orange)">🥮</span> <span id="uiBanhTrungThu">0</span></div>
       <div class="currency-item" title="Thiên thạch hồng"><span style="color:var(--accent-pink)">☄️</span> <span id="uiPinkMeteor">0</span></div>
       <div class="currency-item" title="Thiên thạch xanh"><span style="color:var(--accent-cyan)">🔷</span> <span id="uiBlueMeteor">0</span></div>
-      <div class="currency-item" title="Thiên thạch tím"><span style="color:var(--accent-purple)">🔮</span> <span id="uiPurpleMeteor">0</span></div>
       <div class="currency-item" title="Kẹo Bánh Trung Thu"><span style="color:#ff79c6">🍬</span> <span id="uiKeoBanh">0</span></div>
     </div>
   </div>
@@ -542,7 +541,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.1.1 HOÀN THIỆN: Max Level 500 & Đột Phá Cấp 350 | Sửa Triệt Để EXP & Max Level Player | Hệ Thống Nhập Giftcode Trực Quan | Hệ Số +35%/Lv & +20 DEF/50 Lv</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.1.2: Chuẩn Hóa Đột Phá Cấp 350-500 (30 ☄️ Thiên Thạch Hồng) | Cân Bằng Cấp Tối Đa 500 & EXP Player | Hệ Số +35%/Lv & +20 DEF/50 Lv</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -879,18 +878,6 @@
               <button class="btn" style="padding:5px;" onclick="buyItemShop('vpnc_gold')">Mua: 2,500 🪙 Vàng</button>
               <button class="btn" style="padding:5px;" onclick="buyItemShop('vpnc_dia')">Mua: 5 💎 Kim cương</button>
               <button class="btn" style="padding:5px;" onclick="buyItemShop('vpnc_star')">Mua: 1 ⭐ Ánh sao</button>
-            </div>
-          </div>
-
-          <!-- Gói Thiên Thạch Tím (Mở Rộng Cấp 350 - 500) -->
-          <div class="hero-card" style="cursor:default; border-color:var(--accent-purple);">
-            <div style="font-weight:700; color:var(--accent-purple);">1 🔮 Thiên Thạch Tím</div>
-            <div style="font-size:11px; color:var(--text-secondary);">Dùng để Đột Phá Giới Hạn Cấp 350 lên Cấp 500.</div>
-            <div style="margin-top:auto; display:flex; flex-direction:column; gap:4px; padding-top:6px;">
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('purple_dia')">Mua: 120 💎 Kim cương</button>
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('purple_star')">Mua: 20 ⭐ Ánh sao</button>
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('purple_meteor')">Đổi: 1 ☄️ Thiên Thạch Hồng</button>
-              <button class="btn" style="padding:5px;" onclick="buyItemShop('purple_blue')">Đổi: 3 🔷 Thiên Thạch Xanh</button>
             </div>
           </div>
 
@@ -1491,8 +1478,8 @@ const GIFTCODES = {
   "DONGMINH50": { kimCuong: 500, anhSao: 100, gold: 50000 },
   "LUDOCAP5": { kimCuong: 1000, anhSao: 200, pinkMeteor: 3 },
   // v5.1.1: Giftcode mới mở rộng Level 500 & Thiên Thạch Tím
-  "PURPLE2026": { kimCuong: 3000, anhSao: 500, vpnc: 10000000, purpleMeteor: 35 },
-  "LEVEL500": { kimCuong: 2000, anhSao: 300, purpleMeteor: 30 },
+  "PURPLE2026": { kimCuong: 3000, anhSao: 500, vpnc: 10000000, pinkMeteor: 35 },
+  "LEVEL500": { kimCuong: 3000, anhSao: 500, vpnc: 10000000, pinkMeteor: 30 },
   "SIEUTHANCHU": { kimCuong: 1500, anhSao: 400, gold: 300000, vpnc: 50000 }
 };
 
@@ -6955,14 +6942,14 @@ function renderHeroDetails(heroId) {
     `;
   } else if (isLocked350) {
     upgradeSectionHtml = `
-      <div style="width:100%; background:#1c1214; border:1px solid var(--accent-purple); border-radius:8px; padding:10px;">
-        <div style="font-weight:700; color:var(--accent-purple); font-size:12px; margin-bottom:3px;">🔮 CẦN ĐỘT PHÁ CẤP 350 ĐỂ MỞ RỘNG LÊN CẤP 500!</div>
+      <div style="width:100%; background:#1c1214; border:1px solid var(--accent-pink); border-radius:8px; padding:10px;">
+        <div style="font-weight:700; color:var(--accent-pink); font-size:12px; margin-bottom:3px;">☄️ CẦN ĐỘT PHÁ CẤP 350 ĐỂ MỞ RỘNG LÊN CẤP 500!</div>
         <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">
           Từ Cấp 350 trở đi, mỗi cấp tăng <b>+35% chỉ số gốc</b>, mỗi 50 cấp được <b>+20 DEF</b>!
-          <br>Yêu cầu: <b>500 ⭐ Ánh sao</b> + <b>3,000 💎 Kim cương</b> + <b>10M 🧪 VPNC</b> + <b>30 🔮 Thiên Thạch Tím</b>.
+          <br>Yêu cầu: <b>500 ⭐ Ánh sao</b> + <b>3,000 💎 Kim cương</b> + <b>10M 🧪 VPNC</b> + <b>30 ☄️ Thiên Thạch Hồng</b>.
         </div>
-        <button class="btn" style="width:100%; padding:8px; background:#221530; border-color:var(--accent-purple); color:var(--accent-purple); font-size:12px; font-weight:bold;" onclick="breakthroughHero350('${heroId}')">
-          Đột Phá Siêu Cấp (500 ⭐ + 3,000 💎 + 10M VPNC + 30 🔮)
+        <button class="btn" style="width:100%; padding:8px; background:#2c1524; border-color:var(--accent-pink); color:var(--accent-pink); font-size:12px; font-weight:bold;" onclick="breakthroughHero350('${heroId}')">
+          Đột Phá Siêu Cấp: 500 ⭐ + 3,000 💎 + 10M VPNC + 30 ☄️
         </button>
       </div>
     `;
@@ -7073,7 +7060,7 @@ function upgradeHero(heroId) {
     return;
   }
   if (currentLv === 350 && !gameState.heroes[heroId]?.breakthrough350) {
-    toast("Cần Đột Phá Cấp 350 (500 Ánh sao + 3,000 KC + 10M VPNC + 30 Thiên thạch tím) để nâng tiếp lên Cấp 500!", true);
+    toast("Cần Đột Phá Cấp 350 (500 Ánh sao + 3,000 KC + 10M VPNC + 30 Thiên thạch hồng) để nâng tiếp lên Cấp 500!", true);
     return;
   }
   const { vpncCost, goldCost } = getHeroUpgradeCost(currentLv);
@@ -7235,12 +7222,12 @@ function breakthroughHero350(heroId) {
   if ((res.anhSao || 0) < 500) { toast("Không đủ Ánh sao (Cần 500 ⭐)!", true); return; }
   if ((res.kimCuong || 0) < 3000) { toast("Không đủ Kim cương (Cần 3,000 💎)!", true); return; }
   if ((res.vpnc || 0) < 10000000) { toast("Không đủ VPNC (Cần 10,000,000 🧪)!", true); return; }
-  if ((res.purpleMeteor || 0) < 30) { toast("Không đủ Thiên Thạch Tím (Cần 30 🔮)!", true); return; }
+  if ((res.pinkMeteor || 0) < 30) { toast("Không đủ Thiên Thạch Hồng (Cần 30 ☄️)!", true); return; }
 
   res.anhSao -= 500;
   res.kimCuong -= 3000;
   res.vpnc -= 10000000;
-  res.purpleMeteor -= 30;
+  res.pinkMeteor -= 30;
 
   gameState.heroes[heroId].breakthrough350 = true;
   saveGame();
