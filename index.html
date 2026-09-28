@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -541,7 +540,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.1.2: Chuẩn Hóa Đột Phá Cấp 350-500 (30 ☄️ Thiên Thạch Hồng) | Cân Bằng Cấp Tối Đa 500 & EXP Player | Hệ Số +35%/Lv & +20 DEF/50 Lv</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.2.0: Chuẩn Hóa Đấu Ải C.4 - C.7 (Độ Khựng Chiến Thuật Chuẩn) | Tăng +30% HP & +20% ATK Người Chơi | Max Level 500</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -2251,8 +2250,9 @@ function getHeroStats(heroId, customLv = null) {
     statMult = 1 + (249 * 0.15) + (50 * 0.22) + (50 * 0.30) + (lv - 350) * 0.35;
   }
 
-  let hp = Math.round(db.baseHp * statMult);
-  let atk = +(db.baseAtk * statMult).toFixed(1);
+  // v5.2.0: Tăng thêm +30% HP và +20% ATK cho nhân vật người chơi
+  let hp = Math.round(db.baseHp * statMult * 1.30);
+  let atk = +(db.baseAtk * statMult * 1.20).toFixed(1);
   let def = db.baseDef;
   // v5.1.1: Mỗi 50 level từ 350-500 được nâng cấp, tăng 20 DEF (400: +20, 450: +40, 500: +60)
   if (lv >= 400) def += 20;
@@ -2367,83 +2367,134 @@ function getBotScalingFactor(chapter, stage) {
 function generateBotTeam(chapter, stage) {
   const factor = getBotScalingFactor(chapter, stage);
 
-  if (chapter === 5) {
-    // v4.0.1: Đội hình Chương 5 (Có sự xuất hiện của Gaara, Hashirama, Kaguya)
-    const equivLevel = Math.round(1 + (factor - 1) / 0.08);
-    const ch5Teams = [
-      ["gaara", "traveler", "whis"],
-      ["gaara", "vegito", "pain"],
-      ["hashirama", "itachi", "momoshiki"],
-      ["hashirama", "omega", "kaioshin"],
-      ["kaguya", "isshiki", "phoverus"],
-      ["kaguya", "madara", "conan"],
-      ["gaara", "hashirama", "kid"],
-      ["hashirama", "kaguya", "luanhoi"],
-      ["gaara", "kaguya", "isshiki"],
-      ["gaara", "hashirama", "kaguya"]
-    ];
-    const heroIds = ch5Teams[stage - 1] || ["gaara", "hashirama", "kaguya"];
-    return heroIds.map((hId, slot) => {
-      const stats = getHeroStats(hId, equivLevel);
-      const fighter = {
-        ...stats,
-        id: hId,
-        heroId: hId,
-        name: `${stats.name} (C.5-${stage})`,
-        slot: slot,
-        isBot: true,
-        en: 0,
-        dimension: (hId === "kaguya") ? "ice" : undefined,
-        shield: (hId === "omega" && stats.level >= 30) ? Math.round(stats.maxHp * 1.10) : 0,
-        en: (hId === "itachi" && stats.level >= 80) ? 2 : ((hId === "luanhoi" && stats.level >= 80) ? 1.5 : ((hId === "phoverus" && stats.level >= 80) ? Math.min(stats.enMax, 3) : ((hId === "kaguya" && stats.level >= 30) ? 8 : 0))),
-        atkSpd: (hId === "isshiki" && stats.level >= 80) ? 0.40 : (stats.db.atkSpd || 0),
-        buffs: {},
-        isAlive: true,
-        extraEnGain: 0,
-        vegitoPassiveTriggered: false,
-        atkSpd: stats.db.atkSpd || 0,
-        rage: 0
-      };
-      return fighter;
-    });
-  }
-
-  if (chapter === 4) {
-    const equivLevel = Math.round(1 + (factor - 1) / 0.08);
+  // v5.2.0: Cân bằng toàn diện Chương 4, 5, 6, 7 theo chuẩn bảng thông số (Độ khựng chiến thuật)
+  if (chapter >= 4 && chapter <= 7) {
     const ch4Teams = [
       ["traveler", "vegito", "whis"],
       ["itachi", "pain", "traveler"],
       ["omega", "vegito", "pain"],
       ["phoverus", "kaioshin", "whis"],
-      ["madara", "pain", "itachi"],
+      ["madara", "pain", "itachi"],      // Ải 5 (Tiểu Boss)
       ["momoshiki", "isshiki", "kaioshin"],
       ["whis", "kaioshin", "luanhoi"],
       ["omega", "phoverus", "madara"],
       ["isshiki", "momoshiki", "luanhoi"],
-      ["isshiki", "madara", "luanhoi"]
+      ["isshiki", "madara", "luanhoi"]    // Ải 10 (Đại Boss C.4)
     ];
-    const heroIds = ch4Teams[stage - 1] || ["madara", "isshiki", "luanhoi"];
+
+    const ch5Teams = [
+      ["gaara", "traveler", "whis"],
+      ["gaara", "vegito", "pain"],
+      ["hashirama", "itachi", "momoshiki"],
+      ["hashirama", "omega", "kaioshin"],
+      ["kaguya", "isshiki", "phoverus"],  // Ải 5 (Tiểu Boss)
+      ["kaguya", "madara", "conan"],
+      ["gaara", "hashirama", "kid"],
+      ["hashirama", "kaguya", "luanhoi"],
+      ["gaara", "kaguya", "isshiki"],
+      ["gaara", "hashirama", "kaguya"]   // Ải 10 (Đại Boss C.5)
+    ];
+
+    const ch6Teams = [
+      ["tsunade", "traveler", "kid"],
+      ["gaara", "shisui", "pain"],
+      ["hashirama", "conan", "vegito"],
+      ["omega", "tsunade", "itachi"],
+      ["shisui", "tsunade", "madara"],   // Ải 5 (Tiểu Boss)
+      ["gaara", "kid", "isshiki"],
+      ["hashirama", "shisui", "luanhoi"],
+      ["tsunade", "omega", "kaguya"],
+      ["shisui", "kid", "momoshiki"],
+      ["hashirama", "tsunade", "shisui"] // Ải 10 (Đại Boss C.6)
+    ];
+
+    const ch7Teams = [
+      ["gaara", "shisui", "tsunade"],
+      ["omega", "kaguya", "madara"],
+      ["hashirama", "isshiki", "momoshiki"],
+      ["tsunade", "luanhoi", "shisui"],
+      ["kaguya", "tsunade", "isshiki"],  // Ải 5 (Tiểu Boss)
+      ["hashirama", "gaara", "kaguya"],
+      ["isshiki", "momoshiki", "luanhoi"],
+      ["omega", "shisui", "kaguya"],
+      ["hashirama", "madara", "isshiki"],
+      ["kaguya", "isshiki", "hashirama"] // Ải 10 (Đại Boss C.7 - Tối Thượng)
+    ];
+
+    let cfg;
+    let teamRoster;
+    if (chapter === 4) {
+      cfg = { startHp: 350000, endHp: 1400000, startAtk: 12000, endAtk: 24000, baseDef: 85, baseSpd: 138 };
+      teamRoster = ch4Teams;
+    } else if (chapter === 5) {
+      cfg = { startHp: 900000, endHp: 3200000, startAtk: 22000, endAtk: 40000, baseDef: 105, baseSpd: 145 };
+      teamRoster = ch5Teams;
+    } else if (chapter === 6) {
+      cfg = { startHp: 2200000, endHp: 6800000, startAtk: 42000, endAtk: 72000, baseDef: 125, baseSpd: 152 };
+      teamRoster = ch6Teams;
+    } else { // chapter 7
+      cfg = { startHp: 4500000, endHp: 13500000, startAtk: 70000, endAtk: 115000, baseDef: 140, baseSpd: 160 };
+      teamRoster = ch7Teams;
+    }
+
+    const progress = (stage - 1) / 9;
+    const avgHp = Math.round(cfg.startHp + progress * (cfg.endHp - cfg.startHp));
+    const avgAtk = +(cfg.startAtk + progress * (cfg.endAtk - cfg.startAtk)).toFixed(1);
+
+    // Mini-boss (Stage 5): Thêm 15% HP & 10% ATK; Boss (Stage 10): Đầy đủ sức mạnh
+    const isMiniBoss = (stage === 5);
+    const isStageBoss = (stage === 10);
+    const stageMultiplierHp = isMiniBoss ? 1.15 : 1.0;
+    const stageMultiplierAtk = isMiniBoss ? 1.10 : 1.0;
+
+    const heroIds = teamRoster[stage - 1] || teamRoster[teamRoster.length - 1];
+
     return heroIds.map((hId, slot) => {
-      const stats = getHeroStats(hId, equivLevel);
-      const fighter = {
-        ...stats,
+      const db = HERO_DB[hId] || { name: hId, type: "ATK", enMax: 5, baseDef: 50, baseSpd: 145 };
+
+      // Role multipliers giữ nguyên trung bình toàn đội chính xác:
+      // slot 0 (Tank/Frontline): 1.15x HP, 0.85x ATK, +15 DEF
+      // slot 1 (Midline/Support): 1.00x HP, 1.00x ATK
+      // slot 2 (Core DPS/Backline): 0.85x HP, 1.15x ATK, -10 DEF
+      const slotHpMult = slot === 0 ? 1.15 : (slot === 1 ? 1.00 : 0.85);
+      const slotAtkMult = slot === 0 ? 0.85 : (slot === 1 ? 1.00 : 1.15);
+
+      const botHp = Math.round(avgHp * slotHpMult * stageMultiplierHp);
+      const botAtk = +(avgAtk * slotAtkMult * stageMultiplierAtk).toFixed(1);
+      const botDef = cfg.baseDef + (slot === 0 ? 15 : (slot === 2 ? -10 : 0));
+      const botSpd = Math.round(cfg.baseSpd + (db.baseSpd ? (db.baseSpd - 140) * 0.4 : 0) + progress * 6);
+
+      const botLv = chapter === 4 ? 150 + Math.round(progress * 100) : (chapter === 5 ? 250 + Math.round(progress * 100) : (chapter === 6 ? 350 + Math.round(progress * 80) : 430 + Math.round(progress * 70)));
+
+      return {
         id: hId,
         heroId: hId,
-        name: `${stats.name} (C.4-${stage})`,
+        name: isStageBoss ? `[BOSS] ${db.name} (C.${chapter}-${stage})` : (isMiniBoss ? `[THỦ LĨNH] ${db.name} (C.${chapter}-${stage})` : `${db.name} (C.${chapter}-${stage})`),
+        type: db.type,
+        level: botLv,
+        hp: botHp,
+        maxHp: botHp,
+        atk: botAtk,
+        def: botDef,
+        spd: botSpd,
+        enMax: db.enMax || 5,
+        en: (hId === "kaguya") ? 1 : ((hId === "itachi" || hId === "luanhoi") ? 1 : 0),
+        critRate: db.type === "AS" ? 0.28 : 0.16,
+        critDmg: db.type === "AS" ? 3.2 : 2.5,
+        armorPen: db.type === "AS" ? 0.25 : 0,
+        dodgeRate: db.type === "AS" ? 0.18 : 0.10,
         slot: slot,
         isBot: true,
-        en: 0,
-        shield: (hId === "omega" && stats.level >= 30) ? Math.round(stats.maxHp * 1.10) : 0,
-        en: (hId === "itachi" && stats.level >= 80) ? 2 : ((hId === "luanhoi" && stats.level >= 80) ? 1.5 : ((hId === "phoverus" && stats.level >= 80) ? Math.min(stats.enMax, 3) : 0)),
-        atkSpd: (hId === "isshiki" && stats.level >= 80) ? 0.40 : (stats.db.atkSpd || 0),
+        dimension: (hId === "kaguya") ? "ice" : undefined,
+        shield: (hId === "omega") ? Math.round(botHp * 0.40) : 0,
         buffs: {},
         isAlive: true,
         extraEnGain: 0,
         vegitoPassiveTriggered: false,
-        atkSpd: stats.db.atkSpd || 0,
-        rage: 0
+        atkSpd: db.atkSpd || 0,
+        rage: 0,
+        db: db
       };
-      return fighter;
     });
   }
 
