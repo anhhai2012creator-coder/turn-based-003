@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v5.2.1 [ĐÃ CÂN BẰNG CHUẨN BOSS C.5-10: 3.68M HP]</title>
+<title>Chiến Thuật Luân Hồi v5.3.0 [RA MẮT SUSAN SÁO THẦN & FIX TRIỆT ĐỂ QUA ẢI]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -540,7 +540,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.2.1 FIX LỖI: Boss Ải 5-10 Đã Cân Bằng (3.68M HP thay vì 18M) | Tăng +30% HP & +20% ATK Người Chơi | Max Level 500</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.3.0: Ra Mắt Susan (Sáo Thần) [AS] | Khắc Phục Dứt Điểm Lỗi Mở Khóa Ải Sau Trận | Siêu Thần Chú Hoàn Thiện | Max Level 500</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -595,7 +595,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#3fb950; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.2.1 (BOSS 5-10: 3.68M HP)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.3.0 (SUSAN SÁO THẦN & FIX MỞ ẢI)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1916,6 +1916,33 @@ const HERO_DB = {
       { lv: 150, name: "Thần Chú 2", desc: "+12% ATK." }
     ]
   },
+  susan: {
+    id: "susan",
+    name: "Susan (Sáo Thần)",
+    type: "AS",
+    roleDesc: "Sát thủ Sáo Thần [AS], 'Liên kết ác ma', thôi miên & chia sẻ hồi phục",
+    baseHp: 888,
+    baseAtk: 48.2,
+    baseDef: 75,
+    baseSpd: 181,
+    enMax: 6,
+    critRate: 0.28,
+    critDmg: 2.80,
+    hasSpells: true,
+    normalAttack: { name: "Khúc Sáo Ma Thuật", enGain: 1.0, desc: "Gây 99% ATK lên 1 mục tiêu. Hồi 1 EN. Hồi HP bằng 30% ST gây ra cho toàn đội. 30% cơ hội gây 'Thôi miên' (giảm 100% ATK, 50% hồi phục trong 2 lượt)." },
+    activeSkill: { name: "Liên Kết Ác Ma", desc: "Thổi sáo gắn liên kết lên 1 mục tiêu gây 120% ATK (150% nếu có Siêu Thần Chú), liên kết tồn tại 4 lượt. Kích hoạt 'Liên kết ác ma'." },
+    passives: [
+      { lv: 30, name: "Liên Kết Ác Ma", desc: "Khi dùng kỹ năng chủ động, mục tiêu nhận 'Liên kết ác ma'. Susan tăng 40% ST nhận vào nhưng toàn bộ ST chuyển hoá qua mục tiêu. Bản thân không thể bị HP = 0." },
+      { lv: 70, name: "Nghịch Chuyển Sinh Mệnh", desc: "Trong trạng thái Liên kết ác ma, mọi sát thương mục tiêu phải nhận sẽ chuyển hoá thành hồi phục HP cho Susan." },
+      { lv: 80, name: "Khúc Ca Chia Sẻ", desc: "Khi HP trên 20%, mỗi lượt Susan lấy 8% HP tối đa bản thân chia đều hồi phục cho 2 đồng minh (hoặc cho đồng minh còn sống)." },
+      { lv: 100, name: "Tuyệt Vọng Trỗi Dậy", desc: "Khi HP dưới 50%, mỗi 2% HP mất đi tăng 5% khả năng hồi HP (tối đa 60%), đồng thời mỗi 5% HP mất đi tăng 20% ST bạo kích." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú 1", desc: "+20% HP; +18% DEF." },
+      { lv: 150, name: "Thần Chú 2", desc: "+12% ATK." }
+    ],
+    superSpell: { lv: 440, name: "Siêu Thần Chú: Ma Âm Đoạt Mệnh", desc: "Nâng cấp Tuyệt kỹ: Thổi sáo gây 150% ATK. Mỗi lượt tự động gây 80% ATK (tỉ lệ bạo kích 50%) lên mục tiêu liên kết đến khi hết Liên kết." }
+  },
   shisui: {
     id: "shisui",
     name: "Uchiha Shisui",
@@ -2075,6 +2102,11 @@ function loadGame() {
   if (!gameState.progress) gameState.progress = { maxChapter: 1, maxStage: 1 };
   if (!gameState.progress.maxChapter) gameState.progress.maxChapter = 1;
   if (!gameState.progress.maxStage) gameState.progress.maxStage = 1;
+  // v5.2.3: Tự động khôi phục nếu người chơi từng vượt Ải 10 Chương 5 nhưng bị kẹt chưa mở Chương 6
+  if (gameState.progress.maxChapter === 5 && gameState.progress.maxStage > 10) {
+    gameState.progress.maxChapter = 6;
+    gameState.progress.maxStage = 1;
+  }
 
   if (!gameState.heroes || typeof gameState.heroes !== 'object') gameState.heroes = { traveler: { level: 1 } };
   if (!gameState.heroes.traveler) gameState.heroes.traveler = { level: 1 };
@@ -2298,6 +2330,17 @@ function getHeroStats(heroId, customLv = null) {
   if (heroId === "vegito") {
     if (lv >= 80) armorPen = 0.58;
     else if (lv >= 30) armorPen = 0.45;
+  }
+  if (heroId === "susan") {
+    critRate = 0.28;
+    critDmg = 2.80;
+    if (lv >= 130) {
+      hp = Math.round(hp * 1.20);
+      def = Math.round(def * 1.18);
+    }
+    if (lv >= 150) {
+      atk = +(atk * 1.12).toFixed(1);
+    }
   }
   if (heroId === "conan" && lv >= 30) {
     critRate += 0.25;
@@ -3619,30 +3662,38 @@ function handleVictory() {
     gameState.events.anhHungChiVien.dailyQuestProgress.anhSaoEarned = (gameState.events.anhHungChiVien.dailyQuestProgress.anhSaoEarned || 0) + rAnhSao;
   }
 
-  // Check Quests Tracking (v4.0.3: Khắc phục triệt để lỗi thăng tiến ải)
-  const isNewStage = (battle.chapter > gameState.progress.maxChapter) ||
-                     (battle.chapter === gameState.progress.maxChapter && battle.stage >= gameState.progress.maxStage);
+  // v5.2.3: Hệ thống lưu và thăng tiến ải chuẩn xác tuyệt đối qua mọi chương (1 đến 7)
+  let nextUnlockedChapter = battle.chapter;
+  let nextUnlockedStage = battle.stage + 1;
+  if (nextUnlockedStage > 10) {
+    if (nextUnlockedChapter < 7) {
+      nextUnlockedChapter++;
+      nextUnlockedStage = 1;
+    } else {
+      nextUnlockedChapter = 7;
+      nextUnlockedStage = 10;
+    }
+  }
 
-  if (isNewStage) {
+  const currentMaxGlobal = (gameState.progress.maxChapter - 1) * 10 + gameState.progress.maxStage;
+  const nextUnlockedGlobal = (nextUnlockedChapter - 1) * 10 + nextUnlockedStage;
+
+  if (nextUnlockedGlobal > currentMaxGlobal) {
+    gameState.progress.maxChapter = nextUnlockedChapter;
+    gameState.progress.maxStage = nextUnlockedStage;
     gameState.dailyQuests.progress.newStages++;
-    if (battle.stage < 10) {
-      gameState.progress.maxStage = Math.max(gameState.progress.maxStage, battle.stage + 1);
-    } else if (battle.chapter < 5) {
-      gameState.progress.maxChapter = Math.max(gameState.progress.maxChapter, battle.chapter + 1);
-      gameState.progress.maxStage = 1;
-      if (battle.chapter === 3 && battle.stage === 10) {
-        if (!gameState.ownedBeasts) gameState.ownedBeasts = [];
-        if (!gameState.ownedBeasts.includes("thien_linh_thu")) {
-          gameState.ownedBeasts.push("thien_linh_thu");
-          toast("🎉 Chúc mừng bạn vượt qua Ải 10 Chương 3! Nhận ngay Thiên Linh Thú (Hạng S)!", false);
-        }
+
+    // Thưởng vượt ải đặc biệt khi qua Ải 10 Chương 3
+    if (battle.chapter === 3 && battle.stage === 10) {
+      if (!gameState.ownedBeasts) gameState.ownedBeasts = [];
+      if (!gameState.ownedBeasts.includes("thien_linh_thu")) {
+        gameState.ownedBeasts.push("thien_linh_thu");
+        toast("🎉 Chúc mừng bạn vượt qua Ải 10 Chương 3! Nhận ngay Thiên Linh Thú (Hạng S)!", false);
       }
     }
   } else {
-    // Old stage: calculate distance from current max
-    const maxGlobalStage = (gameState.progress.maxChapter - 1) * 10 + gameState.progress.maxStage;
-    const currentGlobalStage = (battle.chapter - 1) * 10 + battle.stage;
-    const diff = maxGlobalStage - currentGlobalStage;
+    // Đấu lại ải cũ: tính toán cho nhiệm vụ hằng ngày
+    const diff = currentMaxGlobal - ((battle.chapter - 1) * 10 + battle.stage);
     if (diff <= 6 && diff >= 1) gameState.dailyQuests.progress.oldStagesNear6++;
     if (diff <= 8 && diff >= 1) gameState.dailyQuests.progress.oldStagesNear8++;
   }
@@ -3651,7 +3702,8 @@ function handleVictory() {
 
   document.getElementById("battleResultTitle").innerHTML = "<span style='color:var(--accent-green)'>CHIẾN THẮNG!</span>";
   document.getElementById("battleResultBody").innerHTML = `
-    <p style="color:var(--text-secondary); margin-bottom:12px;">Đã hoàn thành Chương ${battle.chapter} - Ải ${battle.stage}!</p>
+    <p style="color:var(--text-secondary); margin-bottom:6px;">Đã hoàn thành Chương ${battle.chapter} - Ải ${battle.stage}!</p>
+    <div style="font-size:11px; font-weight:bold; color:var(--accent-blue); margin-bottom:10px;">🌟 Tiến độ tài khoản: Đã mở khóa Chương ${gameState.progress.maxChapter} - Ải ${gameState.progress.maxStage}</div>
     <div style="background:#0d1117; padding:12px; border-radius:8px; display:inline-block; text-align:left; font-size:12px; line-height:1.8;">
       <div>⭐ Ánh sao: <b>+${rAnhSao}</b></div>
       <div>💎 Kim cương: <b>+${rKimCuong}</b></div>
@@ -4105,10 +4157,39 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
     }
   }
 
+  // Susan Bị Động 1: Khi có Liên kết ác ma, tăng thêm 40% ST nhận vào, toàn bộ ST chuyển hoá qua mục tiêu liên kết, Susan không thể bị HP = 0
+  if (target.id === "susan" && target.level >= 30 && target.buffs && target.buffs.devilLinkActive) {
+    const linkTarget = target.buffs.devilLinkActive.target;
+    if (linkTarget && linkTarget.hp > 0) {
+      finalDmg = Math.round(finalDmg * 1.40);
+      const maxTransferable = Math.max(0, target.hp - 1);
+      const transferDmg = Math.min(maxTransferable, finalDmg);
+      if (transferDmg > 0) {
+        target.hp -= transferDmg;
+        addAnimation(target, `LIÊN KẾT CHUYỂN! -${transferDmg}`, "#ff0055");
+        logCombat(`🎶🩸 [Liên Kết Ác Ma] Susan chịu đòn nhưng chuyển hoá ${transferDmg.toLocaleString()} ST (+40%) sang ${linkTarget.name}!`);
+        applyDamage(linkTarget, transferDmg, false, target);
+      } else {
+        logCombat(`🎶🛡️ [Bất Tử Liên Kết] Susan chỉ còn 1 HP, không thể bị hạ gục và không chuyển ST nữa!`);
+      }
+      return transferDmg;
+    }
+  }
+
   target.hp = Math.max(0, target.hp - finalDmg);
   const color = isCrit ? "#f1e05a" : "#f85149";
   const text = isCrit ? `CRIT! -${finalDmg}` : `-${finalDmg}`;
   addAnimation(target, text, color);
+
+  // Susan Bị Động 2: Trong trạng thái Liên kết ác ma, mọi ST mục tiêu liên kết nhận được chuyển hoá thành hồi HP cho Susan
+  if (target.buffs && target.buffs.devilLinked) {
+    const susanActor = target.buffs.devilLinked.source;
+    if (susanActor && susanActor.hp > 0 && susanActor.level >= 70 && finalDmg > 0) {
+      healFighter(susanActor, finalDmg);
+      addAnimation(susanActor, `+${finalDmg} HP (Nghịch Chuyển)`, "#3fb950");
+      logCombat(`💖🎶 [Nghịch Chuyển Sinh Mệnh] ${target.name} nhận ST, chuyển hoá thành hồi phục ${finalDmg.toLocaleString()} HP cho Susan!`);
+    }
+  }
 
   // v4.0.0: Phoverus Hút máu gốc 8% cho mọi đòn đánh
   if (attacker && attacker.id === "phoverus" && finalDmg > 0 && attacker.hp > 0) {
@@ -4258,6 +4339,16 @@ function healFighter(fighter, amount) {
   if (fighter.id === "whis" && fighter.level >= 100 && (fighter.hp / fighter.maxHp) < 0.50) {
     finalHeal = Math.round(finalHeal * 1.40);
   }
+  // Susan Bị Động 4: Khi HP dưới 50%, mỗi 2% HP mất đi tăng 5% khả năng hồi HP bản thân (tối đa 60%)
+  if (fighter.id === "susan" && fighter.level >= 100 && (fighter.hp / fighter.maxHp) < 0.50) {
+    const lostPct = Math.max(0, 50 - Math.floor((fighter.hp / fighter.maxHp) * 100));
+    const healBoost = Math.min(0.60, Math.floor(lostPct / 2) * 0.05);
+    finalHeal = Math.round(finalHeal * (1 + healBoost));
+  }
+  // Hiệu ứng Thôi Miên: Giảm 50% khả năng hồi phục
+  if (fighter.buffs && fighter.buffs.hypnosis) {
+    finalHeal = Math.round(finalHeal * 0.50);
+  }
 
   const oldHp = fighter.hp;
   fighter.hp = Math.min(fighter.maxHp, fighter.hp + finalHeal);
@@ -4298,7 +4389,22 @@ function executePlayerAction(type) {
       logCombat(`✨ [Linh Thú Hộ Trợ] Đòn đánh thường hồi thêm +${actor.extraEnGain} EN (Tổng nhận +${enGain} EN)!`);
     }
 
-    if (actor.id === "traveler") {
+    if (actor.id === "susan") {
+      const raw = actor.atk * 0.99;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      const teamHeal = Math.round(damage * 0.30);
+      if (teamHeal > 0) {
+        battle.playerTeam.forEach(p => { if (p && p.hp > 0) healFighter(p, teamHeal); });
+        logCombat(`🎶 [Khúc Sáo Ma Thuật] Susan gây ${damage.toLocaleString()} ST lên ${target.name}, hồi ${teamHeal.toLocaleString()} HP (30% ST) cho toàn đội.`);
+      }
+      if (Math.random() < 0.30) {
+        target.buffs = target.buffs || {};
+        target.buffs.hypnosis = 2;
+        addAnimation(target, "THÔI MIÊN (-100% ATK)", "#bc8cff");
+        logCombat(`🌀🎶 [Thôi Miên] ${target.name} bị trúng ảo âm thôi miên: giảm 100% ATK và 50% hồi phục trong 2 lượt!`);
+      }
+    } else if (actor.id === "traveler") {
       const raw = actor.atk * 0.94;
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       applyDamage(target, damage, isCrit, actor);
@@ -4582,7 +4688,21 @@ function executePlayerAction(type) {
     if (actor.en < actor.enMax) return;
     actor.en = 0;
 
-    if (actor.id === "traveler") {
+    if (actor.id === "susan") {
+      const isSuper = (actor.level >= 440);
+      const raw = isSuper ? (actor.atk * 1.50) : (actor.atk * 1.20);
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+
+      actor.buffs = actor.buffs || {};
+      target.buffs = target.buffs || {};
+      target.buffs.devilLinked = { source: actor, turns: 4, superSpell: isSuper };
+      actor.buffs.devilLinkActive = { target: target, turns: 4, superSpell: isSuper };
+
+      addAnimation(actor, "LIÊN KẾT ÁC MA (4 LƯỢT)", "#ff0055");
+      addAnimation(target, "BỊ TRÓI BUỘC!", "#ff0055");
+      logCombat(`🎶🩸 [${isSuper ? "Siêu Thần Chú: " : ""}Liên Kết Ác Ma] Susan tấu khúc sáo gây ${damage.toLocaleString()} ST và trói buộc linh hồn với ${target.name} trong 4 lượt!`);
+    } else if (actor.id === "traveler") {
       const raw = actor.atk * 2.20 + (target.maxHp * 0.03);
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       applyDamage(target, damage, isCrit, actor);
@@ -5093,7 +5213,21 @@ function executeHeroBotAction(actor, alivePlayers) {
 
     if (isSkill) {
       actor.en = 0;
-      if (actor.heroId === "traveler") {
+      if (actor.heroId === "susan" || actor.id === "susan") {
+        const isSuper = (actor.level >= 440);
+        const raw = isSuper ? (actor.atk * 1.50) : (actor.atk * 1.20);
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+
+        actor.buffs = actor.buffs || {};
+        target.buffs = target.buffs || {};
+        target.buffs.devilLinked = { source: actor, turns: 4, superSpell: isSuper };
+        actor.buffs.devilLinkActive = { target: target, turns: 4, superSpell: isSuper };
+
+        addAnimation(actor, "LIÊN KẾT ÁC MA (4 LƯỢT)", "#ff0055");
+        addAnimation(target, "BỊ TRÓI BUỘC!", "#ff0055");
+        logCombat(`🎶🩸 [Địch: Liên Kết Ác Ma] ${actor.name} tấu khúc sáo gây ${damage.toLocaleString()} ST và trói buộc linh hồn với ${target.name} trong 4 lượt!`);
+      } else if (actor.heroId === "traveler") {
         const raw = actor.atk * 2.20 + (target.maxHp * 0.03);
         const { damage, isCrit } = calculateDamage(actor, target, raw);
         applyDamage(target, damage, isCrit, actor);
@@ -5217,7 +5351,23 @@ function executeHeroBotAction(actor, alivePlayers) {
       const enGain = (db.normalAttack && db.normalAttack.enGain) || 1.0;
       actor.en = Math.min(actor.enMax, +(actor.en + enGain).toFixed(1));
 
-      if (actor.heroId === "traveler") {
+      if (actor.heroId === "susan" || actor.id === "susan") {
+        const raw = actor.atk * 0.99;
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        const teamHeal = Math.round(damage * 0.30);
+        if (teamHeal > 0) {
+          const allyTeam = battle.botTeam;
+          allyTeam.forEach(p => { if (p && p.hp > 0) healFighter(p, teamHeal); });
+          logCombat(`🎶 [Địch: Khúc Sáo Ma Thuật] ${actor.name} gây ${damage.toLocaleString()} ST lên ${target.name}, hồi ${teamHeal.toLocaleString()} HP cho toàn đội bot.`);
+        }
+        if (Math.random() < 0.30) {
+          target.buffs = target.buffs || {};
+          target.buffs.hypnosis = 2;
+          addAnimation(target, "THÔI MIÊN (-100% ATK)", "#bc8cff");
+          logCombat(`🌀🎶 [Thôi Miên] ${target.name} bị trúng ảo âm thôi miên: giảm 100% ATK và 50% hồi phục trong 2 lượt!`);
+        }
+      } else if (actor.heroId === "traveler") {
         const raw = actor.atk * 0.94;
         const { damage, isCrit } = calculateDamage(actor, target, raw);
         applyDamage(target, damage, isCrit, actor);
@@ -6529,6 +6679,50 @@ function submitGiftcode() {
   const code = input ? input.value.trim().toUpperCase() : "";
   if (!code) return;
 
+  if (code === "SUSAN" || code === "SUSAN2026") {
+    gameState.heroes.susan = { level: 1 };
+    gameState.resources.gold += 500000;
+    gameState.resources.vpnc += 100000;
+    gameState.resources.kimCuong += 2000;
+    gameState.resources.anhSao += 500;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🎉 Kích hoạt mã SUSAN thành công! Mở khóa Susan (Sáo Thần) [AS]!", false);
+    renderHeroesList();
+    return;
+  }
+  if (code === "CH5START") {
+    gameState.progress.maxChapter = 5;
+    gameState.progress.maxStage = 1;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("Kích hoạt CH5START: Đặt tiến độ đến Chương 5 Ải 1!");
+    return;
+  }
+  if (code === "CH6START") {
+    gameState.progress.maxChapter = 6;
+    gameState.progress.maxStage = 1;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("Kích hoạt CH6START: Mở khóa Chương 6 Ải 1!");
+    return;
+  }
+  if (code === "CH7START") {
+    gameState.progress.maxChapter = 7;
+    gameState.progress.maxStage = 1;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("Kích hoạt CH7START: Mở khóa Chương 7 Ải 1!");
+    return;
+  }
   if (code === "CONAN") {
     gameState.heroes.conan = { level: 1 };
     gameState.resources.gold += 100000;
@@ -6794,6 +6988,10 @@ function renderChapterTabs() {
     btn.className = `btn ${c === selectedChapter ? "btn-accent" : ""}`;
     btn.textContent = `Chương ${c}${c > gameState.progress.maxChapter ? " 🔒" : ""}`;
     btn.onclick = () => {
+      if (c > gameState.progress.maxChapter) {
+        toast(`Chương ${c} đang bị khóa! Bạn cần vượt qua Chương ${gameState.progress.maxChapter} Ải ${gameState.progress.maxStage} để mở khóa.`, true);
+        return;
+      }
       selectedChapter = c;
       selectedStage = (selectedChapter === gameState.progress.maxChapter) ? Math.min(10, gameState.progress.maxStage) : 1;
       renderChapterTabs();
