@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v5.4.1 [FIX TRIỆT ĐỂ BẢNG KỸ NĂNG ĐẤU KHÁNG 3V3]</title>
+<title>Chiến Thuật Luân Hồi v5.4.2 [FIX TRIỆT ĐỂ HỒI HP, SHIELD ĐỘI 2 & HIỆU ỨNG SUSAN]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -541,7 +541,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.4.1 FIX LỖI: Sửa Triệt Để Bảng Kỹ Năng Đấu Kháng 3v3 (Tự Do Thao Tác 2 Đội) | Cân Bằng Susan, Tsunade & Conan</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.4.2 FIX LỖI: Sửa Lỗi Hồi HP & Cấp Khiên Đội 2 (Whis & Kaioshin) | Hoàn Thiện Hiệu Ứng Susan (Liên Kết Ác Ma, Khúc Ca Chia Sẻ, Thôi Miên)</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -600,7 +600,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.4.1 (ĐẤU KHÁNG 3V3 ĐIỀU KHIỂN ĐÔI BÊN)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.4.2 (FIX HỒI HP, KHIÊN ĐỘI 2 & HIỆU ỨNG SUSAN)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -3822,12 +3822,39 @@ function nextTurn() {
         logCombat(`[Điều Tức] ${f.name} nhận 2 EN!`);
       }
       // Decrement duration of buffs
-      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "stun", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff", "mienThuongDacBiet", "vegitoDmgBoost", "conanWeakPoint"].forEach(k => {
+      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "stun", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff", "mienThuongDacBiet", "vegitoDmgBoost", "conanWeakPoint", "hypnosis", "diemYeu", "momoTeamBuff", "conanCritBuff"].forEach(k => {
         if (f.buffs[k]) {
           f.buffs[k]--;
-          if (f.buffs[k] <= 0) delete f.buffs[k];
+          if (f.buffs[k] <= 0) {
+            delete f.buffs[k];
+            if (k === "conanCritBuff") {
+              f.critRate = Math.max(0.05, f.critRate - (f.buffs.conanCritAmt || 0.25));
+              f.critDmg = Math.max(1.5, +(f.critDmg - (f.buffs.conanCritDmgAmt || 0.70)).toFixed(2));
+              delete f.buffs.conanCritAmt;
+              delete f.buffs.conanCritDmgAmt;
+            }
+          }
         }
       });
+
+      // Susan Liên Kết Ác Ma duration check (4 lượt)
+      if (f.buffs.devilLinkActive) {
+        f.buffs.devilLinkActive.turns--;
+        if (f.buffs.devilLinkActive.turns <= 0) {
+          const lT = f.buffs.devilLinkActive.target;
+          if (lT && lT.buffs && lT.buffs.devilLinked) delete lT.buffs.devilLinked;
+          delete f.buffs.devilLinkActive;
+          logCombat(`🎶 [Liên Kết Tan Biến] Liên kết ác ma của ${f.name} đã kết thúc sau 4 hiệp!`);
+        }
+      }
+      if (f.buffs.devilLinked) {
+        f.buffs.devilLinked.turns--;
+        if (f.buffs.devilLinked.turns <= 0) {
+          const sSrc = f.buffs.devilLinked.source;
+          if (sSrc && sSrc.buffs && sSrc.buffs.devilLinkActive) delete sSrc.buffs.devilLinkActive;
+          delete f.buffs.devilLinked;
+        }
+      }
     });
     buildTurnQueue();
   }
@@ -4080,6 +4107,11 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
   const defReductionPct = Math.min(0.85, (effectiveDef / 5) * 0.005);
   let dmg = rawDmg * (1 - defReductionPct);
 
+  // Hiệu ứng Thôi Miên (Susan): Giảm 100% ATK
+  if (attacker.buffs && attacker.buffs.hypnosis) {
+    dmg = 1;
+  }
+
   // Giảm sát thương từ debuff
   if (attacker.buffs.suyGiam) dmg *= 0.80;
   if (attacker.buffs.kiemSoatDebuff) dmg *= 0.70;
@@ -4113,9 +4145,17 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
 
   let isCrit = false;
   if (defender.shield <= 0) {
-    if (Math.random() < attacker.critRate) {
+    if (Math.random() < (attacker.critRate || 0.05)) {
       isCrit = true;
-      dmg *= attacker.critDmg;
+      let effectiveCritDmg = attacker.critDmg || 1.5;
+      // Susan Bị Động 4 (Lv.100): Dưới 50% HP, mỗi 5% HP mất đi tăng 20% ST bạo kích
+      if (attacker.id === "susan" && attacker.level >= 100 && (attacker.hp / attacker.maxHp) < 0.50) {
+        const hpPct = (attacker.hp / attacker.maxHp) * 100;
+        const missingPct = 50 - hpPct;
+        const critDmgBonus = Math.floor(missingPct / 5) * 0.20;
+        effectiveCritDmg = +(effectiveCritDmg + critDmgBonus).toFixed(2);
+      }
+      dmg *= effectiveCritDmg;
     }
   }
 
@@ -4248,12 +4288,15 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   // Susan Bị Động 1 (v5.4.0 Nerf): Susan tăng 40% ST nhận vào, toàn bộ ST bản thân nhận thì mục tiêu cũng nhận. Susan CÓ THỂ TỬ VONG!
   if (target.id === "susan" && target.level >= 30 && target.buffs && target.buffs.devilLinkActive && !target.isMirroringDamage) {
     const linkTarget = target.buffs.devilLinkActive.target;
-    if (linkTarget && linkTarget.hp > 0) {
+    if (linkTarget && linkTarget.hp > 0 && linkTarget.buffs && linkTarget.buffs.devilLinked) {
       finalDmg = Math.round(finalDmg * 1.40);
       target.isMirroringDamage = true;
       logCombat(`🎶🩸 [Liên Kết Ác Ma] Susan nhận ${finalDmg.toLocaleString()} ST (+40%) và phản chiếu toàn bộ sang ${linkTarget.name}!`);
       applyDamage(linkTarget, finalDmg, false, target);
       target.isMirroringDamage = false;
+    } else {
+      delete target.buffs.devilLinkActive;
+      logCombat(`🎶 [Liên Kết Tan Biến] Mục tiêu liên kết không còn hiệu lực, Liên Kết Ác Ma của Susan chấm dứt!`);
     }
   }
 
@@ -4370,6 +4413,33 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
 
   // Xử lý Hồi Sinh tự động (Omega Shenron, Isshiki, Whis, Kaitou Kid)
   if (target.hp === 0) {
+    // Giải phóng liên kết nếu mục tiêu tử vong
+    if (target.buffs && target.buffs.devilLinked) {
+      const susanSrc = target.buffs.devilLinked.source;
+      if (susanSrc && susanSrc.buffs && susanSrc.buffs.devilLinkActive) {
+        delete susanSrc.buffs.devilLinkActive;
+        logCombat(`🎶💀 [Liên Kết Tan Biến] Mục tiêu ${target.name} đã tử vong, Liên Kết Ác Ma của Susan kết thúc!`);
+      }
+      delete target.buffs.devilLinked;
+    }
+    if (target.id === "susan" && target.buffs && target.buffs.devilLinkActive) {
+      const lTarget = target.buffs.devilLinkActive.target;
+      if (lTarget && lTarget.buffs) delete lTarget.buffs.devilLinked;
+      delete target.buffs.devilLinkActive;
+      logCombat(`🎶💀 [Liên Kết Tan Biến] Susan đã hy sinh, Liên kết ác ma lập tức chấm dứt!`);
+    }
+
+    // Whis Lv.80 Bị Động 3: Nghịch Đảo Thời Gian - Hồi sinh 1 đồng minh tử vong với 40% HP tối đa của Whis (1 lần/trận)
+    const victimTeam = (battle.playerTeam && battle.playerTeam.includes(target)) ? battle.playerTeam : battle.botTeam;
+    const whisAlly = victimTeam ? victimTeam.find(p => p && p.id === "whis" && p.level >= 80 && p.hp > 0 && !p.whisRevivedAlly) : null;
+    if (whisAlly && target.id !== "whis" && !target.whisRevivedByAlly) {
+      whisAlly.whisRevivedAlly = true;
+      target.whisRevivedByAlly = true;
+      target.hp = Math.round(whisAlly.maxHp * 0.40);
+      addAnimation(target, `HỒI SINH +${target.hp.toLocaleString()} HP`, "#3fb950");
+      logCombat(`✨👼 [Nghịch Đảo Thời Gian] Whis sử dụng quyền năng thời gian hồi sinh ${target.name} với 40% HP tối đa của Whis (${target.hp.toLocaleString()} HP)!`);
+      return finalDmg;
+    }
     // Kaitou Kid Bị Động 4 (Lv.100): Khi HP = 0, không chết hẳn, đóng băng toàn bộ kẻ địch 3 lượt và hút máu +120% trong 3 lượt
     if (target.id === "kid" && target.level >= 100 && !target.kidCheatDeath) {
       target.kidCheatDeath = true;
@@ -4401,12 +4471,13 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
       addAnimation(target, "OTSU TSUKI TRỌNG SINH! +100% ST", "#3fb950");
       logCombat(`⚡✨ [Otsutsuki Trọng Sinh] ${target.name} hồi sinh với 40% HP (${target.hp} HP) và tăng 100% ST trong 2 lượt!`);
     } else if (target.id === "whis" && target.level >= 80 && !target.whisSelfRevived) {
-      const aliveAllies = (target.isBot ? battle.botTeam : battle.playerTeam).filter(f => f && f.hp > 0 && f !== target);
-      if (aliveAllies.length === 2) {
+      const vTeam = (battle.playerTeam && battle.playerTeam.includes(target)) ? battle.playerTeam : battle.botTeam;
+      const aliveAllies = vTeam.filter(f => f && f.hp > 0 && f !== target);
+      if (aliveAllies.length >= 2) {
         target.whisSelfRevived = true;
         target.hp = Math.round(target.maxHp * 0.50);
         addAnimation(target, "THẦN SỨ HỒI SINH 50% HP", "#3fb950");
-        logCombat(`✨👼 [Nghịch Đảo Thời Gian] Whis tử vong đầu tiên, tự động hồi sinh với 50% HP tối đa (${target.hp} HP)!`);
+        logCombat(`✨👼 [Nghịch Đảo Thời Gian] Whis tử vong đầu tiên, tự động hồi sinh với 50% HP tối đa (${target.hp.toLocaleString()} HP)!`);
       } else {
         logCombat(`☠️ ${target.name} đã bị hạ gục!`);
       }
@@ -4418,18 +4489,20 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
 }
 
 function checkDefenderTriggers(target, dmgTaken) {
-  if (target.buffs.whisProtect) {
-    const whisFighter = battle.playerTeam.find(p => p && p.id === "whis");
+  if (target.buffs && target.buffs.whisProtect) {
+    const targetTeam = (battle.playerTeam && battle.playerTeam.includes(target)) ? battle.playerTeam : battle.botTeam;
+    const whisFighter = targetTeam ? targetTeam.find(p => p && p.id === "whis" && p.hp > 0) : null;
     if (whisFighter) {
       const healAmt = Math.round(whisFighter.atk * 0.45);
       healFighter(target, healAmt);
-      logCombat(`🛡️ ["Bảo vệ"] ${target.name} hồi ${healAmt} HP từ Whis!`);
+      logCombat(`🛡️ ["Bảo vệ"] ${target.name} hồi ${healAmt.toLocaleString()} HP từ Whis!`);
     }
   }
 }
 
 function healFighter(fighter, amount) {
-  const whisFighter = battle.playerTeam.find(p => p && p.id === "whis" && p.level >= 150);
+  const currentTeam = (battle.playerTeam && battle.playerTeam.includes(fighter)) ? battle.playerTeam : battle.botTeam;
+  const whisFighter = currentTeam ? currentTeam.find(p => p && p.id === "whis" && p.level >= 150 && p.hp > 0) : null;
   let finalHeal = amount;
   if (whisFighter) finalHeal = Math.round(finalHeal * 1.20);
   // Whis Bị Động 4: Dưới 50% HP tăng 40% khả năng hồi phục
@@ -4446,16 +4519,23 @@ function healFighter(fighter, amount) {
   if (fighter.buffs && fighter.buffs.hypnosis) {
     finalHeal = Math.round(finalHeal * 0.50);
   }
+  // Kaitou Kid Điểm Yếu: Giảm 30% hồi phục
+  if (fighter.buffs && fighter.buffs.diemYeu) {
+    finalHeal = Math.round(finalHeal * 0.70);
+  }
+  // Shisui Giảm hồi máu 50%
+  if (fighter.buffs && fighter.buffs.healReduction) {
+    finalHeal = Math.round(finalHeal * (1 - fighter.buffs.healReduction));
+  }
 
   const oldHp = fighter.hp;
   fighter.hp = Math.min(fighter.maxHp, fighter.hp + finalHeal);
   const healed = fighter.hp - oldHp;
   if (healed > 0) {
     // Tsunade Bị Động 1: Đồng đội hoặc bản thân nhận hồi HP sẽ được giải trừ toàn bộ debuff
-    const currentTeam = (battle.playerTeam && battle.playerTeam.includes(fighter)) ? battle.playerTeam : battle.botTeam;
     const tsunadeHealer = currentTeam ? currentTeam.find(p => p && p.id === "tsunade" && p.level >= 30 && p.hp > 0) : null;
     if (tsunadeHealer && fighter.buffs) {
-      const badKeys = ['burn', 'bleeding', 'bleeding2', 'luanHoi', 'choang', 'stun', 'terror', 'suyGiam', 'thienDaoDebuff', 'hypnosis', 'healReduction', 'teleportDebuff', 'devilLinked'];
+      const badKeys = ['burn', 'bleeding', 'bleeding2', 'luanHoi', 'choang', 'stun', 'terror', 'suyGiam', 'thienDaoDebuff', 'hypnosis', 'healReduction', 'teleportDebuff'];
       let cleansed = false;
       badKeys.forEach(k => {
         if (fighter.buffs[k]) {
@@ -4463,19 +4543,30 @@ function healFighter(fighter, amount) {
           cleansed = true;
         }
       });
+      // Nếu giải trừ devilLinked thì cũng phải giải phóng devilLinkActive của Susan
+      if (fighter.buffs.devilLinked) {
+        const susanSrc = fighter.buffs.devilLinked.source;
+        if (susanSrc && susanSrc.buffs && susanSrc.buffs.devilLinkActive) {
+          delete susanSrc.buffs.devilLinkActive;
+          addAnimation(susanSrc, "LIÊN KẾT BỊ GIẢI TRỪ", "#3fb950");
+          logCombat(`✨🌿 [Thanh Lọc Tiên Thuật] Tsunade giải trừ Liên Kết Ác Ma trên ${fighter.name}, giải phóng Susan khỏi liên kết!`);
+        }
+        delete fighter.buffs.devilLinked;
+        cleansed = true;
+      }
       if (cleansed) {
         addAnimation(fighter, "GIẢI TRỪ DEBUFF!", "#3fb950");
         logCombat(`🌿✨ [Y Thuật Tinh Thông] Nhận hồi phục, ${fighter.name} được Tsunade giải trừ toàn bộ hiệu ứng xấu!`);
       }
     }
-    addAnimation(fighter, `+${healed} HP`, "#3fb950");
+    addAnimation(fighter, `+${healed.toLocaleString()} HP`, "#3fb950");
     // Madara Bị Động 1 & 3: Khi nhận hồi phục, nhận khiên (15% nếu Lv >= 80, 8% nếu Lv >= 30)
     if (fighter.id === "madara" && fighter.level >= 30) {
       const shieldPct = (fighter.level >= 80) ? 0.15 : 0.08;
       const shieldGain = Math.round(fighter.maxHp * shieldPct);
-      fighter.shield += shieldGain;
-      addAnimation(fighter, `+${shieldGain} "Khiên"`, "#bc8cff");
-      logCombat(`[Chân Thể Lục Đạo] Madara tạo thêm ${shieldGain} "Khiên" (${Math.round(shieldPct*100)}%)!`);
+      fighter.shield = (fighter.shield || 0) + shieldGain;
+      addAnimation(fighter, `+${shieldGain.toLocaleString()} Khiên`, "#bc8cff");
+      logCombat(`[Chân Thể Lục Đạo] Madara tạo thêm ${shieldGain.toLocaleString()} Khiên (${Math.round(shieldPct*100)}%)!`);
     }
   }
 }
@@ -4498,6 +4589,23 @@ function executePlayerAction(type) {
 
   battle.isWaitingPlayer = false;
   disablePlayerActionCards();
+
+  // Susan Bị Động 3 (Lv.80): Khúc Ca Chia Sẻ
+  // Khi HP trên 20%, mỗi lượt Susan lấy 8% HP tối đa bản thân chia đều hồi phục cho đồng minh còn sống
+  if (actor.id === "susan" && actor.level >= 80 && (actor.hp / actor.maxHp) > 0.20) {
+    const shareAmt = Math.round(actor.maxHp * 0.08);
+    const aliveAllies = allyTeam.filter(p => p && p !== actor && p.hp > 0);
+    if (aliveAllies.length > 0 && shareAmt > 0) {
+      actor.hp = Math.max(1, actor.hp - shareAmt);
+      const healPerAlly = Math.round(shareAmt / aliveAllies.length);
+      aliveAllies.forEach(ally => {
+        healFighter(ally, healPerAlly);
+        addAnimation(ally, `+${healPerAlly.toLocaleString()} HP (Chia Sẻ)`, "#3fb950");
+      });
+      addAnimation(actor, `-${shareAmt.toLocaleString()} HP (Chia Sẻ)`, "#da3633");
+      logCombat(`🎶💖 [Khúc Ca Chia Sẻ] Susan trích ${shareAmt.toLocaleString()} HP (8% HP max) chia sẻ hồi phục cho ${aliveAllies.length} đồng minh (+${healPerAlly.toLocaleString()} HP mỗi người)!`);
+    }
+  }
 
   if (type === "normal") {
     const enGain = actor.extraEnGain ? (HERO_DB[actor.id].normalAttack.enGain + actor.extraEnGain) : HERO_DB[actor.id].normalAttack.enGain;
@@ -4561,7 +4669,7 @@ function executePlayerAction(type) {
       }
     } else if (actor.id === "luanhoi") {
       let totalDmg = 0;
-      battle.botTeam.forEach(bot => {
+      enemyTeam.forEach(bot => {
         if (bot.hp > 0) {
           const raw = actor.atk * 0.77;
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
@@ -4570,21 +4678,21 @@ function executePlayerAction(type) {
           if (actor.level >= 30 && Math.random() < lhRate) addLuanHoiStack(actor, bot, 1);
         }
       });
-      logCombat(`🌀 [Lục Đạo Trảm] Luân Hồi Tiên Nhân chém quét toàn bộ quân địch gây ${totalDmg} tổng ST!`);
+      logCombat(`🌀 [Lục Đạo Trảm] Luân Hồi Tiên Nhân chém quét toàn bộ quân địch gây ${totalDmg.toLocaleString()} tổng ST!`);
       if (actor.level >= 70) {
         let sRate = (actor.level >= 100) ? 0.40 : 0.20;
-        const hasOtsuTrio = battle.playerTeam.some(p => p && p.id === "isshiki") && 
-                            battle.playerTeam.some(p => p && p.id === "momoshiki") && 
-                            battle.playerTeam.some(p => p && p.id === "luanhoi");
+        const hasOtsuTrio = allyTeam.some(p => p && p.id === "isshiki") && 
+                            allyTeam.some(p => p && p.id === "momoshiki") && 
+                            allyTeam.some(p => p && p.id === "luanhoi");
         if (!actor.isBot && gameState.equippedBeast === "otsutsuki_blood" && hasOtsuTrio) {
           sRate = 0.70;
         }
-        grantTeamShield(totalDmg * sRate);
+        grantTeamShield(totalDmg * sRate, allyTeam);
       }
     } else if (actor.id === "pain") {
       // 45% ATK lên TOÀN BỘ mục tiêu
       let totalDmg = 0;
-      battle.botTeam.forEach(bot => {
+      enemyTeam.forEach(bot => {
         if (bot.hp > 0) {
           const raw = actor.atk * 0.45;
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
@@ -4610,7 +4718,7 @@ function executePlayerAction(type) {
         const extraHits = Math.floor((actor.atkSpd || 0.30) / 0.25);
         for (let h = 0; h < extraHits; h++) {
           let extraDmg = 0;
-          battle.botTeam.forEach(bot => {
+          enemyTeam.forEach(bot => {
             if (bot.hp > 0) {
               const raw = actor.atk * 0.88;
               const { damage } = calculateDamage(actor, bot, raw);
@@ -4622,7 +4730,7 @@ function executePlayerAction(type) {
       }
       if (actor.level >= 70 && (actor.atkSpd || 0.30) >= 1.0) {
         let ultExtraDmg = 0;
-        battle.botTeam.forEach(bot => {
+        enemyTeam.forEach(bot => {
           if (bot.hp > 0) {
             const raw = actor.atk * 3.50;
             const { damage } = calculateDamage(actor, bot, raw);
@@ -4674,8 +4782,7 @@ function executePlayerAction(type) {
       }
     } else if (actor.id === "kid") {
       // Đánh thường gây 98% ATK lên 3 mục tiêu
-      const aliveBots = battle.botTeam.filter(b => b.hp > 0);
-      const targets = aliveBots.slice(0, 3);
+      const targets = enemyTeam.filter(b => b && b.hp > 0).slice(0, 3);
       let totalDmg = 0;
       targets.forEach(t => {
         const raw = actor.atk * 0.98;
@@ -4684,8 +4791,7 @@ function executePlayerAction(type) {
       });
       logCombat(`🃏 [Phi Bài Bạc] Kaitou Kid phi bài bạc tấn công 3 mục tiêu gây ${totalDmg} tổng ST!`);
     } else if (actor.id === "phoverus") {
-      const aliveBots = battle.botTeam.filter(b => b.hp > 0);
-      const targets = aliveBots.slice(0, 2);
+      const targets = enemyTeam.filter(b => b && b.hp > 0).slice(0, 2);
       let totalDmg = 0;
       targets.forEach(t => {
         const raw = actor.atk * 0.80;
@@ -4720,7 +4826,7 @@ function executePlayerAction(type) {
         logCombat(`🏜️ [Sa Bọc Tê Liệt] Gaara đánh thường làm ${target.name} bị Choáng 1 lượt và giảm ${Math.round(shred * 100)}% DEF!`);
         if (actor.level >= 100) {
           const sVal = Math.round(actor.maxHp * 0.20);
-          grantTeamShield(sVal);
+          grantTeamShield(sVal, allyTeam);
           logCombat(`🛡️ [Tuyệt Đối Phòng Ngự] Gaara gây Choáng, cấp lớp Khiên ${sVal.toLocaleString()} HP (20% Max HP) cho toàn đội!`);
         }
       }
@@ -4743,7 +4849,7 @@ function executePlayerAction(type) {
       logCombat(`🌿 [Mộc Độn Quyền] Hashirama tung quyền Mộc Độn gây ${damage} ST lên ${target.name}.`);
       if (actor.level >= 70 && Math.random() < 0.30) {
         const healAmt = Math.round(actor.atk * 2.00);
-        battle.playerTeam.forEach(p => { if (p && p.hp > 0) healFighter(p, healAmt); });
+        allyTeam.forEach(p => { if (p && p.hp > 0) healFighter(p, healAmt); });
         addAnimation(actor, `HỒI PHỤC ĐỘI +${healAmt}`, "#3fb950");
         logCombat(`🌸 [Mộc Độn Tái Sinh] Sức sống Tiên Thuật hồi phục ${healAmt.toLocaleString()} HP cho toàn đội!`);
       }
@@ -4754,7 +4860,7 @@ function executePlayerAction(type) {
         // Dạng 1: Băng tuyết: gây 140% ATK toàn bộ, 25% Đóng Băng Otsu
         const raw = actor.atk * 1.40;
         let totalD = 0;
-        battle.botTeam.filter(b => b.hp > 0).forEach(t => {
+        enemyTeam.filter(b => b && b.hp > 0).forEach(t => {
           if (Math.random() < 0.25) {
             t.buffs = t.buffs || {};
             t.buffs.choang = Math.max(t.buffs.choang || 0, 2);
@@ -4772,7 +4878,7 @@ function executePlayerAction(type) {
         // Dạng 2: Núi lửa: gây 230% ATK toàn bộ, tối đa 15 tầng Bốc Hỏa
         const raw = actor.atk * 2.30;
         let totalD = 0;
-        battle.botTeam.filter(b => b.hp > 0).forEach(t => {
+        enemyTeam.filter(b => b && b.hp > 0).forEach(t => {
           t.buffs = t.buffs || {};
           t.buffs.bocHoa = { stacks: 15, duration: 3 };
           addAnimation(t, "MAX 15 TẦNG BỐC HỎA!", "#f85149");
@@ -4868,20 +4974,46 @@ function executePlayerAction(type) {
         logCombat(`🛡️✨ [Miễn Thương Đặc Biệt] Vegito nhận bảo hộ trong 2 lượt (ST nhận tối đa 30% Max HP) và hồi 2 EN!`);
       }
     } else if (actor.id === "whis") {
-      const alivePlayers = battle.playerTeam.filter(p => p && p.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp));
-      if (alivePlayers.length > 0) {
-        const targetAlly = alivePlayers[0];
-        const healAmt = Math.round(actor.atk * 1.50);
-        healFighter(targetAlly, healAmt);
-        logCombat(`✨ [Thiên Sứ Thời Gian] Whis hồi ${healAmt} HP cho ${targetAlly.name}!`);
-      }
+      // Whis Tuyệt Kỹ: Gây 200% ATK lên toàn bộ mục tiêu, giảm 30% ST trong 3 hiệp. Hồi HP toàn team (tối thiểu 150% ATK hoặc 40% ST gây ra).
+      let totalDmgDone = 0;
+      enemyTeam.forEach(enemy => {
+        if (enemy && enemy.hp > 0) {
+          const raw = actor.atk * 2.00;
+          const { damage, isCrit } = calculateDamage(actor, enemy, raw);
+          totalDmgDone += applyDamage(enemy, damage, isCrit, actor);
+          enemy.buffs = enemy.buffs || {};
+          enemy.buffs.teleportDebuff = 3; // Giảm 30% ST trong 3 hiệp
+          addAnimation(enemy, "-30% ST (3 LƯỢT)", "#39c5bb");
+        }
+      });
+      logCombat(`✨🌌 [Thiên Sứ Phán Quyết & Thời Gian] Whis giáng quyền năng thiên sứ lên toàn bộ quân địch gây ${totalDmgDone.toLocaleString()} ST và giảm 30% ST mục tiêu trong 3 hiệp!`);
+
+      // Hồi HP cho toàn đội đồng minh (allyTeam)
+      const baseHeal = Math.round(actor.atk * 1.50);
+      const dmgHeal = Math.round(totalDmgDone * 0.40);
+      const teamHeal = Math.max(baseHeal, dmgHeal);
+      allyTeam.forEach(p => {
+        if (p && p.hp > 0) {
+          healFighter(p, teamHeal);
+          addAnimation(p, `+${teamHeal.toLocaleString()} HP`, "#3fb950");
+        }
+      });
+      logCombat(`✨💖 [Thiên Sứ Phục Hồi] Whis hồi phục ${teamHeal.toLocaleString()} HP cho toàn bộ đồng minh!`);
+
+      // Bị động 1 (Lv.30): Thần Hộ - Cung cấp 'Bảo vệ' cho toàn đội trong 2 lượt
       if (actor.level >= 30) {
-        battle.playerTeam.forEach(p => { if (p && p.hp > 0) p.buffs.whisProtect = 2; });
-        logCombat(`🛡️ [Thần Hộ] Whis kích hoạt "Bảo vệ" cho toàn đội trong 2 hiệp!`);
+        allyTeam.forEach(p => {
+          if (p && p.hp > 0) {
+            p.buffs = p.buffs || {};
+            p.buffs.whisProtect = 2;
+            addAnimation(p, "🛡️ BẢO VỆ", "#39c5bb");
+          }
+        });
+        logCombat(`🛡️✨ [Thần Hộ] Whis kích hoạt "Bảo vệ" cho toàn đội trong 2 hiệp (Hồi 45% ATK khi nhận ST)!`);
       }
     } else if (actor.id === "luanhoi") {
       let totalDmg = 0;
-      battle.botTeam.forEach(bot => {
+      enemyTeam.forEach(bot => {
         if (bot.hp > 0) {
           const raw = actor.atk * 0.50;
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
@@ -4892,13 +5024,13 @@ function executePlayerAction(type) {
       logCombat(`💥 [Địa Bộc Thiên Tinh Vực] Luân Hồi Tiên Nhân phong ấn toàn thể, khắc +7 tầng "Lục đạo"!`);
       if (actor.level >= 70) {
         let sRate = (actor.level >= 100) ? 0.40 : 0.20;
-        const hasOtsuTrio = battle.playerTeam.some(p => p && p.id === "isshiki") && 
-                            battle.playerTeam.some(p => p && p.id === "momoshiki") && 
-                            battle.playerTeam.some(p => p && p.id === "luanhoi");
+        const hasOtsuTrio = allyTeam.some(p => p && p.id === "isshiki") && 
+                            allyTeam.some(p => p && p.id === "momoshiki") && 
+                            allyTeam.some(p => p && p.id === "luanhoi");
         if (!actor.isBot && gameState.equippedBeast === "otsutsuki_blood" && hasOtsuTrio) {
           sRate = 0.70;
         }
-        grantTeamShield(totalDmg * sRate);
+        grantTeamShield(totalDmg * sRate, allyTeam);
       }
     } else if (actor.id === "pain") {
       // Gây 110% ATK lên toàn bộ mục tiêu, 30% gây [Terror] 2 lượt
@@ -4907,7 +5039,7 @@ function executePlayerAction(type) {
       if (actor.level >= 130) { terrorRate += 0.10; thienDaoRate += 0.10; } // Thần 1 (+10% tỷ lệ)
 
       let totalDmg = 0;
-      battle.botTeam.forEach(bot => {
+      enemyTeam.forEach(bot => {
         if (bot.hp > 0) {
           const raw = actor.atk * 1.10;
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
@@ -4933,7 +5065,7 @@ function executePlayerAction(type) {
       logCombat(`💥 [Thần La Thiên Chinh] SHINRA TENSEI! Pain đẩy văng toàn bộ quân địch với ${totalDmg} ST!`);
     } else if (actor.id === "isshiki") {
       let totalDmg = 0;
-      battle.botTeam.forEach(bot => {
+      enemyTeam.forEach(bot => {
         if (bot.hp > 0) {
           const raw = actor.atk * 3.50;
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
@@ -4973,7 +5105,7 @@ function executePlayerAction(type) {
       applyDamage(target, damage, isCrit, actor);
       logCombat(`💥 [Vô Hạn Hắc Cầu] Momoshiki giáng đòn hủy diệt gây ${damage} ST lên ${target.name}!`);
       if (actor.level >= 100) {
-        battle.playerTeam.forEach(p => { if (p && p.hp > 0) p.buffs.momoTeamBuff = 4; });
+        allyTeam.forEach(p => { if (p && p.hp > 0) p.buffs.momoTeamBuff = 4; });
         logCombat(`🔥 [Otsutsuki Uy Áp] Momoshiki tăng 30% ST cho toàn đội trong 4 hiệp!`);
       }
     } else if (actor.id === "kaioshin") {
@@ -4981,16 +5113,16 @@ function executePlayerAction(type) {
       if (actor.level >= 150) shieldPct *= 1.30;
       const shieldAmt = Math.round(actor.hp * shieldPct);
       const healAmt = Math.round(actor.atk * 1.50);
-      battle.playerTeam.forEach(p => {
+      allyTeam.forEach(p => {
         if (p && p.hp > 0) {
-          p.shield += shieldAmt;
+          p.shield = (p.shield || 0) + shieldAmt;
           healFighter(p, healAmt);
-          addAnimation(p, `+${shieldAmt} Khiên`, "#58a6ff");
+          addAnimation(p, `+${shieldAmt.toLocaleString()} Khiên`, (actor.teamSide === 2) ? "#ff9800" : "#58a6ff");
         }
       });
-      logCombat(`🛡️✨ [Thần Giới Hộ Thể] Kaioshin XENO ban Khiên (${shieldAmt} HP) và hồi ${healAmt} HP cho toàn đội!`);
+      logCombat(`🛡️✨ [Thần Giới Hộ Thể] Kaioshin XENO ban Khiên (${shieldAmt.toLocaleString()} HP) và hồi ${healAmt.toLocaleString()} HP cho toàn đội!`);
       if (actor.level >= 80 && Math.random() < 0.40) {
-        battle.playerTeam.forEach(p => { if (p && p.hp > 0) p.buffs = {}; });
+        allyTeam.forEach(p => { if (p && p.hp > 0) p.buffs = {}; });
         logCombat(`✨ [Thanh Tẩy Thần Thánh] Kaioshin XENO xóa sạch toàn bộ debuff trên toàn đội!`);
       }
     } else if (actor.id === "conan") {
@@ -5036,8 +5168,7 @@ function executePlayerAction(type) {
       addAnimation(target, "ĐIỂM YẾU (-30% HỒI MÁU)", "#f85149");
       logCombat(`🕊️🎩 [Ảo Thuật Ánh Trăng] Kaitou Kid giáng 3 đòn liên hoàn gây tổng cộng ${d1 + d2 + d3} ST (Đòn 3 tăng 70% Crit) và khắc 'Điểm Yếu' giảm 30% hồi phục của ${target.name}!`);
     } else if (actor.id === "phoverus") {
-      const aliveBots = battle.botTeam.filter(b => b.hp > 0);
-      const targets = aliveBots.slice(0, 3);
+      const targets = enemyTeam.filter(b => b && b.hp > 0).slice(0, 3);
       let totalDmg = 0;
       targets.forEach(t => {
         const raw = actor.atk * 2.80;
@@ -5057,7 +5188,7 @@ function executePlayerAction(type) {
       const stunRate = (actor.level >= 150) ? 0.85 : 0.80;
       let anyStun = false;
       let totalDmgGaara = 0;
-      battle.botTeam.filter(b => b.hp > 0).forEach(t => {
+      enemyTeam.filter(b => b && b.hp > 0).forEach(t => {
         if (actor.level >= 70 && Math.random() < 0.18) {
           t.buffs = t.buffs || {};
           t.buffs.defShred100 = 4;
@@ -5079,13 +5210,13 @@ function executePlayerAction(type) {
       logCombat(`🏜️💥 [Sa Mạc Đại Táng] Gaara chôn vùi toàn bộ kẻ địch, gây ${totalDmgGaara} ST và áp chế Choáng 3 lượt!`);
       if (anyStun && actor.level >= 100) {
         const sVal = Math.round(actor.maxHp * 0.20);
-        grantTeamShield(sVal);
+        grantTeamShield(sVal, allyTeam);
         logCombat(`🛡️ [Tuyệt Đối Phòng Ngự] Sa Mạc Đại Táng gây Choáng, cấp lớp Khiên ${sVal.toLocaleString()} HP (20% Max HP) cho toàn đội!`);
       }
     } else if (actor.id === "hashirama") {
       // Hashirama: Gây 300% ATK lên 3 mục tiêu + Choáng 3 lượt + Khiên 50% tổng ST
       const raw = actor.atk * 3.00;
-      const targets = battle.botTeam.filter(b => b.hp > 0).slice(0, 3);
+      const targets = enemyTeam.filter(b => b && b.hp > 0).slice(0, 3);
       let totalDmgHashi = 0;
       targets.forEach(t => {
         t.buffs = t.buffs || {};
@@ -5239,13 +5370,21 @@ function addLuanHoiStack(hero, target, count) {
   }
 }
 
-function grantTeamShield(shieldAmount, isBot = false) {
+function grantTeamShield(shieldAmount, targetTeamOrIsBot = null) {
   const roundShield = Math.max(1, Math.round(shieldAmount));
-  const team = isBot ? battle.botTeam : battle.playerTeam;
+  let team = battle.playerTeam;
+  let isTeam2 = false;
+  if (Array.isArray(targetTeamOrIsBot)) {
+    team = targetTeamOrIsBot;
+    isTeam2 = (team === battle.botTeam);
+  } else if (typeof targetTeamOrIsBot === 'boolean') {
+    team = targetTeamOrIsBot ? battle.botTeam : battle.playerTeam;
+    isTeam2 = targetTeamOrIsBot;
+  }
   team.forEach(p => {
     if (p && p.hp > 0) {
-      p.shield += roundShield;
-      addAnimation(p, `+${roundShield} "Khiên"`, isBot ? "#da3633" : "#58a6ff");
+      p.shield = (p.shield || 0) + roundShield;
+      addAnimation(p, `+${roundShield.toLocaleString()} Khiên`, isTeam2 ? "#ff9800" : "#58a6ff");
     }
   });
 }
@@ -5385,14 +5524,36 @@ function executeHeroBotAction(actor, alivePlayers) {
           applyBleeding(actor, t, 10);
         });
         logCombat(`🗡️💥 [Địch: Kiếm Khí Linh Hồn] ${actor.name} chém 3 mục tiêu gây ${totalDmg.toLocaleString()} ST!`);
-      } else if (actor.heroId === "whis") {
-        const aliveBots = battle.botTeam.filter(b => b && b.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp));
-        if (aliveBots.length > 0) {
-          const targetAlly = aliveBots[0];
-          const healAmt = Math.round(actor.atk * 1.50);
-          healFighter(targetAlly, healAmt);
-          logCombat(`✨ [Địch: Thiên Sứ Thời Gian] ${actor.name} hồi ${healAmt} HP cho ${targetAlly.name}!`);
+      } else if (actor.heroId === "whis" || actor.id === "whis") {
+        let totalDmgDone = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 2.00;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalDmgDone += applyDamage(p, damage, isCrit, actor);
+          p.buffs = p.buffs || {};
+          p.buffs.teleportDebuff = 3;
+        });
+        logCombat(`✨🌌 [Địch: Thiên Sứ Phán Quyết] ${actor.name} gây ${totalDmgDone.toLocaleString()} ST và giảm 30% ST toàn đội bạn!`);
+        const teamHeal = Math.max(Math.round(actor.atk * 1.50), Math.round(totalDmgDone * 0.40));
+        battle.botTeam.forEach(b => {
+          if (b && b.hp > 0) healFighter(b, teamHeal);
+        });
+        if (actor.level >= 30) {
+          battle.botTeam.forEach(b => { if (b && b.hp > 0) { b.buffs = b.buffs || {}; b.buffs.whisProtect = 2; } });
         }
+      } else if (actor.heroId === "kaioshin" || actor.id === "kaioshin") {
+        let shieldPct = 0.30;
+        if (actor.level >= 150) shieldPct *= 1.30;
+        const shieldAmt = Math.round(actor.hp * shieldPct);
+        const healAmt = Math.round(actor.atk * 1.50);
+        battle.botTeam.forEach(b => {
+          if (b && b.hp > 0) {
+            b.shield = (b.shield || 0) + shieldAmt;
+            healFighter(b, healAmt);
+            addAnimation(b, `+${shieldAmt.toLocaleString()} Khiên`, "#ff9800");
+          }
+        });
+        logCombat(`🛡️✨ [Địch: Thần Giới Hộ Thể] ${actor.name} ban Khiên (${shieldAmt.toLocaleString()} HP) và hồi ${healAmt.toLocaleString()} HP cho toàn đội địch!`);
       } else if (actor.heroId === "luanhoi") {
         let totalDmg = 0;
         alivePlayers.forEach(p => {
@@ -5762,7 +5923,10 @@ function drawCharacter(f) {
     if (f.buffs.terror) { drawBadge(x + badgeOffset, y - 56, `😱Terror`, "#bf3989"); badgeOffset += 30; }
     if (f.buffs.suyGiam) { drawBadge(x + badgeOffset, y - 56, `🌀-20%`, "#8b949e"); badgeOffset += 30; }
     if (f.buffs.thienDaoDebuff) { drawBadge(x + badgeOffset, y - 56, `👁️-30%`, "#39c5bb"); badgeOffset += 30; }
-    if (f.buffs.whisProtect) { drawBadge(x + badgeOffset, y - 56, `🛡️Hộ`, "#39c5bb"); }
+    if (f.buffs.whisProtect) { drawBadge(x + badgeOffset, y - 56, `🛡️Hộ`, "#39c5bb"); badgeOffset += 30; }
+    if (f.buffs.hypnosis) { drawBadge(x + badgeOffset, y - 56, `🌀Mê`, "#bc8cff"); badgeOffset += 30; }
+    if (f.buffs.devilLinked) { drawBadge(x + badgeOffset, y - 56, `🩸Xích`, "#ff0055"); badgeOffset += 30; }
+    if (f.buffs.devilLinkActive) { drawBadge(x + badgeOffset, y - 56, `🎶Liên`, "#ff0055"); }
   }
 
   ctx.restore();
