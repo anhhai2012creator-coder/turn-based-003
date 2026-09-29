@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v5.5.0 [MỞ RỘNG CHƯƠNG 8 & 9 - ĐỊA NGỤC: KURAMA, KAGURA & SUSANOO]</title>
+<title>Chiến Thuật Luân Hồi v5.6.0 [HOÀN THIỆN TƯỚNG MỚI KAGURA & 2 BOSS ĐỘC QUYỀN ĐỊA NGỤC]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -541,7 +540,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.5.0 ĐẠI CẬP NHẬT: Thêm Chương 8 & 9 [ĐỊA NGỤC] | Tướng Mới: Đại Boss Kurama (3 Lớp Máu), Kagura (Dạng Thần) & Chúa Tể Susanoo (Trầm Trọng)</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.6.0 CẬP NHẬT: Hoàn Thiện Tướng Mới Kagura (Sợi Dây Định Mệnh Cùng Hàng, Giáng Thần, 4 Bị Động & Thần Chú) | Chuẩn Hóa 2 Đại Boss Cốt Truyện Kurama & Susanoo</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -600,7 +599,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.5.0 (CHƯƠNG 8-9 ĐỊA NGỤC | KURAMA & KAGURA & SUSANOO)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.6.0 (TƯỚNG MỚI KAGURA [SKL] & 2 BOSS ĐỊA NGỤC)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -2025,7 +2024,8 @@ const HERO_DB = {
     id: "kurama",
     name: "Cửu Vĩ Kurama",
     type: "ATK",
-    roleDesc: "Đại Boss Ải 10 C.8, 3 lớp sinh mệnh, trảo kích toàn thể & hồi phục nghịch thiên",
+    bossOnly: true, // Đại Boss độc quyền cốt truyện Ải 8-10
+    roleDesc: "Đại Boss Độc Quyền C.8-10, 3 lớp sinh mệnh, trảo kích toàn thể & hồi phục nghịch thiên",
     baseHp: 800,
     baseAtk: 85,
     baseDef: 100,
@@ -2044,23 +2044,38 @@ const HERO_DB = {
     id: "kagura",
     name: "Kagura",
     type: "SKL",
-    roleDesc: "Thần Vu Hư Vô Ải 10 C.8, Sợi Dây Định Mệnh, cướp đoạt sinh mệnh & Hóa Thần",
+    roleDesc: "Tướng Mới Phát Hành [SKL], Sợi Dây Định Mệnh, Dạng Thần hồi phục, tăng công & miễn nhiễm Stun",
     baseHp: 765,
     baseAtk: 43.5,
     baseDef: 55,
     baseSpd: 185,
     enMax: 15,
-    normalAttack: { name: "Vu Thuật Đoạt Mệnh", enGain: 2.5, desc: "Cướp 7% HP còn lại của 1 mục tiêu chuyển về chia đều hồi phục cho 2 đồng minh có HP thấp nhất. Hồi 2.5 EN." },
-    activeSkill: { name: "Sợi Dây Định Mệnh / Giáng Thần", desc: "Dạng Người: Nối 'Sợi dây định mệnh' vào đồng minh và chuyển sang Dạng Thần (kích hoạt khi đủ 15 EN, không tốn EN). Dạng Thần: Hồi 30% HP còn lại cho đồng minh nối dây, bản thân hồi 70% lượng HP đó (tốn 3 EN/lần, sau 5 lượt trở lại Dạng Người)." },
+    hasSpells: true,
+    normalAttack: { 
+      name: "Vu Thuật Đoạt Mệnh", 
+      enGain: 2.5, 
+      desc: "Cướp đi 7% HP còn lại của 1 mục tiêu chuyển về chia đều cho 2 đồng minh có HP thấp nhất. Hồi 2.5 EN." 
+    },
+    activeSkill: { 
+      name: "Sợi Dây Định Mệnh / Giáng Thần", 
+      desc: "Dạng Người: Nối 'Sợi dây định mệnh' vào đồng minh cùng hàng (ngẫu nhiên nếu đứng hàng sau) và chuyển sang Dạng Thần (kích hoạt khi đủ 15 EN, không tốn EN). Dạng Thần: Tiêu tốn 3 EN/lần để hồi HP bằng 30% HP còn lại của bản thân cho đồng minh được nối dây, bản thân hồi 70% lượng HP đó (tự động trở về Dạng Người sau 5 lượt hoặc khi không đủ 3 EN)." 
+    },
     passives: [
-      { lv: 30, name: "Sợi Dây Định Mệnh", desc: "Nối dây liên kết linh hồn với đồng minh chủ lực, chia sẻ sinh mệnh." },
-      { lv: 70, name: "Thần Âm Phù Hộ", desc: "Ở Dạng Thần, Kagura phát sáng lơ lửng và giảm 30% sát thương nhận vào." }
+      { lv: 30, name: "Liên Kết Hộ Thể", desc: "Đồng minh được Kagura nối liên kết sẽ được miễn thương 30%." },
+      { lv: 70, name: "Thần Uy Gia Trì", desc: "Khi ở dạng Thần, mỗi lần hồi HP bằng chủ động cho đồng minh sẽ tăng vĩnh viễn cho bản thân và đồng minh đó 15% ATK." },
+      { lv: 80, name: "Thần Quang Hộ Mệnh", desc: "Mỗi khi sử dụng chủ động ở dạng Thần, cung cấp cho đồng đội được liên kết 'Shield' bằng 10% HP còn lại của bản thân." },
+      { lv: 100, name: "Thánh Thể Bất Động", desc: "Bản thân và đồng minh đang được liên kết miễn nhiễm 'Stun'." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú 1", desc: "+20% ATK, +18% HP." },
+      { lv: 150, name: "Thần Chú 2", desc: "+15% DEF." }
     ]
   },
   susanoo_boss: {
     id: "susanoo_boss",
     name: "Chúa Tể Susanoo",
     type: "ATK",
+    bossOnly: true, // Đại Boss độc quyền cốt truyện Ải 9-10
     roleDesc: "Chúa Tể Địa Ngục Ải 10 C.9, Thần Kiếm Trầm Trọng, Stun 2 mục tiêu & Kích nổ HP",
     baseHp: 3000,
     baseAtk: 100,
@@ -2463,6 +2478,13 @@ function getHeroStats(heroId, customLv = null) {
   } else if (heroId === "kagura") {
     enMax = 15;
     spd = 185;
+    if (lv >= 130) {
+      atk = +(atk * 1.20).toFixed(1);
+      hp = Math.round(hp * 1.18);
+    }
+    if (lv >= 150) {
+      def = Math.round(def * 1.15);
+    }
   } else if (heroId === "susanoo_boss") {
     spd = 200;
   }
@@ -4074,6 +4096,12 @@ function nextTurn() {
     return;
   }
 
+  // Kagura Bị Động 4 (Lv.100): Miễn nhiễm Choáng/Stun cho bản thân và đồng minh liên kết
+  if (isStunImmune(actor)) {
+    if (actor.buffs.choang) delete actor.buffs.choang;
+    if (actor.buffs.stun) delete actor.buffs.stun;
+  }
+
   // Check Choáng (choang & stun)
   if ((actor.buffs.choang && actor.buffs.choang > 0) || (actor.buffs.stun && actor.buffs.stun > 0)) {
     logCombat(`💫 ["Choáng"] ${actor.name} bị choáng, mất lượt hành động!`);
@@ -4238,7 +4266,9 @@ function autoChooseAction() {
   const actor = battle.turnQueue[battle.currentActorIndex];
   if (!actor || (actor.isBot && battle.mode !== 'versus')) return;
   if (checkBattleEnd()) return;
-  if (actor.en >= actor.enMax) {
+  const isKaguraGod = (actor.id === "kagura" && actor.godForm);
+  const canCastSkill = isKaguraGod ? (actor.en >= 3) : (actor.en >= actor.enMax);
+  if (canCastSkill) {
     executePlayerAction('skill');
   } else {
     executePlayerAction('normal');
@@ -4266,19 +4296,30 @@ function updatePlayerSkillCards(actor) {
   document.getElementById("cardNormalEn").textContent = `+${normalEn} EN`;
   document.getElementById("cardNormalDesc").textContent = normalDesc;
 
-  document.getElementById("cardSkillEn").textContent = `Tốn toàn bộ EN (${actor.en}/${actor.enMax})`;
-  document.getElementById("cardSkillDesc").textContent = db.activeSkill.desc;
+  const isKaguraGod = (actor.id === "kagura" && actor.godForm);
+  const canCastSkill = isKaguraGod ? (actor.en >= 3) : (actor.en >= actor.enMax);
+
+  if (isKaguraGod) {
+    document.getElementById("cardSkillEn").textContent = `Tốn 3 EN (${actor.en} EN hiện có)`;
+    document.getElementById("cardSkillDesc").textContent = `[Dạng Thần - Còn ${actor.godTurns} lượt] Hồi 30% HP còn lại của Kagura cho ${actor.linkedAlly?.name || 'đồng minh'}, Kagura tự hồi 70% (Tăng vĩnh viễn 15% ATK, cấp Khiên 10% HP).`;
+  } else if (actor.id === "kagura") {
+    document.getElementById("cardSkillEn").textContent = `Không tốn EN (${actor.en}/15 EN)`;
+    document.getElementById("cardSkillDesc").textContent = `[Dạng Người] Nối Sợi Dây Định Mệnh vào đồng minh cùng hàng (ngẫu nhiên nếu ở hàng sau) và hóa Thần trong 5 lượt (kích hoạt khi đủ 15 EN, giữ nguyên EN).`;
+  } else {
+    document.getElementById("cardSkillEn").textContent = `Tốn toàn bộ EN (${actor.en}/${actor.enMax})`;
+    document.getElementById("cardSkillDesc").textContent = db.activeSkill.desc;
+  }
 
   document.getElementById("btnNormalAttack").classList.remove("disabled");
   const skillBtn = document.getElementById("btnActiveSkill");
 
-  if (actor.en >= actor.enMax) {
+  if (canCastSkill) {
     skillBtn.classList.remove("disabled");
     document.getElementById("cardSkillStatus").textContent = "SẴN SÀNG KÍCH HOẠT";
     document.getElementById("cardSkillStatus").style.color = "var(--accent-green)";
   } else {
     skillBtn.classList.add("disabled");
-    document.getElementById("cardSkillStatus").textContent = `Cần ${actor.enMax} EN`;
+    document.getElementById("cardSkillStatus").textContent = isKaguraGod ? `Cần tối thiểu 3 EN` : `Cần ${actor.enMax} EN`;
     document.getElementById("cardSkillStatus").style.color = "var(--accent-red)";
   }
 }
@@ -4286,6 +4327,33 @@ function updatePlayerSkillCards(actor) {
 function disablePlayerActionCards() {
   document.getElementById("btnNormalAttack").classList.add("disabled");
   document.getElementById("btnActiveSkill").classList.add("disabled");
+}
+
+// ==================== CƠ CHẾ LIÊN KẾT ĐỊNH MỆNH & MIỄN NHIỄM KAGURA (v5.6.0) ====================
+function getKaguraFateTarget(kaguraActor, allies) {
+  const aliveAllies = allies.filter(p => p && p !== kaguraActor && p.hp > 0);
+  if (aliveAllies.length === 0) return kaguraActor;
+
+  // Quy tắc v5.6.0: Liên kết với mục tiêu cùng hàng. Nếu Kagura đứng hàng sau thì liên kết ngẫu nhiên.
+  // Hàng trước gồm Slot 0 (trên) và Slot 1 (dưới); Hàng sau là Slot 2 (sau).
+  if (kaguraActor.slot === 0) {
+    const sameRow = aliveAllies.find(p => p.slot === 1);
+    return sameRow || aliveAllies[0];
+  } else if (kaguraActor.slot === 1) {
+    const sameRow = aliveAllies.find(p => p.slot === 0);
+    return sameRow || aliveAllies[0];
+  } else {
+    // Hàng sau (slot 2): Chọn ngẫu nhiên đồng minh còn sống
+    return aliveAllies[Math.floor(Math.random() * aliveAllies.length)];
+  }
+}
+
+function isStunImmune(target) {
+  if (!target) return false;
+  // Kagura Bị Động 4 (Lv.100): Bản thân và đồng minh đang được liên kết miễn nhiễm "Stun"
+  if (target.id === "kagura" && target.level >= 100) return true;
+  if (target.buffs && target.buffs.fateString && target.buffs.fateSource && target.buffs.fateSource.level >= 100) return true;
+  return false;
 }
 
 function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
@@ -4318,6 +4386,11 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
   // Hiệu ứng Thôi Miên (Susan): Giảm 100% ATK
   if (attacker.buffs && attacker.buffs.hypnosis) {
     dmg = 1;
+  }
+
+  // Kagura Bị Động 1 (Lv.30): Đồng minh được Kagura nối liên kết được miễn thương 30%
+  if (defender.buffs && defender.buffs.fateString && defender.buffs.fateSource && defender.buffs.fateSource.level >= 30) {
+    dmg *= 0.70;
   }
 
   // Giảm sát thương từ debuff
@@ -5207,9 +5280,16 @@ function executePlayerAction(type) {
       logCombat(`⚔️ [Thần Kiếm Trảm] Susanoo chém gây ${damage.toLocaleString()} ST lên ${target.name} và khắc +${stacks} tầng 'Trầm trọng' (Tổng: ${target.buffs.tramTrong} tầng - ${target.buffs.tramTrong * 5}% Max HP sẽ mất)!`);
     }
   } else if (type === "skill") {
-    if (actor.en < actor.enMax) return;
+    const isKaguraGod = (actor.id === "kagura" && actor.godForm);
+    const canCastSkill = isKaguraGod ? (actor.en >= 3) : (actor.en >= actor.enMax);
+    if (!canCastSkill) return;
+
     if (actor.id === "kagura") {
-      // Không tiêu tốn EN khi hóa Thần
+      if (actor.godForm) {
+        actor.en = Math.max(0, +(actor.en - 3).toFixed(1));
+      } else {
+        // Không tiêu tốn EN khi hóa Thần
+      }
     } else if (actor.id === "kurama") {
       actor.en = 2; // Hồi 2 EN
     } else {
@@ -5641,36 +5721,51 @@ function executePlayerAction(type) {
       logCombat(`☄️🦊 [Vĩ Thú Ngọc Hủy Diệt] Kurama giáng Bom Vĩ Thú 300% ATK (+35% Crit) gây ${totalDmgDone.toLocaleString()} ST, giảm 30% ATK kẻ địch và hồi lại 2 EN!`);
     } else if (actor.id === "kagura") {
       if (actor.godForm) {
-        if (actor.en >= 3) {
-          actor.en -= 3;
-          const targetAlly = (actor.linkedAlly && actor.linkedAlly.hp > 0) ? actor.linkedAlly : actor;
-          const healAllyAmt = Math.round(actor.hp * 0.30);
-          healFighter(targetAlly, healAllyAmt);
-          const selfHeal = Math.round(healAllyAmt * 0.70);
-          healFighter(actor, selfHeal);
-          addAnimation(targetAlly, `+${healAllyAmt.toLocaleString()} HP (ĐỊNH MỆNH)`, "#3fb950");
-          addAnimation(actor, `+${selfHeal.toLocaleString()} HP (THẦN THỂ)`, "#ffd700");
-          logCombat(`✨🪭 [Dạng Thần Hồi Phục] Kagura tiêu tốn 3 EN, hồi ${healAllyAmt.toLocaleString()} HP (30% HP) cho ${targetAlly.name} và tự hồi ${selfHeal.toLocaleString()} HP (70%)!`);
-          actor.godTurns--;
-          if (actor.godTurns <= 0 || actor.en < 3) {
-            actor.godForm = false;
-            if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
-            logCombat(`🪭 [Hết Dạng Thần] Kagura kết thúc 5 lượt Dạng Thần, trở lại Dạng Người!`);
-          }
-        } else {
+        // Dạng Thần: Tiêu tốn 3 EN hồi HP cho đồng minh nối dây và bản thân
+        const targetAlly = (actor.linkedAlly && actor.linkedAlly.hp > 0) ? actor.linkedAlly : getKaguraFateTarget(actor, allyTeam);
+        const healAllyAmt = Math.round(actor.hp * 0.30);
+        healFighter(targetAlly, healAllyAmt);
+        const selfHeal = Math.round(healAllyAmt * 0.70);
+        healFighter(actor, selfHeal);
+        addAnimation(targetAlly, `+${healAllyAmt.toLocaleString()} HP (ĐỊNH MỆNH)`, "#3fb950");
+        addAnimation(actor, `+${selfHeal.toLocaleString()} HP (THẦN THỂ)`, "#ffd700");
+        logCombat(`✨🪭 [Dạng Thần Hồi Phục] Kagura tiêu tốn 3 EN, hồi ${healAllyAmt.toLocaleString()} HP (30% HP) cho ${targetAlly.name} và tự hồi ${selfHeal.toLocaleString()} HP (70%)!`);
+
+        // Bị động 2 (Lv.70): Khi ở dạng Thần, mỗi lần hồi HP bằng chủ động cho đồng minh sẽ tăng vĩnh viễn cho bản thân và đồng minh đó 15% ATK
+        if (actor.level >= 70) {
+          actor.atk = Math.round(actor.atk * 1.15);
+          targetAlly.atk = Math.round(targetAlly.atk * 1.15);
+          addAnimation(actor, "+15% ATK", "#ff9800");
+          addAnimation(targetAlly, "+15% ATK", "#ff9800");
+          logCombat(`🔥✨ [Thần Uy Gia Trì] Kagura và ${targetAlly.name} được tăng vĩnh viễn +15% ATK!`);
+        }
+
+        // Bị động 3 (Lv.80): Mỗi khi sử dụng chủ động ở dạng thần, cung cấp cho đồng đội được liên kết "Shield" bằng 10% HP còn lại của bản thân
+        if (actor.level >= 80) {
+          const shieldGain = Math.round(actor.hp * 0.10);
+          targetAlly.shield = (targetAlly.shield || 0) + shieldGain;
+          addAnimation(targetAlly, `+${shieldGain.toLocaleString()} Khiên`, "#58a6ff");
+          logCombat(`🛡️✨ [Thần Quang Hộ Mệnh] Kagura ban lớp Khiên ${shieldGain.toLocaleString()} HP (10% HP hiện tại) cho ${targetAlly.name}!`);
+        }
+
+        actor.godTurns--;
+        if (actor.godTurns <= 0 || actor.en < 3) {
           actor.godForm = false;
           if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+          logCombat(`🪭 [Hết Dạng Thần] Kagura kết thúc 5 lượt Dạng Thần, trở lại Dạng Người!`);
         }
       } else {
-        const targetAlly = allyTeam.find(p => p && p.id === "kurama" && p.hp > 0) || 
-                           allyTeam.filter(p => p && p !== actor && p.hp > 0).sort((a,b) => b.maxHp - a.maxHp)[0] || actor;
+        // Dạng Người: Nối 'Sợi dây định mệnh' vào đồng minh cùng hàng (ngẫu nhiên nếu đứng hàng sau) và chuyển sang Dạng Thần (Không tốn EN)
+        const targetAlly = getKaguraFateTarget(actor, allyTeam);
         actor.godForm = true;
         actor.godTurns = 5;
         actor.linkedAlly = targetAlly;
         targetAlly.buffs = targetAlly.buffs || {};
         targetAlly.buffs.fateString = true;
+        targetAlly.buffs.fateSource = actor;
         addAnimation(actor, "GIÁNG THẦN! THỨC TỈNH DẠNG THẦN", "#ffd700");
-        logCombat(`✨🪭 [Sợi Dây Định Mệnh] Kagura nối dây định mệnh với ${targetAlly.name} và chuyển sang DẠNG THẦN trong 5 lượt (Giữ nguyên 15 EN)!`);
+        addAnimation(targetAlly, "DÂY ĐỊNH MỆNH", "#ffd700");
+        logCombat(`✨🪭 [Sợi Dây Định Mệnh] Kagura nối dây định mệnh với ${targetAlly.name} và chuyển sang DẠNG THẦN trong 5 lượt (Giữ nguyên ${actor.en} EN)!`);
       }
     } else if (actor.id === "susanoo_boss") {
       actor.en = 0;
@@ -6033,8 +6128,8 @@ function executeHeroBotAction(actor, alivePlayers) {
       } else if (actor.heroId === "kagura" || actor.id === "kagura") {
         if (actor.godForm) {
           if (actor.en >= 3) {
-            actor.en -= 3;
-            const targetAlly = (actor.linkedAlly && actor.linkedAlly.hp > 0) ? actor.linkedAlly : actor;
+            actor.en = Math.max(0, +(actor.en - 3).toFixed(1));
+            const targetAlly = (actor.linkedAlly && actor.linkedAlly.hp > 0) ? actor.linkedAlly : getKaguraFateTarget(actor, battle.botTeam);
             const healAllyAmt = Math.round(actor.hp * 0.30);
             healFighter(targetAlly, healAllyAmt);
             const selfHeal = Math.round(healAllyAmt * 0.70);
@@ -6042,6 +6137,24 @@ function executeHeroBotAction(actor, alivePlayers) {
             addAnimation(targetAlly, `+${healAllyAmt.toLocaleString()} HP (ĐỊNH MỆNH)`, "#3fb950");
             addAnimation(actor, `+${selfHeal.toLocaleString()} HP (THẦN THỂ)`, "#ffd700");
             logCombat(`✨🪭 [Dạng Thần Hồi Phục] Kagura tiêu tốn 3 EN, hồi ${healAllyAmt.toLocaleString()} HP (30% HP) cho ${targetAlly.name} và tự hồi ${selfHeal.toLocaleString()} HP (70%)!`);
+
+            // Bị động 2 (Lv.70): Khi ở dạng Thần, mỗi lần hồi HP bằng chủ động cho đồng minh sẽ tăng vĩnh viễn cho bản thân và đồng minh đó 15% ATK
+            if (actor.level >= 70) {
+              actor.atk = Math.round(actor.atk * 1.15);
+              targetAlly.atk = Math.round(targetAlly.atk * 1.15);
+              addAnimation(actor, "+15% ATK", "#ff9800");
+              addAnimation(targetAlly, "+15% ATK", "#ff9800");
+              logCombat(`🔥✨ [Thần Uy Gia Trì] Kagura và ${targetAlly.name} được tăng vĩnh viễn +15% ATK!`);
+            }
+
+            // Bị động 3 (Lv.80): Mỗi khi sử dụng chủ động ở dạng thần, cung cấp cho đồng đội được liên kết "Shield" bằng 10% HP còn lại của bản thân
+            if (actor.level >= 80) {
+              const shieldGain = Math.round(actor.hp * 0.10);
+              targetAlly.shield = (targetAlly.shield || 0) + shieldGain;
+              addAnimation(targetAlly, `+${shieldGain.toLocaleString()} Khiên`, "#58a6ff");
+              logCombat(`🛡️✨ [Thần Quang Hộ Mệnh] Kagura ban lớp Khiên ${shieldGain.toLocaleString()} HP (10% HP hiện tại) cho ${targetAlly.name}!`);
+            }
+
             actor.godTurns--;
             if (actor.godTurns <= 0 || actor.en < 3) {
               actor.godForm = false;
@@ -6049,19 +6162,27 @@ function executeHeroBotAction(actor, alivePlayers) {
               logCombat(`🪭 [Hết Dạng Thần] Kagura kết thúc 5 lượt Dạng Thần, trở lại Dạng Người!`);
             }
           } else {
-            actor.godForm = false;
-            if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+            // Không đủ 3 EN ở Dạng Thần -> Đánh thường
+            const drainHp = Math.max(1, Math.round(target.hp * 0.07));
+            applyDamage(target, drainHp, false, actor);
+            const aliveAllies = battle.botTeam.filter(b => b && b.hp > 0).sort((a,b) => a.hp - b.hp).slice(0, 2);
+            const perAlly = Math.round(drainHp / aliveAllies.length);
+            aliveAllies.forEach(a => healFighter(a, perAlly));
+            actor.en = Math.min(actor.enMax, +(actor.en + 2.5).toFixed(1));
+            addAnimation(target, `-${drainHp.toLocaleString()} HP (CƯỚP 7%)`, "#f85149");
+            logCombat(`🪭 [Vu Thuật Đoạt Mệnh] Kagura cướp ${drainHp.toLocaleString()} HP (7% HP) của ${target.name}, chia đều hồi phục cho đồng minh và hồi +2.5 EN!`);
           }
         } else {
-          // Khi đủ 15 EN ở dạng người: Thức tỉnh dạng Thần
-          const targetAlly = battle.botTeam.find(p => p && p.id === "kurama" && p.hp > 0) || 
-                             battle.botTeam.filter(p => p && p !== actor && p.hp > 0).sort((a,b) => b.maxHp - a.maxHp)[0] || actor;
+          // Dạng Người: Khi đủ 15 EN, thức tỉnh Dạng Thần
+          const targetAlly = getKaguraFateTarget(actor, battle.botTeam);
           actor.godForm = true;
           actor.godTurns = 5;
           actor.linkedAlly = targetAlly;
           targetAlly.buffs = targetAlly.buffs || {};
           targetAlly.buffs.fateString = true;
+          targetAlly.buffs.fateSource = actor;
           addAnimation(actor, "GIÁNG THẦN! THỨC TỈNH DẠNG THẦN", "#ffd700");
+          addAnimation(targetAlly, "DÂY ĐỊNH MỆNH", "#ffd700");
           logCombat(`✨🪭 [Sợi Dây Định Mệnh] Kagura nối dây định mệnh với ${targetAlly.name} và chuyển sang DẠNG THẦN trong 5 lượt (Giữ nguyên 15 EN)!`);
         }
       } else if (actor.heroId === "susanoo_boss" || actor.id === "susanoo_boss") {
@@ -6745,6 +6866,7 @@ const GACHA_SPECIAL_RATES = [
 ];
 
 const GACHA_NORMAL_RATES = [
+  { name: "Kagura [Tướng Mới v5.6.0]", type: "hero", id: "kagura", rate: 0.010, color: "var(--accent-purple)" },
   { name: "Kaitou Kid [SSR Mùa II]", type: "hero", id: "kid", rate: 0.008, color: "var(--accent-purple)" },
   { name: "Otsutsuki Isshiki [SSR Mùa II]", type: "hero", id: "isshiki", rate: 0.008, color: "var(--accent-cyan)" },
   { name: "50 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 50, rate: 0.12, color: "var(--accent-gold)" },
@@ -7629,6 +7751,15 @@ function submitGiftcode() {
     toast("⚔️ Kích hoạt CH9_10: Mở khóa Ải 10 Chương 9 gặp Chúa Tể Susanoo!");
     return;
   }
+  if (code === "KAGURA" || code === "KAGURA2026") {
+    gameState.heroes.kagura = { level: 1 };
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🎉 Kích hoạt mã KAGURA thành công! Mở khóa tướng mới Kagura [SKL]!", false);
+    return;
+  }
   if (code === "CONAN") {
     gameState.heroes.conan = { level: 1 };
     gameState.resources.gold += 100000;
@@ -7696,7 +7827,7 @@ function submitGiftcode() {
     gameState.events.anhHungChiVien.hoPhach += 10000;
     gameState.events.anhHungChiVien.points += 1000000;
 
-    const allHeroes = Object.keys(HERO_DB);
+    const allHeroes = Object.keys(HERO_DB).filter(hId => !HERO_DB[hId].bossOnly);
     allHeroes.forEach(hId => {
       if (!gameState.heroes[hId]) gameState.heroes[hId] = { level: 1 };
     });
@@ -7727,7 +7858,7 @@ function submitGiftcode() {
     gameState.resources.purpleMeteor = Math.max(gameState.resources.purpleMeteor || 0, ONE_BILLION);
     gameState.resources.keoBanh = Math.max(gameState.resources.keoBanh, ONE_BILLION);
 
-    Object.keys(HERO_DB).forEach(hId => {
+    Object.keys(HERO_DB).filter(hId => !HERO_DB[hId].bossOnly).forEach(hId => {
       if (!gameState.heroes[hId]) {
         gameState.heroes[hId] = { level: 1 };
       }
@@ -8017,7 +8148,7 @@ function openHeroesModal() {
 function renderHeroesList() {
   const container = document.getElementById("heroListContainer");
   container.innerHTML = "";
-  Object.keys(gameState.heroes).forEach(hId => {
+  Object.keys(gameState.heroes).filter(hId => !HERO_DB[hId]?.bossOnly).forEach(hId => {
     const stats = getHeroStats(hId);
     const btn = document.createElement("button");
     btn.className = `btn ${hId === inspectingHeroId ? "btn-accent" : ""}`;
@@ -9394,7 +9525,7 @@ function assignVersusHero(hId) {
 }
 
 function randomVersusPick() {
-  const allH = Object.keys(HERO_DB);
+  const allH = Object.keys(HERO_DB).filter(hId => !HERO_DB[hId].bossOnly);
   const shuffled = [...allH].sort(() => Math.random() - 0.5);
   versusState.team1 = shuffled.slice(0, 3);
   versusState.team2 = shuffled.slice(3, 6);
@@ -9468,7 +9599,7 @@ function renderVersusHeroGrid() {
   if (!container) return;
   container.innerHTML = "";
 
-  const allH = Object.keys(HERO_DB);
+  const allH = Object.keys(HERO_DB).filter(hId => !HERO_DB[hId].bossOnly);
   const t1 = versusState.team1;
   const t2 = versusState.team2;
 
