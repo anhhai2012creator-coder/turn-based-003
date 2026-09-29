@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v5.3.0 [RA MẮT SUSAN SÁO THẦN & FIX TRIỆT ĐỂ QUA ẢI]</title>
+<title>Chiến Thuật Luân Hồi v5.4.0 [ĐẤU KHÁNG CHIẾN THUẬT 3V3, NERF SUSAN, BUFF TSUNADE & CONAN]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -540,11 +541,15 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.3.0: Ra Mắt Susan (Sáo Thần) [AS] | Khắc Phục Dứt Điểm Lỗi Mở Khóa Ải Sau Trận | Siêu Thần Chú Hoàn Thiện | Max Level 500</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.4.0: Chế Độ Mới "Đấu Kháng Chiến Thuật 3 vs 3" (Lv 500) | Cân Bằng Susan (Loại Bỏ Bất Tử) | Buff Tsunade (Giải Toàn Bộ Debuff) & Conan (Bạo Kích)</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
           <span>Đấu Ải</span>
+        </button>
+        <button class="btn btn-danger" onclick="openVersusModal()" style="border-color:#ff0055; background:linear-gradient(180deg, #2b111e 0%, #161b22 100%);">
+          <span class="btn-icon">⚔️🛡️</span>
+          <span>Đấu Kháng 3v3</span>
         </button>
         <button class="btn btn-gold" onclick="openTrainingGateModal()">
           <span class="btn-icon">⛩️</span>
@@ -1328,6 +1333,55 @@
     </div>
   </div>
 
+
+  <!-- Popup: Đấu Kháng Chiến Thuật 3 vs 3 (v5.4.0) -->
+  <div class="modal-overlay" id="modalVersusSetup">
+    <div class="modal-card" style="width:780px; max-width:96vw;">
+      <div class="modal-header">
+        <div class="modal-title" style="color:var(--accent-red); font-size:16px; font-weight:800;">⚔️🛡️ ĐẤU KHÁNG CHIẾN THUẬT (3 VS 3 CẤP 500)</div>
+        <button class="modal-close" onclick="closeModal('modalVersusSetup')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:10px 14px;">
+        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:10px;">
+          Chế độ giao hữu chiến thuật: Cả 2 đội đạt <b>Cấp 500</b>, không dùng Linh Thú. <b>Không được chọn trùng tướng</b> giữa 2 đội. Bạn tự tay điều khiển cả hai bên!
+        </div>
+        
+        <!-- Bố cục 2 đội -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:12px;">
+          <!-- Đội 1 (Xanh) -->
+          <div style="background:#0e1724; border:1px solid #1f6feb; border-radius:8px; padding:10px;">
+            <div style="font-size:13px; font-weight:bold; color:#58a6ff; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🔵 ĐỘI 1 (XANH)</span>
+              <button class="btn" style="padding:2px 8px; font-size:10px;" onclick="clearVersusTeam(1)">Xóa Đội 1</button>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;" id="versusTeam1Slots"></div>
+          </div>
+
+          <!-- Đội 2 (Đỏ) -->
+          <div style="background:#201216; border:1px solid #da3633; border-radius:8px; padding:10px;">
+            <div style="font-size:13px; font-weight:bold; color:#f85149; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center;">
+              <span>🔴 ĐỘI 2 (ĐỎ)</span>
+              <button class="btn" style="padding:2px 8px; font-size:10px;" onclick="clearVersusTeam(2)">Xóa Đội 2</button>
+            </div>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:6px;" id="versusTeam2Slots"></div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <div style="font-size:12px; font-weight:bold; color:#f0f6fc;" id="versusSelectNotice">Đang chọn cho: <span style="color:#58a6ff">Đội 1 - Ô 1</span></div>
+          <button class="btn btn-accent" style="padding:4px 10px; font-size:11px;" onclick="randomVersusPick()">🎲 Chọn Nhanh 2 Đội</button>
+        </div>
+
+        <!-- Danh sách tướng chọn -->
+        <div style="max-height:220px; overflow-y:auto; display:grid; grid-template-columns:repeat(5, 1fr); gap:6px; background:#0d1117; padding:8px; border-radius:8px; border:1px solid var(--border-color);" id="versusHeroGrid"></div>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:space-between;">
+        <button class="btn" onclick="closeModal('modalVersusSetup')">Đóng</button>
+        <button class="btn btn-primary" id="btnStartVersus" onclick="startVersusBattle()" style="padding:8px 24px; font-size:13px; font-weight:800;" disabled>⚔️ BẮT ĐẦU ĐẤU KHÁNG</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Popup: Chọn Chương & Ải -->
   <div class="modal-overlay" id="modalStageSelect">
     <div class="modal-card" style="width:680px;">
@@ -1785,7 +1839,7 @@ const HERO_DB = {
     normalAttack: { name: "Kim Gây Mê", enGain: 1.9, desc: "Gây 105% ATK lên 1 mục tiêu, hồi 1.9 EN (+0.7 EN v3.3.2). Có 35% cơ hội gây 'Thuốc ngủ' (Stun 2 lượt, hút 30% ATK mục tiêu trong 3 hiệp)." },
     activeSkill: { name: "Cú Sút Siêu Lực", desc: "Gây 350% ATK lên 1 mục tiêu kèm 8% HP tối đa của mục tiêu. Hồi 1.2 EN." },
     passives: [
-      { lv: 30, name: "Định Vị Điểm Yếu", desc: "Sau khi tung kỹ năng chủ động, tăng 25% tỉ lệ bạo kích trong 2 lượt tiếp theo." },
+      { lv: 30, name: "Định Vị Điểm Yếu", desc: "Sau khi tung kỹ năng chủ động, tăng 25% tỉ lệ bạo kích và 70% ST bạo kích trong 2 lượt tiếp theo." },
       { lv: 70, name: "Phá Hủy Giáp", desc: "Khi tung đánh thường, có 20% cơ hội phá hủy vĩnh viễn 20% DEF mục tiêu." },
       { lv: 80, name: "Ván Trượt & Công Kích", desc: "Bắt đầu trận đấu, Conan nhận 2 EN. Khi HP dưới 40%, Conan tiến vào trạng thái 'Công kích' tăng 100% ATK hiện tại." },
       { lv: 100, name: "Chân Tướng Phơi Bày", desc: "Nâng cấp bị động 1: Sau khi tung kỹ năng chủ động, tăng 35% tỉ lệ bạo kích trong 2 lượt tiếp theo." }
@@ -1906,7 +1960,7 @@ const HERO_DB = {
     normalAttack: { name: "Quái Lực Quyền", enGain: 1.4, desc: "Gây 98% ATK lên 1 mục tiêu. Hồi 1.4 EN." },
     activeSkill: { name: "Sáng Tạo Tái Sinh", desc: "Hồi phục cho 1 đồng minh bằng 400% ATK bản thân kèm 5% HP tối đa bản thân. Đồng thời tăng 40% ST của đồng minh đó trong 2 lượt. Tiêu tốn toàn bộ EN." },
     passives: [
-      { lv: 30, name: "Y Thuật Tinh Thông", desc: "Mỗi khi đồng đội hoặc bản thân nhận ST, tăng 5% khả năng hồi phục (tối đa 80%)." },
+      { lv: 30, name: "Y Thuật Tinh Thông", desc: "Mỗi khi đồng đội hoặc bản thân nhận ST, tăng 5% khả năng hồi phục (tối đa 80%). Đồng đội hoặc bản thân nhận hồi HP sẽ được giải trừ toàn bộ debuff." },
       { lv: 70, name: "Bách Hào Thuật Sơ Cấp", desc: "Khi HP dưới 30%, hồi 50% HP còn lại kèm 12% HP tối đa. Đồng thời DEF bản thân +50% trong 5 lượt." },
       { lv: 80, name: "Hào Quang Hokage", desc: "Khi bản thân còn sống, toàn đội nhận miễn thương 15%." },
       { lv: 100, name: "Bách Hào Thuật Hoàn Hảo", desc: "Nâng cấp bị động 2: Khi HP dưới 45%, hồi 50% HP còn lại kèm 18% HP tối đa. Đồng thời DEF bản thân +60% trong 5 lượt." }
@@ -1932,7 +1986,7 @@ const HERO_DB = {
     normalAttack: { name: "Khúc Sáo Ma Thuật", enGain: 1.0, desc: "Gây 99% ATK lên 1 mục tiêu. Hồi 1 EN. Hồi HP bằng 30% ST gây ra cho toàn đội. 30% cơ hội gây 'Thôi miên' (giảm 100% ATK, 50% hồi phục trong 2 lượt)." },
     activeSkill: { name: "Liên Kết Ác Ma", desc: "Thổi sáo gắn liên kết lên 1 mục tiêu gây 120% ATK (150% nếu có Siêu Thần Chú), liên kết tồn tại 4 lượt. Kích hoạt 'Liên kết ác ma'." },
     passives: [
-      { lv: 30, name: "Liên Kết Ác Ma", desc: "Khi dùng kỹ năng chủ động, mục tiêu nhận 'Liên kết ác ma'. Susan tăng 40% ST nhận vào nhưng toàn bộ ST chuyển hoá qua mục tiêu. Bản thân không thể bị HP = 0." },
+      { lv: 30, name: "Liên Kết Ác Ma", desc: "Khi dùng kỹ năng chủ động, mục tiêu nhận 'Liên kết ác ma'. Susan tăng 40% ST nhận vào, nhưng toàn bộ ST bản thân nhận thì mục tiêu cũng nhận. Bản thân có khả năng tử vong." },
       { lv: 70, name: "Nghịch Chuyển Sinh Mệnh", desc: "Trong trạng thái Liên kết ác ma, mọi sát thương mục tiêu phải nhận sẽ chuyển hoá thành hồi phục HP cho Susan." },
       { lv: 80, name: "Khúc Ca Chia Sẻ", desc: "Khi HP trên 20%, mỗi lượt Susan lấy 8% HP tối đa bản thân chia đều hồi phục cho 2 đồng minh (hoặc cho đồng minh còn sống)." },
       { lv: 100, name: "Tuyệt Vọng Trỗi Dậy", desc: "Khi HP dưới 50%, mỗi 2% HP mất đi tăng 5% khả năng hồi HP (tối đa 60%), đồng thời mỗi 5% HP mất đi tăng 20% ST bạo kích." }
@@ -3551,6 +3605,20 @@ function checkBattleEnd() {
   const playerAlive = battle.playerTeam.some(f => f && f.hp > 0);
   const botAlive = battle.botTeam.some(f => f && f.hp > 0);
 
+  if (battle.mode === 'versus') {
+    if (!botAlive) {
+      battle.active = false;
+      showVersusResult(1);
+      return true;
+    }
+    if (!playerAlive) {
+      battle.active = false;
+      showVersusResult(2);
+      return true;
+    }
+    return false;
+  }
+
   if (!botAlive) {
     battle.active = false;
     handleVictory();
@@ -3754,7 +3822,7 @@ function nextTurn() {
         logCombat(`[Điều Tức] ${f.name} nhận 2 EN!`);
       }
       // Decrement duration of buffs
-      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "stun", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff", "mienThuongDacBiet", "vegitoDmgBoost"].forEach(k => {
+      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "stun", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff", "mienThuongDacBiet", "vegitoDmgBoost", "conanWeakPoint"].forEach(k => {
         if (f.buffs[k]) {
           f.buffs[k]--;
           if (f.buffs[k] <= 0) delete f.buffs[k];
@@ -3896,6 +3964,24 @@ function nextTurn() {
 
   document.getElementById("activeActorName").textContent = actor.name;
   document.getElementById("activeActorSpeed").textContent = `Tốc độ: ${actor.spd} | EN: ${actor.en}/${actor.enMax}`;
+
+  if (battle.mode === 'versus') {
+    battle.isWaitingPlayer = true;
+    const isTeam1 = (actor.teamSide === 1);
+    const teamColor = isTeam1 ? "#58a6ff" : "#f85149";
+    const teamLabel = isTeam1 ? "ĐỘI 1 (XANH)" : "ĐỘI 2 (ĐỎ)";
+    const actorEl = document.getElementById("activeActorName");
+    if (actorEl) {
+      actorEl.innerHTML = `<span style="color:${teamColor}; font-weight:800;">[${teamLabel}]</span> ${actor.name}`;
+    }
+    const enemyTeam = isTeam1 ? battle.botTeam : battle.playerTeam;
+    const livingEnemies = enemyTeam.filter(e => e && e.hp > 0);
+    if (livingEnemies.length > 0) {
+      battle.selectedTargetIndex = enemyTeam.indexOf(livingEnemies[0]);
+    }
+    updatePlayerSkillCards(actor);
+    return;
+  }
 
   if (!actor.isBot) {
     battle.isWaitingPlayer = true;
@@ -4157,23 +4243,24 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
     }
   }
 
-  // Susan Bị Động 1: Khi có Liên kết ác ma, tăng thêm 40% ST nhận vào, toàn bộ ST chuyển hoá qua mục tiêu liên kết, Susan không thể bị HP = 0
-  if (target.id === "susan" && target.level >= 30 && target.buffs && target.buffs.devilLinkActive) {
+  // Susan Bị Động 1 (v5.4.0 Nerf): Susan tăng 40% ST nhận vào, toàn bộ ST bản thân nhận thì mục tiêu cũng nhận. Susan CÓ THỂ TỬ VONG!
+  if (target.id === "susan" && target.level >= 30 && target.buffs && target.buffs.devilLinkActive && !target.isMirroringDamage) {
     const linkTarget = target.buffs.devilLinkActive.target;
     if (linkTarget && linkTarget.hp > 0) {
       finalDmg = Math.round(finalDmg * 1.40);
-      const maxTransferable = Math.max(0, target.hp - 1);
-      const transferDmg = Math.min(maxTransferable, finalDmg);
-      if (transferDmg > 0) {
-        target.hp -= transferDmg;
-        addAnimation(target, `LIÊN KẾT CHUYỂN! -${transferDmg}`, "#ff0055");
-        logCombat(`🎶🩸 [Liên Kết Ác Ma] Susan chịu đòn nhưng chuyển hoá ${transferDmg.toLocaleString()} ST (+40%) sang ${linkTarget.name}!`);
-        applyDamage(linkTarget, transferDmg, false, target);
-      } else {
-        logCombat(`🎶🛡️ [Bất Tử Liên Kết] Susan chỉ còn 1 HP, không thể bị hạ gục và không chuyển ST nữa!`);
-      }
-      return transferDmg;
+      target.isMirroringDamage = true;
+      logCombat(`🎶🩸 [Liên Kết Ác Ma] Susan nhận ${finalDmg.toLocaleString()} ST (+40%) và phản chiếu toàn bộ sang ${linkTarget.name}!`);
+      applyDamage(linkTarget, finalDmg, false, target);
+      target.isMirroringDamage = false;
     }
+  }
+
+  // Tsunade Bị Động 1: Mỗi khi đồng đội hoặc bản thân nhận ST, tăng 5% khả năng hồi phục (tối đa 80%)
+  const victimTeam = (battle.playerTeam && battle.playerTeam.includes(target)) ? battle.playerTeam : battle.botTeam;
+  const tsunadeAlly = victimTeam ? victimTeam.find(p => p && p.id === "tsunade" && p.level >= 30 && p.hp > 0) : null;
+  if (tsunadeAlly && finalDmg > 0) {
+    tsunadeAlly.buffs = tsunadeAlly.buffs || {};
+    tsunadeAlly.buffs.healBoost = Math.min(0.80, (tsunadeAlly.buffs.healBoost || 0) + 0.05);
   }
 
   target.hp = Math.max(0, target.hp - finalDmg);
@@ -4181,8 +4268,16 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   const text = isCrit ? `CRIT! -${finalDmg}` : `-${finalDmg}`;
   addAnimation(target, text, color);
 
-  // Susan Bị Động 2: Trong trạng thái Liên kết ác ma, mọi ST mục tiêu liên kết nhận được chuyển hoá thành hồi HP cho Susan
-  if (target.buffs && target.buffs.devilLinked) {
+  // Susan chết thì hủy liên kết
+  if (target.id === "susan" && target.hp <= 0 && target.buffs && target.buffs.devilLinkActive) {
+    const lTarget = target.buffs.devilLinkActive.target;
+    if (lTarget && lTarget.buffs) delete lTarget.buffs.devilLinked;
+    delete target.buffs.devilLinkActive;
+    logCombat(`🎶💀 [Liên Kết Tan Biến] Susan đã hy sinh, Liên kết ác ma lập tức chấm dứt!`);
+  }
+
+  // Susan Bị Động 2: Trong trạng thái Liên kết ác ma, mọi ST mục tiêu liên kết nhận được chuyển hoá thành hồi HP cho Susan (không tính sát thương tự phản chiếu)
+  if (target.buffs && target.buffs.devilLinked && (!attacker || !attacker.isMirroringDamage)) {
     const susanActor = target.buffs.devilLinked.source;
     if (susanActor && susanActor.hp > 0 && susanActor.level >= 70 && finalDmg > 0) {
       healFighter(susanActor, finalDmg);
@@ -4354,6 +4449,23 @@ function healFighter(fighter, amount) {
   fighter.hp = Math.min(fighter.maxHp, fighter.hp + finalHeal);
   const healed = fighter.hp - oldHp;
   if (healed > 0) {
+    // Tsunade Bị Động 1: Đồng đội hoặc bản thân nhận hồi HP sẽ được giải trừ toàn bộ debuff
+    const currentTeam = (battle.playerTeam && battle.playerTeam.includes(fighter)) ? battle.playerTeam : battle.botTeam;
+    const tsunadeHealer = currentTeam ? currentTeam.find(p => p && p.id === "tsunade" && p.level >= 30 && p.hp > 0) : null;
+    if (tsunadeHealer && fighter.buffs) {
+      const badKeys = ['burn', 'bleeding', 'bleeding2', 'luanHoi', 'choang', 'stun', 'terror', 'suyGiam', 'thienDaoDebuff', 'hypnosis', 'healReduction', 'teleportDebuff', 'devilLinked'];
+      let cleansed = false;
+      badKeys.forEach(k => {
+        if (fighter.buffs[k]) {
+          delete fighter.buffs[k];
+          cleansed = true;
+        }
+      });
+      if (cleansed) {
+        addAnimation(fighter, "GIẢI TRỪ DEBUFF!", "#3fb950");
+        logCombat(`🌿✨ [Y Thuật Tinh Thông] Nhận hồi phục, ${fighter.name} được Tsunade giải trừ toàn bộ hiệu ứng xấu!`);
+      }
+    }
     addAnimation(fighter, `+${healed} HP`, "#3fb950");
     // Madara Bị Động 1 & 3: Khi nhận hồi phục, nhận khiên (15% nếu Lv >= 80, 8% nếu Lv >= 30)
     if (fighter.id === "madara" && fighter.level >= 30) {
@@ -4371,8 +4483,12 @@ function executePlayerAction(type) {
   const actor = battle.turnQueue[battle.currentActorIndex];
   if (!actor || actor.isBot) return;
 
-  let target = battle.botTeam[battle.selectedTargetIndex];
-  if (!target || target.hp <= 0) target = getBotDefaultTarget(battle.botTeam.filter(b => b && b.hp > 0));
+  const isVersus = (battle.mode === 'versus');
+  const enemyTeam = (isVersus && actor.teamSide === 2) ? battle.playerTeam : battle.botTeam;
+  const allyTeam = (isVersus && actor.teamSide === 2) ? battle.botTeam : battle.playerTeam;
+
+  let target = enemyTeam[battle.selectedTargetIndex];
+  if (!target || target.hp <= 0) target = getBotDefaultTarget(enemyTeam.filter(b => b && b.hp > 0));
   if (!target) {
     checkBattleEnd();
     return;
@@ -4883,13 +4999,15 @@ function executePlayerAction(type) {
       actor.en = Math.min(actor.enMax, +(actor.en + 1.2).toFixed(1));
       logCombat(`⚽💥 [Cú Sút Siêu Lực] Conan sút bóng công nghệ cực mạnh gây ${damage} ST (kèm 8% HP max) và hồi lại 1.2 EN!`);
 
-      // Bị động 1 (Lv.30) & 4 (Lv.100): Sau skill tăng crit (Lv.100: +35% crit, Lv.30: +25% crit) trong 2 lượt
+      // Bị động 1 (v5.4.0 Buff): Sau skill tăng 25% crit và +70% ST bạo kích trong 2 lượt tiếp theo
       if (actor.level >= 30) {
         const critGain = (actor.level >= 100) ? 0.35 : 0.25;
         actor.critRate += critGain;
+        actor.critDmg = +(actor.critDmg + 0.70).toFixed(2);
         actor.buffs.conanCritBuff = 2;
         actor.buffs.conanCritAmt = critGain;
-        logCombat(`🎯 [Định Vị Điểm Yếu] Conan tăng ${Math.round(critGain*100)}% tỉ lệ Bạo Kích trong 2 lượt tiếp theo!`);
+        actor.buffs.conanCritDmgAmt = 0.70;
+        logCombat(`🎯 [Định Vị Điểm Yếu] Conan tăng ${Math.round(critGain*100)}% tỉ lệ Bạo Kích và +70% ST Bạo Kích trong 2 lượt tiếp theo!`);
       }
     } else if (actor.id === "kid") {
       // Kỹ năng chủ động: Kaitou kid gây ST lên 1 mục tiêu 3 lần cộng dồn
@@ -5661,7 +5779,10 @@ canvas.addEventListener("click", (e) => {
   const clickX = e.clientX - rect.left;
   const clickY = e.clientY - rect.top;
 
-  battle.botTeam.forEach((b, idx) => {
+  const actor = battle.turnQueue[battle.currentActorIndex];
+  const targetTeam = (battle.mode === 'versus' && actor && actor.teamSide === 2) ? battle.playerTeam : battle.botTeam;
+
+  targetTeam.forEach((b, idx) => {
     if (b && b.hp > 0) {
       const coord = getFighterCoord(b);
       const dist = Math.hypot(clickX - coord.x, clickY - coord.y);
@@ -8395,6 +8516,302 @@ if (document.readyState === "loading") {
   initGame();
 }
 window.onload = initGame;
+
+
+/* ==========================================================================
+   CHẾ ĐỘ MỚI: ĐẤU KHÁNG CHIẾN THUẬT (3 VS 3 CẤP 500) - v5.4.0
+   ========================================================================== */
+let versusState = {
+  team1: [null, null, null],
+  team2: [null, null, null],
+  activeTeam: 1,
+  activeSlot: 0
+};
+
+function openVersusModal() {
+  if (!versusState.team1[0] && !versusState.team2[0]) {
+    randomVersusPick();
+  } else {
+    renderVersusSlots();
+    renderVersusHeroGrid();
+  }
+  openModal("modalVersusSetup");
+}
+
+function selectVersusSlot(team, slot) {
+  versusState.activeTeam = team;
+  versusState.activeSlot = slot;
+  renderVersusSlots();
+  renderVersusHeroGrid();
+}
+
+function clearVersusTeam(team) {
+  versusState[`team${team}`] = [null, null, null];
+  versusState.activeTeam = team;
+  versusState.activeSlot = 0;
+  renderVersusSlots();
+  renderVersusHeroGrid();
+}
+
+function assignVersusHero(hId) {
+  const t1 = versusState.team1;
+  const t2 = versusState.team2;
+  const curTeam = versusState.activeTeam;
+  const curSlot = versusState.activeSlot;
+
+  // Kiểm tra trùng lặp giữa 2 đội
+  if (curTeam === 1 && t2.includes(hId)) {
+    toast(`Nhân vật ${HERO_DB[hId].name} đã được chọn bởi Đội 2 (Đỏ)!`, true);
+    return;
+  }
+  if (curTeam === 2 && t1.includes(hId)) {
+    toast(`Nhân vật ${HERO_DB[hId].name} đã được chọn bởi Đội 1 (Xanh)!`, true);
+    return;
+  }
+
+  // Nếu chọn lại tướng trong cùng đội thì bỏ chọn hoặc dời ô
+  const sameTeamIdx = versusState[`team${curTeam}`].indexOf(hId);
+  if (sameTeamIdx !== -1 && sameTeamIdx !== curSlot) {
+    versusState[`team${curTeam}`][sameTeamIdx] = null;
+  }
+
+  versusState[`team${curTeam}`][curSlot] = hId;
+
+  // Tự động tìm ô trống tiếp theo
+  let foundEmpty = false;
+  for (let s = 0; s < 3; s++) {
+    if (!versusState[`team${curTeam}`][s]) {
+      versusState.activeSlot = s;
+      foundEmpty = true;
+      break;
+    }
+  }
+  if (!foundEmpty) {
+    const otherTeam = (curTeam === 1) ? 2 : 1;
+    for (let s = 0; s < 3; s++) {
+      if (!versusState[`team${otherTeam}`][s]) {
+        versusState.activeTeam = otherTeam;
+        versusState.activeSlot = s;
+        break;
+      }
+    }
+  }
+
+  renderVersusSlots();
+  renderVersusHeroGrid();
+}
+
+function randomVersusPick() {
+  const allH = Object.keys(HERO_DB);
+  const shuffled = [...allH].sort(() => Math.random() - 0.5);
+  versusState.team1 = shuffled.slice(0, 3);
+  versusState.team2 = shuffled.slice(3, 6);
+  versusState.activeTeam = 1;
+  versusState.activeSlot = 0;
+  renderVersusSlots();
+  renderVersusHeroGrid();
+  toast("🎲 Đã chọn ngẫu nhiên 6 nhân vật phân chia 2 đội công bằng!");
+}
+
+function renderVersusSlots() {
+  const renderTeam = (teamId, containerId, color, borderCol) => {
+    const cEl = document.getElementById(containerId);
+    if (!cEl) return;
+    cEl.innerHTML = "";
+    const teamData = versusState[`team${teamId}`];
+
+    teamData.forEach((hId, slot) => {
+      const isSelected = (versusState.activeTeam === teamId && versusState.activeSlot === slot);
+      const slotCard = document.createElement("div");
+      slotCard.className = `slot-card ${isSelected ? "selected" : ""}`;
+      slotCard.style.padding = "6px";
+      slotCard.style.cursor = "pointer";
+      slotCard.style.border = `2px solid ${isSelected ? "#ffdf5d" : borderCol}`;
+      slotCard.style.background = isSelected ? "rgba(255,223,93,0.12)" : "#161b22";
+      slotCard.style.borderRadius = "8px";
+      slotCard.onclick = () => selectVersusSlot(teamId, slot);
+
+      const posLabel = (slot === 0) ? "Trước 1" : (slot === 1 ? "Trước 2" : "Sau 3");
+
+      if (hId && HERO_DB[hId]) {
+        const db = HERO_DB[hId];
+        const typeCol = db.type === "DEF" ? "#58a6ff" : (db.type === "ATK" ? "#f85149" : (db.type === "AS" ? "#ff0055" : "#39c5bb"));
+        slotCard.innerHTML = `
+          <div style="font-size:10px; color:${color}; font-weight:bold;">${posLabel}</div>
+          <div style="font-size:11px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${db.name}</div>
+          <div style="font-size:10px; color:${typeCol};">[${db.type}] Lv.500</div>
+        `;
+      } else {
+        slotCard.innerHTML = `
+          <div style="font-size:10px; color:${color}; font-weight:bold;">${posLabel}</div>
+          <div style="font-size:11px; color:var(--text-secondary); font-style:italic;">+ Chọn tướng</div>
+        `;
+      }
+      cEl.appendChild(slotCard);
+    });
+  };
+
+  renderTeam(1, "versusTeam1Slots", "#58a6ff", "#1f6feb");
+  renderTeam(2, "versusTeam2Slots", "#f85149", "#da3633");
+
+  const curTeamName = versusState.activeTeam === 1 ? "Đội 1 (Xanh)" : "Đội 2 (Đỏ)";
+  const curColor = versusState.activeTeam === 1 ? "#58a6ff" : "#f85149";
+  const slotName = versusState.activeSlot === 0 ? "Ô 1 (Hàng Trước)" : (versusState.activeSlot === 1 ? "Ô 2 (Hàng Trước)" : "Ô 3 (Hàng Sau)");
+  const noticeEl = document.getElementById("versusSelectNotice");
+  if (noticeEl) {
+    noticeEl.innerHTML = `Đang chọn cho: <b style="color:${curColor}">${curTeamName} - ${slotName}</b>`;
+  }
+
+  // Kiểm tra nút Bắt đầu
+  const t1Ready = versusState.team1.every(h => h !== null);
+  const t2Ready = versusState.team2.every(h => h !== null);
+  const btnStart = document.getElementById("btnStartVersus");
+  if (btnStart) {
+    btnStart.disabled = !(t1Ready && t2Ready);
+  }
+}
+
+function renderVersusHeroGrid() {
+  const container = document.getElementById("versusHeroGrid");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const allH = Object.keys(HERO_DB);
+  const t1 = versusState.team1;
+  const t2 = versusState.team2;
+
+  allH.forEach(hId => {
+    const db = HERO_DB[hId];
+    const isT1 = t1.includes(hId);
+    const isT2 = t2.includes(hId);
+    const isPicked = isT1 || isT2;
+
+    const card = document.createElement("div");
+    card.style.background = isT1 ? "#112233" : (isT2 ? "#2c1518" : "#161b22");
+    card.style.border = `1px solid ${isT1 ? "#1f6feb" : (isT2 ? "#da3633" : "#30363d")}`;
+    card.style.borderRadius = "6px";
+    card.style.padding = "6px";
+    card.style.cursor = isPicked ? "not-allowed" : "pointer";
+    card.style.opacity = isPicked ? "0.6" : "1.0";
+    card.style.transition = "all 0.15s";
+
+    const typeCol = db.type === "DEF" ? "#58a6ff" : (db.type === "ATK" ? "#f85149" : (db.type === "AS" ? "#ff0055" : "#39c5bb"));
+
+    card.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:10px; font-weight:bold; color:${typeCol}">[${db.type}]</span>
+        ${isT1 ? `<span style="font-size:9px; background:#1f6feb; color:#fff; padding:1px 4px; border-radius:3px;">Đội 1</span>` : ''}
+        ${isT2 ? `<span style="font-size:9px; background:#da3633; color:#fff; padding:1px 4px; border-radius:3px;">Đội 2</span>` : ''}
+      </div>
+      <div style="font-size:11px; font-weight:700; color:#fff; margin-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${db.name}</div>
+      <div style="font-size:9px; color:var(--text-secondary);">SPD: ${db.baseSpd}</div>
+    `;
+
+    if (!isPicked) {
+      card.onclick = () => assignVersusHero(hId);
+    } else {
+      card.onclick = () => {
+        toast(`Nhân vật ${db.name} đã được chọn bởi ${isT1 ? 'Đội 1 (Xanh)' : 'Đội 2 (Đỏ)'}!`, true);
+      };
+    }
+    container.appendChild(card);
+  });
+}
+
+function startVersusBattle() {
+  closeModal("modalVersusSetup");
+
+  const t1 = versusState.team1;
+  const t2 = versusState.team2;
+  if (t1.some(h => !h) || t2.some(h => !h)) {
+    toast("Cả hai đội cần chọn đủ 3 nhân vật!", true);
+    return;
+  }
+
+  switchScreen("screenBattle");
+  logCombat(`=== ⚔️ BẮT ĐẦU ĐẤU KHÁNG CHIẾN THUẬT (3 VS 3 CẤP 500) ===`);
+  logCombat(`🔵 Đội 1 (Xanh): ${t1.map(id => HERO_DB[id].name).join(" | ")}`);
+  logCombat(`🔴 Đội 2 (Đỏ): ${t2.map(id => HERO_DB[id].name).join(" | ")}`);
+
+  const createVersusFighter = (heroId, slot, teamSide) => {
+    const stats = getHeroStats(heroId, 500);
+    const db = HERO_DB[heroId] || { name: heroId, type: "ATK", enMax: 5 };
+    const fighter = {
+      ...stats,
+      heroId: heroId,
+      id: heroId,
+      name: `${stats.name} (Đ.${teamSide})`,
+      en: 0,
+      shield: 0,
+      isBot: (teamSide === 2), // Team 2 renders on right side
+      teamSide: teamSide,
+      slot: slot,
+      buffs: {},
+      isAlive: true,
+      extraEnGain: 0,
+      vegitoPassiveTriggered: false,
+      atkSpd: stats.db.atkSpd || 0,
+      rage: 0,
+      db: db
+    };
+
+    // Passives mở màn trận đấu
+    if (heroId === "omega") fighter.shield = Math.round(fighter.maxHp * 1.10);
+    if (heroId === "itachi") fighter.en = 2;
+    if (heroId === "luanhoi") fighter.en = 1.5;
+    if (heroId === "phoverus") fighter.en = Math.min(fighter.enMax, 3);
+    if (heroId === "vegito") { fighter.en = 4; fighter.buffs.vegitoDmgBoost = 3; }
+    if (heroId === "kaguya") { fighter.dimension = "ice"; fighter.en = 2; }
+    if (heroId === "isshiki") fighter.atkSpd = 0.40;
+    if (heroId === "conan") { fighter.en = Math.min(fighter.enMax, 2); fighter.spd = Math.round(fighter.spd * 1.20); }
+    if (heroId === "kid") fighter.en = Math.min(fighter.enMax, 2);
+
+    return fighter;
+  };
+
+  const pTeam = t1.map((hId, slot) => createVersusFighter(hId, slot, 1));
+  const bTeam = t2.map((hId, slot) => createVersusFighter(hId, slot, 2));
+
+  battle.active = true;
+  battle.mode = 'versus';
+  battle.chapter = 0;
+  battle.stage = 0;
+  battle.playerTeam = pTeam;
+  battle.botTeam = bTeam;
+  battle.roundCount = 1;
+  battle.combatLogs = [];
+  battle.animations = [];
+  battle.selectedTargetIndex = 0;
+  battle.auto = false;
+
+  // HOÀN TOÀN TẮT LINH THÚ TRONG ĐẤU KHÁNG (Không áp dụng BEASTS_DB)
+
+  buildTurnQueue();
+  nextTurn();
+}
+
+function showVersusResult(winningTeam) {
+  const isTeam1 = (winningTeam === 1);
+  const title = isTeam1 ? "<span style='color:#58a6ff'>🏆 ĐỘI 1 (XANH) CHIẾN THẮNG!</span>" : "<span style='color:#f85149'>🏆 ĐỘI 2 (ĐỎ) CHIẾN THẮNG!</span>";
+  const desc = isTeam1 ? "Đội 1 (Xanh) đã xuất sắc kiểm soát thế trận và đè bẹp đối thủ!" : "Đội 2 (Đỏ) đã thể hiện chiến thuật tuyệt vời và giành thắng lợi hoàn toàn!";
+
+  document.getElementById("battleResultTitle").innerHTML = title;
+  document.getElementById("battleResultBody").innerHTML = `
+    <p style="color:var(--text-secondary); margin-bottom:12px;">Kết thúc trận Đấu Kháng Chiến Thuật 3 vs 3 (Cấp 500)</p>
+    <div style="background:#0d1117; padding:16px; border-radius:8px; display:inline-block; text-align:center; font-size:13px; font-weight:bold; color:#fff; line-height:1.8;">
+      ${desc}
+    </div>
+  `;
+  const footerEl = document.getElementById("battleResultFooter");
+  if (footerEl) {
+    footerEl.innerHTML = `
+      <button class="btn btn-primary" onclick="startVersusBattle()">🔄 Đấu Lại Trận Này</button>
+      <button class="btn btn-accent" onclick="openVersusModal()">👥 Đổi Đội Hình</button>
+      <button class="btn" onclick="exitBattleToHub()">Về Màn Hình Chính</button>
+    `;
+  }
+  openModal("modalBattleResult");
+}
 
 </script>
 </body>
