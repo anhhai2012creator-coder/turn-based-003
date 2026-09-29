@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v5.4.0 [ĐẤU KHÁNG CHIẾN THUẬT 3V3, NERF SUSAN, BUFF TSUNADE & CONAN]</title>
+<title>Chiến Thuật Luân Hồi v5.4.1 [FIX TRIỆT ĐỂ BẢNG KỸ NĂNG ĐẤU KHÁNG 3V3]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -541,7 +541,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.4.0: Chế Độ Mới "Đấu Kháng Chiến Thuật 3 vs 3" (Lv 500) | Cân Bằng Susan (Loại Bỏ Bất Tử) | Buff Tsunade (Giải Toàn Bộ Debuff) & Conan (Bạo Kích)</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.4.1 FIX LỖI: Sửa Triệt Để Bảng Kỹ Năng Đấu Kháng 3v3 (Tự Do Thao Tác 2 Đội) | Cân Bằng Susan, Tsunade & Conan</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -600,7 +600,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.3.0 (SUSAN SÁO THẦN & FIX MỞ ẢI)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.4.1 (ĐẤU KHÁNG 3V3 ĐIỀU KHIỂN ĐÔI BÊN)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -3974,10 +3974,12 @@ function nextTurn() {
     if (actorEl) {
       actorEl.innerHTML = `<span style="color:${teamColor}; font-weight:800;">[${teamLabel}]</span> ${actor.name}`;
     }
-    const enemyTeam = isTeam1 ? battle.botTeam : battle.playerTeam;
+    const enemyTeam = (actor.teamSide === 2) ? battle.playerTeam : battle.botTeam;
     const livingEnemies = enemyTeam.filter(e => e && e.hp > 0);
     if (livingEnemies.length > 0) {
-      battle.selectedTargetIndex = enemyTeam.indexOf(livingEnemies[0]);
+      if (!enemyTeam[battle.selectedTargetIndex] || enemyTeam[battle.selectedTargetIndex].hp <= 0) {
+        battle.selectedTargetIndex = enemyTeam.indexOf(livingEnemies[0]);
+      }
     }
     updatePlayerSkillCards(actor);
     return;
@@ -3999,7 +4001,7 @@ function nextTurn() {
 function autoChooseAction() {
   if (!battle.isWaitingPlayer) return;
   const actor = battle.turnQueue[battle.currentActorIndex];
-  if (!actor || actor.isBot) return;
+  if (!actor || (actor.isBot && battle.mode !== 'versus')) return;
   if (checkBattleEnd()) return;
   if (actor.en >= actor.enMax) {
     executePlayerAction('skill');
@@ -4481,7 +4483,7 @@ function healFighter(fighter, amount) {
 function executePlayerAction(type) {
   if (!battle.isWaitingPlayer) return;
   const actor = battle.turnQueue[battle.currentActorIndex];
-  if (!actor || actor.isBot) return;
+  if (!actor || (actor.isBot && battle.mode !== 'versus')) return;
 
   const isVersus = (battle.mode === 'versus');
   const enemyTeam = (isVersus && actor.teamSide === 2) ? battle.playerTeam : battle.botTeam;
@@ -4511,7 +4513,7 @@ function executePlayerAction(type) {
       applyDamage(target, damage, isCrit, actor);
       const teamHeal = Math.round(damage * 0.30);
       if (teamHeal > 0) {
-        battle.playerTeam.forEach(p => { if (p && p.hp > 0) healFighter(p, teamHeal); });
+        allyTeam.forEach(p => { if (p && p.hp > 0) healFighter(p, teamHeal); });
         logCombat(`🎶 [Khúc Sáo Ma Thuật] Susan gây ${damage.toLocaleString()} ST lên ${target.name}, hồi ${teamHeal.toLocaleString()} HP (30% ST) cho toàn đội.`);
       }
       if (Math.random() < 0.30) {
@@ -4538,7 +4540,7 @@ function executePlayerAction(type) {
       logCombat(`[Long Cốt Kích] Omega Shenron gây ${damage} ST lên ${target.name}.`);
       applyOmegaPassive2(actor, target);
     } else if (actor.id === "vegito") {
-      const targets = battle.botTeam.filter(b => b.hp > 0).slice(0, 3);
+      const targets = enemyTeam.filter(b => b.hp > 0).slice(0, 3);
       const raw = actor.atk * 0.77;
       let totalDmg = 0;
       const pen = (actor.level >= 30) ? 0.30 : (actor.armorPen || 0);
@@ -4596,7 +4598,7 @@ function executePlayerAction(type) {
       logCombat(`💥 [Hắc Bổng Kích] Pain Thiên Đạo găm cọc phóng khắp toàn bộ quân địch gây ${totalDmg} ST!`);
     } else if (actor.id === "isshiki") {
       let totalDmg = 0;
-      battle.botTeam.forEach(bot => {
+      enemyTeam.forEach(bot => {
         if (bot.hp > 0) {
           const raw = actor.atk * 0.88;
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
@@ -4825,7 +4827,7 @@ function executePlayerAction(type) {
       logCombat(`💥 [Phong Lôi Trảm] Nhà lữ hành giáng đòn gây ${damage} ST lên ${target.name}!`);
     } else if (actor.id === "madara") {
       let totalDmgDone = 0;
-      battle.botTeam.forEach(bot => {
+      enemyTeam.forEach(bot => {
         if (bot.hp > 0) {
           const raw = actor.atk * 2.00 + (bot.maxHp * 0.05);
           const { damage, isCrit } = calculateDamage(actor, bot, raw);
@@ -4836,7 +4838,7 @@ function executePlayerAction(type) {
       healFighter(actor, Math.round(totalDmgDone * 0.20));
       actor.buffs.madaraDmgBoost = 3;
     } else if (actor.id === "omega") {
-      let lowestBot = battle.botTeam.filter(b => b.hp > 0).sort((a, b) => a.hp - b.hp)[0];
+      let lowestBot = enemyTeam.filter(b => b.hp > 0).sort((a, b) => a.hp - b.hp)[0];
       if (lowestBot) {
         const raw = actor.atk * 3.00;
         const { damage, isCrit } = calculateDamage(actor, lowestBot, raw, actor.armorPen);
@@ -4848,7 +4850,7 @@ function executePlayerAction(type) {
         applyOmegaPassive2(actor, lowestBot);
       }
     } else if (actor.id === "vegito") {
-      const targets = battle.botTeam.filter(b => b.hp > 0).slice(0, 3);
+      const targets = enemyTeam.filter(b => b.hp > 0).slice(0, 3);
       const raw = actor.atk * 2.80;
       let totalDmg = 0;
       const pen = (actor.level >= 30) ? 0.30 : (actor.armorPen || 0);
@@ -5125,7 +5127,7 @@ function executePlayerAction(type) {
       addAnimation(actor, `KHÔNG GIAN: ${nextDim.toUpperCase()}`, "#bc8cff");
       logCombat(`🌌🌀 [Thiên Đạo Luân Chuyển] Kaguya Otsutsuki mở cổng không gian, dịch chuyển toàn bộ sàn đấu sang Môi Trường: ${nextDimName}!`);
     } else if (actor.id === "tsunade") {
-      const healTarget = battle.playerTeam.filter(p => p && p.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0] || actor;
+      const healTarget = allyTeam.filter(p => p && p.hp > 0).sort((a, b) => (a.hp / a.maxHp) - (b.hp / b.maxHp))[0] || actor;
       let healAmt = Math.round(actor.atk * 4.00 + actor.maxHp * 0.05);
       if (actor.buffs && actor.buffs.healBoost) {
         healAmt = Math.round(healAmt * (1 + actor.buffs.healBoost));
@@ -5549,7 +5551,8 @@ function addAnimation(fighter, text, color) {
 
 function getFighterCoord(fighter) {
   if (!fighter) return { x: 0, y: 0 };
-  if (!fighter.isBot) {
+  const onRight = (fighter.teamSide === 2) || fighter.isBot;
+  if (!onRight) {
     if (fighter.slot === 0) return { x: 340, y: 160 };
     if (fighter.slot === 1) return { x: 340, y: 320 };
     if (fighter.slot === 2) return { x: 180, y: 240 };
@@ -5709,7 +5712,11 @@ function drawCharacter(f) {
   ctx.fillStyle = f.type === "DEF" ? "#58a6ff" : (f.type === "ATK" ? "#f85149" : (f.type === "SKL" ? "#39c5bb" : "#ff0055"));
   ctx.fillText(`[${f.type}]`, x, y - 14);
 
-  if (f.isBot && battle.botTeam[battle.selectedTargetIndex] === f && !isDead) {
+  const isVersus = (battle.mode === 'versus');
+  const curActor = battle.turnQueue[battle.currentActorIndex];
+  const enemyTeam = (isVersus && curActor && curActor.teamSide === 2) ? battle.playerTeam : battle.botTeam;
+
+  if (enemyTeam[battle.selectedTargetIndex] === f && !isDead) {
     ctx.fillStyle = "#f1e05a";
     ctx.fillText("▼ MỤC TIÊU", x, y - 48);
   }
@@ -8743,7 +8750,7 @@ function startVersusBattle() {
       name: `${stats.name} (Đ.${teamSide})`,
       en: 0,
       shield: 0,
-      isBot: (teamSide === 2), // Team 2 renders on right side
+      isBot: false, // v5.4.1: Cả hai đội đều là người chơi điều khiển!
       teamSide: teamSide,
       slot: slot,
       buffs: {},
