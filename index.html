@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v5.4.2 [FIX TRIỆT ĐỂ HỒI HP, SHIELD ĐỘI 2 & HIỆU ỨNG SUSAN]</title>
+<title>Chiến Thuật Luân Hồi v5.5.0 [MỞ RỘNG CHƯƠNG 8 & 9 - ĐỊA NGỤC: KURAMA, KAGURA & SUSANOO]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -541,7 +541,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.4.2 FIX LỖI: Sửa Lỗi Hồi HP & Cấp Khiên Đội 2 (Whis & Kaioshin) | Hoàn Thiện Hiệu Ứng Susan (Liên Kết Ác Ma, Khúc Ca Chia Sẻ, Thôi Miên)</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.5.0 ĐẠI CẬP NHẬT: Thêm Chương 8 & 9 [ĐỊA NGỤC] | Tướng Mới: Đại Boss Kurama (3 Lớp Máu), Kagura (Dạng Thần) & Chúa Tể Susanoo (Trầm Trọng)</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -600,7 +600,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.4.2 (FIX HỒI HP, KHIÊN ĐỘI 2 & HIỆU ỨNG SUSAN)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.5.0 (CHƯƠNG 8-9 ĐỊA NGỤC | KURAMA & KAGURA & SUSANOO)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -2020,6 +2020,61 @@ const HERO_DB = {
       { lv: 130, name: "Thần Chú 1", desc: "+10% ATK; +25% DEF." },
       { lv: 150, name: "Thần Chú 2", desc: "+18% HP." }
     ]
+  },
+  kurama: {
+    id: "kurama",
+    name: "Cửu Vĩ Kurama",
+    type: "ATK",
+    roleDesc: "Đại Boss Ải 10 C.8, 3 lớp sinh mệnh, trảo kích toàn thể & hồi phục nghịch thiên",
+    baseHp: 800,
+    baseAtk: 85,
+    baseDef: 100,
+    baseSpd: 1000,
+    enMax: 5,
+    critRate: 0.20,
+    critDmg: 2.20,
+    normalAttack: { name: "Cửu Vĩ Trảo", enGain: 1.0, desc: "Gây 98% ATK lên toàn bộ mục tiêu, giảm 20% khả năng hồi HP. Hồi 1 EN. Tăng vĩnh viễn 1% tỉ lệ bạo kích và 3% ST bạo kích." },
+    activeSkill: { name: "Vĩ Thú Ngọc Hủy Diệt", desc: "Gây 300% ATK lên toàn bộ mục tiêu (+35% tỉ lệ bạo kích). Mục tiêu nhận ST giảm 30% ATK trong 2 lượt. Hồi 2 EN." },
+    passives: [
+      { lv: 30, name: "Tam Trọng Niết Bàn", desc: "Sở hữu 3 lớp HP độc lập (Lớp 1: 800 HP - 100 DEF; Lớp 2: 500 HP - 130 DEF; Lớp 3: 300 HP - 150 DEF). Khi HP dưới 30% của mỗi lớp, hồi phục 30% HP tối đa của lớp đó (mỗi lớp 1 lần)." },
+      { lv: 70, name: "Vĩ Thú Hút Huyết", desc: "Kỹ năng chủ động có 40% cơ hội kích hoạt Hút Máu (hồi phục HP bằng lượng ST gây ra)." }
+    ]
+  },
+  kagura: {
+    id: "kagura",
+    name: "Kagura",
+    type: "SKL",
+    roleDesc: "Thần Vu Hư Vô Ải 10 C.8, Sợi Dây Định Mệnh, cướp đoạt sinh mệnh & Hóa Thần",
+    baseHp: 765,
+    baseAtk: 43.5,
+    baseDef: 55,
+    baseSpd: 185,
+    enMax: 15,
+    normalAttack: { name: "Vu Thuật Đoạt Mệnh", enGain: 2.5, desc: "Cướp 7% HP còn lại của 1 mục tiêu chuyển về chia đều hồi phục cho 2 đồng minh có HP thấp nhất. Hồi 2.5 EN." },
+    activeSkill: { name: "Sợi Dây Định Mệnh / Giáng Thần", desc: "Dạng Người: Nối 'Sợi dây định mệnh' vào đồng minh và chuyển sang Dạng Thần (kích hoạt khi đủ 15 EN, không tốn EN). Dạng Thần: Hồi 30% HP còn lại cho đồng minh nối dây, bản thân hồi 70% lượng HP đó (tốn 3 EN/lần, sau 5 lượt trở lại Dạng Người)." },
+    passives: [
+      { lv: 30, name: "Sợi Dây Định Mệnh", desc: "Nối dây liên kết linh hồn với đồng minh chủ lực, chia sẻ sinh mệnh." },
+      { lv: 70, name: "Thần Âm Phù Hộ", desc: "Ở Dạng Thần, Kagura phát sáng lơ lửng và giảm 30% sát thương nhận vào." }
+    ]
+  },
+  susanoo_boss: {
+    id: "susanoo_boss",
+    name: "Chúa Tể Susanoo",
+    type: "ATK",
+    roleDesc: "Chúa Tể Địa Ngục Ải 10 C.9, Thần Kiếm Trầm Trọng, Stun 2 mục tiêu & Kích nổ HP",
+    baseHp: 3000,
+    baseAtk: 100,
+    baseDef: 150,
+    baseSpd: 200,
+    enMax: 5,
+    critRate: 0.25,
+    critDmg: 2.50,
+    normalAttack: { name: "Thần Kiếm Trảm", enGain: 1.5, desc: "Gây 88% ATK + 6% HP tối đa lên 1 mục tiêu. Gắn 1 tầng 'Trầm trọng'. Hồi 1.5 EN." },
+    activeSkill: { name: "Thiên Nộ Địa Ngục", desc: "Gây 200% ATK lên 2 mục tiêu, gây 'Stun' 2 lượt. Đồng thời KÍCH NỔ và RESET toàn bộ tầng 'Trầm trọng' trên toàn bộ quân địch!" },
+    passives: [
+      { lv: 30, name: "Thấu Cốt Thần Uy", desc: "Đánh thường có 30% cơ hội đánh dấu 2 tầng 'Trầm trọng' thay vì 1." },
+      { lv: 70, name: "Trầm Trọng Tử Địa", desc: "Đánh thường có 15% cơ hội đánh dấu 3 tầng 'Trầm trọng' thay vì 1 hoặc 2." }
+    ]
   }
 };;
 
@@ -2403,6 +2458,14 @@ function getHeroStats(heroId, customLv = null) {
     if (lv >= 70) dodgeRate += 0.22;
     if (lv >= 130) dodgeRate += 0.10;
   }
+  if (heroId === "kurama") {
+    spd = 1000;
+  } else if (heroId === "kagura") {
+    enMax = 15;
+    spd = 185;
+  } else if (heroId === "susanoo_boss") {
+    spd = 200;
+  }
   return { id: heroId, name: db.name, type: db.type, level: lv, hp, maxHp: hp, atk, def, spd, enMax, critRate, critDmg, armorPen, dodgeRate, db };
 }
 
@@ -2465,8 +2528,33 @@ function getBotScalingFactor(chapter, stage) {
 function generateBotTeam(chapter, stage) {
   const factor = getBotScalingFactor(chapter, stage);
 
-  // v5.2.0: Cân bằng toàn diện Chương 4, 5, 6, 7 theo chuẩn bảng thông số (Độ khựng chiến thuật)
-  if (chapter >= 4 && chapter <= 7) {
+  // v5.5.0: Cân bằng Chương 4-7 (Khó) & Chương 8-9 (Địa Ngục: Kurama, Kagura, Susanoo)
+  if (chapter >= 4 && chapter <= 9) {
+    const ch8Teams = [
+      ["whis", "vegito", "traveler"],
+      ["pain", "itachi", "madara"],
+      ["gaara", "hashirama", "conan"],
+      ["tsunade", "omega", "shisui"],
+      ["susan", "shisui", "tsunade"],       // Ải 5 (Tiểu Boss)
+      ["kaguya", "isshiki", "momoshiki"],
+      ["kid", "phoverus", "kaioshin"],
+      ["luanhoi", "gaara", "hashirama"],
+      ["kaguya", "madara", "omega"],
+      ["kurama", "kagura"]                  // Ải 10 (Đại Boss C.8: Kurama & Kagura)
+    ];
+
+    const ch9Teams = [
+      ["madara", "hashirama", "kaguya"],
+      ["isshiki", "tsunade", "susan"],
+      ["luanhoi", "omega", "momoshiki"],
+      ["shisui", "conan", "kid"],
+      ["isshiki", "momoshiki", "kaguya"],   // Ải 5 (Tiểu Boss)
+      ["gaara", "tsunade", "kaioshin"],
+      ["vegito", "madara", "whis"],
+      ["susan", "kaguya", "hashirama"],
+      ["luanhoi", "isshiki", "kurama"],
+      ["susanoo_boss"]                      // Ải 10 (Đại Boss C.9: Chúa Tể Susanoo)
+    ];
     const ch4Teams = [
       ["traveler", "vegito", "whis"],
       ["itachi", "pain", "traveler"],
@@ -2530,9 +2618,15 @@ function generateBotTeam(chapter, stage) {
     } else if (chapter === 6) {
       cfg = { startHp: 2200000, endHp: 6800000, startAtk: 42000, endAtk: 72000, baseDef: 125, baseSpd: 152 };
       teamRoster = ch6Teams;
-    } else { // chapter 7
+    } else if (chapter === 7) {
       cfg = { startHp: 4500000, endHp: 13500000, startAtk: 70000, endAtk: 115000, baseDef: 140, baseSpd: 160 };
       teamRoster = ch7Teams;
+    } else if (chapter === 8) {
+      cfg = { startHp: 12000000, endHp: 28000000, startAtk: 105000, endAtk: 175000, baseDef: 155, baseSpd: 168 };
+      teamRoster = ch8Teams;
+    } else { // chapter 9
+      cfg = { startHp: 25000000, endHp: 55000000, startAtk: 180000, endAtk: 280000, baseDef: 175, baseSpd: 178 };
+      teamRoster = ch9Teams;
     }
 
     const progress = (stage - 1) / 9;
@@ -2563,6 +2657,97 @@ function generateBotTeam(chapter, stage) {
       const botSpd = Math.round(cfg.baseSpd + (db.baseSpd ? (db.baseSpd - 140) * 0.4 : 0) + progress * 6);
 
       const botLv = chapter === 4 ? 150 + Math.round(progress * 100) : (chapter === 5 ? 250 + Math.round(progress * 100) : (chapter === 6 ? 350 + Math.round(progress * 80) : 430 + Math.round(progress * 70)));
+
+      if (hId === "kurama") {
+        const kuramaTotalHp = 36000000;
+        const l1 = Math.round(kuramaTotalHp * (800 / 1600)); // 18M
+        const l2 = Math.round(kuramaTotalHp * (500 / 1600)); // 11.25M
+        const l3 = Math.round(kuramaTotalHp * (300 / 1600)); // 6.75M
+        return {
+          id: "kurama",
+          heroId: "kurama",
+          name: `[ĐẠI BOSS] Kurama (C.8-10)`,
+          type: "ATK",
+          level: 500,
+          hpLayers: [l1, l2, l3],
+          defLayers: [160, 190, 220],
+          currentLayer: 0,
+          layerHealed: [false, false, false],
+          hp: l1,
+          maxHp: l1,
+          atk: 185000,
+          def: 160,
+          spd: 1000,
+          enMax: 5,
+          en: 0,
+          critRate: 0.25,
+          critDmg: 2.50,
+          armorPen: 0.30,
+          dodgeRate: 0.15,
+          slot: 0,
+          isBot: true,
+          buffs: {},
+          isAlive: true,
+          extraEnGain: 0,
+          db: HERO_DB.kurama
+        };
+      }
+      if (hId === "kagura") {
+        const kaguraHp = 22000000;
+        return {
+          id: "kagura",
+          heroId: "kagura",
+          name: `Kagura (C.8-10)`,
+          type: "SKL",
+          level: 500,
+          hp: kaguraHp,
+          maxHp: kaguraHp,
+          atk: 115000,
+          def: 140,
+          spd: 185,
+          enMax: 15,
+          en: 0,
+          critRate: 0.15,
+          critDmg: 2.00,
+          armorPen: 0.15,
+          dodgeRate: 0.12,
+          slot: 1,
+          isBot: true,
+          buffs: {},
+          isAlive: true,
+          godForm: false,
+          godTurns: 0,
+          extraEnGain: 0,
+          db: HERO_DB.kagura
+        };
+      }
+      if (hId === "susanoo_boss") {
+        const susanooHp = 78000000;
+        return {
+          id: "susanoo_boss",
+          heroId: "susanoo_boss",
+          name: `[CHÚA TỂ ĐỊA NGỤC] Susanoo (C.9-10)`,
+          type: "ATK",
+          level: 500,
+          hp: susanooHp,
+          maxHp: susanooHp,
+          atk: 265000,
+          def: 220,
+          spd: 200,
+          enMax: 5,
+          en: 0,
+          critRate: 0.30,
+          critDmg: 2.80,
+          armorPen: 0.40,
+          dodgeRate: 0.20,
+          slot: 1,
+          isBot: true,
+          buffs: {},
+          isAlive: true,
+          extraEnGain: 0,
+          db: HERO_DB.susanoo_boss
+        };
+      }
 
       return {
         id: hId,
@@ -3730,15 +3915,15 @@ function handleVictory() {
     gameState.events.anhHungChiVien.dailyQuestProgress.anhSaoEarned = (gameState.events.anhHungChiVien.dailyQuestProgress.anhSaoEarned || 0) + rAnhSao;
   }
 
-  // v5.2.3: Hệ thống lưu và thăng tiến ải chuẩn xác tuyệt đối qua mọi chương (1 đến 7)
+  // v5.5.0: Hệ thống lưu và thăng tiến ải chuẩn xác qua 9 chương (Chương 8 & 9 Địa Ngục)
   let nextUnlockedChapter = battle.chapter;
   let nextUnlockedStage = battle.stage + 1;
   if (nextUnlockedStage > 10) {
-    if (nextUnlockedChapter < 7) {
+    if (nextUnlockedChapter < 9) {
       nextUnlockedChapter++;
       nextUnlockedStage = 1;
     } else {
-      nextUnlockedChapter = 7;
+      nextUnlockedChapter = 9;
       nextUnlockedStage = 10;
     }
   }
@@ -3758,6 +3943,17 @@ function handleVictory() {
         gameState.ownedBeasts.push("thien_linh_thu");
         toast("🎉 Chúc mừng bạn vượt qua Ải 10 Chương 3! Nhận ngay Thiên Linh Thú (Hạng S)!", false);
       }
+    }
+    // v5.5.0: Thưởng vượt ải đặc biệt khi qua Ải 10 Chương 8 & 9 (Địa Ngục)
+    if (battle.chapter === 8 && battle.stage === 10) {
+      gameState.resources.gachaTickets = (gameState.resources.gachaTickets || 0) + 50000;
+      gameState.resources.gold = (gameState.resources.gold || 0) + 5000000000;
+      toast("🌌 Chúc mừng bạn đã chinh phục Ải 10 Chương 8 (Kurama & Kagura)! Nhận 50.000 Vé & 5 Tỷ Vàng!", false);
+    }
+    if (battle.chapter === 9 && battle.stage === 10) {
+      gameState.resources.gachaTickets = (gameState.resources.gachaTickets || 0) + 100000;
+      gameState.resources.gold = (gameState.resources.gold || 0) + 20000000000;
+      toast("🏆 CHIẾN CÔNG THẦN THOẠI: Bạn đã đánh bại Chúa Tể Susanoo và phá đảo toàn bộ Chương 9 Địa Ngục! Nhận 100.000 Vé & 20 Tỷ Vàng!", false);
     }
   } else {
     // Đấu lại ải cũ: tính toán cho nhiệm vụ hằng ngày
@@ -3816,6 +4012,18 @@ function nextTurn() {
 
   if (battle.currentActorIndex >= battle.turnQueue.length) {
     battle.roundCount++;
+    // v5.5.0: Hiệu ứng Cấm Địa Chương 9: Thiêu Đốt Hỗn Mang (-3% Max HP toàn đội ta mỗi hiệp)
+    if (battle.chapter === 9) {
+      logCombat(`🔥🌋 [Thiêu Đốt Hỗn Mang] Biển lửa Hỗn Mang dâng trào, thiêu đốt 3% Max HP toàn đội!`);
+      battle.turnQueue.forEach(f => {
+        if (f && f.hp > 0 && !f.isBot) {
+          const burnHp = Math.max(1, Math.round(f.maxHp * 0.03));
+          f.hp = Math.max(1, f.hp - burnHp);
+          addAnimation(f, `-${burnHp.toLocaleString()} HP (HỖN MANG)`, "#ff5722");
+        }
+      });
+    }
+
     battle.turnQueue.forEach(f => {
       if (!f.isBot && f.id === "traveler" && f.level >= 30 && battle.roundCount % 2 === 0) {
         f.en = Math.min(f.enMax, +(f.en + 2).toFixed(1));
@@ -4308,7 +4516,33 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
     tsunadeAlly.buffs.healBoost = Math.min(0.80, (tsunadeAlly.buffs.healBoost || 0) + 0.05);
   }
 
+  // Kurama Bị Động 1: Khi HP dưới 30% của lớp hiện tại, hồi 30% tối đa của lớp đó (mỗi lớp 1 lần)
+  if (target.id === "kurama" && target.hpLayers && !target.layerHealed[target.currentLayer]) {
+    const afterHp = target.hp - finalDmg;
+    if (afterHp > 0 && (afterHp / target.maxHp) <= 0.30) {
+      target.layerHealed[target.currentLayer] = true;
+      const healAmt = Math.round(target.maxHp * 0.30);
+      healFighter(target, healAmt);
+      addAnimation(target, `+${healAmt.toLocaleString()} HP (NIẾT BÀN LỚP ${target.currentLayer + 1})`, "#3fb950");
+      logCombat(`🦊🔥 [Tam Trọng Niết Bàn] Kurama dưới 30% HP Lớp ${target.currentLayer + 1}, tự hồi sinh mệnh 30% (+${healAmt.toLocaleString()} HP)!`);
+    }
+  }
+
   target.hp = Math.max(0, target.hp - finalDmg);
+
+  // Kurama chuyển lớp HP khi HP lớp hiện tại tụt về 0
+  if (target.id === "kurama" && target.hp === 0 && target.hpLayers && target.currentLayer < target.hpLayers.length - 1) {
+    target.currentLayer++;
+    target.maxHp = target.hpLayers[target.currentLayer];
+    target.hp = target.maxHp;
+    target.def = target.defLayers[target.currentLayer];
+    const color = isCrit ? "#f1e05a" : "#f85149";
+    const text = isCrit ? `CRIT! -${finalDmg}` : `-${finalDmg}`;
+    addAnimation(target, text, color);
+    addAnimation(target, `PHÁ VỠ! THỨC TỈNH LỚP ${target.currentLayer + 1}/3`, "#ff9800");
+    logCombat(`💥🦊 [PHÁ VỠ LỚP MÁU] Kurama bị phá vỡ Lớp Máu ${target.currentLayer}, thức tỉnh LỚP MÁU ${target.currentLayer + 1} (${target.hp.toLocaleString()} HP - DEF ${target.def})!`);
+    return finalDmg;
+  }
   const color = isCrit ? "#f1e05a" : "#f85149";
   const text = isCrit ? `CRIT! -${finalDmg}` : `-${finalDmg}`;
   addAnimation(target, text, color);
@@ -4504,6 +4738,10 @@ function healFighter(fighter, amount) {
   const currentTeam = (battle.playerTeam && battle.playerTeam.includes(fighter)) ? battle.playerTeam : battle.botTeam;
   const whisFighter = currentTeam ? currentTeam.find(p => p && p.id === "whis" && p.level >= 150 && p.hp > 0) : null;
   let finalHeal = amount;
+  // v5.5.0: Hiệu ứng Cấm Địa Chương 8: Trầm Cảm Không Gian (Giảm 40% hiệu lực hồi máu toàn trận)
+  if (battle.chapter === 8) {
+    finalHeal = Math.round(finalHeal * 0.60);
+  }
   if (whisFighter) finalHeal = Math.round(finalHeal * 1.20);
   // Whis Bị Động 4: Dưới 50% HP tăng 40% khả năng hồi phục
   if (fighter.id === "whis" && fighter.level >= 100 && (fighter.hp / fighter.maxHp) < 0.50) {
@@ -4907,10 +5145,76 @@ function executePlayerAction(type) {
       const { damage, isCrit } = calculateDamage(actor, target, raw);
       applyDamage(target, damage, isCrit, actor);
       logCombat(`🗡️ [Hỏa Độn Kiếm] Shisui chém kiếm lửa gây ${damage} ST lên ${target.name}.`);
+    } else if (actor.id === "kurama") {
+      actor.en = Math.min(actor.enMax, (actor.en || 0) + 1);
+      let totalDmg = 0;
+      enemyTeam.forEach(p => {
+        if (p && p.hp > 0) {
+          const raw = actor.atk * 0.98;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalDmg += applyDamage(p, damage, isCrit, actor);
+          p.buffs = p.buffs || {};
+          p.buffs.healReduction = 0.20;
+          addAnimation(p, "-20% HỒI MÁU", "#f85149");
+        }
+      });
+      actor.critRate = +( (actor.critRate || 0.20) + 0.01 ).toFixed(3);
+      actor.critDmg = +( (actor.critDmg || 2.20) + 0.03 ).toFixed(3);
+      addAnimation(actor, "+1% CRIT & +3% CRIT DMG", "#f1e05a");
+      logCombat(`🦊⚡ [Cửu Vĩ Trảo] Kurama cào quét toàn thể kẻ địch gây ${totalDmg.toLocaleString()} ST, giảm 20% hồi HP và vĩnh viễn tăng +1% Crit, +3% Crit DMG!`);
+    } else if (actor.id === "kagura") {
+      if (actor.godForm) {
+        if (actor.en >= 3) {
+          actor.en -= 3;
+          const targetAlly = (actor.linkedAlly && actor.linkedAlly.hp > 0) ? actor.linkedAlly : actor;
+          const healAllyAmt = Math.round(actor.hp * 0.30);
+          healFighter(targetAlly, healAllyAmt);
+          const selfHeal = Math.round(healAllyAmt * 0.70);
+          healFighter(actor, selfHeal);
+          addAnimation(targetAlly, `+${healAllyAmt.toLocaleString()} HP (ĐỊNH MỆNH)`, "#3fb950");
+          addAnimation(actor, `+${selfHeal.toLocaleString()} HP (THẦN THỂ)`, "#ffd700");
+          logCombat(`✨🪭 [Dạng Thần Hồi Phục] Kagura tiêu tốn 3 EN, hồi ${healAllyAmt.toLocaleString()} HP (30% HP) cho ${targetAlly.name} và tự hồi ${selfHeal.toLocaleString()} HP (70%)!`);
+          actor.godTurns--;
+          if (actor.godTurns <= 0 || actor.en < 3) {
+            actor.godForm = false;
+            if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+            logCombat(`🪭 [Hết Dạng Thần] Kagura kết thúc 5 lượt Dạng Thần, trở lại Dạng Người!`);
+          }
+        } else {
+          actor.godForm = false;
+          if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+        }
+      } else {
+        const drainHp = Math.max(1, Math.round(target.hp * 0.07));
+        applyDamage(target, drainHp, false, actor);
+        const aliveAllies = allyTeam.filter(b => b && b.hp > 0).sort((a,b) => a.hp - b.hp).slice(0, 2);
+        const perAlly = Math.round(drainHp / aliveAllies.length);
+        aliveAllies.forEach(a => healFighter(a, perAlly));
+        actor.en = Math.min(actor.enMax, +(actor.en + 2.5).toFixed(1));
+        addAnimation(target, `-${drainHp.toLocaleString()} HP (CƯỚP 7%)`, "#f85149");
+        logCombat(`🪭 [Vu Thuật Đoạt Mệnh] Kagura cướp ${drainHp.toLocaleString()} HP (7% HP) của ${target.name}, chia đều hồi phục cho đồng minh và hồi +2.5 EN!`);
+      }
+    } else if (actor.id === "susanoo_boss") {
+      const raw = actor.atk * 0.88 + target.maxHp * 0.06;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      const rnd = Math.random();
+      let stacks = (rnd < 0.15) ? 3 : ((rnd < 0.45) ? 2 : 1);
+      target.buffs = target.buffs || {};
+      target.buffs.tramTrong = (target.buffs.tramTrong || 0) + stacks;
+      actor.en = Math.min(actor.enMax, +(actor.en + 1.5).toFixed(1));
+      addAnimation(target, `+${stacks} TRẦM TRỌNG`, "#8b4513");
+      logCombat(`⚔️ [Thần Kiếm Trảm] Susanoo chém gây ${damage.toLocaleString()} ST lên ${target.name} và khắc +${stacks} tầng 'Trầm trọng' (Tổng: ${target.buffs.tramTrong} tầng - ${target.buffs.tramTrong * 5}% Max HP sẽ mất)!`);
     }
   } else if (type === "skill") {
     if (actor.en < actor.enMax) return;
-    actor.en = 0;
+    if (actor.id === "kagura") {
+      // Không tiêu tốn EN khi hóa Thần
+    } else if (actor.id === "kurama") {
+      actor.en = 2; // Hồi 2 EN
+    } else {
+      actor.en = 0;
+    }
 
     if (actor.id === "susan") {
       const isSuper = (actor.level >= 440);
@@ -5312,6 +5616,85 @@ function executePlayerAction(type) {
         }
         logCombat(`🔥⚡ [Thiên Hỏa Liệt Diễm] Shisui trút 5 đòn bão lửa liên hoàn lên ${t.name}, tổng cộng ${totalD} ST!`);
       }
+    } else if (actor.id === "kurama") {
+      actor.en = 2; // Hồi 2 EN
+      const oldCrit = actor.critRate;
+      actor.critRate = (actor.critRate || 0.20) + 0.35;
+      let totalDmgDone = 0;
+      enemyTeam.forEach(p => {
+        if (p && p.hp > 0) {
+          const raw = actor.atk * 3.00;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalDmgDone += applyDamage(p, damage, isCrit, actor);
+          p.buffs = p.buffs || {};
+          p.buffs.suyGiam = Math.max(p.buffs.suyGiam || 0, 2);
+          addAnimation(p, "-30% ATK (2 LƯỢT)", "#8b949e");
+        }
+      });
+      actor.critRate = oldCrit;
+      if (Math.random() < 0.40) {
+        const drain = Math.round(totalDmgDone * 0.40);
+        healFighter(actor, drain);
+        addAnimation(actor, `+${drain.toLocaleString()} HP (HÚT MÁU)`, "#3fb950");
+        logCombat(`🩸🦊 [Vĩ Thú Hút Huyết] Kurama kích hoạt Hút Máu, hồi phục ${drain.toLocaleString()} HP!`);
+      }
+      logCombat(`☄️🦊 [Vĩ Thú Ngọc Hủy Diệt] Kurama giáng Bom Vĩ Thú 300% ATK (+35% Crit) gây ${totalDmgDone.toLocaleString()} ST, giảm 30% ATK kẻ địch và hồi lại 2 EN!`);
+    } else if (actor.id === "kagura") {
+      if (actor.godForm) {
+        if (actor.en >= 3) {
+          actor.en -= 3;
+          const targetAlly = (actor.linkedAlly && actor.linkedAlly.hp > 0) ? actor.linkedAlly : actor;
+          const healAllyAmt = Math.round(actor.hp * 0.30);
+          healFighter(targetAlly, healAllyAmt);
+          const selfHeal = Math.round(healAllyAmt * 0.70);
+          healFighter(actor, selfHeal);
+          addAnimation(targetAlly, `+${healAllyAmt.toLocaleString()} HP (ĐỊNH MỆNH)`, "#3fb950");
+          addAnimation(actor, `+${selfHeal.toLocaleString()} HP (THẦN THỂ)`, "#ffd700");
+          logCombat(`✨🪭 [Dạng Thần Hồi Phục] Kagura tiêu tốn 3 EN, hồi ${healAllyAmt.toLocaleString()} HP (30% HP) cho ${targetAlly.name} và tự hồi ${selfHeal.toLocaleString()} HP (70%)!`);
+          actor.godTurns--;
+          if (actor.godTurns <= 0 || actor.en < 3) {
+            actor.godForm = false;
+            if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+            logCombat(`🪭 [Hết Dạng Thần] Kagura kết thúc 5 lượt Dạng Thần, trở lại Dạng Người!`);
+          }
+        } else {
+          actor.godForm = false;
+          if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+        }
+      } else {
+        const targetAlly = allyTeam.find(p => p && p.id === "kurama" && p.hp > 0) || 
+                           allyTeam.filter(p => p && p !== actor && p.hp > 0).sort((a,b) => b.maxHp - a.maxHp)[0] || actor;
+        actor.godForm = true;
+        actor.godTurns = 5;
+        actor.linkedAlly = targetAlly;
+        targetAlly.buffs = targetAlly.buffs || {};
+        targetAlly.buffs.fateString = true;
+        addAnimation(actor, "GIÁNG THẦN! THỨC TỈNH DẠNG THẦN", "#ffd700");
+        logCombat(`✨🪭 [Sợi Dây Định Mệnh] Kagura nối dây định mệnh với ${targetAlly.name} và chuyển sang DẠNG THẦN trong 5 lượt (Giữ nguyên 15 EN)!`);
+      }
+    } else if (actor.id === "susanoo_boss") {
+      actor.en = 0;
+      const targets = enemyTeam.filter(b => b && b.hp > 0).slice(0, 2);
+      targets.forEach(t => {
+        const raw = actor.atk * 2.00;
+        const { damage, isCrit } = calculateDamage(actor, t, raw);
+        applyDamage(t, damage, isCrit, actor);
+        t.buffs = t.buffs || {};
+        t.buffs.choang = 2;
+        t.buffs.stun = 2;
+        addAnimation(t, "CHOÁNG 2 LƯỢT!", "#f1e05a");
+      });
+      enemyTeam.forEach(p => {
+        if (p && p.buffs && p.buffs.tramTrong > 0) {
+          const stacks = p.buffs.tramTrong;
+          p.buffs.tramTrong = 0;
+          const storedDmg = Math.round(p.maxHp * (stacks * 0.05));
+          applyDamage(p, storedDmg, false, actor);
+          addAnimation(p, `NỔ TRẦM TRỌNG -${storedDmg.toLocaleString()} HP!`, "#8b4513");
+          logCombat(`💥💀 [Kích Nổ Trầm Trọng] ${stacks} tầng Trầm Trọng trên ${p.name} phát nổ, giáng đòn chí mạng ${storedDmg.toLocaleString()} ST (${stacks * 5}% Max HP)!`);
+        }
+      });
+      logCombat(`⚡⚔️ [Thiên Nộ Địa Ngục] Chúa Tể Susanoo giáng đòn sấm sét 200% ATK gây Choáng 2 lượt và kích nổ toàn bộ tầng Trầm Trọng!`);
     }
   }
 
@@ -5471,7 +5854,13 @@ function executeHeroBotAction(actor, alivePlayers) {
     const isSkill = (actor.en >= actor.enMax);
 
     if (isSkill) {
-      actor.en = 0;
+      if (actor.heroId === "kagura" || actor.id === "kagura") {
+        // Không tiêu tốn EN khi hóa Thần
+      } else if (actor.heroId === "kurama" || actor.id === "kurama") {
+        actor.en = 2; // Hồi 2 EN
+      } else {
+        actor.en = 0;
+      }
       if (actor.heroId === "susan" || actor.id === "susan") {
         const isSuper = (actor.level >= 440);
         const raw = isSuper ? (actor.atk * 1.50) : (actor.atk * 1.20);
@@ -5620,6 +6009,84 @@ function executeHeroBotAction(actor, alivePlayers) {
         const hit1 = calculateDamage(actor, target, raw1);
         applyDamage(target, hit1.damage, hit1.isCrit, actor);
         logCombat(`🔥 [Địch: Thiên Hỏa Liệt Diễm] ${actor.name} gây ${hit1.damage} ST lên ${target.name}!`);
+      } else if (actor.heroId === "kurama" || actor.id === "kurama") {
+        actor.en = 2; // Hồi 2 EN
+        const oldCrit = actor.critRate;
+        actor.critRate = (actor.critRate || 0.20) + 0.35;
+        let totalDmgDone = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 3.00;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalDmgDone += applyDamage(p, damage, isCrit, actor);
+          p.buffs = p.buffs || {};
+          p.buffs.suyGiam = Math.max(p.buffs.suyGiam || 0, 2);
+          addAnimation(p, "-30% ATK (2 LƯỢT)", "#8b949e");
+        });
+        actor.critRate = oldCrit;
+        if (Math.random() < 0.40) {
+          const drain = Math.round(totalDmgDone * 0.40);
+          healFighter(actor, drain);
+          addAnimation(actor, `+${drain.toLocaleString()} HP (HÚT MÁU)`, "#3fb950");
+          logCombat(`🩸🦊 [Vĩ Thú Hút Huyết] Kurama kích hoạt Hút Máu, hồi phục ${drain.toLocaleString()} HP!`);
+        }
+        logCombat(`☄️🦊 [Vĩ Thú Ngọc Hủy Diệt] Kurama giáng Bom Vĩ Thú 300% ATK (+35% Crit) gây ${totalDmgDone.toLocaleString()} ST, giảm 30% ATK toàn đội bạn và hồi lại 2 EN!`);
+      } else if (actor.heroId === "kagura" || actor.id === "kagura") {
+        if (actor.godForm) {
+          if (actor.en >= 3) {
+            actor.en -= 3;
+            const targetAlly = (actor.linkedAlly && actor.linkedAlly.hp > 0) ? actor.linkedAlly : actor;
+            const healAllyAmt = Math.round(actor.hp * 0.30);
+            healFighter(targetAlly, healAllyAmt);
+            const selfHeal = Math.round(healAllyAmt * 0.70);
+            healFighter(actor, selfHeal);
+            addAnimation(targetAlly, `+${healAllyAmt.toLocaleString()} HP (ĐỊNH MỆNH)`, "#3fb950");
+            addAnimation(actor, `+${selfHeal.toLocaleString()} HP (THẦN THỂ)`, "#ffd700");
+            logCombat(`✨🪭 [Dạng Thần Hồi Phục] Kagura tiêu tốn 3 EN, hồi ${healAllyAmt.toLocaleString()} HP (30% HP) cho ${targetAlly.name} và tự hồi ${selfHeal.toLocaleString()} HP (70%)!`);
+            actor.godTurns--;
+            if (actor.godTurns <= 0 || actor.en < 3) {
+              actor.godForm = false;
+              if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+              logCombat(`🪭 [Hết Dạng Thần] Kagura kết thúc 5 lượt Dạng Thần, trở lại Dạng Người!`);
+            }
+          } else {
+            actor.godForm = false;
+            if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+          }
+        } else {
+          // Khi đủ 15 EN ở dạng người: Thức tỉnh dạng Thần
+          const targetAlly = battle.botTeam.find(p => p && p.id === "kurama" && p.hp > 0) || 
+                             battle.botTeam.filter(p => p && p !== actor && p.hp > 0).sort((a,b) => b.maxHp - a.maxHp)[0] || actor;
+          actor.godForm = true;
+          actor.godTurns = 5;
+          actor.linkedAlly = targetAlly;
+          targetAlly.buffs = targetAlly.buffs || {};
+          targetAlly.buffs.fateString = true;
+          addAnimation(actor, "GIÁNG THẦN! THỨC TỈNH DẠNG THẦN", "#ffd700");
+          logCombat(`✨🪭 [Sợi Dây Định Mệnh] Kagura nối dây định mệnh với ${targetAlly.name} và chuyển sang DẠNG THẦN trong 5 lượt (Giữ nguyên 15 EN)!`);
+        }
+      } else if (actor.heroId === "susanoo_boss" || actor.id === "susanoo_boss") {
+        actor.en = 0;
+        const targets = alivePlayers.slice(0, 2);
+        targets.forEach(t => {
+          const raw = actor.atk * 2.00;
+          const { damage, isCrit } = calculateDamage(actor, t, raw);
+          applyDamage(t, damage, isCrit, actor);
+          t.buffs = t.buffs || {};
+          t.buffs.choang = 2;
+          t.buffs.stun = 2;
+          addAnimation(t, "CHOÁNG 2 LƯỢT!", "#f1e05a");
+        });
+        alivePlayers.forEach(p => {
+          if (p && p.buffs && p.buffs.tramTrong > 0) {
+            const stacks = p.buffs.tramTrong;
+            p.buffs.tramTrong = 0;
+            const storedDmg = Math.round(p.maxHp * (stacks * 0.05));
+            applyDamage(p, storedDmg, false, actor);
+            addAnimation(p, `NỔ TRẦM TRỌNG -${storedDmg.toLocaleString()} HP!`, "#8b4513");
+            logCombat(`💥💀 [Kích Nổ Trầm Trọng] ${stacks} tầng Trầm Trọng trên ${p.name} phát nổ, giáng đòn chí mạng ${storedDmg.toLocaleString()} ST (${stacks * 5}% Max HP)!`);
+          }
+        });
+        logCombat(`⚡⚔️ [Thiên Nộ Địa Ngục] Chúa Tể Susanoo giáng đòn sấm sét 200% ATK gây Choáng 2 lượt và kích nổ toàn bộ tầng Trầm Trọng!`);
       } else {
         const raw = actor.atk * 2.0;
         const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -5673,6 +6140,64 @@ function executeHeroBotAction(actor, alivePlayers) {
         const { damage, isCrit } = calculateDamage(actor, target, raw);
         applyDamage(target, damage, isCrit, actor);
         logCombat(`🗡️ [Địch: Hỏa Độn Kiếm] ${actor.name} gây ${damage} ST lên ${target.name}.`);
+      } else if (actor.heroId === "kurama" || actor.id === "kurama") {
+        actor.en = Math.min(actor.enMax, (actor.en || 0) + 1);
+        let totalDmg = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 0.98;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalDmg += applyDamage(p, damage, isCrit, actor);
+          p.buffs = p.buffs || {};
+          p.buffs.healReduction = 0.20;
+          addAnimation(p, "-20% HỒI MÁU", "#f85149");
+        });
+        actor.critRate = +( (actor.critRate || 0.20) + 0.01 ).toFixed(3);
+        actor.critDmg = +( (actor.critDmg || 2.20) + 0.03 ).toFixed(3);
+        addAnimation(actor, "+1% CRIT & +3% CRIT DMG", "#f1e05a");
+        logCombat(`🦊⚡ [Cửu Vĩ Trảo] Kurama cào quét toàn thể gây ${totalDmg.toLocaleString()} ST, giảm 20% hồi HP và vĩnh viễn tăng +1% Crit, +3% Crit DMG!`);
+      } else if (actor.heroId === "kagura" || actor.id === "kagura") {
+        if (actor.godForm) {
+          if (actor.en >= 3) {
+            actor.en -= 3;
+            const targetAlly = (actor.linkedAlly && actor.linkedAlly.hp > 0) ? actor.linkedAlly : actor;
+            const healAllyAmt = Math.round(actor.hp * 0.30);
+            healFighter(targetAlly, healAllyAmt);
+            const selfHeal = Math.round(healAllyAmt * 0.70);
+            healFighter(actor, selfHeal);
+            addAnimation(targetAlly, `+${healAllyAmt.toLocaleString()} HP (ĐỊNH MỆNH)`, "#3fb950");
+            addAnimation(actor, `+${selfHeal.toLocaleString()} HP (THẦN THỂ)`, "#ffd700");
+            logCombat(`✨🪭 [Dạng Thần Hồi Phục] Kagura tiêu tốn 3 EN, hồi ${healAllyAmt.toLocaleString()} HP (30% HP) cho ${targetAlly.name} và tự hồi ${selfHeal.toLocaleString()} HP (70%)!`);
+            actor.godTurns--;
+            if (actor.godTurns <= 0 || actor.en < 3) {
+              actor.godForm = false;
+              if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+              logCombat(`🪭 [Hết Dạng Thần] Kagura kết thúc 5 lượt Dạng Thần, trở lại Dạng Người!`);
+            }
+          } else {
+            actor.godForm = false;
+            if (actor.linkedAlly?.buffs) delete actor.linkedAlly.buffs.fateString;
+          }
+        } else {
+          const drainHp = Math.max(1, Math.round(target.hp * 0.07));
+          applyDamage(target, drainHp, false, actor);
+          const aliveAllies = battle.botTeam.filter(b => b && b.hp > 0).sort((a,b) => a.hp - b.hp).slice(0, 2);
+          const perAlly = Math.round(drainHp / aliveAllies.length);
+          aliveAllies.forEach(a => healFighter(a, perAlly));
+          actor.en = Math.min(actor.enMax, +(actor.en + 2.5).toFixed(1));
+          addAnimation(target, `-${drainHp.toLocaleString()} HP (CƯỚP 7%)`, "#f85149");
+          logCombat(`🪭 [Vu Thuạt Đoạt Mệnh] Kagura cướp ${drainHp.toLocaleString()} HP (7% HP) của ${target.name}, chia đều hồi phục cho đồng minh và hồi +2.5 EN!`);
+        }
+      } else if (actor.heroId === "susanoo_boss" || actor.id === "susanoo_boss") {
+        const raw = actor.atk * 0.88 + target.maxHp * 0.06;
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        const rnd = Math.random();
+        let stacks = (rnd < 0.15) ? 3 : ((rnd < 0.45) ? 2 : 1);
+        target.buffs = target.buffs || {};
+        target.buffs.tramTrong = (target.buffs.tramTrong || 0) + stacks;
+        actor.en = Math.min(actor.enMax, +(actor.en + 1.5).toFixed(1));
+        addAnimation(target, `+${stacks} TRẦM TRỌNG`, "#8b4513");
+        logCombat(`⚔️ [Thần Kiếm Trảm] Susanoo chém gây ${damage.toLocaleString()} ST lên ${target.name} và khắc +${stacks} tầng 'Trầm trọng' (Tổng: ${target.buffs.tramTrong} tầng - ${target.buffs.tramTrong * 5}% Max HP sẽ mất)!`);
       } else {
         const raw = actor.atk * 1.0;
         const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -5761,6 +6286,23 @@ function renderCanvas() {
   ctx.beginPath(); ctx.moveTo(canvas.width / 2, 40); ctx.lineTo(canvas.width / 2, canvas.height - 40); ctx.stroke();
   ctx.setLineDash([]);
 
+  // v5.5.0: Vẽ Sợi Dây Định Mệnh phát sáng vàng nối từ Kagura sang đồng minh
+  const kaguraFighter = [...battle.playerTeam, ...battle.botTeam].find(f => f && f.id === "kagura" && f.godForm && f.hp > 0);
+  if (kaguraFighter && kaguraFighter.linkedAlly && kaguraFighter.linkedAlly.hp > 0) {
+    const p1 = getFighterCoord(kaguraFighter);
+    const p2 = getFighterCoord(kaguraFighter.linkedAlly);
+    ctx.save();
+    ctx.strokeStyle = "rgba(255, 215, 0, 0.85)";
+    ctx.lineWidth = 3;
+    ctx.shadowColor = "#ffd700";
+    ctx.shadowBlur = 12;
+    ctx.beginPath();
+    ctx.moveTo(p1.x, p1.y);
+    ctx.bezierCurveTo((p1.x + p2.x) / 2, p1.y - 50, (p1.x + p2.x) / 2, p2.y - 50, p2.x, p2.y);
+    ctx.stroke();
+    ctx.restore();
+  }
+
   // Render Turn Timeline Bar at top
   renderTimelineBar();
 
@@ -5848,6 +6390,19 @@ function drawCharacter(f) {
     ctx.restore();
   }
 
+  // v5.5.0: Hiệu ứng nổi lên / phát sáng vàng kim của Kagura ở Dạng Thần
+  if (f.godForm && !isDead) {
+    ctx.save();
+    ctx.shadowColor = "#ffd700";
+    ctx.shadowBlur = 20;
+    ctx.strokeStyle = "#ffd700";
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(x, y, 42, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
   ctx.save();
   ctx.beginPath();
   ctx.arc(x, y, 35, 0, Math.PI * 2);
@@ -5896,6 +6451,17 @@ function drawCharacter(f) {
     ctx.fillStyle = hpPct > 0.5 ? "#3fb950" : (hpPct > 0.25 ? "#f1e05a" : "#f85149");
     ctx.fillRect(barX, barY, barWidth * hpPct, barHeight);
 
+    // v5.5.0: Hiển thị phần HP "SẼ MẤT" màu nâu từ hiệu ứng Trầm Trọng của Susanoo
+    if (f.buffs && f.buffs.tramTrong > 0) {
+      const pendingLoss = Math.min(f.hp, f.maxHp * (f.buffs.tramTrong * 0.05));
+      const pendingLossPct = pendingLoss / f.maxHp;
+      const safeHpPct = Math.max(0, hpPct - pendingLossPct);
+      const brownStartX = barX + barWidth * safeHpPct;
+      const brownWidth = barWidth * pendingLossPct;
+      ctx.fillStyle = "#8b4513"; // Màu nâu trầm trọng
+      ctx.fillRect(brownStartX, barY, brownWidth, barHeight);
+    }
+
     if (f.shield > 0) {
       const shieldPct = Math.min(1.0, f.shield / f.maxHp);
       ctx.fillStyle = "rgba(88, 166, 255, 0.85)";
@@ -5926,7 +6492,15 @@ function drawCharacter(f) {
     if (f.buffs.whisProtect) { drawBadge(x + badgeOffset, y - 56, `🛡️Hộ`, "#39c5bb"); badgeOffset += 30; }
     if (f.buffs.hypnosis) { drawBadge(x + badgeOffset, y - 56, `🌀Mê`, "#bc8cff"); badgeOffset += 30; }
     if (f.buffs.devilLinked) { drawBadge(x + badgeOffset, y - 56, `🩸Xích`, "#ff0055"); badgeOffset += 30; }
-    if (f.buffs.devilLinkActive) { drawBadge(x + badgeOffset, y - 56, `🎶Liên`, "#ff0055"); }
+    if (f.buffs.devilLinkActive) { drawBadge(x + badgeOffset, y - 56, `🎶Liên`, "#ff0055"); badgeOffset += 30; }
+    if (f.buffs.tramTrong) { drawBadge(x + badgeOffset, y - 56, `🍂x${f.buffs.tramTrong}`, "#8b4513"); badgeOffset += 30; }
+    if (f.buffs.fateString) { drawBadge(x + badgeOffset, y - 56, `🔗Dây`, "#ffd700"); badgeOffset += 30; }
+    if (f.godForm) { drawBadge(x + badgeOffset, y - 56, `✨THẦN`, "#ffd700"); badgeOffset += 30; }
+    if (f.hpLayers && f.hpLayers.length > 1) {
+      ctx.font = "bold 9px sans-serif";
+      ctx.fillStyle = "#ff9800";
+      ctx.fillText(`LỚP ${f.currentLayer + 1}/3`, x, barY - 6);
+    }
   }
 
   ctx.restore();
@@ -7015,6 +7589,46 @@ function submitGiftcode() {
     toast("Kích hoạt CH7START: Mở khóa Chương 7 Ải 1!");
     return;
   }
+  if (code === "CH8START") {
+    gameState.progress.maxChapter = 8;
+    gameState.progress.maxStage = 1;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🔥 Kích hoạt CH8START: Mở khóa Chương 8 Ải 1 (Vực Thẳm Hư Vô - Địa Ngục)!");
+    return;
+  }
+  if (code === "CH8_10") {
+    gameState.progress.maxChapter = 8;
+    gameState.progress.maxStage = 10;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🦊 Kích hoạt CH8_10: Mở khóa Ải 10 Chương 8 gặp Đại Boss Kurama & Kagura!");
+    return;
+  }
+  if (code === "CH9START") {
+    gameState.progress.maxChapter = 9;
+    gameState.progress.maxStage = 1;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🔥 Kích hoạt CH9START: Mở khóa Chương 9 Ải 1 (Hỗn Mang Địa Ngục)!");
+    return;
+  }
+  if (code === "CH9_10") {
+    gameState.progress.maxChapter = 9;
+    gameState.progress.maxStage = 10;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("⚔️ Kích hoạt CH9_10: Mở khóa Ải 10 Chương 9 gặp Chúa Tể Susanoo!");
+    return;
+  }
   if (code === "CONAN") {
     gameState.heroes.conan = { level: 1 };
     gameState.resources.gold += 100000;
@@ -7224,11 +7838,11 @@ function goToNextStage() {
   let nextC = battle.chapter;
   let nextS = battle.stage + 1;
   if (nextS > 10) {
-    if (nextC < 7) {
+    if (nextC < 9) {
       nextC++;
       nextS = 1;
     } else {
-      toast("🎉 Bạn đã hoàn thành toàn bộ cốt truyện Chương 7!", false);
+      toast("🏆 Chúc mừng bạn đã phá đảo toàn bộ cốt truyện và đánh bại Chúa Tể Susanoo Chương 9!", false);
       exitBattleToHub();
       return;
     }
@@ -7275,10 +7889,17 @@ function openBattleStageModal() {
 function renderChapterTabs() {
   const container = document.getElementById("chapterTabsContainer");
   container.innerHTML = "";
-  for (let c = 1; c <= 7; c++) {
+  for (let c = 1; c <= 9; c++) {
     const btn = document.createElement("button");
-    btn.className = `btn ${c === selectedChapter ? "btn-accent" : ""}`;
-    btn.textContent = `Chương ${c}${c > gameState.progress.maxChapter ? " 🔒" : ""}`;
+    const isHell = (c >= 8);
+    const isHard = (c >= 4 && c <= 7);
+    const diffTag = c <= 3 ? " [Dễ]" : (isHard ? " [Khó]" : " 🔥[Địa Ngục]");
+    btn.className = `btn ${c === selectedChapter ? (isHell ? "btn-primary" : "btn-accent") : ""}`;
+    if (isHell) {
+      btn.style.borderColor = (c === selectedChapter) ? "#ff0055" : "#da3633";
+      btn.style.color = (c === selectedChapter) ? "#fff" : "#ff7b72";
+    }
+    btn.textContent = `Chương ${c}${diffTag}${c > gameState.progress.maxChapter ? " 🔒" : ""}`;
     btn.onclick = () => {
       if (c > gameState.progress.maxChapter) {
         toast(`Chương ${c} đang bị khóa! Bạn cần vượt qua Chương ${gameState.progress.maxChapter} Ải ${gameState.progress.maxStage} để mở khóa.`, true);
