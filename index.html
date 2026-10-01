@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v5.7.0 [TƯỚNG MỚI ITACHI AMATERASU & NÂNG CẤP MAX LEVEL 600]</title>
+<title>Chiến Thuật Luân Hồi v5.7.1 [CÂN BẰNG ITACHI AMATERASU & GIFTCODE TEST003]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -541,7 +541,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.7.0 CẬP NHẬT: Tướng Mới Siêu Cấp Itachi Amaterasu [AS] (Hắc Hỏa Tuyệt Diệt, Ảo Thuật Vô Tận) | Mở Rộng Cấp Độ Tối Đa Lên Level 600!</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.7.1 CẬP NHẬT: Cân Bằng Itachi Amaterasu, Thêm Giftcode Siêu Cấp TEST003 (1.000B Toàn Bộ Vật Phẩm) & Tối Ưu Hóa Trận Đấu!</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -600,7 +600,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.7.0 (TƯỚNG MỚI ITACHI AMATERASU [AS] & MAX LEVEL 600)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.7.1 (CÂN BẰNG AMATERASU & GIFTCODE TEST003)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1514,6 +1514,7 @@ const GIFTCODES = {
   "CH4START": { desc: "Mở đúng Chương 4 Ải 1 để test mở từng ải" },
   "TEST001": { test: true },
   "TEST002": { test2: true },
+  "TEST003": { test3: true },
   "RESET001": { reset: true },
   // v5.1.0: 15 Giftcode mới ẩn (nhận VPNC, Ánh Sao, Vàng, Kim Cương)
   "V5UPDATE": { kimCuong: 500, anhSao: 100, gold: 50000, vpnc: 500 },
@@ -2090,12 +2091,12 @@ const HERO_DB = {
     },
     activeSkill: { 
       name: "Amaterasu Tuyệt Diệt", 
-      desc: "Tạo Amaterasu đốt cháy toàn bộ mục tiêu bằng 300% ATK kèm 5 tầng 'Amaterasu tuyệt diệt'. Mỗi lượt gây ST bằng 80% ATK bản thân kèm 2% HP còn lại của mục tiêu, tồn tại trong 3 lượt (tối đa cộng dồn 15 tầng)." 
+      desc: "Tạo Amaterasu đốt cháy toàn bộ mục tiêu bằng 300% ATK kèm 5 tầng 'Amaterasu tuyệt diệt'. Mỗi lượt gây ST bằng 50% ATK bản thân kèm 1% HP hiện tại của mục tiêu, tồn tại trong 3 lượt (tối đa cộng dồn 15 tầng)." 
     },
     passives: [
       { lv: 30, name: "Thiêu Đốt Sinh Mệnh", desc: "Mục tiêu đang có 'Amaterasu tuyệt diệt' bị giảm 80% khả năng hồi phục." },
       { lv: 70, name: "Ám Hỏa Xâm Thực", desc: "Đòn đánh thường khắc 1 tầng 'Amaterasu tuyệt diệt' lên mục tiêu." },
-      { lv: 80, name: "Sharingan Vạn Hoa Đồng", desc: "Mục tiêu mỗi lần nhận ST từ 'Amaterasu tuyệt diệt' có 20% cơ hội bị trúng 'Ảo thuật vô tận' (Choáng 1 lượt và bị cướp toàn bộ EN dâng cho Itachi)." },
+      { lv: 80, name: "Sharingan Vạn Hoa Đồng", desc: "Mục tiêu mỗi lần nhận ST từ 'Amaterasu tuyệt diệt' có 16% cơ hội bị trúng 'Ảo thuật vô tận' (Choáng 1 lượt và bị cướp 40% EN dâng cho Itachi)." },
       { lv: 100, name: "Hắc Viêm Tự Dưỡng", desc: "Mỗi lần gây ST (từ cả chủ động, bị động, hiệu ứng DoT,...), hồi phục bản thân bằng 20% ST gây ra (tối đa hồi bằng 15% HP tối đa của bản thân mỗi lần)." }
     ],
     spells: [
@@ -4219,31 +4220,31 @@ function nextTurn() {
       itachiSource = oppTeam.find(p => p && (p.id === "itachi_amaterasu" || p.heroId === "itachi_amaterasu") && p.hp > 0);
     }
     const atkVal = itachiSource ? itachiSource.atk : 45.2;
-    // Mỗi lượt gây ST bằng 80% ATK bản thân kèm 2% HP còn lại của mục tiêu
-    const dmgPerStack = Math.round(atkVal * 0.80 + actor.hp * 0.02);
+    // v5.7.1: Mỗi lượt gây ST bằng 50% ATK itachi kèm 1% HP hiện tại của mục tiêu
+    const dmgPerStack = Math.round(atkVal * 0.50 + actor.hp * 0.01);
     const totalAmDmg = Math.max(1, dmgPerStack * am.stacks);
 
     applyDamage(actor, totalAmDmg, false, itachiSource || "AMATERASU");
     addAnimation(actor, `-${totalAmDmg.toLocaleString()} HP (AMATERASU x${am.stacks})`, "#ff0055");
-    logCombat(`🔥🖤 [Amaterasu Tuyệt Diệt] ${actor.name} bị Hắc Hỏa thiêu rụi chịu ${totalAmDmg.toLocaleString()} ST (${am.stacks} tầng: 80% ATK + 2% HP hiện tại mỗi tầng)!`);
+    logCombat(`🔥🖤 [Amaterasu Tuyệt Diệt] ${actor.name} bị Hắc Hỏa thiêu rụi chịu ${totalAmDmg.toLocaleString()} ST (${am.stacks} tầng: 50% ATK + 1% HP hiện tại mỗi tầng)!`);
 
     let stoleAndStunned = false;
-    // Bị động 3 (Lv.80): Sharingan Vạn Hoa Đồng: Mục tiêu mỗi lần nhận ST từ "Amaterasu tuyệt diệt" có 20% cơ hội trúng "ảo thuật vô tận"
-    // "ảo thuật vô tận": stun 1 lượt, bị cướp toàn bộ EN đưa cho Itachi
-    if (itachiSource && itachiSource.level >= 80 && Math.random() < 0.20) {
-      const stolenEn = actor.en || 0;
-      actor.en = 0;
+    // v5.7.1: Bị động 3 (Lv.80): Sharingan Vạn Hoa Đồng: Mục tiêu mỗi lần nhận ST từ "Amaterasu tuyệt diệt" có 16% cơ hội trúng "ảo thuật vô tận"
+    // "ảo thuật vô tận": stun 1 lượt, bị cướp 40% EN đưa cho Itachi
+    if (itachiSource && itachiSource.level >= 80 && Math.random() < 0.16) {
+      const stolenEn = +( (actor.en || 0) * 0.40 ).toFixed(1);
+      actor.en = Math.max(0, +(actor.en - stolenEn).toFixed(1));
       itachiSource.en = Math.min(itachiSource.enMax, +(itachiSource.en + stolenEn).toFixed(1));
-      addAnimation(itachiSource, `+${stolenEn} EN (ĐOẠT EN)`, "#bc8cff");
+      addAnimation(itachiSource, `+${stolenEn} EN (ĐOẠT 40% EN)`, "#bc8cff");
       
       if (!isStunImmune(actor)) {
         actor.buffs.choang = 1;
         stoleAndStunned = true;
         addAnimation(actor, "ẢO THUẬT VÔ TẬN! (CHOÁNG)", "#bc8cff");
-        logCombat(`👁️🌀 [Sharingan Vạn Hoa Đồng] ${actor.name} trúng [Ảo Thuật Vô Tận]: Bị Choáng mất lượt và bị cướp sạch ${stolenEn} EN dâng cho ${itachiSource.name}!`);
+        logCombat(`👁️🌀 [Sharingan Vạn Hoa Đồng] ${actor.name} trúng [Ảo Thuật Vô Tận]: Bị Choáng mất lượt và bị cướp 40% (${stolenEn} EN) dâng cho ${itachiSource.name}!`);
       } else {
-        addAnimation(actor, "MIỄN CHOÁNG! (MẤT EN)", "#bc8cff");
-        logCombat(`👁️🌀 [Sharingan Vạn Hoa Đồng] ${actor.name} miễn nhiễm Choáng nhưng vẫn bị cướp sạch ${stolenEn} EN dâng cho ${itachiSource.name}!`);
+        addAnimation(actor, "MIỄN CHOÁNG! (MẤT 40% EN)", "#bc8cff");
+        logCombat(`👁️🌀 [Sharingan Vạn Hoa Đồng] ${actor.name} miễn nhiễm Choáng nhưng vẫn bị cướp 40% (${stolenEn} EN) dâng cho ${itachiSource.name}!`);
       }
     }
 
@@ -8052,6 +8053,52 @@ function submitGiftcode() {
     return;
   }
 
+  if (code === "TEST003") {
+    const ONE_THOUSAND_BILLION = 1000000000000; // 1,000B (1.000 Tỷ)
+    gameState.resources.gold += ONE_THOUSAND_BILLION;
+    gameState.resources.kimCuong += ONE_THOUSAND_BILLION;
+    gameState.resources.anhSao += ONE_THOUSAND_BILLION;
+    gameState.resources.vpnc += ONE_THOUSAND_BILLION;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + ONE_THOUSAND_BILLION;
+    gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + ONE_THOUSAND_BILLION;
+    gameState.resources.purpleMeteor = (gameState.resources.purpleMeteor || 0) + ONE_THOUSAND_BILLION;
+    gameState.resources.pinkShard = (gameState.resources.pinkShard || 0) + ONE_THOUSAND_BILLION;
+    gameState.resources.blueShard = (gameState.resources.blueShard || 0) + ONE_THOUSAND_BILLION;
+    gameState.resources.banhTrungThu = (gameState.resources.banhTrungThu || 0) + ONE_THOUSAND_BILLION;
+    gameState.resources.keoBanh = (gameState.resources.keoBanh || 0) + ONE_THOUSAND_BILLION;
+
+    if (!gameState.events) gameState.events = {};
+    if (!gameState.events.anhHungChiVien) {
+      gameState.events.anhHungChiVien = {
+        points: 0, hoPhach: 0, spentAnhSaoToday: 0, claimedMilestonesToday: [],
+        dailyQuestProgress: { goldEarned: 0, levelsUpgraded: 0, diamondSpent: 0, anhSaoEarned: 0, anhSaoSpent: 0 },
+        claimedDailyQuests: [], boxExchangeCountToday: 0, goldVpnc1CountToday: 0, goldVpnc2CountToday: 0, lastDate: ""
+      };
+    }
+    gameState.events.anhHungChiVien.hoPhach += ONE_THOUSAND_BILLION;
+    gameState.events.anhHungChiVien.points += ONE_THOUSAND_BILLION;
+
+    // Mở khóa toàn bộ nhân vật
+    const allHeroes = Object.keys(HERO_DB).filter(hId => !HERO_DB[hId].bossOnly);
+    allHeroes.forEach(hId => {
+      if (!gameState.heroes[hId]) gameState.heroes[hId] = { level: 1 };
+    });
+
+    // Mở khóa toàn bộ Linh Thú
+    gameState.ownedBeasts = Object.keys(BEASTS_DB);
+
+    // Mở khóa toàn bộ Ải & Chương (Chương 9 Ải 10)
+    gameState.progress.maxChapter = 9;
+    gameState.progress.maxStage = 10;
+
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("👑 Kích hoạt mã TEST003 thành công: Mở khóa TOÀN BỘ tướng, linh thú, ải viễn chinh & nhận 1.000 TỶ (1.000B) toàn bộ vật phẩm!", false);
+    return;
+  }
+
   if (code === "TEST002") {
     const TEN_BILLION = 10000000000;
     gameState.resources.gold += TEN_BILLION;
@@ -9975,7 +10022,7 @@ function showVersusResult(winningTeam) {
   if (footerEl) {
     footerEl.innerHTML = `
       <button class="btn btn-primary" onclick="startVersusBattle()">🔄 Đấu Lại Trận Này</button>
-      <button class="btn btn-accent" onclick="openVersusModal()">👥 Đổi Đội Hình</button>
+      <button class="btn btn-accent" onclick="openVersusModal()">👥 Thay đội hình đi má</button>
       <button class="btn" onclick="exitBattleToHub()">Về Màn Hình Chính</button>
     `;
   }
