@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v5.6.1 [TỐI ƯU HÓA KAGURA DẠNG THẦN & SỢI DÂY ĐỊNH MỆNH]</title>
+<title>Chiến Thuật Luân Hồi v5.7.0 [TƯỚNG MỚI ITACHI AMATERASU & NÂNG CẤP MAX LEVEL 600]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -540,7 +541,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.6.0 CẬP NHẬT: Hoàn Thiện Tướng Mới Kagura (Sợi Dây Định Mệnh Cùng Hàng, Giáng Thần, 4 Bị Động & Thần Chú) | Chuẩn Hóa 2 Đại Boss Cốt Truyện Kurama & Susanoo</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.7.0 CẬP NHẬT: Tướng Mới Siêu Cấp Itachi Amaterasu [AS] (Hắc Hỏa Tuyệt Diệt, Ảo Thuật Vô Tận) | Mở Rộng Cấp Độ Tối Đa Lên Level 600!</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -599,7 +600,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.6.0 (TƯỚNG MỚI KAGURA [SKL] & 2 BOSS ĐỊA NGỤC)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.7.0 (TƯỚNG MỚI ITACHI AMATERASU [AS] & MAX LEVEL 600)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1337,12 +1338,12 @@
   <div class="modal-overlay" id="modalVersusSetup">
     <div class="modal-card" style="width:780px; max-width:96vw;">
       <div class="modal-header">
-        <div class="modal-title" style="color:var(--accent-red); font-size:16px; font-weight:800;">⚔️🛡️ ĐẤU KHÁNG CHIẾN THUẬT (3 VS 3 CẤP 500)</div>
+        <div class="modal-title" style="color:var(--accent-red); font-size:16px; font-weight:800;">⚔️🛡️ ĐẤU KHÁNG CHIẾN THUẬT (3 VS 3 CẤP 600)</div>
         <button class="modal-close" onclick="closeModal('modalVersusSetup')">&times;</button>
       </div>
       <div class="modal-body" style="padding:10px 14px;">
         <div style="font-size:11px; color:var(--text-secondary); margin-bottom:10px;">
-          Chế độ giao hữu chiến thuật: Cả 2 đội đạt <b>Cấp 500</b>, không dùng Linh Thú. <b>Không được chọn trùng tướng</b> giữa 2 đội. Bạn tự tay điều khiển cả hai bên!
+          Chế độ giao hữu chiến thuật: Cả 2 đội đạt <b>Cấp 600</b>, không dùng Linh Thú. <b>Không được chọn trùng tướng</b> giữa 2 đội. Bạn tự tay điều khiển cả hai bên!
         </div>
         
         <!-- Bố cục 2 đội -->
@@ -2071,6 +2072,37 @@ const HERO_DB = {
       { lv: 150, name: "Thần Chú 2", desc: "+15% DEF." }
     ]
   },
+  itachi_amaterasu: {
+    id: "itachi_amaterasu",
+    name: "Itachi Amaterasu",
+    type: "AS",
+    roleDesc: "Thiên Tài Uchiha [AS], Hắc Hỏa Amaterasu Tuyệt Diệt, Giảm 80% Hồi Máu & Ảo Thuật Vô Tận",
+    baseHp: 780,
+    baseAtk: 45.2,
+    baseDef: 67,
+    baseSpd: 185,
+    enMax: 7.5,
+    hasSpells: true,
+    normalAttack: { 
+      name: "Hắc Hỏa Kích", 
+      enGain: 1.2, 
+      desc: "Gây 98% ATK lên 1 mục tiêu, kèm 5% HP tối đa của mục tiêu. Hồi 1.2 EN." 
+    },
+    activeSkill: { 
+      name: "Amaterasu Tuyệt Diệt", 
+      desc: "Tạo Amaterasu đốt cháy toàn bộ mục tiêu bằng 300% ATK kèm 5 tầng 'Amaterasu tuyệt diệt'. Mỗi lượt gây ST bằng 80% ATK bản thân kèm 2% HP còn lại của mục tiêu, tồn tại trong 3 lượt (tối đa cộng dồn 15 tầng)." 
+    },
+    passives: [
+      { lv: 30, name: "Thiêu Đốt Sinh Mệnh", desc: "Mục tiêu đang có 'Amaterasu tuyệt diệt' bị giảm 80% khả năng hồi phục." },
+      { lv: 70, name: "Ám Hỏa Xâm Thực", desc: "Đòn đánh thường khắc 1 tầng 'Amaterasu tuyệt diệt' lên mục tiêu." },
+      { lv: 80, name: "Sharingan Vạn Hoa Đồng", desc: "Mục tiêu mỗi lần nhận ST từ 'Amaterasu tuyệt diệt' có 20% cơ hội bị trúng 'Ảo thuật vô tận' (Choáng 1 lượt và bị cướp toàn bộ EN dâng cho Itachi)." },
+      { lv: 100, name: "Hắc Viêm Tự Dưỡng", desc: "Mỗi lần gây ST (từ cả chủ động, bị động, hiệu ứng DoT,...), hồi phục bản thân bằng 20% ST gây ra (tối đa hồi bằng 15% HP tối đa của bản thân mỗi lần)." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú 1", desc: "+20% ATK, +20% DEF." },
+      { lv: 150, name: "Thần Chú 2", desc: "+15% tỉ lệ bạo kích, +18% HP." }
+    ]
+  },
   susanoo_boss: {
     id: "susanoo_boss",
     name: "Chúa Tể Susanoo",
@@ -2099,7 +2131,7 @@ const HERO_DB = {
 const STORAGE_KEY = "TURN_BASED_GAME_SAVE_V130";
 
 let gameState = {
-  player: { level: 1, exp: 0, maxLevel: 500 },
+  player: { level: 1, exp: 0, maxLevel: 600 },
   resources: {
     anhSao: 50,
     kimCuong: 120,
@@ -2198,9 +2230,13 @@ function loadGame() {
     if (!gameState.player) gameState.player = { level: 1, exp: 0, maxLevel: 500 };
   if (!gameState.player.level) gameState.player.level = 1;
   if (!gameState.player.exp) gameState.player.exp = 0;
+  // v5.7.0: Đảm bảo có Itachi Amaterasu trong danh sách nhân vật
+  if (!gameState.heroes.itachi_amaterasu) {
+    gameState.heroes.itachi_amaterasu = { level: 1 };
+  }
   // v5.1.1: Cưỡng chế Max Level tài khoản lên 500 và xử lý ngay EXP tích lũy bị nghẽn
-  if (!gameState.player.maxLevel || gameState.player.maxLevel < 500) {
-    gameState.player.maxLevel = 500;
+  if (!gameState.player.maxLevel || gameState.player.maxLevel < 600) {
+    gameState.player.maxLevel = 600;
   }
   checkPlayerLevelUp();
 
@@ -2327,8 +2363,8 @@ function getExpRequiredForLevel(lv) { return lv * 120; }
 
 function checkPlayerLevelUp() {
   if (!gameState.player) gameState.player = { level: 1, exp: 0, maxLevel: 500 };
-  if (!gameState.player.maxLevel || gameState.player.maxLevel < 500) {
-    gameState.player.maxLevel = 500;
+  if (!gameState.player.maxLevel || gameState.player.maxLevel < 600) {
+    gameState.player.maxLevel = 600;
   }
   let leveledUp = false;
   const initialLv = gameState.player.level || 1;
@@ -2346,7 +2382,7 @@ function checkPlayerLevelUp() {
 
 function addPlayerExp(amount) {
   if (!gameState.player) gameState.player = { level: 1, exp: 0, maxLevel: 500 };
-  if (!gameState.player.maxLevel || gameState.player.maxLevel < 500) gameState.player.maxLevel = 500;
+  if (!gameState.player.maxLevel || gameState.player.maxLevel < 600) gameState.player.maxLevel = 600;
   gameState.player.exp = (gameState.player.exp || 0) + (amount || 0);
   checkPlayerLevelUp();
 }
@@ -2411,14 +2447,16 @@ function getHeroStats(heroId, customLv = null) {
   let hp = Math.round(db.baseHp * statMult * 1.30);
   let atk = +(db.baseAtk * statMult * 1.20).toFixed(1);
   let def = db.baseDef;
-  // v5.1.1: Mỗi 50 level từ 350-500 được nâng cấp, tăng 20 DEF (400: +20, 450: +40, 500: +60)
+  // v5.1.1 & v5.7.0: Mỗi 50 level từ 350-600 được nâng cấp, tăng 20 DEF (400: +20, 450: +40, 500: +60, 550: +80, 600: +100)
   if (lv >= 400) def += 20;
   if (lv >= 450) def += 20;
   if (lv >= 500) def += 20;
+  if (lv >= 550) def += 20;
+  if (lv >= 600) def += 20;
   let spd = db.baseSpd;
   let enMax = db.enMax;
-  let critRate = 0.18;
-  let critDmg = 3.0;
+  let critRate = (heroId === "itachi_amaterasu" || heroId === "susan") ? 0.28 : 0.18;
+  let critDmg = (heroId === "itachi_amaterasu") ? 3.20 : (heroId === "susan" ? 2.80 : 3.0);
   let armorPen = 0;
   if (heroId === "vegito" && lv >= 30) {
     armorPen += 0.30;
@@ -2435,6 +2473,11 @@ function getHeroStats(heroId, customLv = null) {
       else if (heroId === "conan") { atk = +(atk * 1.20).toFixed(1); def = Math.round(def * 1.18); }
       else if (heroId === "kid") { atk = +(atk * 1.20).toFixed(1); def = Math.round(def * 1.18); }
       else if (heroId === "vegito") { def = Math.round(def * 1.20); }
+      else if (heroId === "itachi_amaterasu") {
+        // Thần chú 1 (Lv.130): +20% ATK, +20% DEF
+        atk = +(atk * 1.20).toFixed(1);
+        def = Math.round(def * 1.20);
+      }
     }
     if (lv >= 150) {
       if (heroId === "madara") { critRate += 0.15; critDmg += 0.50; }
@@ -2447,6 +2490,11 @@ function getHeroStats(heroId, customLv = null) {
       else if (heroId === "isshiki") { atk = +(atk * 1.18).toFixed(1); }
       else if (heroId === "momoshiki") { def = Math.round(def * 1.25); hp = Math.round(hp * 1.18); atk = +(atk * 1.12).toFixed(1); }
       else if (heroId === "phoverus") { atk = +(atk * 1.15).toFixed(1); }
+      else if (heroId === "itachi_amaterasu") {
+        // Thần chú 2 (Lv.150): +15% tỉ lệ bạo kích, +18% HP
+        critRate = +(critRate + 0.15).toFixed(2);
+        hp = Math.round(hp * 1.18);
+      }
     }
   }
 
@@ -2485,6 +2533,9 @@ function getHeroStats(heroId, customLv = null) {
     if (lv >= 150) {
       def = Math.round(def * 1.15);
     }
+  } else if (heroId === "itachi_amaterasu") {
+    spd = 185;
+    enMax = 7.5;
   } else if (heroId === "susanoo_boss") {
     spd = 200;
   }
@@ -4159,6 +4210,64 @@ function nextTurn() {
     if (actor.buffs.bocHoa.duration <= 0) delete actor.buffs.bocHoa;
   }
 
+  // v5.7.0: Xử lý hiệu ứng "Amaterasu Tuyệt Diệt"
+  if (actor.buffs.amaterasuTuyetDiet && actor.buffs.amaterasuTuyetDiet.stacks > 0) {
+    const am = actor.buffs.amaterasuTuyetDiet;
+    let itachiSource = (am.source && am.source.hp > 0) ? am.source : null;
+    if (!itachiSource) {
+      const oppTeam = (battle.playerTeam && battle.playerTeam.includes(actor)) ? battle.botTeam : battle.playerTeam;
+      itachiSource = oppTeam.find(p => p && (p.id === "itachi_amaterasu" || p.heroId === "itachi_amaterasu") && p.hp > 0);
+    }
+    const atkVal = itachiSource ? itachiSource.atk : 45.2;
+    // Mỗi lượt gây ST bằng 80% ATK bản thân kèm 2% HP còn lại của mục tiêu
+    const dmgPerStack = Math.round(atkVal * 0.80 + actor.hp * 0.02);
+    const totalAmDmg = Math.max(1, dmgPerStack * am.stacks);
+
+    applyDamage(actor, totalAmDmg, false, itachiSource || "AMATERASU");
+    addAnimation(actor, `-${totalAmDmg.toLocaleString()} HP (AMATERASU x${am.stacks})`, "#ff0055");
+    logCombat(`🔥🖤 [Amaterasu Tuyệt Diệt] ${actor.name} bị Hắc Hỏa thiêu rụi chịu ${totalAmDmg.toLocaleString()} ST (${am.stacks} tầng: 80% ATK + 2% HP hiện tại mỗi tầng)!`);
+
+    let stoleAndStunned = false;
+    // Bị động 3 (Lv.80): Sharingan Vạn Hoa Đồng: Mục tiêu mỗi lần nhận ST từ "Amaterasu tuyệt diệt" có 20% cơ hội trúng "ảo thuật vô tận"
+    // "ảo thuật vô tận": stun 1 lượt, bị cướp toàn bộ EN đưa cho Itachi
+    if (itachiSource && itachiSource.level >= 80 && Math.random() < 0.20) {
+      const stolenEn = actor.en || 0;
+      actor.en = 0;
+      itachiSource.en = Math.min(itachiSource.enMax, +(itachiSource.en + stolenEn).toFixed(1));
+      addAnimation(itachiSource, `+${stolenEn} EN (ĐOẠT EN)`, "#bc8cff");
+      
+      if (!isStunImmune(actor)) {
+        actor.buffs.choang = 1;
+        stoleAndStunned = true;
+        addAnimation(actor, "ẢO THUẬT VÔ TẬN! (CHOÁNG)", "#bc8cff");
+        logCombat(`👁️🌀 [Sharingan Vạn Hoa Đồng] ${actor.name} trúng [Ảo Thuật Vô Tận]: Bị Choáng mất lượt và bị cướp sạch ${stolenEn} EN dâng cho ${itachiSource.name}!`);
+      } else {
+        addAnimation(actor, "MIỄN CHOÁNG! (MẤT EN)", "#bc8cff");
+        logCombat(`👁️🌀 [Sharingan Vạn Hoa Đồng] ${actor.name} miễn nhiễm Choáng nhưng vẫn bị cướp sạch ${stolenEn} EN dâng cho ${itachiSource.name}!`);
+      }
+    }
+
+    am.duration--;
+    if (am.duration <= 0) {
+      delete actor.buffs.amaterasuTuyetDiet;
+      logCombat(`🔥 [Hắc Hỏa Tàn] Hiệu ứng Amaterasu Tuyệt Diệt trên ${actor.name} đã kết thúc.`);
+    }
+
+    if (actor.hp <= 0) {
+      battle.currentActorIndex++;
+      nextTurn();
+      return;
+    }
+
+    if (stoleAndStunned) {
+      setTimeout(() => {
+        battle.currentActorIndex++;
+        nextTurn();
+      }, 700 / battle.speed);
+      return;
+    }
+  }
+
   if (dotDamage > 0) {
     applyDamage(actor, dotDamage, false, "DOT");
     if (actor.hp <= 0) {
@@ -4315,11 +4424,11 @@ function updatePlayerSkillCards(actor) {
 
   if (canCastSkill) {
     skillBtn.classList.remove("disabled");
-    document.getElementById("cardSkillStatus").textContent = isKaguraGod ? "SẴN SÀNG HỒI PHỤC" : "SẴN SÀNG GIÁNG THẦN";
+    document.getElementById("cardSkillStatus").textContent = isKaguraGod ? "SẴN SÀNG HỒI PHỤC" : (actor.id === "kagura" ? "SẴN SÀNG GIÁNG THẦN" : "SẴN SÀNG KÍCH HOẠT");
     document.getElementById("cardSkillStatus").style.color = "var(--accent-green)";
   } else {
     skillBtn.classList.add("disabled");
-    document.getElementById("cardSkillStatus").textContent = isKaguraGod ? `Cần tối thiểu 3 EN để hồi phục` : `Cần ${actor.enMax} EN để thức tỉnh`;
+    document.getElementById("cardSkillStatus").textContent = isKaguraGod ? `Cần tối thiểu 3 EN để hồi phục` : (actor.id === "kagura" ? `Cần ${actor.enMax} EN để thức tỉnh` : `Cần ${actor.enMax} EN`);
     document.getElementById("cardSkillStatus").style.color = "var(--accent-red)";
   }
 }
@@ -4327,6 +4436,21 @@ function updatePlayerSkillCards(actor) {
 function disablePlayerActionCards() {
   document.getElementById("btnNormalAttack").classList.add("disabled");
   document.getElementById("btnActiveSkill").classList.add("disabled");
+}
+
+// ==================== CƠ CHẾ AMATERASU TUYỆT DIỆT (v5.7.0) ====================
+function applyAmaterasuTuyetDiet(attacker, target, addStacks = 1) {
+  if (!target || target.hp <= 0) return;
+  target.buffs = target.buffs || {};
+  const cur = target.buffs.amaterasuTuyetDiet ? target.buffs.amaterasuTuyetDiet.stacks : 0;
+  const newStacks = Math.min(15, cur + addStacks);
+  target.buffs.amaterasuTuyetDiet = {
+    stacks: newStacks,
+    duration: 3,
+    source: attacker
+  };
+  addAnimation(target, `🔥AMATERASU +${addStacks} (${newStacks}/15)`, "#ff0055");
+  logCombat(`🔥🖤 [Hắc Hỏa Amaterasu] ${target.name} bị khắc thêm ${addStacks} tầng "Amaterasu Tuyệt Diệt" (Hiện có ${newStacks}/15 tầng, duy trì 3 lượt)!`);
 }
 
 // ==================== CƠ CHẾ LIÊN KẾT ĐỊNH MỆNH & MIỄN NHIỄM KAGURA (v5.6.0) ====================
@@ -4668,6 +4792,17 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
     }
   }
 
+  // v5.7.0: Itachi Amaterasu Bị Động 4 (Lv.100): Mỗi lần gây ST (từ cả chủ động, bị động, hiệu ứng,..), hồi phục bản thân bằng 20% ST gây ra (tối đa 15% HP tối đa)
+  if (attacker && (attacker.id === "itachi_amaterasu" || attacker.heroId === "itachi_amaterasu") && attacker.level >= 100 && finalDmg > 0 && attacker.hp > 0) {
+    const maxHealCap = Math.round(attacker.maxHp * 0.15);
+    const healAmt = Math.min(maxHealCap, Math.round(finalDmg * 0.20));
+    if (healAmt > 0) {
+      healFighter(attacker, healAmt);
+      addAnimation(attacker, `+${healAmt.toLocaleString()} HP (HẮC HỎA TỰ DƯỠNG)`, "#3fb950");
+      logCombat(`🩸🔥 [Hắc Hỏa Tự Dưỡng] ${attacker.name} hồi phục ${healAmt.toLocaleString()} HP (20% ST gây ra, tối đa 15% Max HP)!`);
+    }
+  }
+
   // v4.0.0: Phoverus Hút máu gốc 8% cho mọi đòn đánh
   if (attacker && attacker.id === "phoverus" && finalDmg > 0 && attacker.hp > 0) {
     const pHeal = Math.max(1, Math.round(finalDmg * 0.08));
@@ -4867,6 +5002,13 @@ function healFighter(fighter, amount) {
   // Shisui Giảm hồi máu 50%
   if (fighter.buffs && fighter.buffs.healReduction) {
     finalHeal = Math.round(finalHeal * (1 - fighter.buffs.healReduction));
+  }
+  // v5.7.0: Itachi Amaterasu Bị Động 1 (Lv.30): Mục tiêu đang có "Amaterasu tuyệt diệt" giảm 80% khả năng hồi phục
+  if (fighter.buffs && fighter.buffs.amaterasuTuyetDiet && fighter.buffs.amaterasuTuyetDiet.stacks > 0) {
+    const amSrc = fighter.buffs.amaterasuTuyetDiet.source;
+    if (!amSrc || amSrc.level >= 30) {
+      finalHeal = Math.round(finalHeal * 0.20);
+    }
   }
 
   const oldHp = fighter.hp;
@@ -5274,6 +5416,14 @@ function executePlayerAction(type) {
       aliveAllies.forEach(a => healFighter(a, perAlly));
       addAnimation(target, `-${drainHp.toLocaleString()} HP (CƯỚP 7%)`, "#f85149");
       logCombat(`🪭 [Vu Thuật Đoạt Mệnh] Kagura cướp ${drainHp.toLocaleString()} HP (7% HP) của ${target.name}, chia đều hồi phục cho đồng minh và hồi +2.5 EN!`);
+    } else if (actor.id === "itachi_amaterasu") {
+      const raw = actor.atk * 0.98 + target.maxHp * 0.05;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+      logCombat(`🔥🖤 [Hắc Hỏa Kích] ${actor.name} tung hắc hỏa gây ${damage.toLocaleString()} ST (98% ATK + 5% Max HP) lên ${target.name}.`);
+      if (actor.level >= 70) {
+        applyAmaterasuTuyetDiet(actor, target, 1);
+      }
     } else if (actor.id === "susanoo_boss") {
       const raw = actor.atk * 0.88 + target.maxHp * 0.06;
       const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -5807,6 +5957,18 @@ function executePlayerAction(type) {
           logCombat(`🛡️✨ [Thần Quang Hộ Mệnh] Kagura ban lớp Khiên ${shieldGain.toLocaleString()} HP (10% HP hiện tại) cho ${targetAlly.name}!`);
         }
       }
+    } else if (actor.id === "itachi_amaterasu") {
+      actor.en = 0;
+      const targets = enemyTeam.filter(b => b && b.hp > 0);
+      let totalDmgDone = 0;
+      targets.forEach(t => {
+        const raw = actor.atk * 3.00;
+        const { damage, isCrit } = calculateDamage(actor, t, raw);
+        totalDmgDone += applyDamage(t, damage, isCrit, actor);
+        applyAmaterasuTuyetDiet(actor, t, 5);
+      });
+      addAnimation(actor, "AMATERASU TUYỆT DIỆT!", "#ff0055");
+      logCombat(`🔥🖤👁️ [Amaterasu Tuyệt Diệt] ${actor.name} khai mở Mangekyou Sharingan phóng Hắc Hỏa thiêu rụi toàn bộ quân địch gây ${totalDmgDone.toLocaleString()} ST (300% ATK) và khắc 5 tầng Amaterasu Tuyệt Diệt!`);
     } else if (actor.id === "susanoo_boss") {
       actor.en = 0;
       const targets = enemyTeam.filter(b => b && b.hp > 0).slice(0, 2);
@@ -6246,6 +6408,17 @@ function executeHeroBotAction(actor, alivePlayers) {
             logCombat(`🛡️✨ [Thần Quang Hộ Mệnh] Kagura ban lớp Khiên ${shieldGain.toLocaleString()} HP (10% HP hiện tại) cho ${targetAlly.name}!`);
           }
         }
+      } else if (actor.heroId === "itachi_amaterasu" || actor.id === "itachi_amaterasu") {
+        actor.en = 0;
+        let totalDmgDone = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 3.00;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          totalDmgDone += applyDamage(p, damage, isCrit, actor);
+          applyAmaterasuTuyetDiet(actor, p, 5);
+        });
+        addAnimation(actor, "AMATERASU TUYỆT DIỆT!", "#ff0055");
+        logCombat(`🔥🖤👁️ [Amaterasu Tuyệt Diệt] ${actor.name} khai mở Mangekyou Sharingan phóng Hắc Hỏa thiêu rụi toàn đội bạn gây ${totalDmgDone.toLocaleString()} ST và khắc 5 tầng Amaterasu Tuyệt Diệt!`);
       } else if (actor.heroId === "susanoo_boss" || actor.id === "susanoo_boss") {
         actor.en = 0;
         const targets = alivePlayers.slice(0, 2);
@@ -6346,6 +6519,14 @@ function executeHeroBotAction(actor, alivePlayers) {
         aliveAllies.forEach(a => healFighter(a, perAlly));
         addAnimation(target, `-${drainHp.toLocaleString()} HP (CƯỚP 7%)`, "#f85149");
         logCombat(`🪭 [Vu Thuật Đoạt Mệnh] Kagura cướp ${drainHp.toLocaleString()} HP (7% HP) của ${target.name}, chia đều hồi phục cho đồng minh và hồi +2.5 EN!`);
+      } else if (actor.heroId === "itachi_amaterasu" || actor.id === "itachi_amaterasu") {
+        const raw = actor.atk * 0.98 + target.maxHp * 0.05;
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+        logCombat(`🔥🖤 [Hắc Hỏa Kích] ${actor.name} tung hắc hỏa gây ${damage.toLocaleString()} ST lên ${target.name}.`);
+        if (actor.level >= 70) {
+          applyAmaterasuTuyetDiet(actor, target, 1);
+        }
       } else if (actor.heroId === "susanoo_boss" || actor.id === "susanoo_boss") {
         const raw = actor.atk * 0.88 + target.maxHp * 0.06;
         const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -6640,6 +6821,7 @@ function drawCharacter(f) {
 
     // Buff & Debuff Badges
     let badgeOffset = -30;
+    if (f.buffs.amaterasuTuyetDiet) { drawBadge(x + badgeOffset, y - 56, `🔥x${f.buffs.amaterasuTuyetDiet.stacks}`, "#ff0055"); badgeOffset += 30; }
     if (f.buffs.burn) { drawBadge(x + badgeOffset, y - 56, `🔥x${f.buffs.burn}`, "#f85149"); badgeOffset += 30; }
     if (f.buffs.bleeding) { drawBadge(x + badgeOffset, y - 56, `🩸x${f.buffs.bleeding.stacks}`, "#da3633"); badgeOffset += 30; }
     if (f.buffs.bleeding2) { drawBadge(x + badgeOffset, y - 56, `🗡️B2`, "#ff7b72"); badgeOffset += 30; }
@@ -6890,6 +7072,7 @@ let gachaQueue = [];
 let currentGachaIndex = 0;
 
 const GACHA_SPECIAL_RATES = [
+  { name: "Itachi Amaterasu [Tướng Mới v5.7.0]", type: "hero", id: "itachi_amaterasu", rate: 0.005, color: "var(--accent-red)" },
   { name: "Kaguya Otsutsuki [Thần Thoại Mùa II]", type: "hero", id: "kaguya", rate: 0.004, color: "var(--accent-red)" },
   { name: "Senju Hashirama [Thần Thoại Mùa II]", type: "hero", id: "hashirama", rate: 0.004, color: "var(--accent-gold)" },
   { name: "100 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 100, rate: 0.05, color: "var(--accent-gold)" },
@@ -6904,6 +7087,7 @@ const GACHA_SPECIAL_RATES = [
 ];
 
 const GACHA_NORMAL_RATES = [
+  { name: "Itachi Amaterasu [Tướng Mới v5.7.0]", type: "hero", id: "itachi_amaterasu", rate: 0.010, color: "var(--accent-red)" },
   { name: "Kagura [Tướng Mới v5.6.1]", type: "hero", id: "kagura", rate: 0.010, color: "var(--accent-purple)" },
   { name: "Kaitou Kid [SSR Mùa II]", type: "hero", id: "kid", rate: 0.008, color: "var(--accent-purple)" },
   { name: "Otsutsuki Isshiki [SSR Mùa II]", type: "hero", id: "isshiki", rate: 0.008, color: "var(--accent-cyan)" },
@@ -7789,6 +7973,30 @@ function submitGiftcode() {
     toast("⚔️ Kích hoạt CH9_10: Mở khóa Ải 10 Chương 9 gặp Chúa Tể Susanoo!");
     return;
   }
+  if (code === "ITACHIAS" || code === "AMATERASU" || code === "V570") {
+    gameState.heroes.itachi_amaterasu = { level: 1 };
+    gameState.resources.gold += 5000000;
+    gameState.resources.vpnc += 500000;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🎉 Kích hoạt mã thành công! Mở khóa tướng mới Itachi Amaterasu [AS] + 5M Vàng + 500K VPNC!", false);
+    return;
+  }
+  if (code === "LEVEL600") {
+    gameState.resources.gold += 50000000;
+    gameState.resources.vpnc += 20000000;
+    gameState.resources.anhSao = (gameState.resources.anhSao || 0) + 1000;
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 5000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 50;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("⚡ Kích hoạt mã LEVEL600: Nhận 50M Vàng, 20M VPNC, 1000 Ánh sao, 5000 KC, 50 Thiên thạch hồng!", false);
+    return;
+  }
   if (code === "KAGURA" || code === "KAGURA2026") {
     gameState.heroes.kagura = { level: 1 };
     saveGame();
@@ -7911,7 +8119,7 @@ function submitGiftcode() {
 
   if (code === "RESET001") {
     gameState = {
-      player: { level: 1, exp: 0, maxLevel: 500 },
+      player: { level: 1, exp: 0, maxLevel: 600 },
       resources: {
         anhSao: 50,
         kimCuong: 120,
@@ -8282,7 +8490,7 @@ function renderHeroDetails(heroId) {
   } else if (isLocked350) {
     upgradeSectionHtml = `
       <div style="width:100%; background:#1c1214; border:1px solid var(--accent-pink); border-radius:8px; padding:10px;">
-        <div style="font-weight:700; color:var(--accent-pink); font-size:12px; margin-bottom:3px;">☄️ CẦN ĐỘT PHÁ CẤP 350 ĐỂ MỞ RỘNG LÊN CẤP 500!</div>
+        <div style="font-weight:700; color:var(--accent-pink); font-size:12px; margin-bottom:3px;">☄️ CẦN ĐỘT PHÁ CẤP 350 ĐỂ MỞ RỘNG LÊN CẤP 600!</div>
         <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">
           Từ Cấp 350 trở đi, mỗi cấp tăng <b>+35% chỉ số gốc</b>, mỗi 50 cấp được <b>+20 DEF</b>!
           <br>Yêu cầu: <b>500 ⭐ Ánh sao</b> + <b>3,000 💎 Kim cương</b> + <b>10M 🧪 VPNC</b> + <b>30 ☄️ Thiên Thạch Hồng</b>.
@@ -8298,10 +8506,10 @@ function renderHeroDetails(heroId) {
         Chi phí: <b style="color:var(--accent-green)">${vpncCost.toLocaleString()} VPNC</b>, <b style="color:var(--accent-gold)">${goldCost.toLocaleString()} Vàng</b>
       </div>
       <div style="display:flex; gap:6px;">
-        <button class="btn btn-primary" style="padding:5px 10px;" onclick="upgradeHero('${heroId}')" ${currentLv >= 500 ? "disabled" : ""}>
-          ${currentLv >= 500 ? "Đạt Max Cấp (500)" : "Nâng (+1 Lv)"}
+        <button class="btn btn-primary" style="padding:5px 10px;" onclick="upgradeHero('${heroId}')" ${currentLv >= 600 ? "disabled" : ""}>
+          ${currentLv >= 600 ? "Đạt Max Cấp (600)" : "Nâng (+1 Lv)"}
         </button>
-        <button class="btn btn-accent" style="padding:5px 10px;" onclick="upgradeHero10('${heroId}')" ${currentLv >= 500 ? "disabled" : ""}>
+        <button class="btn btn-accent" style="padding:5px 10px;" onclick="upgradeHero10('${heroId}')" ${currentLv >= 600 ? "disabled" : ""}>
           +10 Lv
         </button>
       </div>
@@ -8314,7 +8522,7 @@ function renderHeroDetails(heroId) {
         <h3 style="font-size:15px; font-weight:700;">${stats.name}</h3>
         <span style="font-size:10px; color:var(--text-secondary);">${db.roleDesc}</span>
       </div>
-      <span class="level-badge">Lv. ${currentLv}/500 ${gameState.heroes[heroId]?.breakthrough250 ? "⭐" : ""}</span>
+      <span class="level-badge">Lv. ${currentLv}/600 ${gameState.heroes[heroId]?.breakthrough250 ? "⭐" : ""}</span>
     </div>
 
     <!-- v3.2.2: Hiển thị chỉ số Level Hiện Tại kèm buff Linh Thú -->
@@ -8389,7 +8597,7 @@ function renderHeroDetails(heroId) {
 
 function upgradeHero(heroId) {
   const currentLv = gameState.heroes[heroId].level;
-  if (currentLv >= 500) { toast("Nhân vật đã đạt cấp tối đa (Lv. 500)!", true); return; }
+  if (currentLv >= 600) { toast("Nhân vật đã đạt cấp tối đa (Lv. 600)!", true); return; }
   if (currentLv === 250 && !gameState.heroes[heroId]?.breakthrough250) {
     toast("Cần Đột Phá Cấp 250 bằng 45 Thiên Thạch Hồng hoặc 95 Thiên Thạch Xanh để nâng cấp tiếp!", true);
     return;
@@ -8399,7 +8607,7 @@ function upgradeHero(heroId) {
     return;
   }
   if (currentLv === 350 && !gameState.heroes[heroId]?.breakthrough350) {
-    toast("Cần Đột Phá Cấp 350 (500 Ánh sao + 3,000 KC + 10M VPNC + 30 Thiên thạch hồng) để nâng tiếp lên Cấp 500!", true);
+    toast("Cần Đột Phá Cấp 350 (500 Ánh sao + 3,000 KC + 10M VPNC + 30 Thiên thạch hồng) để nâng tiếp lên Cấp 600!", true);
     return;
   }
   const { vpncCost, goldCost } = getHeroUpgradeCost(currentLv);
@@ -8424,7 +8632,7 @@ function upgradeHero(heroId) {
 
 function upgradeHero10(heroId) {
   const currentLv = gameState.heroes[heroId].level;
-  if (currentLv >= 500) return;
+  if (currentLv >= 600) return;
   if (currentLv === 250 && !gameState.heroes[heroId]?.breakthrough250) {
     toast("Cần Đột Phá Cấp 250 bằng 45 Thiên Thạch Hồng hoặc 95 Thiên Thạch Xanh để nâng cấp tiếp!", true);
     return;
@@ -8434,11 +8642,11 @@ function upgradeHero10(heroId) {
     return;
   }
   if (currentLv === 350 && !gameState.heroes[heroId]?.breakthrough350) {
-    toast("Cần Đột Phá Cấp 350 để nâng cấp tiếp lên Cấp 500!", true);
+    toast("Cần Đột Phá Cấp 350 để nâng cấp tiếp lên Cấp 600!", true);
     return;
   }
 
-  let maxAllowed = 500;
+  let maxAllowed = 600;
   if (!gameState.heroes[heroId]?.breakthrough250 && currentLv < 250) {
     maxAllowed = 250;
   } else if (!gameState.heroes[heroId]?.breakthrough300 && currentLv < 300) {
@@ -8571,7 +8779,7 @@ function breakthroughHero350(heroId) {
   gameState.heroes[heroId].breakthrough350 = true;
   saveGame();
   updateTopBarUI();
-  toast(`🎉 Đột Phá Siêu Thần thành công! ${HERO_DB[heroId].name} mở khóa giới hạn lên Cấp 500 (+35% chỉ số/Lv, +20 DEF/50 Lv)!`);
+  toast(`🎉 Đột Phá Siêu Thần thành công! ${HERO_DB[heroId].name} mở khóa giới hạn lên Cấp 600 (+35% chỉ số/Lv, +20 DEF/50 Lv)!`);
   renderHeroesList();
   renderHeroDetails(heroId);
 }
@@ -9600,7 +9808,7 @@ function renderVersusSlots() {
         slotCard.innerHTML = `
           <div style="font-size:10px; color:${color}; font-weight:bold;">${posLabel}</div>
           <div style="font-size:11px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${db.name}</div>
-          <div style="font-size:10px; color:${typeCol};">[${db.type}] Lv.500</div>
+          <div style="font-size:10px; color:${typeCol};">[${db.type}] Lv.600</div>
         `;
       } else {
         slotCard.innerHTML = `
@@ -9690,12 +9898,12 @@ function startVersusBattle() {
   }
 
   switchScreen("screenBattle");
-  logCombat(`=== ⚔️ BẮT ĐẦU ĐẤU KHÁNG CHIẾN THUẬT (3 VS 3 CẤP 500) ===`);
+  logCombat(`=== ⚔️ BẮT ĐẦU ĐẤU KHÁNG CHIẾN THUẬT (3 VS 3 CẤP 600) ===`);
   logCombat(`🔵 Đội 1 (Xanh): ${t1.map(id => HERO_DB[id].name).join(" | ")}`);
   logCombat(`🔴 Đội 2 (Đỏ): ${t2.map(id => HERO_DB[id].name).join(" | ")}`);
 
   const createVersusFighter = (heroId, slot, teamSide) => {
-    const stats = getHeroStats(heroId, 500);
+    const stats = getHeroStats(heroId, 600);
     const db = HERO_DB[heroId] || { name: heroId, type: "ATK", enMax: 5 };
     const fighter = {
       ...stats,
@@ -9758,7 +9966,7 @@ function showVersusResult(winningTeam) {
 
   document.getElementById("battleResultTitle").innerHTML = title;
   document.getElementById("battleResultBody").innerHTML = `
-    <p style="color:var(--text-secondary); margin-bottom:12px;">Kết thúc trận Đấu Kháng Chiến Thuật 3 vs 3 (Cấp 500)</p>
+    <p style="color:var(--text-secondary); margin-bottom:12px;">Kết thúc trận Đấu Kháng Chiến Thuật 3 vs 3 (Cấp 600)</p>
     <div style="background:#0d1117; padding:16px; border-radius:8px; display:inline-block; text-align:center; font-size:13px; font-weight:bold; color:#fff; line-height:1.8;">
       ${desc}
     </div>
