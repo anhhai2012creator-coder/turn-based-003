@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v6.1.0 [SỔ SỨ MỆNH MÙA III & BẠN CHIẾN TỐI ƯU]</title>
+<title>Chiến Thuật Luân Hồi v6.1.1 [SỬA LỖI ĐÒN ĐÁNH BẠN CHIẾN & TỐI ƯU TOÀN DIỆN]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -730,7 +729,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v6.1.0 CẬP NHẬT: Tính Năng Mới "Bạn Chiến" 4 Slot (Momoshiki - Kaguya SS), Tướng Mới Minato Namikaze [AS], Chương 9-10 Địa Ngục & Đại Tu Giao Diện Ải!</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v6.1.1 CẬP NHẬT: Sửa Triệt Để Lỗi Đòn Đánh Bạn Chiến, Tối Ưu Sổ Sứ Mệnh Mùa III & Cường Hóa Bạn Chiến!</div>
       <div class="menu-grid">
         <button class="btn btn-hub-campaign" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -809,7 +808,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.1.0 (BẠN CHIẾN & TƯỚNG MỚI MINATO)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.1.1 (SỬA LỖI ĐÒN ĐÁNH BẠN CHIẾN & TỐI ƯU MÙA III)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1586,7 +1585,7 @@
   </div>
 
 
-  <!-- Popup: BẠN CHIẾN (Duo Partners) v6.1.0 -->
+  <!-- Popup: BẠN CHIẾN (Duo Partners) v6.1.1 -->
   <div class="modal-overlay" id="modalPartners">
     <div class="modal-card" style="width:780px;">
       <div class="modal-header">
@@ -1595,7 +1594,7 @@
       </div>
       <div class="modal-body" style="display:flex; flex-direction:column; gap:14px;">
         <div style="background:#131822; border:1px solid #bc8cff; border-radius:10px; padding:12px; font-size:12px; line-height:1.6;">
-          <div style="font-weight:700; color:#bc8cff; font-size:13px; margin-bottom:4px;">✨ ĐẶC ĐIỂM HỆ THỐNG BẠN CHIẾN (v6.1.0):</div>
+          <div style="font-weight:700; color:#bc8cff; font-size:13px; margin-bottom:4px;">✨ ĐẶC ĐIỂM HỆ THỐNG BẠN CHIẾN (v6.1.1):</div>
           • <b>Công Phép:</b> Bạn Chiến sử dụng Công Phép, giúp <b>BỎ QUA 50% DEF</b> của toàn bộ mục tiêu khi gây sát thương.<br>
           • <b>Đội Hình 4 Slot:</b> Đội hình mở rộng lên 4 vị trí ra trận (Ô 1, Ô 2 hàng trước; Ô 3, Ô 4 hàng sau). Mỗi đội tối đa <b>1 Bạn Chiến</b>.<br>
           • <b>Lượt Đánh & Kỹ Năng Kép:</b> Bạn Chiến có lượt hành động độc lập, sở hữu 2 Kỹ Năng Chủ Động (Kỹ năng chính & Thần Chú Nguyên Sinh)!
@@ -4043,6 +4042,20 @@ function startTrainingBattle(gateType, stage) {
   battle.animations = [];
   battle.selectedTargetIndex = 0;
 
+  // v6.1.1: Kích hoạt Otsutsuki Lâm Triều cho Bạn Chiến trong Đấu Luyện
+  pTeam.forEach(fighter => {
+    if (fighter && (fighter.id === "momo_kaguya" || fighter.heroId === "momo_kaguya") && fighter.level >= 30) {
+      bTeam.filter(b => b && b.hp > 0).forEach(b => {
+        const raw = fighter.atk * 0.80;
+        const { damage, isCrit } = calculateDamage(fighter, b, raw);
+        applyDamage(b, damage, isCrit, fighter);
+        b.buffs.momoDefDebuff = 3;
+        addAnimation(b, "-20% DEF (3 LƯỢT)", "#ff7b72");
+      });
+      logCombat(`🤝🌌 [Otsutsuki Lâm Triều] Momoshiki - Kaguya giáng thế: Gây 80% Công Phép lên toàn bộ địch và giảm 20% DEF trong 3 lượt!`);
+    }
+  });
+
   buildTurnQueue();
   nextTurn();
 }
@@ -4132,19 +4145,6 @@ function startBattle() {
   const bTeam = generateBotTeam(selectedChapter, selectedStage);
 
   // v6.1.0: Momoshiki - Kaguya Bị Động 1 (Lv.30): Vào trận gây ST 80% ATK lên toàn bộ mục tiêu, giảm 20% DEF trong 3 lượt
-  pTeam.forEach(fighter => {
-    if (fighter && (fighter.id === "momo_kaguya" || fighter.heroId === "momo_kaguya") && fighter.level >= 30) {
-      bTeam.filter(b => b && b.hp > 0).forEach(b => {
-        const raw = fighter.atk * 0.80;
-        const { damage } = calculateDamage(fighter, b, raw);
-        applyDamage(b, damage, false, fighter);
-        b.buffs.momoDefDebuff = 3;
-        addAnimation(b, "-20% DEF (3 LƯỢT)", "#ff7b72");
-      });
-      logCombat(`🤝🌌 [Otsutsuki Lâm Triều] Momoshiki - Kaguya giáng thế: Gây 80% Công Phép lên toàn bộ địch và giảm 20% DEF trong 3 lượt!`);
-    }
-  });
-
   battle.active = true;
   battle.mode = 'campaign';
   battle.chapter = selectedChapter;
@@ -4155,6 +4155,20 @@ function startBattle() {
   battle.combatLogs = [];
   battle.animations = [];
   battle.selectedTargetIndex = 0;
+
+  // v6.1.1: Kích hoạt Otsutsuki Lâm Triều cho Bạn Chiến khi trận đấu đã khởi tạo đầy đủ
+  pTeam.forEach(fighter => {
+    if (fighter && (fighter.id === "momo_kaguya" || fighter.heroId === "momo_kaguya") && fighter.level >= 30) {
+      bTeam.filter(b => b && b.hp > 0).forEach(b => {
+        const raw = fighter.atk * 0.80;
+        const { damage, isCrit } = calculateDamage(fighter, b, raw);
+        applyDamage(b, damage, isCrit, fighter);
+        b.buffs.momoDefDebuff = 3;
+        addAnimation(b, "-20% DEF (3 LƯỢT)", "#ff7b72");
+      });
+      logCombat(`🤝🌌 [Otsutsuki Lâm Triều] Momoshiki - Kaguya giáng thế: Gây 80% Công Phép lên toàn bộ địch và giảm 20% DEF trong 3 lượt!`);
+    }
+  });
 
   // v5.2.1: Ghi log xác nhận chỉ số đối thủ đã được cân bằng
   bTeam.forEach(b => {
@@ -4795,6 +4809,18 @@ function autoChooseAction() {
   const actor = battle.turnQueue[battle.currentActorIndex];
   if (!actor || (actor.isBot && battle.mode !== 'versus')) return;
   if (checkBattleEnd()) return;
+
+  if (actor.id === "momo_kaguya") {
+    if (actor.en >= actor.enMax) {
+      executePlayerAction('skill2');
+    } else if (actor.en >= 5) {
+      executePlayerAction('skill');
+    } else {
+      executePlayerAction('normal');
+    }
+    return;
+  }
+
   const isKaguraGod = (actor.id === "kagura" && actor.godForm);
   const canCastSkill = isKaguraGod ? (actor.en >= 3) : (actor.en >= actor.enMax);
   if (canCastSkill) {
@@ -5057,6 +5083,8 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
 }
 
 function applyDamage(target, amount, isCrit = false, attacker = null) {
+  let finalDmg = amount;
+  if (!target) return 0;
   // Cơ chế Né Đòn (Teleportation): 13% cơ bản cho mọi nhân vật
   let dodgeRate = target.dodgeRate || 0.13;
   // Vegito Bị động 4 (Lv 100): Đòn đánh > 40% HP tối đa bản thân tăng thêm 60% tỉ lệ né đòn
@@ -5146,10 +5174,9 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
     return 0;
   }
 
-  let finalDmg = amount;
   // v5.1.0: Giảm 20% sát thương từ Bot gây ra trong trận đấu
   if (attacker && attacker.isBot) {
-    amount = Math.max(1, Math.round(amount * 0.80));
+    finalDmg = Math.max(1, Math.round(finalDmg * 0.80));
   }
 
   // v4.0.0: Giảm sát thương bạo kích cho Omega Shenron Lv.150 (-30%) & Hashirama Lv.100 (-50%)
@@ -6028,13 +6055,21 @@ function executePlayerAction(type) {
       target.def = prevDef;
 
       // Đòn 2: 50% ATK lên 1 mục tiêu, tăng 20% tỉ lệ bạo kích cho lượt này
+      if (target.hp <= 0) {
+        const nextTarget = enemyTeam.find(b => b && b.hp > 0);
+        if (nextTarget) target = nextTarget;
+      }
       actor.critRate += 0.20;
       const hit2 = calculateDamage(actor, target, actor.atk * 0.50);
       applyDamage(target, hit2.damage, hit2.isCrit, actor);
       actor.critRate -= 0.20;
 
-      // Đòn 3: 10% ATK + 10% HP tối đa. Hồi phục bản thân bằng 100% ST của lần 3.
-      const raw3 = actor.atk * 0.10 + target.maxHp * 0.10;
+      // Đòn 3: 10% ATK + 10% HP tối đa của bản thân hoặc mục tiêu. Hồi phục bản thân bằng 100% ST của lần 3.
+      if (target.hp <= 0) {
+        const nextTarget = enemyTeam.find(b => b && b.hp > 0);
+        if (nextTarget) target = nextTarget;
+      }
+      const raw3 = actor.atk * 0.10 + Math.max(actor.maxHp * 0.10, (target.maxHp || 0) * 0.05);
       const hit3 = calculateDamage(actor, target, raw3);
       applyDamage(target, hit3.damage, hit3.isCrit, actor);
 
@@ -6603,6 +6638,56 @@ function executePlayerAction(type) {
         }
       });
       logCombat(`⚡⚔️ [Thiên Nộ Địa Ngục] Chúa Tể Susanoo giáng đòn sấm sét 200% ATK gây Choáng 2 lượt và kích nổ toàn bộ tầng Trầm Trọng!`);
+    } else if (actor.id === "minato") {
+      const targets = enemyTeam.filter(b => b && b.hp > 0).slice(0, 3);
+      let totalDmgDone = 0;
+      let targetsWithMarkCount = 0;
+      targets.forEach(t => {
+        if (t.buffs && t.buffs.ketAn > 0) targetsWithMarkCount++;
+        const raw = actor.atk * 3.20;
+        const { damage, isCrit } = calculateDamage(actor, t, raw, true);
+        applyDamage(t, damage, isCrit, actor);
+        totalDmgDone += damage;
+        addAnimation(t, `-${damage.toLocaleString()} HP`, isCrit ? "#ff0055" : "#ffdf5d");
+      });
+      logCombat(`⚡🌪️ [Bá Khí Phi Lôi Thần] Minato lướt trảm 3 mục tiêu gây tổng cộng ${totalDmgDone.toLocaleString()} ST!`);
+      // Nếu cả 3 mục tiêu đều có "Kết ấn": tăng 200% ATK cho đòn thường tiếp theo, hồi 30% ST
+      if (targets.length >= 3 && targetsWithMarkCount >= 3) {
+        actor.buffs = actor.buffs || {};
+        actor.buffs.minatoEnhancedAtk = true;
+        const healAmt = Math.round(totalDmgDone * 0.30);
+        healFighter(actor, healAmt);
+        addAnimation(actor, `+${healAmt.toLocaleString()} HP`, "#3fb950");
+        addAnimation(actor, "CƯỜNG HÓA ĐÒN THƯỜNG (+200% ATK)", "#ffd700");
+        logCombat(`⚡✨ [Phi Lôi Thần Tuyệt Kỹ] Cả 3 mục tiêu đều có [Kết Ấn]! Kích hoạt Đòn Đánh Thường Cường Hóa (+200% ATK) và hồi phục 30% ST (${healAmt.toLocaleString()} HP)!`);
+      }
+    } else if (actor.id === "momo_kaguya") {
+      // Hồi phục toàn team bằng 15% HP còn lại của bản thân
+      const healVal = Math.max(1, Math.round(actor.hp * 0.15));
+      allyTeam.filter(a => a && a.hp > 0).forEach(a => {
+        healFighter(a, healVal);
+        addAnimation(a, `+${healVal.toLocaleString()} HP`, "#3fb950");
+        a.buffs = a.buffs || {};
+        a.buffs.immuneDebuff = 2;
+        delete a.buffs.choang;
+        delete a.buffs.stun;
+        addAnimation(a, "MIỄN NHIỄM (2 LƯỢT)", "#00f2fe");
+      });
+      logCombat(`🤝🌸 [Thần Thụ Giáng Thế] Momoshiki - Kaguya tiêu hao 5 EN: Hồi phục ${healVal.toLocaleString()} HP (15% HP hiện tại) cho toàn đội, xóa sạch Choáng và kích hoạt [Miễn Nhiễm] 2 lượt!`);
+    }
+  } else if (type === "skill2") {
+    if (actor.id !== "momo_kaguya") return;
+    const canCastSkill2 = (actor.en >= 10 || actor.en >= actor.enMax);
+    if (!canCastSkill2) return;
+    actor.en = 0;
+    const aliveEnemies = enemyTeam.filter(e => e && e.hp > 0);
+    if (aliveEnemies.length > 0) {
+      const highestHpEnemy = aliveEnemies.sort((a, b) => b.hp - a.hp)[0];
+      highestHpEnemy.buffs = highestHpEnemy.buffs || {};
+      highestHpEnemy.buffs.choang = 5;
+      highestHpEnemy.buffs.stun = 5;
+      addAnimation(highestHpEnemy, "STUN 5 LƯỢT! (NGUYÊN SINH)", "#bc8cff");
+      logCombat(`🤝🌌 [Thần Chú Nguyên Sinh] Momoshiki - Kaguya dùng toàn bộ EN: Áp chế phong ấn khiến mục tiêu HP cao nhất [${highestHpEnemy.name}] bị CHOÁNG 5 LƯỢT!`);
     }
   }
 
@@ -6689,60 +6774,9 @@ function applyOmegaPassive2(omega, target) {
       target.hp = Math.max(0, target.hp - stealAmount);
       healFighter(omega, stealAmount);
       addAnimation(target, `Cướp -${stealAmount} HP`, "#bc8cff");
-    } else if (actor.id === "minato") {
-      const targets = enemyTeam.filter(b => b && b.hp > 0).slice(0, 3);
-      let totalDmgDone = 0;
-      let targetsWithMarkCount = 0;
-      targets.forEach(t => {
-        if (t.buffs && t.buffs.ketAn > 0) targetsWithMarkCount++;
-        const raw = actor.atk * 3.20;
-        const { damage, isCrit } = calculateDamage(actor, t, raw, true);
-        applyDamage(t, damage, isCrit, actor);
-        totalDmgDone += damage;
-        addAnimation(t, `-${damage.toLocaleString()} HP`, isCrit ? "#ff0055" : "#ffdf5d");
-      });
-      logCombat(`⚡🌪️ [Bá Khí Phi Lôi Thần] Minato lướt trảm 3 mục tiêu gây tổng cộng ${totalDmgDone.toLocaleString()} ST!`);
-      // Nếu cả 3 mục tiêu đều có "Kết ấn": tăng 200% ATK cho đòn thường tiếp theo, hồi 30% ST
-      if (targets.length >= 3 && targetsWithMarkCount >= 3) {
-        actor.buffs = actor.buffs || {};
-        actor.buffs.minatoEnhancedAtk = true;
-        const healAmt = Math.round(totalDmgDone * 0.30);
-        healFighter(actor, healAmt);
-        addAnimation(actor, `+${healAmt.toLocaleString()} HP`, "#3fb950");
-        addAnimation(actor, "CƯỜNG HÓA ĐÒN THƯỜNG (+200% ATK)", "#ffd700");
-        logCombat(`⚡✨ [Phi Lôi Thần Tuyệt Kỹ] Cả 3 mục tiêu đều có [Kết Ấn]! Kích hoạt Đòn Đánh Thường Cường Hóa (+200% ATK) và hồi phục 30% ST (${healAmt.toLocaleString()} HP)!`);
-      }
-    } else if (actor.id === "momo_kaguya") {
-      // Hồi phục toàn team bằng 15% HP còn lại của bản thân
-      const healVal = Math.max(1, Math.round(actor.hp * 0.15));
-      allyTeam.filter(a => a && a.hp > 0).forEach(a => {
-        healFighter(a, healVal);
-        addAnimation(a, `+${healVal.toLocaleString()} HP`, "#3fb950");
-        a.buffs = a.buffs || {};
-        a.buffs.immuneDebuff = 2;
-        delete a.buffs.choang;
-        delete a.buffs.stun;
-        addAnimation(a, "MIỄN NHIỄM (2 LƯỢT)", "#00f2fe");
-      });
-      logCombat(`🤝🌸 [Thần Thụ Giáng Thế] Momoshiki - Kaguya tiêu hao 5 EN: Hồi phục ${healVal.toLocaleString()} HP (15% HP hiện tại) cho toàn đội, xóa sạch Choáng và kích hoạt [Miễn Nhiễm] 2 lượt!`);
-    }
-  } else if (type === "skill2") {
-    if (actor.id !== "momo_kaguya") return;
-    const canCastSkill2 = (actor.en >= 10 || actor.en >= actor.enMax);
-    if (!canCastSkill2) return;
-    actor.en = 0;
-    const aliveEnemies = enemyTeam.filter(e => e && e.hp > 0);
-    if (aliveEnemies.length > 0) {
-      const highestHpEnemy = aliveEnemies.sort((a, b) => b.hp - a.hp)[0];
-      highestHpEnemy.buffs = highestHpEnemy.buffs || {};
-      highestHpEnemy.buffs.choang = 5;
-      highestHpEnemy.buffs.stun = 5;
-      addAnimation(highestHpEnemy, "STUN 5 LƯỢT! (NGUYÊN SINH)", "#bc8cff");
-      logCombat(`🤝🌌 [Thần Chú Nguyên Sinh] Momoshiki - Kaguya dùng toàn bộ EN: Áp chế phong ấn khiến mục tiêu HP cao nhất [${highestHpEnemy.name}] bị CHOÁNG 5 LƯỢT!`);
     }
   }
 }
-
 
 function getBotDefaultTarget(alivePlayers) {
   if (!alivePlayers || alivePlayers.length === 0) return null;
