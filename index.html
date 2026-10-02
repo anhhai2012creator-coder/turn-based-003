@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v6.0.0 [BẠN CHIẾN MOMOSHIKI - KAGUYA & TƯỚNG MỚI MINATO NAMIKAZE]</title>
+<title>Chiến Thuật Luân Hồi v6.1.0 [SỔ SỨ MỆNH MÙA III & BẠN CHIẾN TỐI ƯU]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -137,25 +137,184 @@
   }
   .menu-grid {
     display: grid;
-    grid-template-columns: repeat(4, 150px);
-    gap: 14px;
+    grid-template-columns: repeat(4, 165px);
+    gap: 12px;
+    max-width: 720px;
+    margin: 0 auto;
   }
   .btn {
-    background: #21262d;
+    background: linear-gradient(135deg, #1c2331 0%, #121721 100%);
     color: var(--text-primary);
     border: 1px solid var(--border-color);
-    padding: 10px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 4px;
     user-select: none;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  }
+  .btn::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  }
+  .btn:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+  .btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+  .btn-icon {
+    font-size: 22px;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+  }
+  .btn-badge {
+    position: absolute;
+    top: 4px; right: 4px;
+    font-size: 9px;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  /* Modern Themed Hub Buttons */
+  .btn-hub-campaign {
+    background: linear-gradient(145deg, #142a1e 0%, #0d1a13 100%) !important;
+    border-color: #2ea043 !important;
+    color: #e6ffed !important;
+  }
+  .btn-hub-campaign:hover {
+    border-color: #3fb950 !important;
+    box-shadow: 0 6px 20px rgba(63, 185, 80, 0.35) !important;
+  }
+  .btn-hub-versus {
+    background: linear-gradient(145deg, #33101c 0%, #1f0810 100%) !important;
+    border-color: #ff0055 !important;
+    color: #ffebee !important;
+  }
+  .btn-hub-versus:hover {
+    border-color: #ff3377 !important;
+    box-shadow: 0 6px 20px rgba(255, 0, 85, 0.35) !important;
+  }
+  .btn-hub-training {
+    background: linear-gradient(145deg, #2e2410 0%, #1c1507 100%) !important;
+    border-color: #e3b341 !important;
+    color: #fff9db !important;
+  }
+  .btn-hub-training:hover {
+    border-color: #f1e05a !important;
+    box-shadow: 0 6px 20px rgba(241, 224, 90, 0.35) !important;
+  }
+  .btn-hub-pillars {
+    background: linear-gradient(145deg, #102138 0%, #081324 100%) !important;
+    border-color: #388bfd !important;
+    color: #e7f2ff !important;
+  }
+  .btn-hub-pillars:hover {
+    border-color: #58a6ff !important;
+    box-shadow: 0 6px 20px rgba(88, 166, 255, 0.35) !important;
+  }
+  .btn-hub-heroes {
+    background: linear-gradient(145deg, #221438 0%, #140b24 100%) !important;
+    border-color: #a371f7 !important;
+    color: #f2eaff !important;
+  }
+  .btn-hub-heroes:hover {
+    border-color: #bc8cff !important;
+    box-shadow: 0 6px 20px rgba(188, 140, 255, 0.35) !important;
+  }
+  .btn-hub-partner {
+    background: linear-gradient(145deg, #381028 0%, #210817 100%) !important;
+    border-color: #f778ba !important;
+    color: #ffe6f3 !important;
+  }
+  .btn-hub-partner:hover {
+    border-color: #ff94ce !important;
+    box-shadow: 0 6px 20px rgba(247, 120, 186, 0.35) !important;
+  }
+  .btn-hub-pass {
+    background: linear-gradient(145deg, #382508 0%, #211504 100%) !important;
+    border-color: #ff9800 !important;
+    color: #fff3e0 !important;
+  }
+  .btn-hub-pass:hover {
+    border-color: #ffa726 !important;
+    box-shadow: 0 6px 20px rgba(255, 152, 0, 0.35) !important;
+  }
+  .btn-hub-quests {
+    background: linear-gradient(145deg, #0e2926 0%, #071917 100%) !important;
+    border-color: #39c5bb !important;
+    color: #e0fbf9 !important;
+  }
+  .btn-hub-quests:hover {
+    border-color: #56d4cb !important;
+    box-shadow: 0 6px 20px rgba(57, 197, 187, 0.35) !important;
+  }
+  .btn-hub-checkin {
+    background: linear-gradient(145deg, #0e2236 0%, #061421 100%) !important;
+    border-color: #38bdf8 !important;
+    color: #e0f2fe !important;
+  }
+  .btn-hub-checkin:hover {
+    border-color: #60a5fa !important;
+    box-shadow: 0 6px 20px rgba(56, 189, 248, 0.35) !important;
+  }
+  .btn-hub-shop {
+    background: linear-gradient(145deg, #331f12 0%, #1f1107 100%) !important;
+    border-color: #f0883e !important;
+    color: #ffedd5 !important;
+  }
+  .btn-hub-shop:hover {
+    border-color: #fb923c !important;
+    box-shadow: 0 6px 20px rgba(240, 136, 62, 0.35) !important;
+  }
+  .btn-hub-events {
+    background: linear-gradient(145deg, #331317 0%, #1c080b 100%) !important;
+    border-color: #f85149 !important;
+    color: #ffe4e6 !important;
+  }
+  .btn-hub-events:hover {
+    border-color: #fb7185 !important;
+    box-shadow: 0 6px 20px rgba(248, 81, 73, 0.35) !important;
+  }
+  .btn-hub-giftcode {
+    background: linear-gradient(145deg, #2e260e 0%, #1c1706 100%) !important;
+    border-color: #f1e05a !important;
+    color: #fef9c3 !important;
+  }
+  .btn-hub-giftcode:hover {
+    border-color: #facc15 !important;
+    box-shadow: 0 6px 20px rgba(241, 224, 90, 0.35) !important;
+  }
+  .btn-hub-beast {
+    background: linear-gradient(145deg, #2b143d 0%, #180924 100%) !important;
+    border-color: #bc8cff !important;
+    color: #f5f3ff !important;
+  }
+  .btn-hub-beast:hover {
+    border-color: #d8b4fe !important;
+    box-shadow: 0 6px 20px rgba(188, 140, 255, 0.35) !important;
+  }
+  .btn-hub-reset {
+    background: linear-gradient(145deg, #1c1214 0%, #11090b 100%) !important;
+    border-color: #8b3434 !important;
+    color: #fca5a5 !important;
+  }
+  .btn-hub-reset:hover {
+    border-color: #f85149 !important;
+    box-shadow: 0 6px 20px rgba(248, 81, 73, 0.3) !important;
   }
   .btn:hover:not(:disabled) {
     background: #30363d;
@@ -339,23 +498,53 @@
   .tab-bar {
     display: flex;
     gap: 8px;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 8px;
+    background: #090d13;
+    padding: 6px 8px;
+    border-radius: 10px;
+    border: 1px solid #30363d;
+    margin-bottom: 12px;
+    overflow-x: auto;
   }
   .tab-btn {
-    background: #21262d;
+    background: transparent;
     color: var(--text-secondary);
-    border: 1px solid var(--border-color);
-    padding: 6px 12px;
-    border-radius: 6px;
+    border: 1px solid transparent;
+    padding: 7px 16px;
+    border-radius: 8px;
     cursor: pointer;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .tab-btn:hover:not(.active) {
+    background: #161b22;
+    color: #f0f6fc;
   }
   .tab-btn.active {
-    background: #1f6feb;
+    background: linear-gradient(135deg, #1f6feb, #388bfd);
     color: #fff;
-    border-color: #388bfd;
+    border-color: #58a6ff;
+    box-shadow: 0 4px 14px rgba(31, 111, 235, 0.45);
+  }
+  /* Custom Slim Scrollbars */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(13, 17, 23, 0.6);
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #30363d;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #58a6ff;
   }
   .grid-selector {
     display: grid;
@@ -541,61 +730,77 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v6.0.0 CẬP NHẬT: Tính Năng Mới "Bạn Chiến" 4 Slot (Momoshiki - Kaguya SS), Tướng Mới Minato Namikaze [AS], Chương 9-10 Địa Ngục & Đại Tu Giao Diện Ải!</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v6.1.0 CẬP NHẬT: Tính Năng Mới "Bạn Chiến" 4 Slot (Momoshiki - Kaguya SS), Tướng Mới Minato Namikaze [AS], Chương 9-10 Địa Ngục & Đại Tu Giao Diện Ải!</div>
       <div class="menu-grid">
-        <button class="btn btn-primary" onclick="openBattleStageModal()">
+        <button class="btn btn-hub-campaign" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
           <span>Đấu Ải</span>
+          <span class="btn-badge" style="background:#238636; color:#fff;">10 Chương</span>
         </button>
-        <button class="btn btn-danger" onclick="openVersusModal()" style="border-color:#ff0055; background:linear-gradient(180deg, #2b111e 0%, #161b22 100%);">
+        <button class="btn btn-hub-versus" onclick="openVersusModal()">
           <span class="btn-icon">⚔️🛡️</span>
-          <span>Đấu Kháng 3v3</span>
+          <span>Đấu Kháng</span>
+          <span class="btn-badge" style="background:#da3633; color:#fff;">3v3</span>
         </button>
-        <button class="btn btn-gold" onclick="openTrainingGateModal()">
+        <button class="btn btn-hub-training" onclick="openTrainingGateModal()">
           <span class="btn-icon">⛩️</span>
           <span>Đấu Luyện</span>
+          <span class="btn-badge" style="background:#d29922; color:#000;">Tài Nguyên</span>
         </button>
-        <button class="btn btn-accent" onclick="openPillarsModal()">
+        <button class="btn btn-hub-pillars" onclick="openPillarsModal()">
           <span class="btn-icon">🏛️</span>
           <span>Trụ Cột</span>
+          <span class="btn-badge" style="background:#1f6feb; color:#fff;">Tháp & Boss</span>
         </button>
-        <button class="btn" onclick="openHeroesModal()">
+        <button class="btn btn-hub-heroes" onclick="openHeroesModal()">
           <span class="btn-icon">👥</span>
           <span>Nhân Vật</span>
+          <span class="btn-badge" style="background:#6e40c9; color:#fff;">Kho Tướng</span>
         </button>
-        <button class="btn btn-pink" onclick="openPartnersModal()" style="border-color:#bc8cff; background:linear-gradient(180deg, #2b112e 0%, #161b22 100%);">
+        <button class="btn btn-hub-partner" onclick="openPartnersModal()">
           <span class="btn-icon">🤝✨</span>
           <span>Bạn Chiến</span>
+          <span class="btn-badge" style="background:#bf3989; color:#fff;">4 Slot</span>
         </button>
-        <button class="btn btn-pink" onclick="openPassModal()">
+        <button class="btn btn-hub-pass" onclick="openPassModal()">
           <span class="btn-icon">📜</span>
           <span>Sổ Sứ Mệnh</span>
+          <span class="btn-badge" style="background:#ff9800; color:#000;">Mùa III</span>
         </button>
-        <button class="btn btn-gold" onclick="openQuestsModal()">
+        <button class="btn btn-hub-quests" onclick="openQuestsModal()">
           <span class="btn-icon">📋</span>
           <span>Nhiệm Vụ</span>
+          <span class="btn-badge" style="background:#238636; color:#fff;">Mỗi Ngày</span>
         </button>
-        <button class="btn btn-accent" onclick="openCheckinModal()">
+        <button class="btn btn-hub-checkin" onclick="openCheckinModal()">
           <span class="btn-icon">📅</span>
           <span>Điểm Danh</span>
+          <span class="btn-badge" style="background:#1f6feb; color:#fff;">7 Ngày</span>
         </button>
-        <button class="btn" onclick="openShopModal()">
+        <button class="btn btn-hub-shop" onclick="openShopModal()">
           <span class="btn-icon">🛒</span>
           <span>Cửa Hàng</span>
         </button>
-        <button class="btn" onclick="openEventsModal()">
+        <button class="btn btn-hub-events" onclick="openEventsModal()">
           <span class="btn-icon">🎁</span>
           <span>Sự Kiện</span>
+          <span class="btn-badge" style="background:#da3633; color:#fff;">Hot</span>
         </button>
-        <button class="btn btn-gold" onclick="openGiftcodeModal()" style="border-color:#e3b341;">
+        <button class="btn btn-hub-giftcode" onclick="openGiftcodeModal()">
           <span class="btn-icon">🎟️</span>
           <span>Nhập Giftcode</span>
         </button>
-        <button class="btn btn-purple" onclick="openBeastModal()">
+        <button class="btn btn-hub-beast" onclick="openBeastModal()">
           <span class="btn-icon">🐉</span>
           <span>Linh Thú</span>
+          <span class="btn-badge" style="background:#8957e5; color:#fff;">Trợ Chiến</span>
         </button>
-      </div>
+        <button class="btn btn-hub-reset" onclick="confirmResetAccount()">
+          <span class="btn-icon">🔄</span>
+          <span>Reset Dữ Liệu</span>
+          <span class="btn-badge" style="background:#da3633; color:#fff;">Tạo Lại</span>
+        </button>
+      </div></div>
     </div>
 
     <!-- Màn Hình Trận Đấu -->
@@ -604,7 +809,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.0.0 (BẠN CHIẾN & TƯỚNG MỚI MINATO)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.1.0 (BẠN CHIẾN & TƯỚNG MỚI MINATO)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -790,31 +995,42 @@
     </div>
   </div>
 
-  <!-- Popup: SỔ SỨ MỆNH MÙA I -->
+  <!-- Popup: SỔ SỨ MỆNH MÙA III -->
+  <!-- Popup: SỔ SỨ MỆNH MÙA III -->
   <div class="modal-overlay" id="modalPass">
     <div class="modal-card" style="width:740px;">
       <div class="modal-header">
-        <div class="modal-title">📜 Sổ Sứ Mệnh MÙA II (Vòng Quay & Lộ Trình Cấp 1–60)</div>
+        <div class="modal-title">📜 Sổ Sứ Mệnh MÙA III (Vòng Quay Gacha Thần Thoại)</div>
         <button class="modal-close" onclick="closeModal('modalPass')">&times;</button>
       </div>
       <div class="modal-body">
         <div class="tab-bar">
-          <button class="tab-btn active" id="tabBtnSpecialPass" onclick="switchPassTab('special')">⭐ Sổ Cao Cấp Gacha (Kaguya & Hashirama)</button>
-          <button class="tab-btn" id="tabBtnNormalPass" onclick="switchPassTab('normal')">🔷 Sổ Thường Gacha (Kid & Isshiki)</button>
-          <button class="tab-btn" id="tabBtnPassRoadmap" onclick="switchPassTab('roadmap')">📈 Lộ Trình Tích Cấp (Lv 1–60)</button>
+          <button class="tab-btn active" id="tabBtnSpecialPass" onclick="switchPassTab('special')">⭐ Sổ Cao Cấp Gacha (Gaara Nhất Vĩ & Kagura)</button>
+          <button class="tab-btn" id="tabBtnNormalPass" onclick="switchPassTab('normal')">🔷 Sổ Thường Gacha (Omega Shenron & Whis)</button>
         </div>
 
-        <!-- Nội dung Tab Gacha -->
+        <!-- Nội dung Tab Gacha Sổ Sứ Mệnh Mùa III -->
         <div style="display:flex; flex-direction:column; gap:12px;">
           <div style="background:#0d1117; border:1px solid var(--border-color); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
             <div>
-              <div style="font-weight:700; font-size:14px;" id="gachaBannerTitle">Sổ Sứ Mệnh Đặc Biệt Mùa I</div>
-              <div style="font-size:11px; color:var(--text-secondary);" id="gachaBannerDesc">Cơ hội nhận Kaguya Otsutsuki (0.4%), Senju Hashirama (0.4%) cùng Thiên Thạch Hoàng Kim & Ánh Sao Thần Thoại. Bảo hiểm 99 lượt chắc chắn nhận tướng!</div>
+              <div style="font-weight:700; font-size:14px; color:var(--accent-gold);" id="gachaBannerTitle">Sổ Sứ Mệnh Đặc Biệt Mùa III</div>
+              <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;" id="gachaBannerDesc">Cơ hội nhận Gaara Nhất Vĩ (0.35%), Kagura (0.35%) cùng Thiên Thạch Hoàng Kim & Ánh Sao Thần Thoại.</div>
             </div>
             <div style="display:flex; gap:8px;">
-              <button class="btn btn-accent" style="padding:8px 12px;" onclick="performGacha(1)">Quay 1 Lần<br><span style="font-size:10px;" id="gachaCost1">1 ☄️</span></button>
-              <button class="btn btn-pink" style="padding:8px 12px;" onclick="performGacha(10)">Quay 10 Lần<br><span style="font-size:10px;" id="gachaCost10">9 ☄️ (Ưu đãi)</span></button>
+              <button class="btn btn-accent" style="padding:8px 12px;" onclick="performGacha(1)">Quay 1 Lần<br><span style="font-size:10px;" id="gachaCost1">1 ☄️ Thiên Thạch Hồng</span></button>
+              <button class="btn btn-pink" style="padding:8px 12px;" onclick="performGacha(10)">Quay 10 Lần<br><span style="font-size:10px;" id="gachaCost10">9 ☄️ (Ưu đãi 10 lượt)</span></button>
             </div>
+          </div>
+
+          <!-- Showcase 2 Tướng Mới Nhận Được Trong Sổ Sứ Mệnh Mùa III -->
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:12px; font-weight:700; color:var(--accent-gold);" id="gachaShowcaseTitle">
+              🌟 2 TƯỚNG CAO CẤP MÙA III TRONG BỂ QUAY:
+            </div>
+            <div style="font-size:11px; color:var(--text-secondary);">Nhận ngay khi quay trúng</div>
+          </div>
+          <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:10px;" id="gachaHeroShowcaseGrid">
+            <!-- Được render động bởi switchPassTab() -->
           </div>
 
           <!-- Khung Hiển Thị Kết Quả Gacha Từng Món -->
@@ -822,32 +1038,6 @@
             <div style="font-size:13px; color:var(--text-secondary);" id="gachaPlaceholderText">Chọn "Quay 1 Lần" hoặc "Quay 10 Lần" để bắt đầu quay Sổ Sứ Mệnh...</div>
             <div id="gachaActiveCard" style="display:none;"></div>
             <button class="btn btn-primary" id="btnNextGachaItem" onclick="showNextGachaItem()" style="display:none; margin-top:10px; padding:6px 16px;">Xem Tiếp ➔</button>
-          </div>
-        </div>
-
-        <!-- Nội dung Tab Lộ Trình Tích Cấp Sổ Sứ Mệnh Mùa II -->
-        <div id="passRoadmapSection" style="display:none; flex-direction:column; gap:10px;">
-          <div style="background:#0d1117; border:1px solid var(--accent-gold); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <div style="font-weight:700; font-size:14px; color:var(--accent-gold);">Cấp Sổ Sứ Mệnh: <span id="uiPassLevelDisplay">1</span>/60 (<span id="uiPassExpDisplay">0</span>/100 EXP)</div>
-              <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Trạng thái: <b id="uiPassStatusDisplay" style="color:var(--accent-blue);">Sổ Thường Miễn Phí</b></div>
-            </div>
-            <button class="btn btn-gold" id="btnActivatePassPremium" onclick="activatePremiumPass()">⭐ Kích Hoạt Cao Cấp (5,999 ⭐)</button>
-          </div>
-          <div id="passTiersListContainer" style="display:flex; flex-direction:column; gap:6px; max-height:280px; overflow-y:auto; padding-right:4px;"></div>
-        </div>
-
-        <!-- Nội dung Tab Lộ Trình Tích Cấp Sổ Sứ Mệnh Mùa II -->
-        <div id="passRoadmapSection" style="display:none; flex-direction:column; gap:10px;">
-          <div style="background:#0d1117; border:1px solid var(--accent-gold); border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;">
-            <div>
-              <div style="font-weight:700; font-size:14px; color:var(--accent-gold);">Cấp Sổ Sứ Mệnh: <span id="uiPassLevelDisplay">1</span>/60 (<span id="uiPassExpDisplay">0</span>/100 EXP)</div>
-              <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">Trạng thái: <b id="uiPassStatusDisplay" style="color:var(--accent-blue);">Sổ Thường Miễn Phí</b></div>
-            </div>
-            <button class="btn btn-gold" id="btnActivatePassPremium" onclick="activatePremiumPass()">⭐ Kích Hoạt Cao Cấp (5,999 ⭐)</button>
-          </div>
-          <div id="passTiersListContainer" style="display:flex; flex-direction:column; gap:6px; max-height:280px; overflow-y:auto; padding-right:4px;">
-            <!-- Rendered in JS -->
           </div>
         </div>
       </div>
@@ -1396,7 +1586,7 @@
   </div>
 
 
-  <!-- Popup: BẠN CHIẾN (Duo Partners) v6.0.0 -->
+  <!-- Popup: BẠN CHIẾN (Duo Partners) v6.1.0 -->
   <div class="modal-overlay" id="modalPartners">
     <div class="modal-card" style="width:780px;">
       <div class="modal-header">
@@ -1405,7 +1595,7 @@
       </div>
       <div class="modal-body" style="display:flex; flex-direction:column; gap:14px;">
         <div style="background:#131822; border:1px solid #bc8cff; border-radius:10px; padding:12px; font-size:12px; line-height:1.6;">
-          <div style="font-weight:700; color:#bc8cff; font-size:13px; margin-bottom:4px;">✨ ĐẶC ĐIỂM HỆ THỐNG BẠN CHIẾN (v6.0.0):</div>
+          <div style="font-weight:700; color:#bc8cff; font-size:13px; margin-bottom:4px;">✨ ĐẶC ĐIỂM HỆ THỐNG BẠN CHIẾN (v6.1.0):</div>
           • <b>Công Phép:</b> Bạn Chiến sử dụng Công Phép, giúp <b>BỎ QUA 50% DEF</b> của toàn bộ mục tiêu khi gây sát thương.<br>
           • <b>Đội Hình 4 Slot:</b> Đội hình mở rộng lên 4 vị trí ra trận (Ô 1, Ô 2 hàng trước; Ô 3, Ô 4 hàng sau). Mỗi đội tối đa <b>1 Bạn Chiến</b>.<br>
           • <b>Lượt Đánh & Kỹ Năng Kép:</b> Bạn Chiến có lượt hành động độc lập, sở hữu 2 Kỹ Năng Chủ Động (Kỹ năng chính & Thần Chú Nguyên Sinh)!
@@ -1420,7 +1610,7 @@
     </div>
   </div>
 
-  <!-- Popup: Chọn Chương & Ải Đấu v6.0.0 (3 Tầng: Độ Khó -> Chương -> Ải) -->
+  <!-- Popup: Chọn Chương & Ải Đấu v6.1.0 (3 Tầng: Độ Khó -> Chương -> Ải) -->
   <div class="modal-overlay" id="modalStageSelect">
     <div class="modal-card" style="width:780px;">
       <div class="modal-header">
@@ -2172,7 +2362,7 @@ const HERO_DB = {
     id: "susanoo_boss",
     name: "Chúa Tể Susanoo",
     type: "ATK",
-    bossOnly: true, // Đại Boss độc quyền cốt truyện Ải 9-10 (Được Nâng Cấp v6.0.0)
+    bossOnly: true, // Đại Boss độc quyền cốt truyện Ải 9-10 (Được Nâng Cấp v6.1.0)
     roleDesc: "Chúa Tể Địa Ngục Ải 10 C.9, Thần Kiếm Trầm Trọng, Giảm 50% Hồi Máu, Hồi 90% HP & Kích Nổ",
     baseHp: 3200,
     baseAtk: 105,
@@ -2277,7 +2467,7 @@ const HERO_DB = {
 /* ==========================================================================
    STATE MANAGEMENT & STORAGE v1.3.0
    ========================================================================== */
-const STORAGE_KEY = "TURN_BASED_GAME_SAVE_V130";
+const STORAGE_KEY = "TURN_BASED_GAME_SAVE_V600";
 
 let gameState = {
   player: { level: 1, exp: 0, maxLevel: 600 },
@@ -2338,6 +2528,15 @@ function safeDeepMerge(target, source) {
   return target;
 }
 
+function confirmResetAccount() {
+  if (confirm("⚠️ CẢNH BÁO: Bạn có chắc chắn muốn RESET dữ liệu và tạo tài khoản mới từ đầu không?\n(Toàn bộ tiến độ và nhân vật sẽ được thiết lập lại từ đầu chỉ với Nhà Lữ Hành Lv.1)")) {
+    try {
+      localStorage.clear();
+    } catch(e) {}
+    location.reload();
+  }
+}
+
 function saveGame() {
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(gameState));
@@ -2350,6 +2549,7 @@ function saveGame() {
 function loadGame() {
   try {
     const possibleKeys = [
+      "TURN_BASED_GAME_SAVE_V600",
       "TURN_BASED_GAME_SAVE_V130",
       "TURN_BASED_GAME_SAVE_V120",
       "TURN_BASED_GAME_SAVE",
@@ -2379,7 +2579,18 @@ function loadGame() {
     if (!gameState.player) gameState.player = { level: 1, exp: 0, maxLevel: 500 };
   if (!gameState.player.level) gameState.player.level = 1;
   if (!gameState.player.exp) gameState.player.exp = 0;
-  // v6.0.0: Đã sửa lỗi tự cấp Itachi Amaterasu cho tài khoản mới
+  // v6.1.0: Sửa dứt điểm 100% lỗi tự cấp Itachi Amaterasu - Nếu chưa từng nhập giftcode hợp lệ thì xóa bỏ hoàn toàn
+  if (gameState.heroes && gameState.heroes.itachi_amaterasu) {
+    const legitCodes = ["ITACHIAS", "AMATERASU"];
+    const hasLegitCode = gameState.usedCodes && legitCodes.some(c => gameState.usedCodes.includes(c));
+    if (!hasLegitCode) {
+      delete gameState.heroes.itachi_amaterasu;
+      if (gameState.team) {
+        gameState.team = gameState.team.map(id => id === "itachi_amaterasu" ? null : id);
+      }
+      saveGame();
+    }
+  }
   // v5.1.1: Cưỡng chế Max Level tài khoản lên 500 và xử lý ngay EXP tích lũy bị nghẽn
   if (!gameState.player.maxLevel || gameState.player.maxLevel < 600) {
     gameState.player.maxLevel = 600;
@@ -3920,7 +4131,7 @@ function startBattle() {
 
   const bTeam = generateBotTeam(selectedChapter, selectedStage);
 
-  // v6.0.0: Momoshiki - Kaguya Bị Động 1 (Lv.30): Vào trận gây ST 80% ATK lên toàn bộ mục tiêu, giảm 20% DEF trong 3 lượt
+  // v6.1.0: Momoshiki - Kaguya Bị Động 1 (Lv.30): Vào trận gây ST 80% ATK lên toàn bộ mục tiêu, giảm 20% DEF trong 3 lượt
   pTeam.forEach(fighter => {
     if (fighter && (fighter.id === "momo_kaguya" || fighter.heroId === "momo_kaguya") && fighter.level >= 30) {
       bTeam.filter(b => b && b.hp > 0).forEach(b => {
@@ -4721,7 +4932,7 @@ function isStunImmune(target) {
 function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
   let effectiveDef = defender.def * (1 - isPenetrate);
 
-  // v6.0.0: Bạn Chiến sử dụng công phép, giúp BỎ QUA 50% DEF của mục tiêu!
+  // v6.1.0: Bạn Chiến sử dụng công phép, giúp BỎ QUA 50% DEF của mục tiêu!
   if (attacker.isPartner || (HERO_DB[attacker.id] && HERO_DB[attacker.id].isPartner)) {
     effectiveDef *= 0.50;
   }
@@ -7530,7 +7741,7 @@ const DAILY_QUESTS_CONFIG = [
   { id: "cast_skill_5", name: "Kích hoạt 5 lần Kỹ Năng Tuyệt Kỹ trong chiến đấu", target: 5, key: "skillsCast", rewardText: "300 💎 + 40 EXP Pass", type: "kimCuong", val: 300, pts: 3, passExp: 40 },
   { id: "upgrade_any_3", name: "Cường hóa nhân vật hoặc linh thú 3 lần", target: 3, key: "levelsUpgraded", rewardText: "80 ⭐ Ánh sao", type: "anhSao", val: 80, pts: 3, passExp: 30 },
   { id: "tower_or_boss_1", name: "Khiêu chiến 1 lượt Tháp Vô Hạn hoặc Boss Thế Giới", target: 1, key: "towerOrBossAttempt", rewardText: "100 ⭐ + 1 Mảnh Xanh", type: "anhSao", val: 100, pts: 4, passExp: 60 },
-  { id: "pass_roll_1", name: "Quay Sổ Sứ Mệnh Mùa II 1 lần", target: 1, key: "passRollsToday", rewardText: "100 ⭐ Ánh sao", type: "anhSao", val: 100, pts: 3, passExp: 40 },
+  { id: "pass_roll_1", name: "Quay Sổ Sứ Mệnh Mùa III 1 lần", target: 1, key: "passRollsToday", rewardText: "100 ⭐ Ánh sao", type: "anhSao", val: 100, pts: 3, passExp: 40 },
   { id: "survive_10_turns", name: "Trụ vững qua 10 hiệp trong bất kỳ trận chiến nào", target: 1, key: "survived10Turns", rewardText: "200 💎 Kim cương", type: "kimCuong", val: 200, pts: 3, passExp: 30 }
 ];
 
@@ -7630,32 +7841,29 @@ function claimMilestone(pts, rewardAmount) {
 }
 
 /* ==========================================================================
-   RETENTION 3: SỔ SỨ MỆNH MÙA I (GACHA ĐẶC BIỆT & THƯỜNG)
+   RETENTION 3: SỔ SỨ MỆNH MÙA III (GACHA ĐẶC BIỆT & THƯỜNG)
    ========================================================================== */
 let activePassTab = "special";
 let gachaQueue = [];
 let currentGachaIndex = 0;
 
 const GACHA_SPECIAL_RATES = [
-  { name: "Itachi Amaterasu [Tướng Mới v5.7.0]", type: "hero", id: "itachi_amaterasu", rate: 0.005, color: "var(--accent-red)" },
-  { name: "Kaguya Otsutsuki [Thần Thoại Mùa II]", type: "hero", id: "kaguya", rate: 0.004, color: "var(--accent-red)" },
-  { name: "Senju Hashirama [Thần Thoại Mùa II]", type: "hero", id: "hashirama", rate: 0.004, color: "var(--accent-gold)" },
+  { name: "Gaara Nhất Vĩ [Tỉ Lệ 0.35% Mùa III]", type: "hero", id: "gaara", rate: 0.0035, color: "var(--accent-gold)" },
+  { name: "Kagura [Tỉ Lệ 0.35% Mùa III]", type: "hero", id: "kagura", rate: 0.0035, color: "var(--accent-purple)" },
   { name: "100 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 100, rate: 0.05, color: "var(--accent-gold)" },
   { name: "60 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 60, rate: 0.15, color: "var(--accent-gold)" },
   { name: "40 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 40, rate: 0.15, color: "var(--accent-gold)" },
   { name: "2 Mảnh Thiên Thạch Hoàng Kim", type: "res", res: "pinkShard", amt: 2, rate: 0.15, color: "var(--accent-gold)" },
   { name: "5 Mảnh Thiên Thạch Hoàng Kim", type: "res", res: "pinkShard", amt: 5, rate: 0.15, color: "var(--accent-gold)" },
   { name: "10 Mảnh Thiên Thạch Hoàng Kim", type: "res", res: "pinkShard", amt: 10, rate: 0.10, color: "var(--accent-gold)" },
-  { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.15, color: "var(--accent-cyan)" },
-  { name: "600 💎 Kim cương", type: "res", res: "kimCuong", amt: 600, rate: 0.12, color: "var(--accent-cyan)" },
-  { name: "1,000 💎 Kim cương", type: "res", res: "kimCuong", amt: 1000, rate: 0.022, color: "var(--accent-cyan)" }
+  { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.12, color: "var(--accent-cyan)" },
+  { name: "600 💎 Kim cương", type: "res", res: "kimCuong", amt: 600, rate: 0.09, color: "var(--accent-cyan)" },
+  { name: "1,000 💎 Kim cương", type: "res", res: "kimCuong", amt: 1000, rate: 0.033, color: "var(--accent-cyan)" }
 ];
 
 const GACHA_NORMAL_RATES = [
-  { name: "Itachi Amaterasu [Tướng Mới v5.7.0]", type: "hero", id: "itachi_amaterasu", rate: 0.010, color: "var(--accent-red)" },
-  { name: "Kagura [Tướng Mới v5.6.1]", type: "hero", id: "kagura", rate: 0.010, color: "var(--accent-purple)" },
-  { name: "Kaitou Kid [SSR Mùa II]", type: "hero", id: "kid", rate: 0.008, color: "var(--accent-purple)" },
-  { name: "Otsutsuki Isshiki [SSR Mùa II]", type: "hero", id: "isshiki", rate: 0.008, color: "var(--accent-cyan)" },
+  { name: "Omega Shenron [Tỉ Lệ 0.8% Mùa III]", type: "hero", id: "omega", rate: 0.008, color: "var(--accent-cyan)" },
+  { name: "Whis [Tỉ Lệ 0.8% Mùa III]", type: "hero", id: "whis", rate: 0.008, color: "var(--accent-purple)" },
   { name: "50 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 50, rate: 0.12, color: "var(--accent-gold)" },
   { name: "30 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 30, rate: 0.15, color: "var(--accent-gold)" },
   { name: "1 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 1, rate: 0.12, color: "var(--accent-cyan)" },
@@ -7663,7 +7871,7 @@ const GACHA_NORMAL_RATES = [
   { name: "5 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 5, rate: 0.10, color: "var(--accent-cyan)" },
   { name: "10 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 10, rate: 0.10, color: "var(--accent-cyan)" },
   { name: "150 💎 Kim cương", type: "res", res: "kimCuong", amt: 150, rate: 0.15, color: "var(--accent-cyan)" },
-  { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.12, color: "var(--accent-cyan)" },
+  { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.10, color: "var(--accent-cyan)" },
   { name: "500 💎 Kim cương", type: "res", res: "kimCuong", amt: 500, rate: 0.024, color: "var(--accent-cyan)" }
 ];
 
@@ -7674,19 +7882,82 @@ function openPassModal() {
 
 function switchPassTab(tab) {
   activePassTab = tab;
-  document.getElementById("tabBtnSpecialPass").classList.toggle("active", tab === "special");
-  document.getElementById("tabBtnNormalPass").classList.toggle("active", tab === "normal");
+  const btnSpecial = document.getElementById("tabBtnSpecialPass");
+  const btnNormal = document.getElementById("tabBtnNormalPass");
+  if (btnSpecial) btnSpecial.classList.toggle("active", tab === "special");
+  if (btnNormal) btnNormal.classList.toggle("active", tab === "normal");
+
+  const titleEl = document.getElementById("gachaBannerTitle");
+  const descEl = document.getElementById("gachaBannerDesc");
+  const cost1El = document.getElementById("gachaCost1");
+  const cost10El = document.getElementById("gachaCost10");
+  const showcaseTitleEl = document.getElementById("gachaShowcaseTitle");
+  const showcaseGridEl = document.getElementById("gachaHeroShowcaseGrid");
 
   if (tab === "special") {
-    document.getElementById("gachaBannerTitle").textContent = "Sổ Sứ Mệnh Đặc Biệt Mùa I";
-    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Pain Thiên Đạo (0.35%), Madara Lục Đạo (0.35%) cùng nhiều Mảnh Thiên Thạch & Ánh Sao.";
-    document.getElementById("gachaCost1").textContent = "1 ☄️ Thiên Thạch Hồng";
-    document.getElementById("gachaCost10").textContent = "9 ☄️ (Ưu đãi 10 lượt)";
+    if (titleEl) titleEl.textContent = "Sổ Sứ Mệnh Đặc Biệt Mùa III";
+    if (descEl) descEl.textContent = "Cơ hội nhận Gaara Nhất Vĩ (0.35%), Kagura (0.35%) cùng Thiên Thạch Hoàng Kim & Ánh Sao Thần Thoại.";
+    if (cost1El) cost1El.textContent = "1 ☄️ Thiên Thạch Hồng";
+    if (cost10El) cost10El.textContent = "9 ☄️ (Ưu đãi 10 lượt)";
+    if (showcaseTitleEl) showcaseTitleEl.textContent = "🌟 2 TƯỚNG CAO CẤP MÙA III (TỈ LỆ 0.35% MỖI TƯỚNG):";
+    if (showcaseGridEl) {
+      showcaseGridEl.innerHTML = `
+        <div style="background:#161b22; border:1px solid var(--accent-gold); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(241,224,90,0.15);">
+          <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🏜️</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b style="font-size:13px; color:var(--accent-gold);">Gaara Nhất Vĩ</b>
+              <span style="font-size:10px; background:rgba(241,224,90,0.2); color:var(--accent-gold); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.35%</span>
+            </div>
+            <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Kazekage Đệ Ngũ [DEF/SKL]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Phong Thuẫn Cát Hộ Thân, Đại Thác Sa Trầm Gây Choáng & Giảm 40% Giáp Toàn Phe Địch.</div>
+          </div>
+        </div>
+        <div style="background:#161b22; border:1px solid var(--accent-purple); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(188,140,255,0.15);">
+          <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🌸</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b style="font-size:13px; color:var(--accent-purple);">Kagura</b>
+              <span style="font-size:10px; background:rgba(188,140,255,0.2); color:var(--accent-purple); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.35%</span>
+            </div>
+            <div style="font-size:11px; color:#00f2fe; margin-top:2px;">Vu Nữ Tối Thượng [SKL]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Sợi Dây Định Mệnh Hồi HP Đồng Minh, Thức Tỉnh Dạng Thần & Miễn Nhiễm Choáng Vĩnh Viễn.</div>
+          </div>
+        </div>
+      `;
+    }
   } else {
-    document.getElementById("gachaBannerTitle").textContent = "Sổ Sứ Mệnh Thường Mùa I";
-    document.getElementById("gachaBannerDesc").textContent = "Cơ hội nhận Vegito (0.8%), Whis (0.8%) cùng nhiều Mảnh Thiên Thạch Xanh & Ánh Sao.";
-    document.getElementById("gachaCost1").textContent = "1 🔷 Thiên Thạch Xanh";
-    document.getElementById("gachaCost10").textContent = "9 🔷 (Ưu đãi 10 lượt)";
+    if (titleEl) titleEl.textContent = "Sổ Sứ Mệnh Thường Mùa III";
+    if (descEl) descEl.textContent = "Cơ hội nhận Omega Shenron (0.8%), Whis (0.8%) cùng Mảnh Thiên Thạch Xanh & Ánh Sao.";
+    if (cost1El) cost1El.textContent = "1 🔷 Thiên Thạch Xanh";
+    if (cost10El) cost10El.textContent = "9 🔷 (Ưu đãi 10 lượt)";
+    if (showcaseTitleEl) showcaseTitleEl.textContent = "🌟 2 TƯỚNG THƯỜNG MÙA III (TỈ LỆ 0.8% MỖI TƯỚNG):";
+    if (showcaseGridEl) {
+      showcaseGridEl.innerHTML = `
+        <div style="background:#161b22; border:1px solid var(--accent-cyan); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(88,166,255,0.15);">
+          <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🐉</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b style="font-size:13px; color:var(--accent-cyan);">Omega Shenron</b>
+              <span style="font-size:10px; background:rgba(88,166,255,0.2); color:var(--accent-cyan); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.8%</span>
+            </div>
+            <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Hắc Long Thần Ma [DEF]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Hắc Long Bất Diệt, Phản Sát Thương Cực Đại, Giảm Công & Miễn Nhiễm Khống Chế.</div>
+          </div>
+        </div>
+        <div style="background:#161b22; border:1px solid var(--accent-purple); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(188,140,255,0.15);">
+          <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🪄</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b style="font-size:13px; color:var(--accent-purple);">Whis</b>
+              <span style="font-size:10px; background:rgba(188,140,255,0.2); color:var(--accent-purple); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.8%</span>
+            </div>
+            <div style="font-size:11px; color:#f0883e; margin-top:2px;">Thiên Sứ Vũ Trụ 7 [SKL]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Đảo Ngược Thời Gian, Hồi Sinh Đồng Đội Tử Trận & Miễn Nhiễm Hoàn Toàn Mọi Sát Thương.</div>
+          </div>
+        </div>
+      `;
+    }
   }
 }
 
@@ -9066,6 +9337,16 @@ function renderStageGrid() {
 }
 
 function openTeamSetupModal() {
+  // v6.1.0: Tự động dọn dẹp Itachi Amaterasu nếu tài khoản chưa nhập mã hợp lệ
+  if (gameState.heroes && gameState.heroes.itachi_amaterasu) {
+    const legitCodes = ["ITACHIAS", "AMATERASU"];
+    if (!gameState.usedCodes || !legitCodes.some(c => gameState.usedCodes.includes(c))) {
+      delete gameState.heroes.itachi_amaterasu;
+      if (gameState.team) gameState.team = gameState.team.map(id => id === "itachi_amaterasu" ? null : id);
+      saveGame();
+    }
+  }
+
   closeModal("modalStageSelect");
   renderTeamSlots();
   renderOwnedHeroesForTeam();
@@ -9175,6 +9456,11 @@ function renderPartnersList() {
     const lv = isOwned ? gameState.heroes[pId].level : 1;
     const stats = getHeroStats(pId, lv);
     const db = HERO_DB[pId];
+    const { vpncCost, goldCost } = getHeroUpgradeCost(lv);
+
+    const isLocked250 = (lv === 250 && !gameState.heroes[pId]?.breakthrough250);
+    const isLocked300 = (lv === 300 && !gameState.heroes[pId]?.breakthrough300);
+    const isLocked350 = (lv === 350 && !gameState.heroes[pId]?.breakthrough350);
 
     const card = document.createElement("div");
     card.style.background = "#0d1117";
@@ -9194,7 +9480,7 @@ function renderPartnersList() {
         </div>
         <div style="text-align:right;">
           <div style="font-size:12px; font-weight:700; color:${isOwned ? 'var(--accent-green)' : '#da3633'};">
-            ${isOwned ? `✓ ĐÃ SỞ HỮU (Lv.${lv}/600)` : `🔒 CHƯA SỞ HỮU (Cấp 60 Sổ Sứ Mệnh)`}
+            ${isOwned ? `✓ ĐÃ SỞ HỮU (Lv.${lv}/600 ${gameState.heroes[pId]?.breakthrough250 ? '⭐' : ''})` : `🔒 CHƯA SỞ HỮU`}
           </div>
         </div>
       </div>
@@ -9219,17 +9505,199 @@ function renderPartnersList() {
         </div>
       </div>
 
-      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
-        ${isOwned ? `
-          <button class="btn btn-gold" onclick="upgradeHero('${pId}'); renderPartnersList();">⬆️ Nâng Cấp Level</button>
-          <button class="btn btn-primary" onclick="assignPartnerToSlot('${pId}')">⚔️ Gán Vào Đội Hình (Ô 4)</button>
-        ` : `
+      ${isOwned ? `
+        <!-- BẢNG NÂNG CẤP BẠN CHIẾN: +1, +10, NHẬP SỐ LEVEL & NÂNG MAX -->
+        <div style="background:#161b22; border-radius:8px; padding:10px; display:flex; flex-direction:column; gap:8px; border:1px solid #30363d;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:12px; font-weight:700; color:var(--accent-gold);">⚡ CƯỜNG HÓA & NÂNG CẤP BẠN CHIẾN:</span>
+            <span style="font-size:11px; color:var(--text-secondary);">Chi phí cấp ${lv}: <b style="color:var(--accent-green);">${vpncCost.toLocaleString()} VPNC</b> | <b style="color:var(--accent-gold);">${goldCost.toLocaleString()} Vàng</b></span>
+          </div>
+
+          ${isLocked250 ? `
+            <div style="background:#2c1216; border:1px solid #f85149; border-radius:6px; padding:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:11px; color:#f85149; font-weight:bold;">🔒 Chạm mốc Cấp 250! Cần Đột Phá để nâng tiếp lên Cấp 300:</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-pink" style="padding:4px 8px; font-size:11px;" onclick="breakthroughHero('${pId}', 'pink'); renderPartnersList();">45 ☄️ Hồng</button>
+                <button class="btn btn-accent" style="padding:4px 8px; font-size:11px;" onclick="breakthroughHero('${pId}', 'blue'); renderPartnersList();">95 🔷 Xanh</button>
+              </div>
+            </div>
+          ` : isLocked300 ? `
+            <div style="background:#2c1216; border:1px solid #f85149; border-radius:6px; padding:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:11px; color:#f85149; font-weight:bold;">🔒 Chạm mốc Cấp 300! Cần Đột Phá để nâng tiếp lên Cấp 350:</span>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-pink" style="padding:4px 8px; font-size:11px;" onclick="breakthroughHero300('${pId}', 'pink'); renderPartnersList();">180 ☄️ Hồng</button>
+                <button class="btn btn-accent" style="padding:4px 8px; font-size:11px;" onclick="breakthroughHero300('${pId}', 'blue'); renderPartnersList();">390 🔷 Xanh</button>
+              </div>
+            </div>
+          ` : isLocked350 ? `
+            <div style="background:#2c1216; border:1px solid #f85149; border-radius:6px; padding:8px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:11px; color:#f85149; font-weight:bold;">🔒 Chạm mốc Cấp 350! Đột Phá mở rộng Cấp 600:</span>
+              <button class="btn btn-pink" style="padding:4px 8px; font-size:11px;" onclick="breakthroughHero350('${pId}'); renderPartnersList();">Đột Phá Siêu Cấp 350</button>
+            </div>
+          ` : `
+            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+              <button class="btn btn-primary" style="padding:6px 12px; font-size:12px;" onclick="upgradePartnerCustom('${pId}', 1)">⬆️ +1 Cấp</button>
+              <button class="btn btn-accent" style="padding:6px 12px; font-size:12px;" onclick="upgradePartnerCustom('${pId}', 10)">⚡ +10 Cấp</button>
+              
+              <div style="display:flex; align-items:center; gap:4px; background:#0d1117; border:1px solid #30363d; border-radius:6px; padding:2px 6px;">
+                <span style="font-size:11px; color:var(--text-secondary);">Nâng:</span>
+                <input type="number" id="inputPartnerLv_${pId}" min="1" max="600" placeholder="+xxx cấp" onkeydown="if(event.key==='Enter') handlePartnerCustomInput('${pId}')" title="Nhập số level cần nâng" style="width:75px; background:#161b22; border:1px solid var(--border-color); color:#fff; padding:3px 6px; border-radius:4px; font-size:11px; text-align:center;">
+                <button class="btn btn-gold" style="padding:4px 8px; font-size:11px;" onclick="handlePartnerCustomInput('${pId}')">Nâng</button>
+              </div>
+
+              <button class="btn btn-pink" style="padding:6px 12px; font-size:12px; font-weight:bold;" onclick="upgradePartnerMax('${pId}')">🚀 Nâng Max Cấp</button>
+              <button class="btn btn-primary" style="padding:6px 14px; font-size:12px; margin-left:auto;" onclick="assignPartnerToSlot('${pId}')">⚔️ Gán Vào Đội Hình (Ô 4)</button>
+            </div>
+          `}
+        </div>
+      ` : `
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
           <button class="btn btn-pink" onclick="closeModal('modalPartners'); openPassModal();">📜 Nhận Qua Sổ Sứ Mệnh</button>
-        `}
-      </div>
+        </div>
+      `}
     `;
     container.appendChild(card);
   });
+}
+
+function upgradePartnerCustom(partnerId, count) {
+  const n = parseInt(count);
+  if (isNaN(n) || n <= 0) {
+    toast("Vui lòng nhập số level hợp lệ!", true);
+    return;
+  }
+  upgradeHeroMultipleLevels(partnerId, n);
+  renderPartnersList();
+}
+
+function handlePartnerCustomInput(partnerId) {
+  const input = document.getElementById(`inputPartnerLv_${partnerId}`);
+  if (!input) return;
+  const val = parseInt(input.value);
+  if (isNaN(val) || val <= 0) {
+    toast("Vui lòng nhập số level cần nâng hợp lệ!", true);
+    return;
+  }
+  upgradePartnerCustom(partnerId, val);
+}
+
+function upgradeHeroMultipleLevels(heroId, levels) {
+  if (!gameState.heroes[heroId]) return;
+  const currentLv = gameState.heroes[heroId].level;
+  if (currentLv >= 600) {
+    toast("Nhân vật đã đạt cấp tối đa (Lv. 600)!", true);
+    return;
+  }
+  if (currentLv === 250 && !gameState.heroes[heroId]?.breakthrough250) {
+    toast("Cần Đột Phá Cấp 250 để nâng tiếp!", true);
+    return;
+  }
+  if (currentLv === 300 && !gameState.heroes[heroId]?.breakthrough300) {
+    toast("Cần Đột Phá Cấp 300 để nâng tiếp!", true);
+    return;
+  }
+  if (currentLv === 350 && !gameState.heroes[heroId]?.breakthrough350) {
+    toast("Cần Đột Phá Cấp 350 để nâng tiếp!", true);
+    return;
+  }
+
+  let maxAllowed = 600;
+  if (!gameState.heroes[heroId]?.breakthrough250 && currentLv < 250) maxAllowed = 250;
+  else if (!gameState.heroes[heroId]?.breakthrough300 && currentLv < 300) maxAllowed = 300;
+  else if (!gameState.heroes[heroId]?.breakthrough350 && currentLv < 350) maxAllowed = 350;
+
+  const targetLv = Math.min(maxAllowed, currentLv + levels);
+  if (targetLv <= currentLv) {
+    toast("Không thể nâng thêm cấp do giới hạn Đột Phá hoặc đã đạt cấp tối đa!", true);
+    return;
+  }
+
+  let totalVpnc = 0;
+  let totalGold = 0;
+  for (let lv = currentLv; lv < targetLv; lv++) {
+    const { vpncCost, goldCost } = getHeroUpgradeCost(lv);
+    totalVpnc += vpncCost;
+    totalGold += goldCost;
+  }
+
+  if (gameState.resources.vpnc < totalVpnc) {
+    toast(`Cần ${totalVpnc.toLocaleString()} VPNC (Thiếu ${(totalVpnc - gameState.resources.vpnc).toLocaleString()})!`, true);
+    return;
+  }
+  if (gameState.resources.gold < totalGold) {
+    toast(`Cần ${totalGold.toLocaleString()} Vàng (Thiếu ${(totalGold - gameState.resources.gold).toLocaleString()})!`, true);
+    return;
+  }
+
+  gameState.resources.vpnc -= totalVpnc;
+  gameState.resources.gold -= totalGold;
+  const gained = targetLv - currentLv;
+  gameState.heroes[heroId].level = targetLv;
+  gameState.dailyQuests.progress.levelsUpgraded = (gameState.dailyQuests.progress.levelsUpgraded || 0) + gained;
+  if (gameState.events?.anhHungChiVien?.dailyQuestProgress) {
+    gameState.events.anhHungChiVien.dailyQuestProgress.levelsUpgraded = (gameState.events.anhHungChiVien.dailyQuestProgress.levelsUpgraded || 0) + gained;
+  }
+  saveGame();
+  updateTopBarUI();
+  toast(`🎉 Đã nâng cấp ${HERO_DB[heroId].name} thêm +${gained} Cấp (Đạt Lv. ${targetLv})!`);
+}
+
+function upgradePartnerMax(partnerId) {
+  if (!gameState.heroes[partnerId]) return;
+  const currentLv = gameState.heroes[partnerId].level;
+  if (currentLv >= 600) {
+    toast("Bạn Chiến đã đạt cấp tối đa (Lv. 600)!", true);
+    return;
+  }
+  if (currentLv === 250 && !gameState.heroes[partnerId]?.breakthrough250) {
+    toast("Cần Đột Phá Cấp 250 để nâng tiếp!", true);
+    return;
+  }
+  if (currentLv === 300 && !gameState.heroes[partnerId]?.breakthrough300) {
+    toast("Cần Đột Phá Cấp 300 để nâng tiếp!", true);
+    return;
+  }
+  if (currentLv === 350 && !gameState.heroes[partnerId]?.breakthrough350) {
+    toast("Cần Đột Phá Cấp 350 để nâng tiếp!", true);
+    return;
+  }
+
+  let maxAllowed = 600;
+  if (!gameState.heroes[partnerId]?.breakthrough250 && currentLv < 250) maxAllowed = 250;
+  else if (!gameState.heroes[partnerId]?.breakthrough300 && currentLv < 300) maxAllowed = 300;
+  else if (!gameState.heroes[partnerId]?.breakthrough350 && currentLv < 350) maxAllowed = 350;
+
+  let possibleLv = currentLv;
+  let runningVpnc = 0;
+  let runningGold = 0;
+
+  while (possibleLv < maxAllowed) {
+    const { vpncCost, goldCost } = getHeroUpgradeCost(possibleLv);
+    if (runningVpnc + vpncCost > gameState.resources.vpnc || runningGold + goldCost > gameState.resources.gold) {
+      break;
+    }
+    runningVpnc += vpncCost;
+    runningGold += goldCost;
+    possibleLv++;
+  }
+
+  if (possibleLv === currentLv) {
+    toast("Không đủ Vàng hoặc VPNC để nâng dù chỉ 1 cấp!", true);
+    return;
+  }
+
+  gameState.resources.vpnc -= runningVpnc;
+  gameState.resources.gold -= runningGold;
+  const gained = possibleLv - currentLv;
+  gameState.heroes[partnerId].level = possibleLv;
+  gameState.dailyQuests.progress.levelsUpgraded = (gameState.dailyQuests.progress.levelsUpgraded || 0) + gained;
+  if (gameState.events?.anhHungChiVien?.dailyQuestProgress) {
+    gameState.events.anhHungChiVien.dailyQuestProgress.levelsUpgraded = (gameState.events.anhHungChiVien.dailyQuestProgress.levelsUpgraded || 0) + gained;
+  }
+  saveGame();
+  updateTopBarUI();
+  toast(`🚀 NÂNG MAX THÀNH CÔNG: +${gained} Cấp! ${HERO_DB[partnerId].name} đạt Lv. ${possibleLv}!`);
+  renderPartnersList();
 }
 
 function assignPartnerToSlot(partnerId) {
@@ -9250,6 +9718,16 @@ function assignPartnerToSlot(partnerId) {
 let inspectingHeroId = "traveler";
 
 function openHeroesModal() {
+  // v6.1.0: Tự động dọn dẹp Itachi Amaterasu nếu tài khoản chưa nhập mã hợp lệ
+  if (gameState.heroes && gameState.heroes.itachi_amaterasu) {
+    const legitCodes = ["ITACHIAS", "AMATERASU"];
+    if (!gameState.usedCodes || !legitCodes.some(c => gameState.usedCodes.includes(c))) {
+      delete gameState.heroes.itachi_amaterasu;
+      if (gameState.team) gameState.team = gameState.team.map(id => id === "itachi_amaterasu" ? null : id);
+      saveGame();
+    }
+  }
+
   inspectingHeroId = Object.keys(gameState.heroes)[0] || "traveler";
   renderHeroesList();
   renderHeroDetails(inspectingHeroId);
@@ -9257,6 +9735,15 @@ function openHeroesModal() {
 }
 
 function renderHeroesList() {
+  // v6.1.0: Dọn dẹp triệt để Itachi Amaterasu nếu chưa từng nhập code hợp lệ
+  if (gameState.heroes && gameState.heroes.itachi_amaterasu) {
+    const legitCodes = ["ITACHIAS", "AMATERASU"];
+    if (!gameState.usedCodes || !legitCodes.some(c => gameState.usedCodes.includes(c))) {
+      delete gameState.heroes.itachi_amaterasu;
+      if (gameState.team) gameState.team = gameState.team.map(id => id === "itachi_amaterasu" ? null : id);
+      saveGame();
+    }
+  }
   const container = document.getElementById("heroListContainer");
   container.innerHTML = "";
   Object.keys(gameState.heroes).filter(hId => !HERO_DB[hId]?.bossOnly).forEach(hId => {
@@ -9965,7 +10452,7 @@ function openMidAutumnHeroBox() {
 
 
 /* ==========================================================================
-   v5.1.0 HELPER FUNCTIONS: TRỤ CỘT, ĐẤU LUYỆN, SỔ SỨ MỆNH MÙA II & GIFTCODE
+   v5.1.0 HELPER FUNCTIONS: TRỤ CỘT, ĐẤU LUYỆN, SỔ SỨ MỆNH MÙA III & GIFTCODE
    ========================================================================== */
 
 // 1. GỘP TAB TRỤ CỘT (THÁP VÔ HẠN, BOSS THẾ GIỚI, 7 NGÀY TÂN THỦ)
@@ -10137,7 +10624,7 @@ const BOSS_MILESTONES = [
 const ROOKIE_REWARDS = [
   { day: 1, name: "Tanker Chuẩn", rewardText: "Tướng Omega Shenron + 500K Vàng", hero: "omega", gold: 500000 },
   { day: 2, name: "Nguồn Năng Lượng", rewardText: "500 💎 + 5,000 VPNC", kimCuong: 500, vpnc: 5000 },
-  { day: 3, name: "Vòng Quay Mùa II", rewardText: "10 🔷 Thiên Thạch Xanh", blueMeteor: 10 },
+  { day: 3, name: "Vòng Quay Mùa III", rewardText: "10 🔷 Thiên Thạch Xanh", blueMeteor: 10 },
   { day: 4, name: "Chiến Thú Hộ Thể", rewardText: "Linh Thú Hộ Mệnh Cấp 30 + 1,000 ⭐", anhSao: 1000 },
   { day: 5, name: "Kho Báu Thần", rewardText: "1,000 💎 + 200 ⭐ Ánh sao", kimCuong: 1000, anhSao: 200 },
   { day: 6, name: "Thăng Hoa Thần Chú", rewardText: "10,000 VPNC + 500 ⭐ Ánh sao", vpnc: 10000, anhSao: 500 },
@@ -10292,151 +10779,10 @@ function chooseHeroFromSelector(hId) {
   closeModal("modalHeroSelector");
 }
 
-// 3. SỔ SỨ MỆNH MÙA II (TÍCH CẤP & GACHA)
+// 3. SỔ SỨ MỆNH MÙA III (TÍCH CẤP & GACHA)
 function addPassExp(amt) {
-  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
-  gameState.seasonPass.exp += amt;
-  while (gameState.seasonPass.exp >= 100 && gameState.seasonPass.level < 60) {
-    gameState.seasonPass.exp -= 100;
-    gameState.seasonPass.level++;
-    toast(`🎉 Sổ Sứ Mệnh Mùa II thăng cấp! Đạt Cấp ${gameState.seasonPass.level}`);
-  }
+  // Sổ Sứ Mệnh Mùa III đã chuyển hoàn toàn sang 2 Vòng Quay Gacha (Đặc Biệt & Thường)
 }
-
-function activatePremiumPass() {
-  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
-  if (gameState.seasonPass.isPremium) {
-    toast("Bạn đã kích hoạt Sổ Sứ Mệnh Cao Cấp Mùa II rồi!", true);
-    return;
-  }
-  if (gameState.resources.anhSao < 5999) {
-    toast("Cần 5,999 ⭐ Ánh sao để kích hoạt Sổ Sứ Mệnh Cao Cấp Mùa II!", true);
-    return;
-  }
-  gameState.resources.anhSao -= 5999;
-  gameState.seasonPass.isPremium = true;
-  saveGame();
-  updateTopBarUI();
-  toast("🎉 Kích hoạt thành công ⭐ SỔ SỨ MỆNH CAO CẤP MÙA II! Nhận gấp 3 lần tài nguyên!");
-  renderPassRoadmapUI();
-}
-
-function renderPassRoadmapUI() {
-  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
-  const lvEl = document.getElementById("uiPassLevelDisplay");
-  const expEl = document.getElementById("uiPassExpDisplay");
-  if (lvEl) lvEl.textContent = gameState.seasonPass.level;
-  if (expEl) expEl.textContent = gameState.seasonPass.exp;
-
-  const statusEl = document.getElementById("uiPassStatusDisplay");
-  const activateBtn = document.getElementById("btnActivatePassPremium");
-  if (statusEl && activateBtn) {
-    if (gameState.seasonPass.isPremium) {
-      statusEl.textContent = "⭐ ĐÃ KÍCH HOẠT CAO CẤP (X3 THƯỞNG)";
-      statusEl.style.color = "var(--accent-gold)";
-      activateBtn.disabled = true;
-      activateBtn.textContent = "✓ Đã Kích Hoạt Cao Cấp";
-    } else {
-      statusEl.textContent = "🔷 Sổ Thường Miễn Phí";
-      statusEl.style.color = "var(--accent-blue)";
-      activateBtn.disabled = false;
-      activateBtn.textContent = "⭐ Kích Hoạt Cao Cấp (5,999 ⭐)";
-    }
-  }
-
-  const container = document.getElementById("passTiersListContainer");
-  if (!container) return;
-  container.innerHTML = "";
-
-  for (let lv = 1; lv <= 60; lv++) {
-    const isUnlocked = (gameState.seasonPass.level >= lv);
-    const claimedF = gameState.seasonPass.claimedFree.includes(lv);
-    const claimedP = gameState.seasonPass.claimedPremium.includes(lv);
-    const isSpecialLv = (lv === 30 || lv === 50 || lv === 60);
-
-    const row = document.createElement("div");
-    row.style.background = isSpecialLv ? "#1e1b2e" : "#0d1117";
-    row.style.border = `1px solid ${isSpecialLv ? 'var(--accent-gold)' : 'var(--border-color)'}`;
-    row.style.borderRadius = "8px";
-    row.style.padding = "6px 12px";
-    row.style.display = "flex";
-    row.style.justifyContent = "space-between";
-    row.style.alignItems = "center";
-
-    const freeText = (lv === 60) ? "⚡ Minato Namikaze + 1K 💎" : (lv % 10 === 0 ? "100 💎 + Bụi Thần Bí" : `${lv * 5000} 🪙 + EXP`);
-    let premText = `x3: ${lv * 15000} 🪙 + ${lv * 20} 💎`;
-    if (lv === 30) premText = "❄️ 500 💎 Kim cương + Quà Mùa II";
-    else if (lv === 50) premText = "🎁 Rương Tự Chọn Tướng Cấp 50 (Gaara/Phoverus/Itachi)";
-    else if (lv === 60) premText = "🤝 Bạn Chiến Momoshiki - Kaguya (SS) + 2K 💎 + 20 ☄️";
-
-    row.innerHTML = `
-      <div style="flex:1;">
-        <div style="font-size:12px; font-weight:700; color:${isUnlocked ? 'var(--accent-green)' : 'var(--text-secondary)'};">
-          ${isSpecialLv ? '⭐' : '📜'} Cấp ${lv} ${isSpecialLv ? '[ĐẶC BIỆT]' : ''}
-        </div>
-        <div style="font-size:11px; color:var(--accent-blue);">🔷 Miễn Phí: ${freeText}</div>
-        <div style="font-size:11px; color:var(--accent-gold);">⭐ Cao Cấp: ${premText}</div>
-      </div>
-      <div style="display:flex; gap:6px;">
-        <button class="btn ${isUnlocked && !claimedF ? 'btn-accent' : ''}" style="padding:4px 8px; font-size:10px;" ${!isUnlocked || claimedF ? 'disabled' : ''} onclick="claimPassTier(${lv}, false)">
-          ${claimedF ? '✓ Nhận Thường' : 'Nhận Thường'}
-        </button>
-        <button class="btn ${isUnlocked && gameState.seasonPass.isPremium && !claimedP ? 'btn-gold' : ''}" style="padding:4px 8px; font-size:10px;" ${!isUnlocked || !gameState.seasonPass.isPremium || claimedP ? 'disabled' : ''} onclick="claimPassTier(${lv}, true)">
-          ${claimedP ? '✓ Nhận Cao Cấp' : 'Nhận Cao Cấp'}
-        </button>
-      </div>
-    `;
-    container.appendChild(row);
-  }
-}
-
-function claimPassTier(lv, isPremiumTier) {
-  gameState.seasonPass = gameState.seasonPass || { level: 1, exp: 0, isPremium: false, claimedFree: [], claimedPremium: [] };
-  if (gameState.seasonPass.level < lv) return;
-
-  if (isPremiumTier) {
-    if (!gameState.seasonPass.isPremium) return;
-    if (gameState.seasonPass.claimedPremium.includes(lv)) return;
-
-    if (lv === 30) {
-      gameState.resources.kimCuong += 500;
-      toast("❄️ Nhận thưởng mốc Cấp 30: +500 💎 Kim cương!");
-    } else if (lv === 50) {
-      openHeroSelectorModal("pass");
-    } else if (lv === 60) {
-      if (!gameState.heroes.momo_kaguya) gameState.heroes.momo_kaguya = { level: 1 };
-      gameState.resources.kimCuong += 2000;
-      gameState.resources.pinkMeteor += 20;
-      toast("👑 Nhận thưởng Cấp 60 Cao Cấp Mùa III: Bạn Chiến Momoshiki - Kaguya (SS) + 2,000 💎 + 20 ☄️ Thiên Thạch Hồng!");
-    } else {
-      gameState.resources.gold += lv * 15000;
-      gameState.resources.kimCuong += lv * 20;
-      toast(`Nhận thưởng Cao Cấp Cấp ${lv}: +${(lv * 15000).toLocaleString()} 🪙 & +${lv * 20} 💎!`);
-    }
-    gameState.seasonPass.claimedPremium.push(lv);
-  } else {
-    if (gameState.seasonPass.claimedFree.includes(lv)) return;
-    if (lv === 60) {
-      if (!gameState.heroes.minato) gameState.heroes.minato = { level: 1 };
-      gameState.resources.kimCuong += 1000;
-      gameState.resources.blueMeteor += 10;
-      toast("👑 Nhận thưởng Cấp 60 Thường Mùa III: Tướng Minato Namikaze [AS] + 1,000 💎 + 10 ☄️ Thiên Thạch Xanh!");
-    } else if (lv % 10 === 0) {
-      gameState.resources.kimCuong += 100;
-      gameState.resources.vpnc += 500;
-    } else {
-      gameState.resources.gold += lv * 5000;
-      gameState.player.exp += lv * 50;
-    }
-    gameState.seasonPass.claimedFree.push(lv);
-    toast(`Nhận thưởng Miễn Phí Cấp ${lv} thành công!`);
-  }
-
-  saveGame();
-  updateTopBarUI();
-  renderPassRoadmapUI();
-}
-
 function recordQuestProgress(key, amt) {
   gameState.dailyQuests = gameState.dailyQuests || { progress: {}, points: 0, claimedQuests: [], claimedMilestones: [] };
   gameState.dailyQuests.progress = gameState.dailyQuests.progress || {};
@@ -10535,6 +10881,15 @@ function claimEventGiftcode() {
 }
 
 function initGame() {
+  // v6.1.0: Dọn dẹp triệt để Itachi Amaterasu nếu chưa từng nhập code hợp lệ
+  if (gameState.heroes && gameState.heroes.itachi_amaterasu) {
+    const legitCodes = ["ITACHIAS", "AMATERASU"];
+    if (!gameState.usedCodes || !legitCodes.some(c => gameState.usedCodes.includes(c))) {
+      delete gameState.heroes.itachi_amaterasu;
+      if (gameState.team) gameState.team = gameState.team.map(id => id === "itachi_amaterasu" ? null : id);
+      saveGame();
+    }
+  }
   try {
     loadGame();
   } catch (err) {
