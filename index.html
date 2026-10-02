@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v5.7.1 [CÂN BẰNG ITACHI AMATERASU & GIFTCODE TEST003]</title>
+<title>Chiến Thuật Luân Hồi v6.0.0 [BẠN CHIẾN MOMOSHIKI - KAGUYA & TƯỚNG MỚI MINATO NAMIKAZE]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -377,8 +377,8 @@
   .select-box.locked { opacity: 0.35; cursor: not-allowed; }
   .team-slots {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
   }
   .slot-card {
     background: #0d1117;
@@ -541,7 +541,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v5.7.1 CẬP NHẬT: Cân Bằng Itachi Amaterasu, Thêm Giftcode Siêu Cấp TEST003 (1.000B Toàn Bộ Vật Phẩm) & Tối Ưu Hóa Trận Đấu!</div>
+      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v6.0.0 CẬP NHẬT: Tính Năng Mới "Bạn Chiến" 4 Slot (Momoshiki - Kaguya SS), Tướng Mới Minato Namikaze [AS], Chương 9-10 Địa Ngục & Đại Tu Giao Diện Ải!</div>
       <div class="menu-grid">
         <button class="btn btn-primary" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -562,6 +562,10 @@
         <button class="btn" onclick="openHeroesModal()">
           <span class="btn-icon">👥</span>
           <span>Nhân Vật</span>
+        </button>
+        <button class="btn btn-pink" onclick="openPartnersModal()" style="border-color:#bc8cff; background:linear-gradient(180deg, #2b112e 0%, #161b22 100%);">
+          <span class="btn-icon">🤝✨</span>
+          <span>Bạn Chiến</span>
         </button>
         <button class="btn btn-pink" onclick="openPassModal()">
           <span class="btn-icon">📜</span>
@@ -600,7 +604,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v5.7.1 (CÂN BẰNG AMATERASU & GIFTCODE TEST003)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.0.0 (BẠN CHIẾN & TƯỚNG MỚI MINATO)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -624,11 +628,20 @@
 
           <div class="skill-card" id="btnActiveSkill" onclick="executePlayerAction('skill')">
             <div class="skill-title">
-              <span>Kỹ Năng Chủ Động</span>
+              <span id="cardSkillTitle">Kỹ Năng Chủ Động</span>
               <span id="cardSkillEn" style="color:var(--accent-purple)">Tốn Toàn Bộ EN</span>
             </div>
             <div class="skill-desc" id="cardSkillDesc">Thi triển kỹ năng hủy diệt.</div>
             <div class="skill-meta" id="cardSkillStatus">Đủ EN để kích hoạt</div>
+          </div>
+
+          <div class="skill-card" id="btnActiveSkill2" style="display:none;" onclick="executePlayerAction('skill2')">
+            <div class="skill-title">
+              <span id="cardSkill2Title" style="color:var(--accent-gold)">Thần Chú Nguyên Sinh</span>
+              <span id="cardSkill2En" style="color:var(--accent-gold)">Tốn Toàn Bộ EN</span>
+            </div>
+            <div class="skill-desc" id="cardSkill2Desc">Kỹ năng đặc biệt của Bạn Chiến.</div>
+            <div class="skill-meta" id="cardSkill2Status">Yêu cầu toàn bộ EN</div>
           </div>
         </div>
 
@@ -1382,20 +1395,63 @@
     </div>
   </div>
 
-  <!-- Popup: Chọn Chương & Ải -->
-  <div class="modal-overlay" id="modalStageSelect">
-    <div class="modal-card" style="width:680px;">
+
+  <!-- Popup: BẠN CHIẾN (Duo Partners) v6.0.0 -->
+  <div class="modal-overlay" id="modalPartners">
+    <div class="modal-card" style="width:780px;">
       <div class="modal-header">
-        <div class="modal-title">Chọn Chương & Ải Đấu</div>
+        <div class="modal-title">🤝 Bạn Chiến (Duo Partners) - Chiến Binh Song Sinh & Công Phép</div>
+        <button class="modal-close" onclick="closeModal('modalPartners')">&times;</button>
+      </div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#131822; border:1px solid #bc8cff; border-radius:10px; padding:12px; font-size:12px; line-height:1.6;">
+          <div style="font-weight:700; color:#bc8cff; font-size:13px; margin-bottom:4px;">✨ ĐẶC ĐIỂM HỆ THỐNG BẠN CHIẾN (v6.0.0):</div>
+          • <b>Công Phép:</b> Bạn Chiến sử dụng Công Phép, giúp <b>BỎ QUA 50% DEF</b> của toàn bộ mục tiêu khi gây sát thương.<br>
+          • <b>Đội Hình 4 Slot:</b> Đội hình mở rộng lên 4 vị trí ra trận (Ô 1, Ô 2 hàng trước; Ô 3, Ô 4 hàng sau). Mỗi đội tối đa <b>1 Bạn Chiến</b>.<br>
+          • <b>Lượt Đánh & Kỹ Năng Kép:</b> Bạn Chiến có lượt hành động độc lập, sở hữu 2 Kỹ Năng Chủ Động (Kỹ năng chính & Thần Chú Nguyên Sinh)!
+        </div>
+
+        <div id="partnersListContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('modalPartners')">Đóng</button>
+        <button class="btn btn-primary" onclick="closeModal('modalPartners'); openTeamSetupModal();">Vào Bày Trận ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup: Chọn Chương & Ải Đấu v6.0.0 (3 Tầng: Độ Khó -> Chương -> Ải) -->
+  <div class="modal-overlay" id="modalStageSelect">
+    <div class="modal-card" style="width:780px;">
+      <div class="modal-header">
+        <div class="modal-title">⚔️ Lựa Chọn Chiến Dịch & Ải Đấu</div>
         <button class="modal-close" onclick="closeModal('modalStageSelect')">&times;</button>
       </div>
-      <div class="modal-body">
-        <div style="display:flex; gap:8px; margin-bottom:8px;" id="chapterTabsContainer"></div>
-        <div class="grid-selector" id="stageGridContainer"></div>
+      <div class="modal-body" style="display:flex; flex-direction:column; gap:12px;">
+        <!-- Tầng 1: Chọn Độ Khó -->
+        <div>
+          <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px; font-weight:700;">1. CHỌN ĐỘ KHÓ:</div>
+          <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px;" id="difficultyTabsContainer"></div>
+        </div>
+
+        <!-- Tầng 2: Chọn Chương -->
+        <div style="background:#090d13; border:1px solid var(--border-color); border-radius:10px; padding:10px;">
+          <div style="font-size:11px; color:var(--text-secondary); margin-bottom:6px; font-weight:700;">2. CHỌN CHƯƠNG:</div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;" id="chapterTabsContainer"></div>
+        </div>
+
+        <!-- Tầng 3: Chọn Ải -->
+        <div style="background:#090d13; border:1px solid var(--border-color); border-radius:10px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+            <div style="font-size:12px; font-weight:700; color:var(--accent-blue);" id="stageGridTitle">3. CHỌN ẢI ĐẤU:</div>
+            <div style="font-size:11px; color:var(--text-secondary);">Nhấp vào ải để sẵn sàng chiến đấu</div>
+          </div>
+          <div class="grid-selector" id="stageGridContainer" style="display:grid; grid-template-columns: repeat(5, 1fr); gap:10px;"></div>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn" onclick="closeModal('modalStageSelect')">Đóng</button>
-        <button class="btn btn-primary" id="btnProceedToTeam" onclick="openTeamSetupModal()" disabled>Tiếp Tục</button>
+        <button class="btn btn-primary" id="btnProceedToTeam" onclick="openTeamSetupModal()" disabled>Tiếp Tục Bày Trận ➔</button>
       </div>
     </div>
   </div>
@@ -1404,7 +1460,7 @@
   <div class="modal-overlay" id="modalTeamSetup">
     <div class="modal-card" style="width:700px;">
       <div class="modal-header">
-        <div class="modal-title">Sắp Xếp Đội Hình Ra Trận (3 Nhân Vật)</div>
+        <div class="modal-title">Sắp Xếp Đội Hình Ra Trận (4 Vị Trí - Tối Đa 1 Bạn Chiến)</div>
         <button class="modal-close" onclick="closeModal('modalTeamSetup')">&times;</button>
       </div>
       <div class="modal-body">
@@ -1424,6 +1480,11 @@
             <div style="font-size:10px; color:var(--accent-purple);">Hàng Sau - Ô 3</div>
             <div style="font-weight:700;" id="slotName2">Trống</div>
             <div style="font-size:10px; color:var(--text-secondary);" id="slotRole2"></div>
+          </div>
+          <div class="slot-card" id="teamSlot3" onclick="selectSlotForAssignment(3)">
+            <div style="font-size:10px; color:var(--accent-pink);">Hàng Sau - Ô 4 [Tướng/Bạn Chiến]</div>
+            <div style="font-weight:700;" id="slotName3">Trống</div>
+            <div style="font-size:10px; color:var(--text-secondary);" id="slotRole3"></div>
           </div>
         </div>
 
@@ -1515,6 +1576,9 @@ const GIFTCODES = {
   "TEST001": { test: true },
   "TEST002": { test2: true },
   "TEST003": { test3: true },
+  "V600": { v600: true },
+  "MINATO": { minato: true },
+  "BANCHIEN": { banchien: true },
   "RESET001": { reset: true },
   // v5.1.0: 15 Giftcode mới ẩn (nhận VPNC, Ánh Sao, Vàng, Kim Cương)
   "V5UPDATE": { kimCuong: 500, anhSao: 100, gold: 50000, vpnc: 500 },
@@ -2108,10 +2172,10 @@ const HERO_DB = {
     id: "susanoo_boss",
     name: "Chúa Tể Susanoo",
     type: "ATK",
-    bossOnly: true, // Đại Boss độc quyền cốt truyện Ải 9-10
-    roleDesc: "Chúa Tể Địa Ngục Ải 10 C.9, Thần Kiếm Trầm Trọng, Stun 2 mục tiêu & Kích nổ HP",
-    baseHp: 3000,
-    baseAtk: 100,
+    bossOnly: true, // Đại Boss độc quyền cốt truyện Ải 9-10 (Được Nâng Cấp v6.0.0)
+    roleDesc: "Chúa Tể Địa Ngục Ải 10 C.9, Thần Kiếm Trầm Trọng, Giảm 50% Hồi Máu, Hồi 90% HP & Kích Nổ",
+    baseHp: 3200,
+    baseAtk: 105,
     baseDef: 150,
     baseSpd: 200,
     enMax: 5,
@@ -2120,8 +2184,92 @@ const HERO_DB = {
     normalAttack: { name: "Thần Kiếm Trảm", enGain: 1.5, desc: "Gây 88% ATK + 6% HP tối đa lên 1 mục tiêu. Gắn 1 tầng 'Trầm trọng'. Hồi 1.5 EN." },
     activeSkill: { name: "Thiên Nộ Địa Ngục", desc: "Gây 200% ATK lên 2 mục tiêu, gây 'Stun' 2 lượt. Đồng thời KÍCH NỔ và RESET toàn bộ tầng 'Trầm trọng' trên toàn bộ quân địch!" },
     passives: [
-      { lv: 30, name: "Thấu Cốt Thần Uy", desc: "Đánh thường có 30% cơ hội đánh dấu 2 tầng 'Trầm trọng' thay vì 1." },
-      { lv: 70, name: "Trầm Trọng Tử Địa", desc: "Đánh thường có 15% cơ hội đánh dấu 3 tầng 'Trầm trọng' thay vì 1 hoặc 2." }
+      { lv: 30, name: "Minh Ngục Trầm Trọng", desc: "Toàn bộ mục tiêu bị giảm 50% khả năng hồi phục. Khi HP dưới 20%, hồi HP bằng 90% HP tối đa (1 lần/trận)." },
+      { lv: 70, name: "Trầm Trọng Tử Địa", desc: "Đánh thường có 35% cơ hội đánh dấu 2 tầng và 15% cơ hội đánh dấu 3 tầng 'Trầm trọng'." }
+    ]
+  },
+  minato: {
+    id: "minato",
+    name: "Minato Namikaze",
+    type: "AS",
+    roleDesc: "Tia Chớp Vàng [AS-SKL], Kết Ấn Phi Lôi Thần, Đòn Đánh Cường Hóa +200% ATK & Hồi Máu Toàn Đội",
+    baseHp: 780,
+    baseAtk: 41.0,
+    baseDef: 62,
+    baseSpd: 176,
+    enMax: 4.0,
+    hasSpells: true,
+    normalAttack: { 
+      name: "Phi Lôi Thần Kích", 
+      enGain: 1.5, 
+      desc: "Gây 98% ATK lên 1 mục tiêu. Đánh dấu 'Kết ấn' lên mục tiêu đó (tồn tại trong 3 lượt). Hồi 1.5 EN." 
+    },
+    activeSkill: { 
+      name: "Bá Khí Phi Lôi Thần", 
+      desc: "Gây 320% ATK lên 3 mục tiêu. Nếu cả 3 mục tiêu đều có 'Kết ấn', tăng 200% ATK cho đòn đánh thường tiếp theo. Đồng thời được hồi HP bằng 30% ST gây ra. 'Kết ấn' không có tác dụng nếu chưa mở bị động, tồn tại trong 3 lượt." 
+    },
+    passives: [
+      { lv: 30, name: "Tia Chớp Nghịch Cảnh", desc: "Khi HP dưới 50%, mỗi 1% HP mất đi tăng 1% ST gây ra + 0.5% DEF." },
+      { lv: 70, name: "Khắc Ấn Thấu Nhãn", desc: "Mục tiêu bị 'Kết ấn' sẽ giảm 100% tỉ lệ né đòn." },
+      { lv: 80, name: "Áp Chế Không Gian", desc: "Mục tiêu bị 'Kết ấn' sẽ giảm 30% ST gây ra." },
+      { lv: 100, name: "Phi Lôi Thần Cực Đại", desc: "Đòn đánh thường cường hoá của Minato sẽ giúp hồi HP cho 2 đồng đội còn lại bằng 20% ST gây ra đồng thời toàn đội nhận tăng 30% ST gây ra trong 2 lượt." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú 1", desc: "+19% ATK; +20% HP." },
+      { lv: 150, name: "Thần Chú 2", desc: "+20% DEF." }
+    ]
+  },
+  momo_kaguya: {
+    id: "momo_kaguya",
+    name: "Momoshiki - Kaguya",
+    type: "SKL",
+    isPartner: true,
+    magicAtk: true,
+    roleDesc: "Bạn Chiến Song Thần [SS], Công Phép Bỏ Qua 50% DEF, Thần Thụ Giáng Thế & Thần Chú Nguyên Sinh",
+    baseHp: 888,
+    baseAtk: 45.0, // Công Phép
+    baseDef: 66,
+    baseSpd: 180,
+    enMax: 15.0,
+    hasSpells: true,
+    normalAttack: { 
+      name: "Lục Đạo Tam Trùng Kích", 
+      enGain: 2.0, 
+      desc: "Gây ST 3 lần (Bỏ qua 50% DEF): L1 (30% ATK, giảm 50% DEF cho lượt này); L2 (50% ATK, +20% Crit); L3 (10% ATK + 10% Max HP, hồi 100% ST lần 3 cho bản thân). Hồi 2 EN." 
+    },
+    activeSkill: { 
+      name: "Thần Thụ Giáng Thế", 
+      desc: "Chỉ tốn 5 EN! Hồi phục toàn team bằng 15% HP còn lại của bản thân. Đồng thời kích hoạt 'Miễn nhiễm' cho toàn đội trong 2 lượt. Xóa bỏ hoàn toàn 'Stun', có thể dùng kể cả khi đang bị Choáng!" 
+    },
+    passives: [
+      { lv: 30, name: "Otsutsuki Lâm Triều", desc: "Vào trận, gây ST bằng 80% ATK lên toàn bộ mục tiêu, giảm 20% DEF mục tiêu đó trong 3 lượt. Đầu trận nhận 4 EN." },
+      { lv: 70, name: "Phá Diệt Thần Thuẫn", desc: "Mục tiêu có 'Shield', khi Bạn Chiến này gây ST 'Shield' đó nhận thêm 100% ST so với ST gây ra của bạn chiến." },
+      { lv: 80, name: "Bất Tử Song Hồn", desc: "Khi HP = 0, nhận bất tử trong 2 lượt (1 lần/trận). Tăng hút máu phép bản thân lên 50%." },
+      { lv: 100, name: "Cánh Cổng Lục Đạo", desc: "Khi gây ST, có tỉ lệ kích hoạt 'Cánh cổng lục đạo' giúp giảm 20% ST nhận vào cho đòn đánh tiếp theo phải nhận." }
+    ],
+    spells: [
+      { lv: 130, name: "Thần Chú Nguyên Sinh 1", desc: "+25% Công Phép, +20% HP." },
+      { lv: 150, name: "Thần Chú Nguyên Sinh 2", desc: "+25% DEF, +10% Hút Máu Phép." }
+    ]
+  },
+  kaguya_god_boss: {
+    id: "kaguya_god_boss",
+    name: "Thần Thụ Kaguya",
+    type: "ATK",
+    bossOnly: true,
+    roleDesc: "Đại Boss Chung Cực Ải 10 C.10 Địa Ngục, Lục Đạo Diệt Thế & Bát Thập Thần Không Kích",
+    baseHp: 4500,
+    baseAtk: 120,
+    baseDef: 160,
+    baseSpd: 205,
+    enMax: 10,
+    critRate: 0.30,
+    critDmg: 2.80,
+    normalAttack: { name: "Bát Thập Thần Không Kích", enGain: 2.0, desc: "Gây 110% ATK lên toàn bộ mục tiêu, hút 20% ST gây ra chuyển thành HP. Hồi 2 EN." },
+    activeSkill: { name: "Bành Trướng Cầu Đạo Ngọc", desc: "Gây 350% ATK lên toàn bộ mục tiêu, thiêu hủy 3 EN của toàn bộ quân địch và gây 'Choáng' 2 lượt!" },
+    passives: [
+      { lv: 30, name: "Vô Hạn Nguyệt Độc", desc: "Toàn bộ mục tiêu bị giảm 50% khả năng hồi phục và giảm 25% ATK." },
+      { lv: 70, name: "Bất Tử Thần Mẫu", desc: "Khi HP dưới 25%, hồi 100% HP tối đa (1 lần/trận) và nhận 30% miễn thương vĩnh viễn." }
     ]
   }
 };;
@@ -2147,7 +2295,7 @@ let gameState = {
     purpleMeteor: 0
   },
   heroes: { traveler: { level: 1 } },
-  team: ["traveler", null, null],
+  team: ["traveler", null, null, null],
   progress: { maxChapter: 1, maxStage: 1 },
   usedCodes: [],
   events: {
@@ -2231,10 +2379,7 @@ function loadGame() {
     if (!gameState.player) gameState.player = { level: 1, exp: 0, maxLevel: 500 };
   if (!gameState.player.level) gameState.player.level = 1;
   if (!gameState.player.exp) gameState.player.exp = 0;
-  // v5.7.0: Đảm bảo có Itachi Amaterasu trong danh sách nhân vật
-  if (!gameState.heroes.itachi_amaterasu) {
-    gameState.heroes.itachi_amaterasu = { level: 1 };
-  }
+  // v6.0.0: Đã sửa lỗi tự cấp Itachi Amaterasu cho tài khoản mới
   // v5.1.1: Cưỡng chế Max Level tài khoản lên 500 và xử lý ngay EXP tích lũy bị nghẽn
   if (!gameState.player.maxLevel || gameState.player.maxLevel < 600) {
     gameState.player.maxLevel = 600;
@@ -2272,8 +2417,10 @@ function loadGame() {
   if (!gameState.heroes || typeof gameState.heroes !== 'object') gameState.heroes = { traveler: { level: 1 } };
   if (!gameState.heroes.traveler) gameState.heroes.traveler = { level: 1 };
 
-  if (!gameState.team || !Array.isArray(gameState.team) || gameState.team.length < 3) {
-    gameState.team = ["traveler", null, null];
+  if (!gameState.team || !Array.isArray(gameState.team)) {
+    gameState.team = ["traveler", null, null, null];
+  } else {
+    while (gameState.team.length < 4) gameState.team.push(null);
   }
 
   if (!gameState.training) gameState.training = { goldMaxStage: 1, resMaxStage: 1 };
@@ -2479,6 +2626,16 @@ function getHeroStats(heroId, customLv = null) {
         atk = +(atk * 1.20).toFixed(1);
         def = Math.round(def * 1.20);
       }
+      else if (heroId === "minato") {
+        // Thần chú 1 (Lv.130): +19% ATK, +20% HP
+        atk = +(atk * 1.19).toFixed(1);
+        hp = Math.round(hp * 1.20);
+      }
+      else if (heroId === "momo_kaguya") {
+        // Thần chú nguyên sinh 1 (Lv.130): +25% Công Phép, +20% HP
+        atk = +(atk * 1.25).toFixed(1);
+        hp = Math.round(hp * 1.20);
+      }
     }
     if (lv >= 150) {
       if (heroId === "madara") { critRate += 0.15; critDmg += 0.50; }
@@ -2495,6 +2652,14 @@ function getHeroStats(heroId, customLv = null) {
         // Thần chú 2 (Lv.150): +15% tỉ lệ bạo kích, +18% HP
         critRate = +(critRate + 0.15).toFixed(2);
         hp = Math.round(hp * 1.18);
+      }
+      else if (heroId === "minato") {
+        // Thần chú 2 (Lv.150): +20% DEF
+        def = Math.round(def * 1.20);
+      }
+      else if (heroId === "momo_kaguya") {
+        // Thần chú nguyên sinh 2 (Lv.150): +25% DEF
+        def = Math.round(def * 1.25);
       }
     }
   }
@@ -2603,7 +2768,19 @@ function generateBotTeam(chapter, stage) {
   const factor = getBotScalingFactor(chapter, stage);
 
   // v5.5.0: Cân bằng Chương 4-7 (Khó) & Chương 8-9 (Địa Ngục: Kurama, Kagura, Susanoo)
-  if (chapter >= 4 && chapter <= 9) {
+  if (chapter >= 4 && chapter <= 10) {
+    const ch10Teams = [
+      ["minato", "itachi_amaterasu", "shisui"],
+      ["momo_kaguya", "isshiki"],
+      ["vegito", "whis", "kaioshin"],
+      ["madara", "hashirama", "luanhoi"],
+      ["momo_kaguya", "susanoo_boss"],         // Ải 5 (Tiểu Boss C.10)
+      ["conan", "kid", "susan"],
+      ["gaara", "tsunade", "kurama"],
+      ["minato", "hashirama", "madara"],
+      ["kurama", "susanoo_boss", "momo_kaguya"], // Ải 9
+      ["kaguya_god_boss"]                      // Ải 10 (Đại Boss Chung Cực C.10)
+    ];
     const ch8Teams = [
       ["whis", "vegito", "traveler"],
       ["pain", "itachi", "madara"],
@@ -2698,9 +2875,12 @@ function generateBotTeam(chapter, stage) {
     } else if (chapter === 8) {
       cfg = { startHp: 12000000, endHp: 28000000, startAtk: 105000, endAtk: 175000, baseDef: 155, baseSpd: 168 };
       teamRoster = ch8Teams;
-    } else { // chapter 9
+    } else if (chapter === 9) {
       cfg = { startHp: 25000000, endHp: 55000000, startAtk: 180000, endAtk: 280000, baseDef: 175, baseSpd: 178 };
       teamRoster = ch9Teams;
+    } else { // chapter 10
+      cfg = { startHp: 55000000, endHp: 120000000, startAtk: 280000, endAtk: 450000, baseDef: 195, baseSpd: 188 };
+      teamRoster = ch10Teams;
     }
 
     const progress = (stage - 1) / 9;
@@ -3493,7 +3673,7 @@ function startTrainingBattle(gateType, stage) {
   logCombat(`=== BẮT ĐẦU ${gateName} - ẢI ${stage} (CẤP ĐỐI THỦ: ${botLv}) ===`);
 
   const pTeam = [];
-  for (let slot = 0; slot < 3; slot++) {
+  for (let slot = 0; slot < 4; slot++) {
     const heroId = gameState.team[slot];
     if (heroId) {
       const stats = getHeroStats(heroId);
@@ -3670,7 +3850,7 @@ function startBattle() {
   logCombat(`=== BẮT ĐẦU CHƯƠNG ${selectedChapter} - ẢI ${selectedStage} ===`);
 
   const pTeam = [];
-  for (let slot = 0; slot < 3; slot++) {
+  for (let slot = 0; slot < 4; slot++) {
     const heroId = gameState.team[slot];
     if (heroId) {
       const stats = getHeroStats(heroId);
@@ -3728,6 +3908,10 @@ function startBattle() {
         fighter.en = Math.min(fighter.enMax, +(fighter.en + 2.0).toFixed(1));
         logCombat(`🃏 [Bức Thư Báo Trước] Kaitou Kid nhận ngay +2.0 EN đầu trận!`);
       }
+      if (heroId === "momo_kaguya" && stats.level >= 30) {
+        fighter.en = 4;
+        logCombat(`🤝 [Otsutsuki Lâm Triều] Bạn Chiến Momoshiki - Kaguya nhận sẵn 4 EN đầu trận!`);
+      }
       pTeam.push(fighter);
     } else {
       pTeam.push(null);
@@ -3735,6 +3919,20 @@ function startBattle() {
   }
 
   const bTeam = generateBotTeam(selectedChapter, selectedStage);
+
+  // v6.0.0: Momoshiki - Kaguya Bị Động 1 (Lv.30): Vào trận gây ST 80% ATK lên toàn bộ mục tiêu, giảm 20% DEF trong 3 lượt
+  pTeam.forEach(fighter => {
+    if (fighter && (fighter.id === "momo_kaguya" || fighter.heroId === "momo_kaguya") && fighter.level >= 30) {
+      bTeam.filter(b => b && b.hp > 0).forEach(b => {
+        const raw = fighter.atk * 0.80;
+        const { damage } = calculateDamage(fighter, b, raw);
+        applyDamage(b, damage, false, fighter);
+        b.buffs.momoDefDebuff = 3;
+        addAnimation(b, "-20% DEF (3 LƯỢT)", "#ff7b72");
+      });
+      logCombat(`🤝🌌 [Otsutsuki Lâm Triều] Momoshiki - Kaguya giáng thế: Gây 80% Công Phép lên toàn bộ địch và giảm 20% DEF trong 3 lượt!`);
+    }
+  });
 
   battle.active = true;
   battle.mode = 'campaign';
@@ -3993,11 +4191,11 @@ function handleVictory() {
   let nextUnlockedChapter = battle.chapter;
   let nextUnlockedStage = battle.stage + 1;
   if (nextUnlockedStage > 10) {
-    if (nextUnlockedChapter < 9) {
+    if (nextUnlockedChapter < 10) {
       nextUnlockedChapter++;
       nextUnlockedStage = 1;
     } else {
-      nextUnlockedChapter = 9;
+      nextUnlockedChapter = 10;
       nextUnlockedStage = 10;
     }
   }
@@ -4104,7 +4302,7 @@ function nextTurn() {
         logCombat(`[Điều Tức] ${f.name} nhận 2 EN!`);
       }
       // Decrement duration of buffs
-      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "stun", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff", "mienThuongDacBiet", "vegitoDmgBoost", "conanWeakPoint", "hypnosis", "diemYeu", "momoTeamBuff", "conanCritBuff"].forEach(k => {
+      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "stun", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff", "mienThuongDacBiet", "vegitoDmgBoost", "conanWeakPoint", "hypnosis", "diemYeu", "momoTeamBuff", "conanCritBuff", "ketAn", "momoDefDebuff", "minatoTeamDmg", "immuneDebuff", "immortal"].forEach(k => {
         if (f.buffs[k]) {
           f.buffs[k]--;
           if (f.buffs[k] <= 0) {
@@ -4156,6 +4354,16 @@ function nextTurn() {
 
   // Check Choáng (choang & stun)
   if ((actor.buffs.choang && actor.buffs.choang > 0) || (actor.buffs.stun && actor.buffs.stun > 0)) {
+    // SPECIAL: Momoshiki - Kaguya có thể dùng Chủ Động 1 (Thần Thụ Giáng Thế - 5 EN) kể cả khi đang bị Choáng!
+    if (!actor.isBot && (actor.id === "momo_kaguya" || actor.heroId === "momo_kaguya") && actor.en >= 5) {
+      battle.isWaitingPlayer = true;
+      updatePlayerSkillCards(actor);
+      const btnNormal = document.getElementById("btnNormalAttack");
+      if (btnNormal) btnNormal.classList.add("disabled");
+      logCombat(`🌀 [Momoshiki - Kaguya] Đang bị Choáng nhưng có thể dùng [Thần Thụ Giáng Thế] (5 EN) để giải khống chế cho toàn đội!`);
+      return;
+    }
+
     logCombat(`💫 ["Choáng"] ${actor.name} bị choáng, mất lượt hành động!`);
     addAnimation(actor, "BỊ CHOÁNG!", "#f1e05a");
     setTimeout(() => {
@@ -4407,17 +4615,42 @@ function updatePlayerSkillCards(actor) {
   document.getElementById("cardNormalDesc").textContent = normalDesc;
 
   const isKaguraGod = (actor.id === "kagura" && actor.godForm);
-  const canCastSkill = isKaguraGod ? (actor.en >= 3) : (actor.en >= actor.enMax);
+  const isMomoKaguya = (actor.id === "momo_kaguya");
+  const canCastSkill = isKaguraGod ? (actor.en >= 3) : (isMomoKaguya ? (actor.en >= 5) : (actor.en >= actor.enMax));
 
-  if (isKaguraGod) {
-    document.getElementById("cardSkillEn").textContent = `Tốn 3 EN (${actor.en} EN hiện có)`;
-    document.getElementById("cardSkillDesc").textContent = `[Dạng Thần - Còn ${actor.godTurns} lượt] Hồi 30% HP của Kagura cho ${actor.linkedAlly?.name || 'đồng minh'}, tự hồi 70% (Tăng vĩnh viễn 15% ATK, cấp Khiên 10% HP).`;
-  } else if (actor.id === "kagura") {
-    document.getElementById("cardSkillEn").textContent = `Cần 15 EN (Còn 12 EN sau khi hóa Thần)`;
-    document.getElementById("cardSkillDesc").textContent = `[Dạng Người] Nối Sợi Dây Định Mệnh vào đồng minh cùng hàng, thức tỉnh Dạng Thần 5 lượt VÀ HỒI PHỤC NGAY LẬP TỨC (Kèm +15% ATK & Khiên 10% HP)!`;
-  } else {
-    document.getElementById("cardSkillEn").textContent = `Tốn toàn bộ EN (${actor.en}/${actor.enMax})`;
+  const skill2Btn = document.getElementById("btnActiveSkill2");
+  if (isMomoKaguya) {
+    document.getElementById("cardSkillTitle").textContent = "Thần Thụ Giáng Thế";
+    document.getElementById("cardSkillEn").textContent = `Tốn 5 EN (${actor.en} EN hiện có)`;
     document.getElementById("cardSkillDesc").textContent = db.activeSkill.desc;
+    if (skill2Btn) {
+      skill2Btn.style.display = "flex";
+      const canCastSkill2 = (actor.en >= 10 || actor.en >= actor.enMax);
+      if (canCastSkill2) {
+        skill2Btn.classList.remove("disabled");
+        document.getElementById("cardSkill2Status").textContent = "SẴN SÀNG PHONG ẤN";
+        document.getElementById("cardSkill2Status").style.color = "var(--accent-green)";
+      } else {
+        skill2Btn.classList.add("disabled");
+        document.getElementById("cardSkill2Status").textContent = `Cần ${actor.enMax} EN để kích hoạt`;
+        document.getElementById("cardSkill2Status").style.color = "var(--accent-red)";
+      }
+      document.getElementById("cardSkill2En").textContent = `Tốn toàn bộ EN (${actor.en} EN)`;
+      document.getElementById("cardSkill2Desc").textContent = `Gây [Choáng / Stun] mục tiêu có HP cao nhất phe địch trong 5 lượt!`;
+    }
+  } else {
+    if (skill2Btn) skill2Btn.style.display = "none";
+    document.getElementById("cardSkillTitle").textContent = "Kỹ Năng Chủ Động";
+    if (isKaguraGod) {
+      document.getElementById("cardSkillEn").textContent = `Tốn 3 EN (${actor.en} EN hiện có)`;
+      document.getElementById("cardSkillDesc").textContent = `[Dạng Thần - Còn ${actor.godTurns} lượt] Hồi 30% HP của Kagura cho ${actor.linkedAlly?.name || 'đồng minh'}, tự hồi 70% (Tăng vĩnh viễn 15% ATK, cấp Khiên 10% HP).`;
+    } else if (actor.id === "kagura") {
+      document.getElementById("cardSkillEn").textContent = `Cần 15 EN (Còn 12 EN sau khi hóa Thần)`;
+      document.getElementById("cardSkillDesc").textContent = `[Dạng Người] Nối Sợi Dây Định Mệnh vào đồng minh cùng hàng, thức tỉnh Dạng Thần 5 lượt VÀ HỒI PHỤC NGAY LẬP TỨC (Kèm +15% ATK & Khiên 10% HP)!`;
+    } else {
+      document.getElementById("cardSkillEn").textContent = `Tốn toàn bộ EN (${actor.en}/${actor.enMax})`;
+      document.getElementById("cardSkillDesc").textContent = db.activeSkill.desc;
+    }
   }
 
   document.getElementById("btnNormalAttack").classList.remove("disabled");
@@ -4425,11 +4658,11 @@ function updatePlayerSkillCards(actor) {
 
   if (canCastSkill) {
     skillBtn.classList.remove("disabled");
-    document.getElementById("cardSkillStatus").textContent = isKaguraGod ? "SẴN SÀNG HỒI PHỤC" : (actor.id === "kagura" ? "SẴN SÀNG GIÁNG THẦN" : "SẴN SÀNG KÍCH HOẠT");
+    document.getElementById("cardSkillStatus").textContent = isKaguraGod ? "SẴN SÀNG HỒI PHỤC" : (isMomoKaguya ? "SẴN SÀNG GIÁNG THẾ" : (actor.id === "kagura" ? "SẴN SÀNG GIÁNG THẦN" : "SẴN SÀNG KÍCH HOẠT"));
     document.getElementById("cardSkillStatus").style.color = "var(--accent-green)";
   } else {
     skillBtn.classList.add("disabled");
-    document.getElementById("cardSkillStatus").textContent = isKaguraGod ? `Cần tối thiểu 3 EN để hồi phục` : (actor.id === "kagura" ? `Cần ${actor.enMax} EN để thức tỉnh` : `Cần ${actor.enMax} EN`);
+    document.getElementById("cardSkillStatus").textContent = isKaguraGod ? `Cần tối thiểu 3 EN để hồi phục` : (isMomoKaguya ? `Cần 5 EN để thi triển` : (actor.id === "kagura" ? `Cần ${actor.enMax} EN để thức tỉnh` : `Cần ${actor.enMax} EN`));
     document.getElementById("cardSkillStatus").style.color = "var(--accent-red)";
   }
 }
@@ -4437,6 +4670,8 @@ function updatePlayerSkillCards(actor) {
 function disablePlayerActionCards() {
   document.getElementById("btnNormalAttack").classList.add("disabled");
   document.getElementById("btnActiveSkill").classList.add("disabled");
+  const btn2 = document.getElementById("btnActiveSkill2");
+  if (btn2) btn2.classList.add("disabled");
 }
 
 // ==================== CƠ CHẾ AMATERASU TUYỆT DIỆT (v5.7.0) ====================
@@ -4475,6 +4710,8 @@ function getKaguraFateTarget(kaguraActor, allies) {
 
 function isStunImmune(target) {
   if (!target) return false;
+  // Momoshiki - Kaguya: Miễn nhiễm toàn đội khi kích hoạt Thần Thụ Giáng Thế
+  if (target.buffs && target.buffs.immuneDebuff && target.buffs.immuneDebuff > 0) return true;
   // Kagura Bị Động 4 (Lv.100): Bản thân và đồng minh đang được liên kết miễn nhiễm "Stun"
   if (target.id === "kagura" && target.level >= 100) return true;
   if (target.buffs && target.buffs.fateString && target.buffs.fateSource && target.buffs.fateSource.level >= 100) return true;
@@ -4483,6 +4720,46 @@ function isStunImmune(target) {
 
 function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
   let effectiveDef = defender.def * (1 - isPenetrate);
+
+  // v6.0.0: Bạn Chiến sử dụng công phép, giúp BỎ QUA 50% DEF của mục tiêu!
+  if (attacker.isPartner || (HERO_DB[attacker.id] && HERO_DB[attacker.id].isPartner)) {
+    effectiveDef *= 0.50;
+  }
+
+  // Minato Bị Động 1 (Lv.30): Khi HP dưới 50%, mỗi 1% HP mất đi tăng 1% ST gây ra + 0.5% DEF
+  if ((attacker.id === "minato" || attacker.heroId === "minato") && attacker.level >= 30) {
+    const hpRatio = attacker.hp / attacker.maxHp;
+    if (hpRatio < 0.50) {
+      const lostPct = Math.floor((0.50 - hpRatio) * 100);
+      rawDmg *= (1 + lostPct * 0.01);
+    }
+  }
+  if ((defender.id === "minato" || defender.heroId === "minato") && defender.level >= 30) {
+    const hpRatio = defender.hp / defender.maxHp;
+    if (hpRatio < 0.50) {
+      const lostPct = Math.floor((0.50 - hpRatio) * 100);
+      effectiveDef *= (1 + lostPct * 0.005);
+    }
+  }
+
+  // Minato Bị Động 3 (Lv.80): Mục tiêu bị "Kết ấn" sẽ giảm 30% ST gây ra
+  if (attacker.buffs && attacker.buffs.ketAn > 0) {
+    const oppTeam = (attacker.teamSide === 1 || !attacker.isBot) ? battle.botTeam : battle.playerTeam;
+    const minatoHero = oppTeam && oppTeam.find(f => f && (f.id === "minato" || f.heroId === "minato") && f.level >= 80 && f.hp > 0);
+    if (minatoHero) {
+      rawDmg *= 0.70;
+    }
+  }
+
+  // Minato Bị Động 4 (Lv.100): Toàn đội nhận tăng 30% ST gây ra trong 2 lượt
+  if (attacker.buffs && attacker.buffs.minatoTeamDmg > 0) {
+    rawDmg *= 1.30;
+  }
+
+  // Momoshiki - Kaguya Bị Động 1 debuff: giảm 20% DEF
+  if (defender.buffs && defender.buffs.momoDefDebuff > 0) {
+    effectiveDef *= 0.80;
+  }
 
   // Phoverus Thiên Hoàng (DEF boost dưới 40% HP)
   if (defender.id === "phoverus" && defender.level >= 30) {
@@ -4596,6 +4873,22 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   // Conan Lv.30 [Kính Định Vị]: Hoàn toàn bỏ qua chỉ số Né Đòn (Teleportation)
   const isConanAntiDodge = (attacker && attacker.id === "conan" && attacker.level >= 30);
 
+  // Minato Bị Động 2 (Lv.70): Mục tiêu bị "Kết ấn" sẽ giảm 100% tỉ lệ né đòn
+  if (target.buffs && target.buffs.ketAn > 0) {
+    const oppTeam = (target.teamSide === 1 || !target.isBot) ? battle.botTeam : battle.playerTeam;
+    const minatoHero = oppTeam && oppTeam.find(f => f && (f.id === "minato" || f.heroId === "minato") && f.level >= 70 && f.hp > 0);
+    if (minatoHero) {
+      dodgeRate = 0;
+    }
+  }
+
+  // Momoshiki - Kaguya Bị Động 4 (Lv.100): Cánh Cổng Lục Đạo giảm 20% ST nhận vào cho đòn đánh kế tiếp
+  if (target.buffs && target.buffs.lucDaoGate) {
+    finalDmg = Math.round(finalDmg * 0.80);
+    delete target.buffs.lucDaoGate;
+    addAnimation(target, "-20% ST (LỤC ĐẠO)", "#bc8cff");
+  }
+
   // Conan Lv.80 [Ván Trượt Năng Lượng]: Dưới 50% HP, né sạch 100% đòn đánh kế tiếp (1 lần/trận)
   if (target.id === "conan" && target.level >= 80 && !target.conanSkateDodged && (target.hp / target.maxHp) <= 0.50) {
     target.conanSkateDodged = true;
@@ -4679,15 +4972,21 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   }
 
   if (target.shield > 0) {
-    if (target.shield >= finalDmg) {
-      target.shield -= finalDmg;
-      addAnimation(target, `-${finalDmg} ("Khiên")`, "#58a6ff");
+    // Momoshiki - Kaguya Bị Động 2 (Lv.70): Mục tiêu có "Shield", khi Bạn Chiến gây ST thì Shield nhận thêm 100% ST (x2 ST phá khiên!)
+    const isMomoKaguyaAttacker = attacker && (attacker.id === "momo_kaguya" || attacker.heroId === "momo_kaguya") && attacker.level >= 70;
+    const effectiveShieldDamage = isMomoKaguyaAttacker ? (finalDmg * 2) : finalDmg;
+
+    if (target.shield >= effectiveShieldDamage) {
+      target.shield -= effectiveShieldDamage;
+      addAnimation(target, `-${effectiveShieldDamage} (Khiên ${isMomoKaguyaAttacker ? 'x2 Phá Khiên' : ''})`, "#58a6ff");
       checkDefenderTriggers(target, amount);
       return finalDmg;
     } else {
-      finalDmg -= target.shield;
-      addAnimation(target, `Vỡ "Khiên" (-${target.shield})`, "#58a6ff");
+      const remainingShield = target.shield;
       target.shield = 0;
+      addAnimation(target, `Vỡ Khiên (-${remainingShield} ${isMomoKaguyaAttacker ? 'x2 Phá Khiên' : ''})`, "#58a6ff");
+      const unabsorbedRatio = (effectiveShieldDamage - remainingShield) / (isMomoKaguyaAttacker ? 2 : 1);
+      finalDmg = Math.max(0, Math.round(unabsorbedRatio));
     }
   }
 
@@ -4727,6 +5026,36 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   }
 
   target.hp = Math.max(0, target.hp - finalDmg);
+
+  // Susanoo Bị Động 1: Khi HP dưới 20% hồi HP bằng 90% HP tối đa (1 lần/trận)
+  if (target.hp > 0 && (target.id === "susanoo_boss" || target.heroId === "susanoo_boss") && (target.hp / target.maxHp) <= 0.20 && !target.susanooHealed) {
+    target.susanooHealed = true;
+    const healAmt = Math.round(target.maxHp * 0.90);
+    target.hp = Math.min(target.maxHp, target.hp + healAmt);
+    addAnimation(target, `+${healAmt.toLocaleString()} HP (SUSANOO TÁI SINH)`, "#58a6ff");
+    logCombat(`💀🔥 [Minh Ngục Trầm Trọng] Chúa Tể Susanoo khi HP dưới 20% đã kích hoạt hồi phục 90% HP tối đa (+${healAmt.toLocaleString()} HP)!`);
+  }
+
+  // Momoshiki - Kaguya Bị Động 3 (Lv.80): Khi HP = 0, nhận bất tử trong 2 lượt (1 lần/trận) & tăng 50% hút máu phép
+  if (target.hp <= 0 && (target.id === "momo_kaguya" || target.heroId === "momo_kaguya") && target.level >= 80 && !target.immortalTriggered) {
+    target.immortalTriggered = true;
+    target.hp = 1;
+    target.buffs = target.buffs || {};
+    target.buffs.immortal = 2;
+    target.spellVamp = 0.50;
+    addAnimation(target, "BẤT TỬ SONG HỒN (2 LƯỢT)", "#ffd700");
+    logCombat(`👑✨ [Bất Tử Song Hồn] Momoshiki - Kaguya kích hoạt Bất Tử trong 2 lượt và tăng 50% Hút Máu Phép!`);
+  }
+
+  // Momoshiki - Kaguya Bị Động 4: khi gây ST có tỷ lệ 40% kích hoạt Cánh Cổng Lục Đạo
+  if (attacker && (attacker.id === "momo_kaguya" || attacker.heroId === "momo_kaguya") && attacker.level >= 100) {
+    if (Math.random() < 0.40 && (!attacker.buffs || !attacker.buffs.lucDaoGate)) {
+      attacker.buffs = attacker.buffs || {};
+      attacker.buffs.lucDaoGate = true;
+      addAnimation(attacker, "CÁNH CỔNG LỤC ĐẠO", "#bc8cff");
+      logCombat(`🌌🛡️ [Cánh Cổng Lục Đạo] Momoshiki - Kaguya kích hoạt phòng hộ, giảm 20% ST nhận vào cho đòn kế tiếp!`);
+    }
+  }
 
   // Kurama chuyển lớp HP khi HP lớp hiện tại tụt về 0
   if (target.id === "kurama" && target.hp === 0 && target.hpLayers && target.currentLayer < target.hpLayers.length - 1) {
@@ -4975,8 +5304,15 @@ function checkDefenderTriggers(target, dmgTaken) {
 
 function healFighter(fighter, amount) {
   const currentTeam = (battle.playerTeam && battle.playerTeam.includes(fighter)) ? battle.playerTeam : battle.botTeam;
+  const oppTeam = (battle.playerTeam && battle.playerTeam.includes(fighter)) ? battle.botTeam : battle.playerTeam;
   const whisFighter = currentTeam ? currentTeam.find(p => p && p.id === "whis" && p.level >= 150 && p.hp > 0) : null;
   let finalHeal = amount;
+
+  // Susanoo Bị Động 1: Toàn bộ mục tiêu bị giảm 50% khả năng hồi phục
+  const susanooFighter = oppTeam ? oppTeam.find(p => p && (p.id === "susanoo_boss" || p.heroId === "susanoo_boss") && p.hp > 0) : null;
+  if (susanooFighter && susanooFighter.level >= 30) {
+    finalHeal = Math.round(finalHeal * 0.50);
+  }
   // v5.5.0: Hiệu ứng Cấm Địa Chương 8: Trầm Cảm Không Gian (Giảm 40% hiệu lực hồi máu toàn trận)
   if (battle.chapter === 8) {
     finalHeal = Math.round(finalHeal * 0.60);
@@ -5436,15 +5772,78 @@ function executePlayerAction(type) {
       actor.en = Math.min(actor.enMax, +(actor.en + 1.5).toFixed(1));
       addAnimation(target, `+${stacks} TRẦM TRỌNG`, "#8b4513");
       logCombat(`⚔️ [Thần Kiếm Trảm] Susanoo chém gây ${damage.toLocaleString()} ST lên ${target.name} và khắc +${stacks} tầng 'Trầm trọng' (Tổng: ${target.buffs.tramTrong} tầng - ${target.buffs.tramTrong * 5}% Max HP sẽ mất)!`);
+    } else if (actor.id === "minato") {
+      let raw = actor.atk * 0.98;
+      let isEnhanced = false;
+      if (actor.buffs.minatoEnhancedAtk) {
+        raw = actor.atk * 3.0; // +200% ATK (tổng 300% ATK)
+        isEnhanced = true;
+        delete actor.buffs.minatoEnhancedAtk;
+        addAnimation(actor, "CƯỜNG HÓA +200% ATK!", "#ffd700");
+      }
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+
+      // Đánh dấu "Kết ấn" lên mục tiêu đó (tồn tại trong 3 lượt)
+      target.buffs = target.buffs || {};
+      target.buffs.ketAn = 3;
+      addAnimation(target, "KẾT ẤN (3 LƯỢT)", "#f1e05a");
+      logCombat(`⚡🏷️ [Phi Lôi Thần Kích] Minato gây ${damage.toLocaleString()} ST và đánh dấu [Kết Ấn] lên ${target.name} (3 lượt)!`);
+
+      // Bị động 4 (Lv.100): Đòn đánh thường cường hoá của Minato sẽ giúp hồi HP cho 2 đồng đội còn lại bằng 20% ST gây ra đồng thời toàn đội nhận tăng 30% ST gây ra trong 2 lượt
+      if (isEnhanced && actor.level >= 100) {
+        const healAmt = Math.round(damage * 0.20);
+        const otherAllies = allyTeam.filter(a => a && a !== actor && a.hp > 0);
+        otherAllies.slice(0, 2).forEach(a => {
+          healFighter(a, healAmt);
+          addAnimation(a, `+${healAmt.toLocaleString()} HP (Minato)`, "#3fb950");
+        });
+        allyTeam.filter(a => a && a.hp > 0).forEach(a => {
+          a.buffs = a.buffs || {};
+          a.buffs.minatoTeamDmg = 2;
+          addAnimation(a, "+30% ST (2 Lượt)", "#ffd700");
+        });
+        logCombat(`⚡✨ [Phi Lôi Thần Cực Đại] Đòn cường hóa hồi ${healAmt.toLocaleString()} HP cho đồng đội và tăng 30% ST toàn đội trong 2 lượt!`);
+      }
+    } else if (actor.id === "momo_kaguya") {
+      actor.en = Math.min(actor.enMax, +(actor.en + 2.0).toFixed(1));
+      addAnimation(actor, "+2.0 EN", "#bc8cff");
+
+      // Đòn 1: 30% ATK lên 1 mục tiêu, giảm 50% DEF cho lượt này
+      const prevDef = target.def;
+      target.def = Math.round(target.def * 0.50);
+      const hit1 = calculateDamage(actor, target, actor.atk * 0.30);
+      applyDamage(target, hit1.damage, hit1.isCrit, actor);
+      target.def = prevDef;
+
+      // Đòn 2: 50% ATK lên 1 mục tiêu, tăng 20% tỉ lệ bạo kích cho lượt này
+      actor.critRate += 0.20;
+      const hit2 = calculateDamage(actor, target, actor.atk * 0.50);
+      applyDamage(target, hit2.damage, hit2.isCrit, actor);
+      actor.critRate -= 0.20;
+
+      // Đòn 3: 10% ATK + 10% HP tối đa. Hồi phục bản thân bằng 100% ST của lần 3.
+      const raw3 = actor.atk * 0.10 + target.maxHp * 0.10;
+      const hit3 = calculateDamage(actor, target, raw3);
+      applyDamage(target, hit3.damage, hit3.isCrit, actor);
+
+      const healSelf = hit3.damage;
+      healFighter(actor, healSelf);
+      addAnimation(actor, `+${healSelf.toLocaleString()} HP (Hút 100%)`, "#3fb950");
+      const totalHitDmg = hit1.damage + hit2.damage + hit3.damage;
+      logCombat(`🤝💥 [Lục Đạo Tam Trùng Kích] Bạn Chiến Momoshiki - Kaguya tung 3 đòn liên hoàn gây ${totalHitDmg.toLocaleString()} ST Công Phép và tự hồi phục ${healSelf.toLocaleString()} HP!`);
     }
   } else if (type === "skill") {
     const isKaguraGod = (actor.id === "kagura" && actor.godForm);
-    const canCastSkill = isKaguraGod ? (actor.en >= 3) : (actor.en >= actor.enMax);
+    const isMomoKaguya = (actor.id === "momo_kaguya");
+    const canCastSkill = isKaguraGod ? (actor.en >= 3) : (isMomoKaguya ? (actor.en >= 5) : (actor.en >= actor.enMax));
     if (!canCastSkill) return;
 
     if (actor.id === "kagura") {
       // v5.6.1: Tiêu hao 3 EN khi thi triển hồi phục (khi hóa Thần tiêu hao 3 EN từ 15 EN, giữ lại 12 EN)
       actor.en = Math.max(0, +(actor.en - 3).toFixed(1));
+    } else if (actor.id === "momo_kaguya") {
+      actor.en = Math.max(0, +(actor.en - 5).toFixed(1)); // Chỉ tốn 5 EN!
     } else if (actor.id === "kurama") {
       actor.en = 2; // Hồi 2 EN
     } else {
@@ -6079,6 +6478,56 @@ function applyOmegaPassive2(omega, target) {
       target.hp = Math.max(0, target.hp - stealAmount);
       healFighter(omega, stealAmount);
       addAnimation(target, `Cướp -${stealAmount} HP`, "#bc8cff");
+    } else if (actor.id === "minato") {
+      const targets = enemyTeam.filter(b => b && b.hp > 0).slice(0, 3);
+      let totalDmgDone = 0;
+      let targetsWithMarkCount = 0;
+      targets.forEach(t => {
+        if (t.buffs && t.buffs.ketAn > 0) targetsWithMarkCount++;
+        const raw = actor.atk * 3.20;
+        const { damage, isCrit } = calculateDamage(actor, t, raw, true);
+        applyDamage(t, damage, isCrit, actor);
+        totalDmgDone += damage;
+        addAnimation(t, `-${damage.toLocaleString()} HP`, isCrit ? "#ff0055" : "#ffdf5d");
+      });
+      logCombat(`⚡🌪️ [Bá Khí Phi Lôi Thần] Minato lướt trảm 3 mục tiêu gây tổng cộng ${totalDmgDone.toLocaleString()} ST!`);
+      // Nếu cả 3 mục tiêu đều có "Kết ấn": tăng 200% ATK cho đòn thường tiếp theo, hồi 30% ST
+      if (targets.length >= 3 && targetsWithMarkCount >= 3) {
+        actor.buffs = actor.buffs || {};
+        actor.buffs.minatoEnhancedAtk = true;
+        const healAmt = Math.round(totalDmgDone * 0.30);
+        healFighter(actor, healAmt);
+        addAnimation(actor, `+${healAmt.toLocaleString()} HP`, "#3fb950");
+        addAnimation(actor, "CƯỜNG HÓA ĐÒN THƯỜNG (+200% ATK)", "#ffd700");
+        logCombat(`⚡✨ [Phi Lôi Thần Tuyệt Kỹ] Cả 3 mục tiêu đều có [Kết Ấn]! Kích hoạt Đòn Đánh Thường Cường Hóa (+200% ATK) và hồi phục 30% ST (${healAmt.toLocaleString()} HP)!`);
+      }
+    } else if (actor.id === "momo_kaguya") {
+      // Hồi phục toàn team bằng 15% HP còn lại của bản thân
+      const healVal = Math.max(1, Math.round(actor.hp * 0.15));
+      allyTeam.filter(a => a && a.hp > 0).forEach(a => {
+        healFighter(a, healVal);
+        addAnimation(a, `+${healVal.toLocaleString()} HP`, "#3fb950");
+        a.buffs = a.buffs || {};
+        a.buffs.immuneDebuff = 2;
+        delete a.buffs.choang;
+        delete a.buffs.stun;
+        addAnimation(a, "MIỄN NHIỄM (2 LƯỢT)", "#00f2fe");
+      });
+      logCombat(`🤝🌸 [Thần Thụ Giáng Thế] Momoshiki - Kaguya tiêu hao 5 EN: Hồi phục ${healVal.toLocaleString()} HP (15% HP hiện tại) cho toàn đội, xóa sạch Choáng và kích hoạt [Miễn Nhiễm] 2 lượt!`);
+    }
+  } else if (type === "skill2") {
+    if (actor.id !== "momo_kaguya") return;
+    const canCastSkill2 = (actor.en >= 10 || actor.en >= actor.enMax);
+    if (!canCastSkill2) return;
+    actor.en = 0;
+    const aliveEnemies = enemyTeam.filter(e => e && e.hp > 0);
+    if (aliveEnemies.length > 0) {
+      const highestHpEnemy = aliveEnemies.sort((a, b) => b.hp - a.hp)[0];
+      highestHpEnemy.buffs = highestHpEnemy.buffs || {};
+      highestHpEnemy.buffs.choang = 5;
+      highestHpEnemy.buffs.stun = 5;
+      addAnimation(highestHpEnemy, "STUN 5 LƯỢT! (NGUYÊN SINH)", "#bc8cff");
+      logCombat(`🤝🌌 [Thần Chú Nguyên Sinh] Momoshiki - Kaguya dùng toàn bộ EN: Áp chế phong ấn khiến mục tiêu HP cao nhất [${highestHpEnemy.name}] bị CHOÁNG 5 LƯỢT!`);
     }
   }
 }
@@ -6420,6 +6869,52 @@ function executeHeroBotAction(actor, alivePlayers) {
         });
         addAnimation(actor, "AMATERASU TUYỆT DIỆT!", "#ff0055");
         logCombat(`🔥🖤👁️ [Amaterasu Tuyệt Diệt] ${actor.name} khai mở Mangekyou Sharingan phóng Hắc Hỏa thiêu rụi toàn đội bạn gây ${totalDmgDone.toLocaleString()} ST và khắc 5 tầng Amaterasu Tuyệt Diệt!`);
+      } else if (actor.heroId === "minato" || actor.id === "minato") {
+        actor.en = 0;
+        const targets = alivePlayers.slice(0, 3);
+        let totalDmgDone = 0;
+        let targetsWithMarkCount = 0;
+        targets.forEach(t => {
+          if (t.buffs && t.buffs.ketAn > 0) targetsWithMarkCount++;
+          const raw = actor.atk * 3.20;
+          const { damage, isCrit } = calculateDamage(actor, t, raw, true);
+          applyDamage(t, damage, isCrit, actor);
+          totalDmgDone += damage;
+          addAnimation(t, `-${damage.toLocaleString()} HP`, isCrit ? "#ff0055" : "#ffdf5d");
+        });
+        logCombat(`⚡🌪️ [Địch: Bá Khí Phi Lôi Thần] Minato trảm 3 mục tiêu gây tổng ${totalDmgDone.toLocaleString()} ST!`);
+        if (targets.length >= 3 && targetsWithMarkCount >= 3) {
+          actor.buffs.minatoEnhancedAtk = true;
+          const healAmt = Math.round(totalDmgDone * 0.30);
+          healFighter(actor, healAmt);
+          addAnimation(actor, `+${healAmt.toLocaleString()} HP`, "#3fb950");
+          addAnimation(actor, "CƯỜNG HÓA ĐÒN THƯỜNG", "#ffd700");
+          logCombat(`⚡✨ [Minato] Cả 3 mục tiêu có [Kết Ấn]! Kích hoạt Đòn Đánh Thường Cường Hóa (+200% ATK) và hồi phục 30% ST!`);
+        }
+      } else if (actor.heroId === "momo_kaguya" || actor.id === "momo_kaguya") {
+        actor.en = Math.max(0, +(actor.en - 5).toFixed(1));
+        const healVal = Math.max(1, Math.round(actor.hp * 0.15));
+        battle.botTeam.filter(b => b && b.hp > 0).forEach(b => {
+          healFighter(b, healVal);
+          b.buffs.immuneDebuff = 2;
+          delete b.buffs.choang;
+          delete b.buffs.stun;
+          addAnimation(b, "MIỄN NHIỄM (2 LƯỢT)", "#00f2fe");
+        });
+        logCombat(`🤝🌸 [Địch: Thần Thụ Giáng Thế] Bạn Chiến Momoshiki - Kaguya hồi ${healVal.toLocaleString()} HP cho toàn đội, xóa Choáng & ban [Miễn Nhiễm] 2 lượt!`);
+      } else if (actor.heroId === "kaguya_god_boss" || actor.id === "kaguya_god_boss") {
+        actor.en = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 3.50;
+          const { damage, isCrit } = calculateDamage(actor, p, raw, true);
+          applyDamage(p, damage, isCrit, actor);
+          p.en = Math.max(0, +(p.en - 3.0).toFixed(1));
+          if (!isStunImmune(p)) {
+            p.buffs.choang = 2;
+            addAnimation(p, "CHOÁNG 2 LƯỢT!", "#f1e05a");
+          }
+        });
+        logCombat(`🌌👑 [Đại Boss: Bành Trướng Cầu Đạo Ngọc] Thần Thụ Kaguya tung tuyệt kỹ hủy diệt toàn đội, thiêu hủy 3 EN và gây Choáng 2 lượt!`);
       } else if (actor.heroId === "susanoo_boss" || actor.id === "susanoo_boss") {
         actor.en = 0;
         const targets = alivePlayers.slice(0, 2);
@@ -6539,6 +7034,73 @@ function executeHeroBotAction(actor, alivePlayers) {
         actor.en = Math.min(actor.enMax, +(actor.en + 1.5).toFixed(1));
         addAnimation(target, `+${stacks} TRẦM TRỌNG`, "#8b4513");
         logCombat(`⚔️ [Thần Kiếm Trảm] Susanoo chém gây ${damage.toLocaleString()} ST lên ${target.name} và khắc +${stacks} tầng 'Trầm trọng' (Tổng: ${target.buffs.tramTrong} tầng - ${target.buffs.tramTrong * 5}% Max HP sẽ mất)!`);
+      } else if (actor.heroId === "minato" || actor.id === "minato") {
+        // Bot Minato đánh theo thứ tự ô 1 -> ô 2 -> ô 3 để đảm bảo kích hoạt nội tại!
+        let markTarget = alivePlayers.find(p => p.slot === 0 && (!p.buffs || !p.buffs.ketAn));
+        if (!markTarget) markTarget = alivePlayers.find(p => p.slot === 1 && (!p.buffs || !p.buffs.ketAn));
+        if (!markTarget) markTarget = alivePlayers.find(p => p.slot === 2 && (!p.buffs || !p.buffs.ketAn));
+        if (!markTarget) markTarget = alivePlayers[0];
+
+        actor.en = Math.min(actor.enMax, +(actor.en + 1.5).toFixed(1));
+        let raw = actor.atk * 0.98;
+        let isEnhanced = false;
+        if (actor.buffs.minatoEnhancedAtk) {
+          raw = actor.atk * 3.0;
+          isEnhanced = true;
+          delete actor.buffs.minatoEnhancedAtk;
+        }
+        const { damage, isCrit } = calculateDamage(actor, markTarget, raw);
+        applyDamage(markTarget, damage, isCrit, actor);
+        markTarget.buffs = markTarget.buffs || {};
+        markTarget.buffs.ketAn = 3;
+        addAnimation(markTarget, "KẾT ẤN (3 LƯỢT)", "#f1e05a");
+        logCombat(`⚡🏷️ [Phi Lôi Thần Kích] Bot Minato ưu tiên đánh Ô ${markTarget.slot + 1} (${markTarget.name}), gây ${damage.toLocaleString()} ST và khắc [Kết Ấn]!`);
+
+        if (isEnhanced && actor.level >= 100) {
+          const healAmt = Math.round(damage * 0.20);
+          const botAllies = battle.botTeam.filter(b => b && b !== actor && b.hp > 0);
+          botAllies.slice(0, 2).forEach(b => healFighter(b, healAmt));
+          battle.botTeam.filter(b => b && b.hp > 0).forEach(b => { b.buffs.minatoTeamDmg = 2; });
+          logCombat(`⚡✨ [Phi Lôi Thần Cực Đại] Bot Minato hồi ${healAmt.toLocaleString()} HP cho đồng đội và tăng 30% ST cho toàn đội trong 2 lượt!`);
+        }
+        return;
+      } else if (actor.heroId === "momo_kaguya" || actor.id === "momo_kaguya") {
+        actor.en = Math.min(actor.enMax, +(actor.en + 2.0).toFixed(1));
+        const prevDef = target.def;
+        target.def = Math.round(target.def * 0.50);
+        const hit1 = calculateDamage(actor, target, actor.atk * 0.30);
+        applyDamage(target, hit1.damage, hit1.isCrit, actor);
+        target.def = prevDef;
+
+        actor.critRate += 0.20;
+        const hit2 = calculateDamage(actor, target, actor.atk * 0.50);
+        applyDamage(target, hit2.damage, hit2.isCrit, actor);
+        actor.critRate -= 0.20;
+
+        const raw3 = actor.atk * 0.10 + target.maxHp * 0.10;
+        const hit3 = calculateDamage(actor, target, raw3);
+        applyDamage(target, hit3.damage, hit3.isCrit, actor);
+
+        const healSelf = hit3.damage;
+        healFighter(actor, healSelf);
+        addAnimation(actor, `+${healSelf.toLocaleString()} HP`, "#3fb950");
+        const totalHitDmg = hit1.damage + hit2.damage + hit3.damage;
+        logCombat(`🤝💥 [Lục Đạo Tam Trùng Kích] Bot Bạn Chiến Momoshiki - Kaguya gây ${totalHitDmg.toLocaleString()} ST Công Phép và tự hồi phục ${healSelf.toLocaleString()} HP!`);
+        return;
+      } else if (actor.heroId === "kaguya_god_boss" || actor.id === "kaguya_god_boss") {
+        actor.en = Math.min(actor.enMax, +(actor.en + 2.0).toFixed(1));
+        let totalDmg = 0;
+        alivePlayers.forEach(p => {
+          const raw = actor.atk * 1.10;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          applyDamage(p, damage, isCrit, actor);
+          totalDmg += damage;
+        });
+        const healSelf = Math.round(totalDmg * 0.20);
+        healFighter(actor, healSelf);
+        addAnimation(actor, `+${healSelf.toLocaleString()} HP`, "#3fb950");
+        logCombat(`🌌👊 [Bát Thập Thần Không Kích] Thần Thụ Kaguya giáng quyền toàn thể, gây ${totalDmg.toLocaleString()} ST và tự hồi ${healSelf.toLocaleString()} HP!`);
+        return;
       } else {
         const raw = actor.atk * 1.0;
         const { damage, isCrit } = calculateDamage(actor, target, raw);
@@ -6580,13 +7142,15 @@ function getFighterCoord(fighter) {
   if (!fighter) return { x: 0, y: 0 };
   const onRight = (fighter.teamSide === 2) || fighter.isBot;
   if (!onRight) {
-    if (fighter.slot === 0) return { x: 340, y: 160 };
-    if (fighter.slot === 1) return { x: 340, y: 320 };
-    if (fighter.slot === 2) return { x: 180, y: 240 };
+    if (fighter.slot === 0) return { x: 340, y: 160 }; // Hàng trước trên
+    if (fighter.slot === 1) return { x: 340, y: 320 }; // Hàng trước dưới
+    if (fighter.slot === 2) return { x: 180, y: 160 }; // Hàng sau trên (Ô 3)
+    if (fighter.slot === 3) return { x: 180, y: 320 }; // Hàng sau dưới (Ô 4)
   } else {
-    if (fighter.slot === 0) return { x: 700, y: 160 };
-    if (fighter.slot === 1) return { x: 700, y: 320 };
-    if (fighter.slot === 2) return { x: 860, y: 240 };
+    if (fighter.slot === 0) return { x: 700, y: 160 }; // Hàng trước trên
+    if (fighter.slot === 1) return { x: 700, y: 320 }; // Hàng trước dưới
+    if (fighter.slot === 2) return { x: 860, y: 160 }; // Hàng sau trên
+    if (fighter.slot === 3) return { x: 860, y: 320 }; // Hàng sau dưới
   }
   return { x: 200, y: 200 };
 }
@@ -7890,6 +8454,44 @@ function submitGiftcode() {
   const code = input ? input.value.trim().toUpperCase() : "";
   if (!code) return;
 
+  if (code === "V600") {
+    gameState.heroes.minato = { level: 1 };
+    gameState.heroes.momo_kaguya = { level: 1 };
+    gameState.resources.gold += 10000000;
+    gameState.resources.vpnc += 1000000;
+    gameState.resources.kimCuong += 5000;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🎉 Kích hoạt mã V600: Nhận Tướng Mới Minato Namikaze, Bạn Chiến Momoshiki - Kaguya (SS), 10M Vàng, 1M VPNC & 5K Kim Cương!", false);
+    return;
+  }
+
+  if (code === "MINATO") {
+    gameState.heroes.minato = { level: 1 };
+    gameState.resources.gold += 500000;
+    gameState.resources.kimCuong += 2000;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("⚡ Kích hoạt mã MINATO: Nhận Tướng Minato Namikaze (AS) & 2,000 Kim Cương!", false);
+    return;
+  }
+
+  if (code === "BANCHIEN") {
+    gameState.heroes.momo_kaguya = { level: 1 };
+    gameState.resources.gold += 500000;
+    gameState.resources.kimCuong += 2000;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🤝 Kích hoạt mã BANCHIEN: Nhận Bạn Chiến Momoshiki - Kaguya (SS) & 2,000 Kim Cương!", false);
+    return;
+  }
+
   if (code === "SUSAN" || code === "SUSAN2026") {
     gameState.heroes.susan = { level: 1 };
     gameState.resources.gold += 500000;
@@ -8180,7 +8782,7 @@ function submitGiftcode() {
         keoBanh: 0
       },
       heroes: { traveler: { level: 1 } },
-      team: ["traveler", null, null],
+      team: ["traveler", null, null, null],
       progress: { maxChapter: 1, maxStage: 1 },
       usedCodes: [],
       events: {
@@ -8301,32 +8903,128 @@ function exitBattleToHub() {
 let selectedChapter = 1;
 let selectedStage = 1;
 
+let selectedDifficulty = 'easy'; // 'easy' (1-3), 'hard' (4-7), 'hell' (8-10)
+
 function openBattleStageModal() {
   battle.mode = 'campaign';
-  selectedChapter = gameState.progress.maxChapter;
-  selectedStage = (selectedChapter === gameState.progress.maxChapter) ? gameState.progress.maxStage : 1;
+  selectedChapter = Math.min(10, gameState.progress.maxChapter || 1);
+  selectedStage = (selectedChapter === gameState.progress.maxChapter) ? Math.min(10, gameState.progress.maxStage || 1) : 1;
+  
+  if (selectedChapter <= 3) selectedDifficulty = 'easy';
+  else if (selectedChapter <= 7) selectedDifficulty = 'hard';
+  else selectedDifficulty = 'hell';
+
+  renderDifficultyTabs();
   renderChapterTabs();
   renderStageGrid();
   openModal("modalStageSelect");
 }
 
+function renderDifficultyTabs() {
+  const container = document.getElementById("difficultyTabsContainer");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const diffs = [
+    { key: "easy", name: "DỄ", range: "Chương 1 - 3", chapters: [1, 2, 3], icon: "🟢", color: "#3fb950", minCh: 1 },
+    { key: "hard", name: "KHÓ", range: "Chương 4 - 7", chapters: [4, 5, 6, 7], icon: "🟡", color: "#f1e05a", minCh: 4 },
+    { key: "hell", name: "ĐỊA NGỤC", range: "Chương 8 - 10", chapters: [8, 9, 10], icon: "🔥", color: "#ff0055", minCh: 8 }
+  ];
+
+  diffs.forEach(d => {
+    const isUnlocked = (gameState.progress.maxChapter >= d.minCh);
+    const isSelected = (selectedDifficulty === d.key);
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.style.padding = "10px 8px";
+    btn.style.borderRadius = "10px";
+    btn.style.display = "flex";
+    btn.style.flexDirection = "column";
+    btn.style.alignItems = "center";
+    btn.style.gap = "4px";
+    btn.style.cursor = isUnlocked ? "pointer" : "not-allowed";
+    btn.style.opacity = isUnlocked ? "1" : "0.5";
+    
+    if (isSelected) {
+      btn.style.border = `2px solid ${d.color}`;
+      btn.style.background = `radial-gradient(circle at center, ${d.color}22 0%, #161b22 100%)`;
+      btn.style.boxShadow = `0 0 12px ${d.color}44`;
+    } else {
+      btn.style.border = "1px solid var(--border-color)";
+      btn.style.background = "#161b22";
+    }
+
+    btn.innerHTML = `
+      <div style="font-size:16px;">${d.icon}</div>
+      <div style="font-weight:800; font-size:14px; color:${d.color};">${d.name} ${!isUnlocked ? '🔒' : ''}</div>
+      <div style="font-size:10px; color:var(--text-secondary);">${d.range}</div>
+    `;
+
+    btn.onclick = () => {
+      if (!isUnlocked) {
+        toast(`Độ khó ${d.name} đang bị khóa! Cần vượt qua Chương ${d.minCh - 1} Ải 10.`, true);
+        return;
+      }
+      selectedDifficulty = d.key;
+      const unlockedChs = d.chapters.filter(c => c <= gameState.progress.maxChapter);
+      selectedChapter = unlockedChs.includes(selectedChapter) ? selectedChapter : (unlockedChs[unlockedChs.length - 1] || d.chapters[0]);
+      selectedStage = (selectedChapter === gameState.progress.maxChapter) ? Math.min(10, gameState.progress.maxStage) : 1;
+      renderDifficultyTabs();
+      renderChapterTabs();
+      renderStageGrid();
+    };
+
+    container.appendChild(btn);
+  });
+}
+
 function renderChapterTabs() {
   const container = document.getElementById("chapterTabsContainer");
+  if (!container) return;
   container.innerHTML = "";
-  for (let c = 1; c <= 9; c++) {
+
+  const diffChapters = {
+    easy: [1, 2, 3],
+    hard: [4, 5, 6, 7],
+    hell: [8, 9, 10]
+  };
+
+  const chapters = diffChapters[selectedDifficulty] || [1, 2, 3];
+
+  chapters.forEach(c => {
+    const isUnlocked = (c <= gameState.progress.maxChapter);
+    const isSelected = (c === selectedChapter);
     const btn = document.createElement("button");
-    const isHell = (c >= 8);
-    const isHard = (c >= 4 && c <= 7);
-    const diffTag = c <= 3 ? " [Dễ]" : (isHard ? " [Khó]" : " 🔥[Địa Ngục]");
-    btn.className = `btn ${c === selectedChapter ? (isHell ? "btn-primary" : "btn-accent") : ""}`;
-    if (isHell) {
-      btn.style.borderColor = (c === selectedChapter) ? "#ff0055" : "#da3633";
-      btn.style.color = (c === selectedChapter) ? "#fff" : "#ff7b72";
+    btn.className = `btn ${isSelected ? "btn-accent" : ""}`;
+    btn.style.minWidth = "120px";
+    btn.style.padding = "8px 14px";
+    btn.style.fontWeight = "700";
+    btn.style.fontSize = "13px";
+    btn.style.borderRadius = "8px";
+
+    if (isSelected) {
+      if (selectedDifficulty === 'hell') {
+        btn.style.borderColor = "#ff0055";
+        btn.style.background = "linear-gradient(135deg, #da3633, #ff0055)";
+        btn.style.color = "#fff";
+      } else if (selectedDifficulty === 'hard') {
+        btn.style.borderColor = "#f1e05a";
+        btn.style.background = "linear-gradient(135deg, #d29922, #f1e05a)";
+        btn.style.color = "#000";
+      } else {
+        btn.style.borderColor = "#2ea043";
+        btn.style.background = "linear-gradient(135deg, #238636, #3fb950)";
+        btn.style.color = "#fff";
+      }
+    } else {
+      btn.style.background = "#21262d";
+      btn.style.color = isUnlocked ? "var(--text-primary)" : "var(--text-secondary)";
     }
-    btn.textContent = `Chương ${c}${diffTag}${c > gameState.progress.maxChapter ? " 🔒" : ""}`;
+
+    btn.textContent = `Chương ${c}${!isUnlocked ? " 🔒" : ""}`;
     btn.onclick = () => {
-      if (c > gameState.progress.maxChapter) {
-        toast(`Chương ${c} đang bị khóa! Bạn cần vượt qua Chương ${gameState.progress.maxChapter} Ải ${gameState.progress.maxStage} để mở khóa.`, true);
+      if (!isUnlocked) {
+        toast(`Chương ${c} đang bị khóa! Cần vượt qua Chương ${c - 1} Ải 10.`, true);
         return;
       }
       selectedChapter = c;
@@ -8335,19 +9033,24 @@ function renderChapterTabs() {
       renderStageGrid();
     };
     container.appendChild(btn);
-  }
+  });
 }
 
 function renderStageGrid() {
   const container = document.getElementById("stageGridContainer");
+  const titleEl = document.getElementById("stageGridTitle");
+  if (titleEl) titleEl.textContent = `3. CHỌN ẢI ĐẤU: CHƯƠNG ${selectedChapter}`;
+  if (!container) return;
   container.innerHTML = "";
+
   for (let s = 1; s <= 10; s++) {
     const isUnlocked = (selectedChapter < gameState.progress.maxChapter) ||
                        (selectedChapter === gameState.progress.maxChapter && s <= gameState.progress.maxStage);
-
+    const isBoss = (s === 10);
     const box = document.createElement("div");
     box.className = `select-box ${isUnlocked ? "" : "locked"} ${s === selectedStage ? "selected" : ""}`;
-    box.innerHTML = `<div>Ải ${s} ${isUnlocked ? "" : "🔒"}</div>`;
+    box.style.border = isBoss ? "1px solid #ff0055" : "";
+    box.innerHTML = `<div>Ải ${s} ${isBoss ? "👑" : ""} ${isUnlocked ? "" : "🔒"}</div>`;
     if (isUnlocked) {
       box.onclick = () => { selectedStage = s; renderStageGrid(); };
     } else {
@@ -8358,7 +9061,8 @@ function renderStageGrid() {
 
   const currentStageUnlocked = (selectedChapter < gameState.progress.maxChapter) ||
                                (selectedChapter === gameState.progress.maxChapter && selectedStage <= gameState.progress.maxStage);
-  document.getElementById("btnProceedToTeam").disabled = !currentStageUnlocked;
+  const proceedBtn = document.getElementById("btnProceedToTeam");
+  if (proceedBtn) proceedBtn.disabled = !currentStageUnlocked;
 }
 
 function openTeamSetupModal() {
@@ -8372,25 +9076,41 @@ let activeSlotToAssign = 0;
 
 function renderTeamSlots() {
   const beast = (gameState.equippedBeast && BEASTS_DB[gameState.equippedBeast]) ? BEASTS_DB[gameState.equippedBeast] : null;
-  for (let i = 0; i < 3; i++) {
+  while (!gameState.team || gameState.team.length < 4) {
+    gameState.team = gameState.team || [];
+    gameState.team.push(null);
+  }
+
+  for (let i = 0; i < 4; i++) {
     const heroId = gameState.team[i];
     const slotCard = document.getElementById(`teamSlot${i}`);
     const nameEl = document.getElementById(`slotName${i}`);
     const roleEl = document.getElementById(`slotRole${i}`);
+    if (!slotCard) continue;
 
     if (heroId && gameState.heroes[heroId]) {
       const stats = getHeroStats(heroId);
+      const isPartner = HERO_DB[heroId] && HERO_DB[heroId].isPartner;
       slotCard.className = "slot-card filled";
-      nameEl.textContent = stats.name;
+      if (isPartner) {
+        slotCard.style.borderColor = "#bc8cff";
+        slotCard.style.background = "#1a1325";
+      } else {
+        slotCard.style.borderColor = "";
+        slotCard.style.background = "";
+      }
+      nameEl.textContent = stats.name + (isPartner ? " [Bạn Chiến]" : "");
       if (beast) {
         const totalHp = stats.hp + Math.round(stats.hp * beast.stats.hpPct);
         const totalAtk = +(stats.atk + stats.atk * beast.stats.atkPct).toFixed(0);
-        roleEl.innerHTML = `Lv.${stats.level} | [${stats.type}]<br><span style="color:#ffdf5d; font-size:10px; font-weight:700;">HP: ${totalHp.toLocaleString()} | ATK: ${totalAtk.toLocaleString()}</span>`;
+        roleEl.innerHTML = `Lv.${stats.level} | [${stats.type}]<br><span style="color:#ffdf5d; font-size:10px; font-weight:700;">HP: ${totalHp.toLocaleString()} | ${isPartner ? 'Công Phép' : 'ATK'}: ${totalAtk.toLocaleString()}</span>`;
       } else {
-        roleEl.textContent = `Lv.${stats.level} | [${stats.type}]`;
+        roleEl.innerHTML = `Lv.${stats.level} | [${stats.type}]` + (isPartner ? `<br><span style="color:#bc8cff; font-size:10px;">Bỏ qua 50% DEF</span>` : "");
       }
     } else {
       slotCard.className = "slot-card";
+      slotCard.style.borderColor = "";
+      slotCard.style.background = "";
       nameEl.textContent = "(Trống)";
       roleEl.textContent = "Click để gán";
     }
@@ -8404,17 +9124,30 @@ function selectSlotForAssignment(slotIdx) {
 
 function renderOwnedHeroesForTeam() {
   const container = document.getElementById("ownedHeroesForTeam");
+  if (!container) return;
   container.innerHTML = "";
   Object.keys(gameState.heroes).forEach(heroId => {
     const stats = getHeroStats(heroId);
+    const isPartner = HERO_DB[heroId] && HERO_DB[heroId].isPartner;
     const card = document.createElement("div");
     card.className = "hero-card";
+    if (isPartner) {
+      card.style.border = "1px solid #bc8cff";
+      card.style.background = "linear-gradient(135deg, #1f142b 0%, #161b22 100%)";
+    }
     card.innerHTML = `
-      <div style="font-weight:700;">${stats.name}</div>
-      <div style="font-size:11px; color:var(--accent-blue);">Lv.${stats.level} [${stats.type}]</div>
-      <div style="font-size:10px; color:var(--text-secondary);">HP: ${stats.hp} | ATK: ${stats.atk} | SPD: ${stats.spd}</div>
+      <div style="font-weight:700; color:${isPartner ? '#bc8cff' : 'var(--text-primary)'};">${stats.name} ${isPartner ? '🤝[Bạn Chiến]' : ''}</div>
+      <div style="font-size:11px; color:${isPartner ? 'var(--accent-pink)' : 'var(--accent-blue)'};">Lv.${stats.level} [${stats.type}] ${isPartner ? '• Công Phép' : ''}</div>
+      <div style="font-size:10px; color:var(--text-secondary);">HP: ${stats.hp.toLocaleString()} | ${isPartner ? 'Công Phép' : 'ATK'}: ${stats.atk.toLocaleString()} | SPD: ${stats.spd}</div>
     `;
     card.onclick = () => {
+      if (isPartner) {
+        const currentPartnerSlot = gameState.team.findIndex((id, sIdx) => sIdx !== activeSlotToAssign && id && HERO_DB[id] && HERO_DB[id].isPartner);
+        if (currentPartnerSlot !== -1) {
+          toast("Mỗi đội chỉ được phép có tối đa 1 Bạn Chiến!", true);
+          return;
+        }
+      }
       const existingSlot = gameState.team.indexOf(heroId);
       if (existingSlot !== -1) gameState.team[existingSlot] = null;
       gameState.team[activeSlotToAssign] = heroId;
@@ -8424,6 +9157,91 @@ function renderOwnedHeroesForTeam() {
     };
     container.appendChild(card);
   });
+}
+
+function openPartnersModal() {
+  renderPartnersList();
+  openModal("modalPartners");
+}
+
+function renderPartnersList() {
+  const container = document.getElementById("partnersListContainer");
+  if (!container) return;
+  container.innerHTML = "";
+
+  const partnerIds = Object.keys(HERO_DB).filter(id => HERO_DB[id].isPartner);
+  partnerIds.forEach(pId => {
+    const isOwned = !!gameState.heroes[pId];
+    const lv = isOwned ? gameState.heroes[pId].level : 1;
+    const stats = getHeroStats(pId, lv);
+    const db = HERO_DB[pId];
+
+    const card = document.createElement("div");
+    card.style.background = "#0d1117";
+    card.style.border = "1px solid #bc8cff";
+    card.style.borderRadius = "12px";
+    card.style.padding = "14px";
+    card.style.display = "flex";
+    card.style.flexDirection = "column";
+    card.style.gap = "10px";
+    card.style.boxShadow = "0 4px 16px rgba(188, 140, 255, 0.15)";
+
+    card.innerHTML = `
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #30363d; padding-bottom:8px;">
+        <div>
+          <div style="font-size:16px; font-weight:800; color:#bc8cff;">🤝 ${stats.name} <span style="font-size:11px; background:#bf3989; color:#fff; padding:2px 6px; border-radius:10px;">HẠNG SS</span></div>
+          <div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${db.roleDesc}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12px; font-weight:700; color:${isOwned ? 'var(--accent-green)' : '#da3633'};">
+            ${isOwned ? `✓ ĐÃ SỞ HỮU (Lv.${lv}/600)` : `🔒 CHƯA SỞ HỮU (Cấp 60 Sổ Sứ Mệnh)`}
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:8px; background:#161b22; border-radius:8px; padding:8px; text-align:center;">
+        <div><span style="font-size:10px; color:var(--text-secondary);">MÁU (HP)</span><br><b style="color:var(--accent-green); font-size:12px;">${stats.hp.toLocaleString()}</b></div>
+        <div><span style="font-size:10px; color:var(--text-secondary);">CÔNG PHÉP</span><br><b style="color:#00f2fe; font-size:12px;">${stats.atk.toLocaleString()}</b></div>
+        <div><span style="font-size:10px; color:var(--text-secondary);">GIÁP (DEF)</span><br><b style="color:var(--accent-blue); font-size:12px;">${stats.def}</b></div>
+        <div><span style="font-size:10px; color:var(--text-secondary);">TỐC ĐỘ</span><br><b style="color:var(--accent-gold); font-size:12px;">${stats.spd}</b></div>
+        <div><span style="font-size:10px; color:var(--text-secondary);">NĂNG LƯỢNG</span><br><b style="color:#bc8cff; font-size:12px;">${stats.enMax} EN</b></div>
+      </div>
+
+      <div style="font-size:11px; display:flex; flex-direction:column; gap:4px; background:#161b22; border-radius:8px; padding:10px;">
+        <div><b style="color:var(--accent-cyan);">⚔️ Đánh Thường [${db.normalAttack.name}]:</b> ${db.normalAttack.desc}</div>
+        <div><b style="color:var(--accent-purple);">🌸 Tuyệt Kỹ [${db.activeSkill.name}]:</b> ${db.activeSkill.desc}</div>
+        <div><b style="color:var(--accent-gold);">🌌 Thần Chú Nguyên Sinh:</b> Tiêu tốn toàn bộ EN: Gây Choáng (Stun) mục tiêu có HP cao nhất phe địch trong 5 lượt!</div>
+        <div style="color:var(--text-secondary); margin-top:4px;"><b>Nội Tại:</b> 
+          (Lv.30) Vào trận gây 80% ATK toàn thể & -20% DEF 3 lượt, +4 EN; 
+          (Lv.70) Đánh lên Khiên nhận thêm 100% ST (x2 phá khiên); 
+          (Lv.80) Khi HP=0 bất tử 2 lượt & +50% hút máu phép; 
+          (Lv.100) Cánh Cổng Lục Đạo giảm 20% ST nhận vào.
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:4px;">
+        ${isOwned ? `
+          <button class="btn btn-gold" onclick="upgradeHero('${pId}'); renderPartnersList();">⬆️ Nâng Cấp Level</button>
+          <button class="btn btn-primary" onclick="assignPartnerToSlot('${pId}')">⚔️ Gán Vào Đội Hình (Ô 4)</button>
+        ` : `
+          <button class="btn btn-pink" onclick="closeModal('modalPartners'); openPassModal();">📜 Nhận Qua Sổ Sứ Mệnh</button>
+        `}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function assignPartnerToSlot(partnerId) {
+  while (!gameState.team || gameState.team.length < 4) {
+    gameState.team = gameState.team || [];
+    gameState.team.push(null);
+  }
+  const existingSlot = gameState.team.indexOf(partnerId);
+  if (existingSlot !== -1) gameState.team[existingSlot] = null;
+  gameState.team[3] = partnerId;
+  saveGame();
+  toast(`Đã gán ${HERO_DB[partnerId].name} vào Hàng Sau - Ô 4 của Đội Hình!`);
 }
 
 /* ==========================================================================
@@ -9545,11 +10363,11 @@ function renderPassRoadmapUI() {
     row.style.justifyContent = "space-between";
     row.style.alignItems = "center";
 
-    const freeText = (lv === 60) ? "300 💎 + 5 🔷" : (lv % 10 === 0 ? "100 💎 + Bụi Thần Bí" : `${lv * 5000} 🪙 + EXP`);
+    const freeText = (lv === 60) ? "⚡ Minato Namikaze + 1K 💎" : (lv % 10 === 0 ? "100 💎 + Bụi Thần Bí" : `${lv * 5000} 🪙 + EXP`);
     let premText = `x3: ${lv * 15000} 🪙 + ${lv * 20} 💎`;
     if (lv === 30) premText = "❄️ 500 💎 Kim cương + Quà Mùa II";
     else if (lv === 50) premText = "🎁 Rương Tự Chọn Tướng Cấp 50 (Gaara/Phoverus/Itachi)";
-    else if (lv === 60) premText = "👑 Rương Sổ Sứ Mệnh Mùa II + 1,000 💎 + 10 ☄️";
+    else if (lv === 60) premText = "🤝 Bạn Chiến Momoshiki - Kaguya (SS) + 2K 💎 + 20 ☄️";
 
     row.innerHTML = `
       <div style="flex:1;">
@@ -9586,9 +10404,10 @@ function claimPassTier(lv, isPremiumTier) {
     } else if (lv === 50) {
       openHeroSelectorModal("pass");
     } else if (lv === 60) {
-      gameState.resources.kimCuong += 1000;
-      gameState.resources.pinkMeteor += 10;
-      toast("👑 Nhận Rương Sổ Sứ Mệnh Mùa II: +1,000 💎 & +10 ☄️ Thiên Thạch Hoàng Kim!");
+      if (!gameState.heroes.momo_kaguya) gameState.heroes.momo_kaguya = { level: 1 };
+      gameState.resources.kimCuong += 2000;
+      gameState.resources.pinkMeteor += 20;
+      toast("👑 Nhận thưởng Cấp 60 Cao Cấp Mùa III: Bạn Chiến Momoshiki - Kaguya (SS) + 2,000 💎 + 20 ☄️ Thiên Thạch Hồng!");
     } else {
       gameState.resources.gold += lv * 15000;
       gameState.resources.kimCuong += lv * 20;
@@ -9598,8 +10417,10 @@ function claimPassTier(lv, isPremiumTier) {
   } else {
     if (gameState.seasonPass.claimedFree.includes(lv)) return;
     if (lv === 60) {
-      gameState.resources.kimCuong += 300;
-      gameState.resources.blueMeteor += 5;
+      if (!gameState.heroes.minato) gameState.heroes.minato = { level: 1 };
+      gameState.resources.kimCuong += 1000;
+      gameState.resources.blueMeteor += 10;
+      toast("👑 Nhận thưởng Cấp 60 Thường Mùa III: Tướng Minato Namikaze [AS] + 1,000 💎 + 10 ☄️ Thiên Thạch Xanh!");
     } else if (lv % 10 === 0) {
       gameState.resources.kimCuong += 100;
       gameState.resources.vpnc += 500;
@@ -10022,7 +10843,7 @@ function showVersusResult(winningTeam) {
   if (footerEl) {
     footerEl.innerHTML = `
       <button class="btn btn-primary" onclick="startVersusBattle()">🔄 Đấu Lại Trận Này</button>
-      <button class="btn btn-accent" onclick="openVersusModal()">👥 Thay đội hình đi má</button>
+      <button class="btn btn-accent" onclick="openVersusModal()">👥 Đổi Đội Hình</button>
       <button class="btn" onclick="exitBattleToHub()">Về Màn Hình Chính</button>
     `;
   }
