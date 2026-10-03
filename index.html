@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v6.3.0 [GIAO DIỆN ĐẤU TRƯỜNG MỚI & MOMOSHIKI 18 EN]</title>
+<title>Chiến Thuật Luân Hồi v6.3.1 [SỬA LỖI ĐỒ HỌA ĐẤU TRƯỜNG & MOMOSHIKI 18 EN]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -808,7 +809,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.3.0 (GIAO DIỆN ĐẤU TRƯỜNG & MOMOSHIKI 18 EN)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.3.1 (SỬA LỖI ĐỒ HỌA & MOMOSHIKI 18 EN)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -7702,17 +7703,15 @@ function drawCharacter(f) {
   }
 
   // 3. Khối tròn Nhân vật (Token)
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(x, y, R, 0, Math.PI * 2);
-
   const typeCol = f.type === "DEF" ? "#388bfd" : (f.type === "ATK" ? "#f85149" : (f.type === "SKL" ? "#39c5bb" : (f.type === "AS" ? "#ff0055" : "#bc8cff")));
   const borderCol = isDead ? "#30363d" : (f.isBot ? (isBoss ? "#ffd700" : "#da3633") : (isPartner ? "#bc8cff" : typeCol));
 
+  ctx.save();
+  ctx.beginPath();
+  ctx.arc(x, y, R, 0, Math.PI * 2);
   if (isDead) {
     ctx.fillStyle = "#161b22";
   } else {
-    // Gradient nền cho nhân vật
     try {
       const grad = ctx.createRadialGradient(x - 10, y - 10, 10, x, y, R);
       if (f.isBot) {
@@ -7730,31 +7729,37 @@ function drawCharacter(f) {
       ctx.fillStyle = f.isBot ? "#2a1518" : "#142838";
     }
   }
-
   ctx.fill();
   ctx.lineWidth = isCurrentActor ? 3 : 2;
   ctx.strokeStyle = borderCol;
   ctx.stroke();
+  ctx.restore();
 
   // 4. Hero Emoji Icon lớn
+  ctx.save();
   ctx.font = isDead ? "22px sans-serif" : "26px sans-serif";
   ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillStyle = "#ffffff";
   ctx.fillText(getHeroIcon(f), x, y - 8);
+  ctx.restore();
 
-  // 5. Huy hiệu Hệ [Type] bên trong nhân vật
+  // 5. Huy hiệu Hệ [Type] & Cấp độ bên trong nhân vật
   if (!isDead) {
     ctx.save();
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(x - 22, y + 8, 44, 15, 4);
+    else ctx.rect(x - 22, y + 8, 44, 15);
     ctx.fillStyle = "rgba(0, 0, 0, 0.75)";
-    if (ctx.roundRect) ctx.roundRect(x - 22, y + 9, 44, 15, 4);
-    else ctx.fillRect(x - 22, y + 9, 44, 15);
     ctx.fill();
     ctx.strokeStyle = typeCol;
     ctx.lineWidth = 1;
     ctx.stroke();
 
     ctx.font = "bold 9.5px sans-serif";
+    ctx.textAlign = "center";
     ctx.fillStyle = typeCol;
-    ctx.fillText(`[${isPartner ? "SS" : f.type}]`, x, y + 20);
+    ctx.fillText(`[${isPartner ? "SS" : f.type}]`, x, y + 19);
 
     // Cấp độ bên trong Token
     ctx.font = "bold 9.5px sans-serif";
@@ -7770,9 +7775,10 @@ function drawCharacter(f) {
 
   if (currentEnemyTeam && currentEnemyTeam[battle.selectedTargetIndex] === f && !isDead) {
     ctx.save();
-    ctx.fillStyle = "#f1e05a";
+    ctx.beginPath();
     if (ctx.roundRect) ctx.roundRect(x - 38, y - 72, 76, 17, 5);
-    else ctx.fillRect(x - 38, y - 72, 76, 17);
+    else ctx.rect(x - 38, y - 72, 76, 17);
+    ctx.fillStyle = "#f1e05a";
     ctx.fill();
     ctx.strokeStyle = "#d29922";
     ctx.lineWidth = 1;
@@ -7780,14 +7786,15 @@ function drawCharacter(f) {
 
     ctx.font = "bold 10px sans-serif";
     ctx.fillStyle = "#000";
+    ctx.textAlign = "center";
     ctx.fillText("🎯 MỤC TIÊU", x, y - 60);
 
     // Mũi tên chỉ xuống
-    ctx.fillStyle = "#f1e05a";
     ctx.beginPath();
     ctx.moveTo(x - 5, y - 55);
     ctx.lineTo(x + 5, y - 55);
     ctx.lineTo(x, y - 50);
+    ctx.fillStyle = "#f1e05a";
     ctx.fill();
     ctx.restore();
   }
@@ -7795,9 +7802,10 @@ function drawCharacter(f) {
   // 7. Nhãn Tên Nhân Vật (Hiển thị đầy đủ, không bị cắt 13 chữ)
   let cleanName = (f.name || "").replace(/ \(C\.\d+-\d+\)/, "");
   ctx.save();
-  ctx.fillStyle = "rgba(13, 17, 23, 0.9)";
+  ctx.beginPath();
   if (ctx.roundRect) ctx.roundRect(x - 52, y + 50, 104, 18, 5);
-  else ctx.fillRect(x - 52, y + 50, 104, 18);
+  else ctx.rect(x - 52, y + 50, 104, 18);
+  ctx.fillStyle = "rgba(13, 17, 23, 0.9)";
   ctx.fill();
   ctx.strokeStyle = "#30363d";
   ctx.lineWidth = 1;
@@ -7816,17 +7824,25 @@ function drawCharacter(f) {
   const barX = x - barWidth / 2;
   const barY = y + 72;
 
-  ctx.fillStyle = "#161b22";
+  ctx.save();
+  ctx.beginPath();
   if (ctx.roundRect) ctx.roundRect(barX, barY, barWidth, barHeight, 3);
-  else ctx.fillRect(barX, barY, barWidth, barHeight);
+  else ctx.rect(barX, barY, barWidth, barHeight);
+  ctx.fillStyle = "#161b22";
   ctx.fill();
+  ctx.strokeStyle = "#30363d";
+  ctx.lineWidth = 1;
+  ctx.stroke();
 
   if (!isDead) {
-    const hpPct = Math.max(0, f.hp / f.maxHp);
-    ctx.fillStyle = hpPct > 0.5 ? "#3fb950" : (hpPct > 0.25 ? "#f1e05a" : "#f85149");
-    if (ctx.roundRect) ctx.roundRect(barX, barY, barWidth * hpPct, barHeight, 3);
-    else ctx.fillRect(barX, barY, barWidth * hpPct, barHeight);
-    ctx.fill();
+    const hpPct = Math.max(0, Math.min(1, f.hp / f.maxHp));
+    if (hpPct > 0) {
+      ctx.beginPath();
+      if (ctx.roundRect) ctx.roundRect(barX, barY, barWidth * hpPct, barHeight, 3);
+      else ctx.rect(barX, barY, barWidth * hpPct, barHeight);
+      ctx.fillStyle = hpPct > 0.5 ? "#3fb950" : (hpPct > 0.25 ? "#f1e05a" : "#f85149");
+      ctx.fill();
+    }
 
     // Hiệu ứng Trầm Trọng của Susanoo
     if (f.buffs && f.buffs.tramTrong > 0) {
@@ -7835,27 +7851,41 @@ function drawCharacter(f) {
       const safeHpPct = Math.max(0, hpPct - pendingLossPct);
       const brownStartX = barX + barWidth * safeHpPct;
       const brownWidth = barWidth * pendingLossPct;
-      ctx.fillStyle = "#8b4513";
-      ctx.fillRect(brownStartX, barY, brownWidth, barHeight);
+      if (brownWidth > 0) {
+        ctx.beginPath();
+        ctx.rect(brownStartX, barY, brownWidth, barHeight);
+        ctx.fillStyle = "#8b4513";
+        ctx.fill();
+      }
     }
 
     // Thanh Giáp (Shield)
     if (f.shield > 0) {
       const shieldPct = Math.min(1.0, f.shield / f.maxHp);
+      ctx.beginPath();
+      ctx.rect(barX, barY - 3, barWidth * shieldPct, 3);
       ctx.fillStyle = "rgba(56, 139, 253, 0.9)";
-      ctx.fillRect(barX, barY - 3, barWidth * shieldPct, 3);
+      ctx.fill();
     }
 
     // Thanh Năng Lượng (EN Bar)
     const enBarY = barY + 11;
+    ctx.beginPath();
+    ctx.rect(barX, enBarY, barWidth, 4);
     ctx.fillStyle = "#090d13";
-    ctx.fillRect(barX, enBarY, barWidth, 4);
+    ctx.fill();
+
     const enPct = Math.min(1.0, f.en / f.enMax);
-    ctx.fillStyle = "#bc8cff";
-    ctx.fillRect(barX, enBarY, barWidth * enPct, 4);
+    if (enPct > 0) {
+      ctx.beginPath();
+      ctx.rect(barX, enBarY, barWidth * enPct, 4);
+      ctx.fillStyle = "#bc8cff";
+      ctx.fill();
+    }
 
     // Chữ số HP
     ctx.font = "bold 9.5px sans-serif";
+    ctx.textAlign = "center";
     ctx.fillStyle = "#c9d1d9";
     const hpStr = f.maxHp >= 10000000 ? `${(f.hp / 1e6).toFixed(1)}M / ${(f.maxHp / 1e6).toFixed(1)}M` : `${f.hp.toLocaleString()}/${f.maxHp.toLocaleString()}`;
     ctx.fillText(hpStr, x, enBarY + 14);
@@ -7884,9 +7914,10 @@ function drawCharacter(f) {
 
 function drawBadge(bx, by, text, bg) {
   ctx.save();
-  ctx.fillStyle = bg;
+  ctx.beginPath();
   if (ctx.roundRect) ctx.roundRect(bx - 15, by - 8, 30, 15, 4);
-  else ctx.fillRect(bx - 15, by - 8, 30, 15);
+  else ctx.rect(bx - 15, by - 8, 30, 15);
+  ctx.fillStyle = bg;
   ctx.fill();
   ctx.fillStyle = "#fff";
   ctx.font = "bold 9px sans-serif";
