@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v6.4.0 [BẠN CHIẾN NARUTO LỤC ĐẠO - SASUKE VĨNH CỬU]</title>
+<title>Chiến Thuật Luân Hồi v6.4.1 [CHUẨN HÓA THÁP VÔ HẠN, BOSS THẾ GIỚI & HỢP NHẤT NARUTO-SASUKE]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -808,7 +808,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.4.0 (BẠN CHIẾN NARUTO - SASUKE & ĐÍNH CHÍNH MOMOSHIKI)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.4.1 (CHUẨN HÓA THÁP VÔ HẠN, BOSS THẾ GIỚI & HIỆU ỨNG HỢP NHẤT)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1820,6 +1820,7 @@ const HERO_ICONS = {
   momo_kaguya: "👑",
   naru_sasu: "☯️",
   susanoo_boss: "💀",
+  world_boss: "👹",
   kaguya_god_boss: "🌌"
 };
 
@@ -3076,6 +3077,207 @@ function getBotScalingFactor(chapter, stage) {
   return factor;
 }
 
+
+// ==================== HỆ THỐNG THÁP VÔ HẠN & BOSS THẾ GIỚI CHUẨN HÓA (v6.4.1) ====================
+function generateEndlessTowerTeam(floor) {
+  const isBossFloor = (floor % 5 === 0);
+  const progress = Math.min(1.0, (floor - 1) / 99);
+
+  // Cấp độ đối thủ: Tầng 1 là Lv.200 (xứng tầm yêu cầu mở khóa), Tầng 100 là Lv.600
+  const botLv = Math.round(200 + progress * 400);
+
+  // Chỉ số cân bằng cho người chơi Lv.200+:
+  // Tầng 1: ~200K HP, 3.8K ATK, 65 DEF, 145 SPD
+  // Tầng 50: ~12M HP, 75K ATK, 125 DEF, 165 SPD
+  // Tầng 100: ~45M HP, 220K ATK, 190 DEF, 185 SPD
+  const baseHp = Math.round(200000 + Math.pow(progress, 1.25) * 45000000);
+  const baseAtk = Math.round(3800 + Math.pow(progress, 1.15) * 220000);
+  const baseDef = Math.round(65 + progress * 125);
+  const baseSpd = Math.round(145 + progress * 40);
+
+  const heroPool = [
+    "traveler", "madara", "omega", "vegito", "whis", "luanhoi", "pain", "isshiki",
+    "itachi", "momoshiki", "kaioshin", "conan", "kid", "phoverus", "gaara",
+    "hashirama", "kaguya", "tsunade", "susan", "shisui", "kurama", "minato"
+  ];
+
+  const bossPool = [
+    "pain", "itachi", "madara", "hashirama", "omega", "vegito", "whis",
+    "conan", "kid", "isshiki", "momoshiki", "shisui", "susan", "minato",
+    "kurama", "kagura", "susanoo_boss", "momo_kaguya", "naru_sasu", "kaguya_god_boss"
+  ];
+
+  if (isBossFloor) {
+    const bossIdx = Math.min(bossPool.length - 1, Math.floor((floor / 5) - 1));
+    const bossHeroId = bossPool[bossIdx];
+    const bossDb = HERO_DB[bossHeroId] || { name: "Thủ Hộ Giả", type: "ATK", enMax: 5 };
+
+    const bossHp = Math.round(baseHp * 2.2);
+    const bossAtk = Math.round(baseAtk * 1.25);
+    const bossDef = baseDef + 20;
+
+    const subHero1 = heroPool[(floor * 3) % heroPool.length];
+    const subHero2 = heroPool[(floor * 7) % heroPool.length];
+    const subHp = Math.round(baseHp * 0.9);
+    const subAtk = Math.round(baseAtk * 0.85);
+
+    return [
+      {
+        id: subHero1, heroId: subHero1,
+        name: `Hộ Vệ ${HERO_DB[subHero1]?.name || 'Chiến Binh'} (T.${floor})`,
+        type: HERO_DB[subHero1]?.type || "DEF",
+        level: botLv,
+        hp: subHp, maxHp: subHp, atk: subAtk, def: baseDef, spd: baseSpd - 5,
+        enMax: HERO_DB[subHero1]?.enMax || 5, en: 0,
+        critRate: 0.18, critDmg: 2.50, armorPen: 0.10, isBot: true, shield: 0, buffs: {}, slot: 0, isAlive: true,
+        db: HERO_DB[subHero1] || {}
+      },
+      {
+        id: bossHeroId, heroId: bossHeroId,
+        name: `👑 [BOSS] ${bossDb.name} (T.${floor})`,
+        type: bossDb.type || "ATK",
+        level: botLv,
+        hp: bossHp, maxHp: bossHp, atk: bossAtk, def: bossDef, spd: baseSpd + 10,
+        enMax: bossDb.enMax || 5, en: 0,
+        critRate: 0.28, critDmg: 3.00, armorPen: 0.25, isBot: true, shield: Math.round(bossHp * 0.15), buffs: {}, slot: 1, isAlive: true,
+        db: bossDb
+      },
+      {
+        id: subHero2, heroId: subHero2,
+        name: `Hộ Vệ ${HERO_DB[subHero2]?.name || 'Thuật Sĩ'} (T.${floor})`,
+        type: HERO_DB[subHero2]?.type || "SKL",
+        level: botLv,
+        hp: subHp, maxHp: subHp, atk: subAtk, def: baseDef, spd: baseSpd,
+        enMax: HERO_DB[subHero2]?.enMax || 5, en: 0,
+        critRate: 0.18, critDmg: 2.50, armorPen: 0.10, isBot: true, shield: 0, buffs: {}, slot: 2, isAlive: true,
+        db: HERO_DB[subHero2] || {}
+      }
+    ];
+  } else {
+    const h1 = heroPool[(floor * 2) % heroPool.length];
+    const h2 = heroPool[(floor * 2 + 1) % heroPool.length];
+    const h3 = heroPool[(floor * 2 + 2) % heroPool.length];
+
+    return [
+      {
+        id: h1, heroId: h1,
+        name: `${HERO_DB[h1]?.name || 'Tiên Phong'} (T.${floor})`,
+        type: HERO_DB[h1]?.type || "DEF",
+        level: botLv,
+        hp: Math.round(baseHp * 1.15), maxHp: Math.round(baseHp * 1.15),
+        atk: Math.round(baseAtk * 0.85), def: baseDef + 15, spd: baseSpd - 5,
+        enMax: HERO_DB[h1]?.enMax || 5, en: 0,
+        critRate: 0.15, critDmg: 2.20, armorPen: 0, isBot: true, shield: 0, buffs: {}, slot: 0, isAlive: true,
+        db: HERO_DB[h1] || {}
+      },
+      {
+        id: h2, heroId: h2,
+        name: `${HERO_DB[h2]?.name || 'Chủ Lực'} (T.${floor})`,
+        type: HERO_DB[h2]?.type || "ATK",
+        level: botLv,
+        hp: baseHp, maxHp: baseHp,
+        atk: baseAtk, def: baseDef, spd: baseSpd,
+        enMax: HERO_DB[h2]?.enMax || 5, en: 0,
+        critRate: 0.20, critDmg: 2.50, armorPen: 0.10, isBot: true, shield: 0, buffs: {}, slot: 1, isAlive: true,
+        db: HERO_DB[h2] || {}
+      },
+      {
+        id: h3, heroId: h3,
+        name: `${HERO_DB[h3]?.name || 'Hỗ Trợ'} (T.${floor})`,
+        type: HERO_DB[h3]?.type || "SKL",
+        level: botLv,
+        hp: Math.round(baseHp * 0.90), maxHp: Math.round(baseHp * 0.90),
+        atk: Math.round(baseAtk * 1.15), def: baseDef - 10, spd: baseSpd + 8,
+        enMax: HERO_DB[h3]?.enMax || 5, en: 0,
+        critRate: 0.22, critDmg: 2.60, armorPen: 0.15, isBot: true, shield: 0, buffs: {}, slot: 2, isAlive: true,
+        db: HERO_DB[h3] || {}
+      }
+    ];
+  }
+}
+
+function generateWorldBossTeam() {
+  const bossHp = 500000000; // 500M HP - Lượng Máu Vô Tận
+  const boss = {
+    id: "world_boss",
+    heroId: "world_boss",
+    name: "Thần Ma Thập Vĩ",
+    type: "ATK",
+    level: 500,
+    hp: bossHp,
+    maxHp: bossHp,
+    atk: 45000,
+    def: 135,
+    spd: 150,
+    enMax: 5,
+    en: 0,
+    critRate: 0.25,
+    critDmg: 2.50,
+    armorPen: 0.25,
+    dodgeRate: 0.10,
+    slot: 1,
+    isBot: true,
+    buffs: {},
+    isAlive: true,
+    extraEnGain: 0,
+    db: {
+      name: "Thần Ma Thập Vĩ",
+      type: "ATK",
+      enMax: 5,
+      normalAttack: { name: "Vĩ Thú Liệt Ba", desc: "Quét đuôi gây sát thương diện rộng toàn thể" },
+      activeSkill: { name: "Bom Vĩ Thú Tối Thượng", desc: "Bắn tụ cầu Vĩ Thú hủy diệt toàn đội ngũ" }
+    }
+  };
+  return [null, boss, null];
+}
+
+function finishWorldBossBattle() {
+  const dmgDealt = battle.bossTotalDmg || 0;
+  gameState.worldBoss = gameState.worldBoss || { attemptsLeft: 3, lastDate: "", highestDmg: 0, claimedMilestones: [] };
+  const prevHighest = gameState.worldBoss.highestDmg || 0;
+  let isNewRecord = false;
+  if (dmgDealt > prevHighest) {
+    gameState.worldBoss.highestDmg = dmgDealt;
+    isNewRecord = true;
+  }
+
+  const pGold = Math.min(1000000, Math.round(dmgDealt * 0.05) + 100000);
+  const pExp = Math.min(5000, Math.round(dmgDealt * 0.001) + 200);
+  const pKc = Math.min(300, Math.round(dmgDealt * 0.0001) + 50);
+
+  gameState.resources.gold += pGold;
+  gameState.resources.kimCuong += pKc;
+  addPlayerExp(pExp);
+
+  recordQuestProgress("anyBattles", 1);
+  recordQuestProgress("towerOrBossAttempt", 1);
+
+  saveGame();
+  updateTopBarUI();
+
+  const claimableCount = BOSS_MILESTONES.filter(m => gameState.worldBoss.highestDmg >= m.dmg && !gameState.worldBoss.claimedMilestones.includes(m.dmg)).length;
+
+  document.getElementById("battleResultTitle").innerHTML = "<span style='color:#f85149'>KẾT THÚC KHIÊU CHIẾN BOSS THẾ GIỚI!</span>";
+  document.getElementById("battleResultBody").innerHTML = `
+    <p style="color:var(--text-secondary); margin-bottom:12px;">Đã hoàn thành lượt chiến với <b>Thần Ma Thập Vĩ</b>!</p>
+    <div style="background:#0d1117; padding:14px; border-radius:8px; display:inline-block; text-align:left; font-size:13px; line-height:1.8;">
+      <div>💥 Sát Thương Lượt Này: <b style="color:var(--accent-red); font-size:16px;">${dmgDealt.toLocaleString()} ST</b></div>
+      <div>🏆 Kỷ Lục Cao Nhất Hôm Nay: <b style="color:var(--accent-gold); font-size:16px;">${gameState.worldBoss.highestDmg.toLocaleString()} ST</b> ${isNewRecord ? '<span style="color:#3fb950; font-size:11px; font-weight:bold;">[KỶ LỤC MỚI!]</span>' : ''}</div>
+      <div style="border-top:1px solid #30363d; margin:6px 0; padding-top:6px; color:var(--text-secondary);">🎁 Quà tham gia chiến đấu:</div>
+      <div>🪙 Vàng: <b style="color:var(--accent-gold);">+${pGold.toLocaleString()}</b> | 💎 Kim Cương: <b style="color:var(--accent-blue);">+${pKc.toLocaleString()}</b> | 📈 EXP: <b>+${pExp.toLocaleString()}</b></div>
+      ${claimableCount > 0 ? `<div style="margin-top:8px; color:var(--accent-green); font-weight:bold;">✨ Bạn có ${claimableCount} mốc quà sát thương sẵn sàng nhận trong Trụ Cột!</div>` : ''}
+    </div>
+  `;
+  const footer = document.querySelector("#modalBattleResult .modal-footer");
+  if (footer) {
+    footer.innerHTML = `
+      <button class="btn btn-primary" onclick="closeModal('modalBattleResult'); switchScreen('screenHub'); openModal('modalPillars'); switchPillarTab('boss');">Nhận Quà Mốc Boss ➔</button>
+      <button class="btn" onclick="closeModal('modalBattleResult'); exitBattleToHub();">Về Màn Hình Chính</button>
+    `;
+  }
+  openModal("modalBattleResult");
+}
+
 function generateBotTeam(chapter, stage) {
   const factor = getBotScalingFactor(chapter, stage);
 
@@ -4188,7 +4390,24 @@ function startBattle() {
   }
 
   switchScreen("screenBattle");
-  logCombat(`=== BẮT ĐẦU CHƯƠNG ${selectedChapter} - ẢI ${selectedStage} ===`);
+  const isEndless = (battle.mode === 'endlessTower');
+  const isBoss = (battle.mode === 'worldBoss');
+
+  if (isEndless) {
+    battle.chapter = 0;
+    battle.stage = (gameState.endlessTower && gameState.endlessTower.currentFloor) ? gameState.endlessTower.currentFloor : 1;
+    logCombat(`=== 🏰 BẮT ĐẦU THÁP VÔ HẠN - TẦNG ${battle.stage}/100 ===`);
+  } else if (isBoss) {
+    battle.chapter = 0;
+    battle.stage = 1;
+    battle.bossTotalDmg = 0;
+    logCombat(`=== 👹 BẮT ĐẦU BOSS THẾ GIỚI - THẦN MA THẬP VĨ (10 HIỆP SINH TỒN) ===`);
+  } else {
+    battle.mode = 'campaign';
+    battle.chapter = selectedChapter;
+    battle.stage = selectedStage;
+    logCombat(`=== BẮT ĐẦU CHƯƠNG ${selectedChapter} - ẢI ${selectedStage} ===`);
+  }
 
   const pTeam = [];
   for (let slot = 0; slot < 4; slot++) {
@@ -4259,19 +4478,22 @@ function startBattle() {
     }
   }
 
-  const bTeam = generateBotTeam(selectedChapter, selectedStage);
+  let bTeam;
+  if (isEndless) {
+    bTeam = generateEndlessTowerTeam(battle.stage);
+  } else if (isBoss) {
+    bTeam = generateWorldBossTeam();
+  } else {
+    bTeam = generateBotTeam(selectedChapter, selectedStage);
+  }
 
-  // v6.1.0: Momoshiki - Kaguya Bị Động 1 (Lv.30): Vào trận gây ST 80% ATK lên toàn bộ mục tiêu, giảm 20% DEF trong 3 lượt
   battle.active = true;
-  battle.mode = 'campaign';
-  battle.chapter = selectedChapter;
-  battle.stage = selectedStage;
   battle.playerTeam = pTeam;
   battle.botTeam = bTeam;
   battle.roundCount = 1;
   battle.combatLogs = [];
   battle.animations = [];
-  battle.selectedTargetIndex = 0;
+  battle.selectedTargetIndex = (isBoss ? 1 : 0);
 
   // v6.1.1: Kích hoạt Otsutsuki Lâm Triều cho Bạn Chiến khi trận đấu đã khởi tạo đầy đủ
   pTeam.forEach(fighter => {
@@ -4443,6 +4665,15 @@ function checkBattleEnd() {
     return false;
   }
 
+  if (battle.mode === 'worldBoss') {
+    if (!playerAlive || !botAlive) {
+      battle.active = false;
+      finishWorldBossBattle();
+      return true;
+    }
+    return false;
+  }
+
   if (!botAlive) {
     battle.active = false;
     handleVictory();
@@ -4457,7 +4688,59 @@ function checkBattleEnd() {
 }
 
 function handleVictory() {
-  // CỔNG ẢI VÀNG (Demo v3.1.0: Hệ số mới có hãm phanh & khóa trần 20M)
+  // THÁP VÔ HẠN (v6.4.1 Chuẩn Hóa Tầng & Thưởng)
+  if (battle.mode === 'endlessTower') {
+    const floor = battle.stage || 1;
+    const isBoss = (floor % 5 === 0);
+    const rGold = floor * 15000;
+    const rKc = isBoss ? 200 : 50;
+    const rExp = floor * 150;
+    const rBlue = isBoss ? 1 : 0;
+
+    gameState.resources.gold += rGold;
+    gameState.resources.kimCuong += rKc;
+    addPlayerExp(rExp);
+    if (rBlue > 0) gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + rBlue;
+
+    recordQuestProgress("anyBattles", 1);
+    recordQuestProgress("towerOrBossAttempt", 1);
+
+    // Cập nhật kỷ lục & Tự động mở tầng tiếp theo
+    if (floor >= (gameState.endlessTower.currentFloor || 1)) {
+      gameState.endlessTower.currentFloor = Math.min(100, floor + 1);
+      if (floor > (gameState.endlessTower.maxCleared || 0)) {
+        gameState.endlessTower.maxCleared = floor;
+      }
+    }
+    saveGame();
+    updateTopBarUI();
+
+    const nextFloor = gameState.endlessTower.currentFloor;
+    const hasNext = (nextFloor > floor && floor < 100);
+
+    document.getElementById("battleResultTitle").innerHTML = `<span style='color:var(--accent-gold)'>VƯỢT THÁP TẦNG ${floor} THÀNH CÔNG!</span>`;
+    document.getElementById("battleResultBody").innerHTML = `
+      <p style="color:var(--text-secondary); margin-bottom:12px;">Đã chinh phục thành công Tầng ${floor} / 100 Tháp Vô Hạn!</p>
+      <div style="background:#0d1117; padding:14px; border-radius:8px; display:inline-block; text-align:left; font-size:13px; line-height:1.8;">
+        <div>🪙 Vàng Nhận Được: <b style="color:var(--accent-gold);">+${rGold.toLocaleString()} Vàng</b></div>
+        <div>💎 Kim Cương: <b style="color:var(--accent-blue);">+${rKc.toLocaleString()} Kim Cương</b></div>
+        <div>📈 EXP Tài Khoản: <b style="color:#e6edf3;">+${rExp.toLocaleString()} EXP</b></div>
+        ${rBlue > 0 ? `<div style="color:#58a6ff; font-weight:700;">🔷 Rơi Quà Boss: +${rBlue} Thiên Thạch Xanh!</div>` : ''}
+        <div style="margin-top:8px; color:var(--accent-green); font-weight:bold;">🏆 Tiến trình mới: Đã mở Tầng ${nextFloor} / 100!</div>
+      </div>
+    `;
+    const footer = document.querySelector("#modalBattleResult .modal-footer");
+    if (footer) {
+      footer.innerHTML = `
+        ${hasNext ? `<button class="btn btn-primary" onclick="closeModal('modalBattleResult'); startEndlessTowerBattle();">⚔️ Leo Tiếp Tầng ${nextFloor} ➔</button>` : ''}
+        <button class="btn" onclick="closeModal('modalBattleResult'); exitBattleToHub();">Về Màn Hình Chính</button>
+      `;
+    }
+    openModal("modalBattleResult");
+    return;
+  }
+
+    // CỔNG ẢI VÀNG (Demo v3.1.0: Hệ số mới có hãm phanh & khóa trần 20M)
   if (battle.chapter === 0 && battle.mode === 'goldGate') {
     const s = battle.stage;
     const rObj = getTrainingGateRewards('goldGate', s);
@@ -4626,6 +4909,25 @@ function handleVictory() {
 }
 
 function handleDefeat() {
+  if (battle.mode === 'endlessTower') {
+    const floor = battle.stage || 1;
+    document.getElementById("battleResultTitle").innerHTML = "<span style='color:var(--accent-red)'>KHIÊU CHIẾN THẤT BẠI!</span>";
+    document.getElementById("battleResultBody").innerHTML = `
+      <p style="color:var(--text-secondary); margin-bottom:12px;">Đội hình đã tử trận tại <b>Tầng ${floor} / 100</b> Tháp Vô Hạn.</p>
+      <div style="background:#0d1117; padding:12px; border-radius:8px; display:inline-block; font-size:13px; line-height:1.6;">
+        <div>💡 <i>Gợi ý: Cường hóa cấp độ nhân vật, nâng cấp Bạn Chiến hoặc thức tỉnh Thần Chú để vượt tầng!</i></div>
+      </div>
+    `;
+    const footer = document.querySelector("#modalBattleResult .modal-footer");
+    if (footer) {
+      footer.innerHTML = `
+        <button class="btn btn-primary" onclick="closeModal('modalBattleResult'); startEndlessTowerBattle();">🔄 Thử Lại Tầng ${floor}</button>
+        <button class="btn" onclick="closeModal('modalBattleResult'); exitBattleToHub();">Về Màn Hình Chính</button>
+      `;
+    }
+    openModal("modalBattleResult");
+    return;
+  }
   document.getElementById("battleResultTitle").innerHTML = "<span style='color:var(--accent-red)'>THẤT BẠI!</span>";
   let defeatMsg = "Toàn đội đã bị hạ gục. Thất bại không nhận thưởng. Hãy nâng cấp nhân vật để thử lại!";
   if (battle.chapter === 0 && battle.mode === 'goldGate') {
@@ -4651,6 +4953,13 @@ function nextTurn() {
 
   if (battle.currentActorIndex >= battle.turnQueue.length) {
     battle.roundCount++;
+    // Boss Thế Giới: Giới hạn 10 hiệp sinh tồn
+    if (battle.mode === 'worldBoss' && battle.roundCount > 10) {
+      logCombat(`⏱️ [HẾT 10 HIỆP SINH TỒN] Trận chiến Boss Thế Giới kết thúc! Bạn đã xuất sắc sinh tồn đủ 10 hiệp!`);
+      battle.active = false;
+      finishWorldBossBattle();
+      return;
+    }
     // v5.5.0: Hiệu ứng Cấm Địa Chương 9: Thiêu Đốt Hỗn Mang (-3% Max HP toàn đội ta mỗi hiệp)
     if (battle.chapter === 9) {
       logCombat(`🔥🌋 [Thiêu Đốt Hỗn Mang] Biển lửa Hỗn Mang dâng trào, thiêu đốt 3% Max HP toàn đội!`);
@@ -5545,6 +5854,9 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
       shieldAbsorbed = effectiveShieldDamage;
       addAnimation(target, `-${effectiveShieldDamage} (${isKuramaSusanooShield ? 'Khiên Hoàng Kim' : 'Khiên'} ${isMomoKaguyaAttacker ? 'x2 Phá Khiên' : ''})`, isKuramaSusanooShield ? "#f1e05a" : "#58a6ff");
 
+      if (battle.mode === 'worldBoss' && target && (target.id === 'world_boss' || target.heroId === 'world_boss')) {
+        battle.bossTotalDmg = (battle.bossTotalDmg || 0) + shieldAbsorbed;
+      }
       // Phản đòn Kurama - Susanoo Shield (10x lượng khiên bị mất)
       if (isKuramaSusanooShield && shieldAbsorbed > 0 && attacker && attacker.hp > 0 && !target.isReflectingShield) {
         const reflectDmg = Math.round(shieldAbsorbed * 10);
@@ -5619,6 +5931,11 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   }
 
   target.hp = Math.max(0, target.hp - finalDmg);
+
+  // v6.4.1: Tích lũy sát thương Boss Thế Giới
+  if (battle.mode === 'worldBoss' && target && (target.id === 'world_boss' || target.heroId === 'world_boss')) {
+    battle.bossTotalDmg = (battle.bossTotalDmg || 0) + finalDmg;
+  }
 
   // Naruto - Sasuke: Kích hoạt Thiên Chú Nguyên Sinh khẩn cấp khi HP dưới 2% (0 EN, 1 lần/trận)
   if ((target.id === "naru_sasu" || target.heroId === "naru_sasu") && !target.unifiedUsed) {
@@ -7272,7 +7589,7 @@ function executeBotAction(bot) {
       return;
     }
 
-    if ((battle.chapter >= 4 || battle.mode === 'goldGate' || battle.mode === 'resGate' || battle.mode === 'endlessTower') && bot.heroId) {
+    if ((battle.chapter >= 4 || battle.mode === 'goldGate' || battle.mode === 'resGate' || battle.mode === 'endlessTower' || battle.mode === 'worldBoss') && bot.heroId) {
       executeHeroBotAction(bot, alivePlayers);
       return;
     }
@@ -7316,6 +7633,36 @@ function executeHeroBotAction(actor, alivePlayers) {
       checkBattleEnd();
       return;
     }
+        if (actor.id === "world_boss" || actor.heroId === "world_boss") {
+      actor.en = actor.en || 0;
+      if (actor.en >= actor.enMax) {
+        actor.en = 0;
+        alivePlayers.forEach(p => {
+          const raw = 120000;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          applyDamage(p, damage, isCrit, actor);
+          if (Math.random() < 0.40 && !isStunImmune(p)) {
+            p.buffs = p.buffs || {};
+            p.buffs.choang = 1;
+            p.buffs.stun = 1;
+            addAnimation(p, "CHOÁNG 1 LƯỢT!", "#f1e05a");
+          }
+        });
+        addAnimation(actor, "BOM VĨ THÚ TỐI THƯỢNG!", "#f85149");
+        logCombat(`💥🌌 [Bom Vĩ Thú Tối Thượng] Thần Ma Thập Vĩ bắn tụ cầu Vĩ Thú hủy diệt toàn bộ đội hình!`);
+      } else {
+        actor.en = Math.min(actor.enMax, +(actor.en + 1.5).toFixed(1));
+        alivePlayers.forEach(p => {
+          const raw = 35000;
+          const { damage, isCrit } = calculateDamage(actor, p, raw);
+          applyDamage(p, damage, isCrit, actor);
+        });
+        addAnimation(actor, "VĨ THÚ LIỆT BA!", "#ff7b72");
+        logCombat(`🌪️ [Vĩ Thú Liệt Ba] Thần Ma Thập Vĩ quẫy 10 đuôi bão tố càn quét toàn đội hình (+1.5 EN)!`);
+      }
+      return;
+    }
+
     let target = getBotDefaultTarget(alivePlayers);
     if (!target) {
       checkBattleEnd();
@@ -8067,6 +8414,42 @@ function renderCanvas() {
   // Render Turn Timeline Bar ở trên đầu
   renderTimelineBar();
 
+  // HUD Banner cho Tháp Vô Hạn và Boss Thế Giới (v6.4.1)
+  if (battle.mode === 'endlessTower') {
+    ctx.save();
+    ctx.fillStyle = "rgba(13, 17, 23, 0.9)";
+    if (ctx.roundRect) ctx.roundRect(canvas.width / 2 - 140, 12, 280, 26, 6);
+    else ctx.fillRect(canvas.width / 2 - 140, 12, 280, 26);
+    ctx.fill();
+    ctx.strokeStyle = "#58a6ff";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    ctx.font = "bold 12px sans-serif";
+    ctx.fillStyle = "#58a6ff";
+    ctx.textAlign = "center";
+    ctx.fillText(`🏰 THÁP VÔ HẠN - TẦNG ${battle.stage || 1} / 100`, canvas.width / 2, 29);
+    ctx.restore();
+  } else if (battle.mode === 'worldBoss') {
+    ctx.save();
+    ctx.fillStyle = "rgba(20, 10, 14, 0.92)";
+    if (ctx.roundRect) ctx.roundRect(canvas.width / 2 - 210, 12, 420, 26, 6);
+    else ctx.fillRect(canvas.width / 2 - 210, 12, 420, 26);
+    ctx.fill();
+    ctx.strokeStyle = "#f85149";
+    ctx.lineWidth = 1.2;
+    ctx.stroke();
+
+    ctx.font = "bold 11px sans-serif";
+    ctx.fillStyle = "#f85149";
+    ctx.textAlign = "center";
+    const curDmg = (battle.bossTotalDmg || 0).toLocaleString();
+    const curRound = Math.min(10, battle.roundCount || 1);
+    ctx.fillText(`👹 THẦN MA THẬP VĨ | 💥 ST: ${curDmg} | ⏱️ Hiệp: ${curRound}/10`, canvas.width / 2, 29);
+    ctx.restore();
+  }
+
+
   // Render Linh Thú Hộ Mệnh Banner
   if (gameState.equippedBeast && BEASTS_DB[gameState.equippedBeast]) {
     const beast = BEASTS_DB[gameState.equippedBeast];
@@ -8161,8 +8544,53 @@ function drawCharacter(f) {
   const isDead = f.hp <= 0;
   const isCurrentActor = (battle.turnQueue[battle.currentActorIndex] === f);
   const isPartner = f.isPartner || (HERO_DB[f.id]?.isPartner);
-  const isBoss = (f.id === "susanoo_boss" || f.id === "kaguya_god_boss" || (f.name && f.name.includes("Boss")));
+  const isBoss = (f.id === "susanoo_boss" || f.id === "kaguya_god_boss" || f.id === "world_boss" || (f.name && f.name.includes("Boss")));
   const R = 46; // Phóng to bán kính nhân vật lên 46px (Đường kính 92px)
+
+  // v6.4.1: Hoạt ảnh Cháy Bừng Bừng khi Naruto - Sasuke Hợp Nhất Kurama - Susanoo (Nửa Vàng Lục Đạo - Nửa Tím Vĩnh Cửu)
+  const isNaruSasuUnified = !isDead && (f.id === "naru_sasu" || f.heroId === "naru_sasu") && (f.form === "unified");
+  if (isNaruSasuUnified) {
+    ctx.save();
+    const t = Date.now() / 160;
+    // Hào quang tỏa sáng bập bùng
+    ctx.shadowColor = Math.sin(t) > 0 ? "#f1e05a" : "#bc8cff";
+    ctx.shadowBlur = 28 + Math.sin(t * 2) * 8;
+
+    // 16 ngọn lửa Chakra bốc cháy xoay quanh token
+    const flameCount = 16;
+    for (let i = 0; i < flameCount; i++) {
+      const angle = (i / flameCount) * Math.PI * 2 + Math.sin(t + i) * 0.18;
+      const flameDist = R + 5 + Math.sin(t * 3 + i * 2) * 6;
+      const fx = x + Math.cos(angle) * flameDist;
+      const fy = y + Math.sin(angle) * flameDist;
+      const flameR = 5 + Math.sin(t * 4 + i) * 2.8;
+
+      const isGoldSide = (Math.cos(angle + 0.4) >= 0);
+      ctx.beginPath();
+      ctx.arc(fx, fy, Math.max(2, flameR), 0, Math.PI * 2);
+      ctx.fillStyle = isGoldSide ? "rgba(241, 224, 90, 0.85)" : "rgba(188, 140, 255, 0.85)";
+      ctx.fill();
+    }
+
+    // Tia lửa bốc lên trên (Embers)
+    for (let e = 0; e < 6; e++) {
+      const ex = x + Math.sin(t * 1.5 + e * 2) * 32;
+      const ey = y - R - ((t * 25 + e * 18) % 36);
+      const isGoldEmber = (e % 2 === 0);
+      ctx.beginPath();
+      ctx.arc(ex, ey, 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = isGoldEmber ? "#ffe066" : "#e0aaff";
+      ctx.fill();
+    }
+
+    // Sóng năng lượng rực cháy bên ngoài
+    ctx.strokeStyle = Math.sin(t) > 0 ? "#f1e05a" : "#d2a8ff";
+    ctx.lineWidth = 3.5;
+    ctx.beginPath();
+    ctx.arc(x, y, R + 6 + Math.sin(t * 2) * 3, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
 
   // 1. Aura lượt đánh của nhân vật hiện tại
   if (isCurrentActor && !isDead) {
@@ -8202,25 +8630,35 @@ function drawCharacter(f) {
     ctx.fillStyle = "#161b22";
   } else {
     try {
-      const grad = ctx.createRadialGradient(x - 10, y - 10, 10, x, y, R);
-      if (f.isBot) {
-        grad.addColorStop(0, isBoss ? "#4a2a12" : "#38171a");
-        grad.addColorStop(1, "#180a0c");
-      } else if (isPartner) {
-        grad.addColorStop(0, "#3d1b54");
-        grad.addColorStop(1, "#160a20");
+      if (isNaruSasuUnified) {
+        // v6.4.1: Nửa Vàng Lục Đạo (Kurama) - Nửa Tím Vĩnh Cửu (Susanoo)
+        const gradHalf = ctx.createLinearGradient(x - R, y - R, x + R, y + R);
+        gradHalf.addColorStop(0, "#ffe066");     // Vàng Kim Kurama sáng
+        gradHalf.addColorStop(0.46, "#e65100");  // Cam Lửa Lục Đạo
+        gradHalf.addColorStop(0.54, "#4a148c");  // Tím Susanoo đậm
+        gradHalf.addColorStop(1, "#bc8cff");     // Tím Amaterasu sáng
+        ctx.fillStyle = gradHalf;
       } else {
-        grad.addColorStop(0, "#1c2a3e");
-        grad.addColorStop(1, "#0d141f");
+        const grad = ctx.createRadialGradient(x - 10, y - 10, 10, x, y, R);
+        if (f.isBot) {
+          grad.addColorStop(0, isBoss ? "#4a2a12" : "#38171a");
+          grad.addColorStop(1, "#180a0c");
+        } else if (isPartner) {
+          grad.addColorStop(0, "#3d1b54");
+          grad.addColorStop(1, "#160a20");
+        } else {
+          grad.addColorStop(0, "#1c2a3e");
+          grad.addColorStop(1, "#0d141f");
+        }
+        ctx.fillStyle = grad;
       }
-      ctx.fillStyle = grad;
     } catch(e) {
       ctx.fillStyle = f.isBot ? "#2a1518" : "#142838";
     }
   }
   ctx.fill();
-  ctx.lineWidth = isCurrentActor ? 3 : 2;
-  ctx.strokeStyle = borderCol;
+  ctx.lineWidth = isCurrentActor ? 3 : (isNaruSasuUnified ? 3.5 : 2);
+  ctx.strokeStyle = isNaruSasuUnified ? (Math.sin(Date.now() / 160) > 0 ? "#f1e05a" : "#bc8cff") : borderCol;
   ctx.stroke();
   ctx.restore();
 
@@ -8229,8 +8667,14 @@ function drawCharacter(f) {
   ctx.font = isDead ? "22px sans-serif" : "26px sans-serif";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillStyle = "#ffffff";
-  ctx.fillText(getHeroIcon(f), x, y - 8);
+  if (isNaruSasuUnified) {
+    ctx.shadowColor = "#f1e05a";
+    ctx.shadowBlur = 14;
+    ctx.fillText("👑", x, y - 8);
+  } else {
+    ctx.fillStyle = "#ffffff";
+    ctx.fillText(getHeroIcon(f), x, y - 8);
+  }
   ctx.restore();
 
   // 5. Huy hiệu Hệ [Type] & Cấp độ bên trong nhân vật
@@ -8290,20 +8734,23 @@ function drawCharacter(f) {
 
   // 7. Nhãn Tên Nhân Vật (Hiển thị đầy đủ, không bị cắt 13 chữ)
   let cleanName = (f.name || "").replace(/ \(C\.\d+-\d+\)/, "");
+  if (isNaruSasuUnified) {
+    cleanName = "Kurama - Susanoo";
+  }
   ctx.save();
   ctx.beginPath();
   if (ctx.roundRect) ctx.roundRect(x - 52, y + 50, 104, 18, 5);
   else ctx.rect(x - 52, y + 50, 104, 18);
-  ctx.fillStyle = "rgba(13, 17, 23, 0.9)";
+  ctx.fillStyle = isNaruSasuUnified ? "rgba(24, 12, 34, 0.95)" : "rgba(13, 17, 23, 0.9)";
   ctx.fill();
-  ctx.strokeStyle = "#30363d";
+  ctx.strokeStyle = isNaruSasuUnified ? "#f1e05a" : "#30363d";
   ctx.lineWidth = 1;
   ctx.stroke();
 
   ctx.textAlign = "center";
   const nameLen = cleanName.length;
   ctx.font = nameLen > 15 ? "bold 9.5px sans-serif" : (nameLen > 12 ? "bold 10.5px sans-serif" : "bold 11px sans-serif");
-  ctx.fillStyle = isDead ? "#6e7681" : (isPartner ? "#d2a8ff" : (isBoss ? "#ffd700" : "#ffffff"));
+  ctx.fillStyle = isDead ? "#6e7681" : (isNaruSasuUnified ? "#ffd700" : (isPartner ? "#d2a8ff" : (isBoss ? "#ffd700" : "#ffffff")));
   ctx.fillText(cleanName, x, y + 63);
   ctx.restore();
 
