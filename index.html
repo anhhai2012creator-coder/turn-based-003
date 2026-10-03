@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v6.2.1 [MOMOSHIKI - KAGUYA 18 EN & THIÊN CHÚ NGUYÊN SINH]</title>
+<title>Chiến Thuật Luân Hồi v6.3.0 [GIAO DIỆN ĐẤU TRƯỜNG MỚI & MOMOSHIKI 18 EN]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -808,7 +808,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.2.1 (MOMOSHIKI - KAGUYA 18 EN & THIÊN CHÚ NGUYÊN SINH)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.3.0 (GIAO DIỆN ĐẤU TRƯỜNG & MOMOSHIKI 18 EN)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -2477,7 +2477,7 @@ const HERO_DB = {
     },
     activeSkill2: { 
       name: "Thiên Chú Nguyên Sinh", 
-      desc: "Tiêu tốn 18 EN: Gây Choáng (Stun) mục tiêu có HP cao nhất phe địch trong 5 lượt!" 
+      desc: "Phải đủ 18 EN mới được sử dụng! Tiêu tốn 18 EN: Gây Choáng (Stun) mục tiêu có HP cao nhất phe địch trong 5 lượt!" 
     },
     passives: [
       { lv: 30, name: "Otsutsuki Lâm Triều", desc: "Vào trận, gây ST bằng 80% ATK lên toàn bộ mục tiêu, giảm 20% DEF mục tiêu đó trong 3 lượt. Đầu trận nhận 4 EN." },
@@ -4914,16 +4914,16 @@ function updatePlayerSkillCards(actor) {
       const canCastSkill2 = (actor.en >= 18);
       if (canCastSkill2) {
         skill2Btn.classList.remove("disabled");
-        document.getElementById("cardSkill2Status").textContent = "SẴN SÀNG PHONG ẤN";
+        document.getElementById("cardSkill2Status").textContent = "SẴN SÀNG PHONG ẤN (ĐỦ 18 EN)";
         document.getElementById("cardSkill2Status").style.color = "var(--accent-green)";
       } else {
         skill2Btn.classList.add("disabled");
-        document.getElementById("cardSkill2Status").textContent = `Cần 18 EN để kích hoạt`;
+        document.getElementById("cardSkill2Status").textContent = `Chưa đủ 18 EN (${actor.en}/18 EN)`;
         document.getElementById("cardSkill2Status").style.color = "var(--accent-red)";
       }
       document.getElementById("cardSkill2Title").textContent = "Thiên Chú Nguyên Sinh";
-      document.getElementById("cardSkill2En").textContent = `Tốn 18 EN (${actor.en} EN hiện có)`;
-      document.getElementById("cardSkill2Desc").textContent = `Gây [Choáng / Stun] mục tiêu có HP cao nhất phe địch trong 5 lượt!`;
+      document.getElementById("cardSkill2En").textContent = `Tốn 18 EN (${actor.en}/18 EN)`;
+      document.getElementById("cardSkill2Desc").textContent = `Phải đủ 18 EN mới được sử dụng: Gây Choáng (Stun) mục tiêu có HP cao nhất phe địch trong 5 lượt!`;
     }
   } else {
     if (skill2Btn) skill2Btn.style.display = "none";
@@ -5411,8 +5411,7 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   }
 
   // v5.7.0: Itachi Amaterasu Bị Động 4 (Lv.100): Mỗi lần gây ST (từ cả chủ động, bị động, hiệu ứng,..), hồi phục bản thân bằng 20% ST gây ra (tối đa 15% HP tối đa)
-  if (attacker && (attacker.id === "itachi_amaterasu" || 
-attacker.heroId === "itachi_amaterasu") && attacker.level >= 100 && finalDmg > 0 && attacker.hp > 0) {
+  if (attacker && (attacker.id === "itachi_amaterasu" || attacker.heroId === "itachi_amaterasu") && attacker.level >= 100 && finalDmg > 0 && attacker.hp > 0) {
     const maxHealCap = Math.round(attacker.maxHp * 0.15);
     const healAmt = Math.min(maxHealCap, Math.round(finalDmg * 0.20));
     if (healAmt > 0) {
@@ -6745,7 +6744,10 @@ function executePlayerAction(type) {
   } else if (type === "skill2") {
     if (actor.id !== "momo_kaguya") return;
     const canCastSkill2 = (actor.en >= 18);
-    if (!canCastSkill2) return;
+    if (!canCastSkill2) {
+      toast(`Chưa đủ 18 EN để thi triển Thiên Chú Nguyên Sinh (Hiện có: ${actor.en}/18 EN)!`, true);
+      return;
+    }
     actor.en = Math.max(0, +(actor.en - 18).toFixed(1));
     const aliveEnemies = enemyTeam.filter(e => e && e.hp > 0);
     if (aliveEnemies.length > 0) {
@@ -9755,7 +9757,7 @@ function renderPartnersList() {
       <div style="font-size:11px; display:flex; flex-direction:column; gap:4px; background:#161b22; border-radius:8px; padding:10px;">
         <div><b style="color:var(--accent-cyan);">⚔️ Đánh Thường [${db.normalAttack.name}]:</b> ${db.normalAttack.desc}</div>
         <div><b style="color:var(--accent-purple);">🌸 Tuyệt Kỹ [${db.activeSkill.name}]:</b> ${db.activeSkill.desc}</div>
-        <div><b style="color:var(--accent-gold);">🌌 Thiên Chú Nguyên Sinh:</b> Tiêu tốn 18 EN: Gây Choáng (Stun) mục tiêu có HP cao nhất phe địch trong 5 lượt!</div>
+        <div><b style="color:var(--accent-gold);">🌌 Thiên Chú Nguyên Sinh:</b> Phải đủ 18 EN mới được sử dụng (Tiêu tốn 18 EN): Gây Choáng (Stun) mục tiêu có HP cao nhất phe địch trong 5 lượt!</div>
         <div style="color:var(--text-secondary); margin-top:4px;"><b>Nội Tại:</b> 
           (Lv.30) Vào trận gây 80% ATK toàn thể & -20% DEF 3 lượt, +4 EN; 
           (Lv.70) Đánh lên Khiên nhận thêm 100% ST (x2 phá khiên); 
@@ -10774,8 +10776,7 @@ function openPillarsModal(tab = "tower") {
 
 function switchPillarTab(tab) {
   currentPillarTab = tab;
-  const btnT = document.getElementById
-("tabBtnPillarTower");
+  const btnT = document.getElementById("tabBtnPillarTower");
   const btnB = document.getElementById("tabBtnPillarBoss");
   const btnR = document.getElementById("tabBtnPillarRookie");
   if (btnT) btnT.classList.toggle("active", tab === "tower");
