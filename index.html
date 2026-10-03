@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v6.3.1 [SỬA LỖI ĐỒ HỌA ĐẤU TRƯỜNG & MOMOSHIKI 18 EN]</title>
+<title>Chiến Thuật Luân Hồi v6.4.0 [BẠN CHIẾN NARUTO LỤC ĐẠO - SASUKE VĨNH CỬU]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -809,7 +808,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.3.1 (SỬA LỖI ĐỒ HỌA & MOMOSHIKI 18 EN)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v6.4.0 (BẠN CHIẾN NARUTO - SASUKE & ĐÍNH CHÍNH MOMOSHIKI)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1766,6 +1765,10 @@ const GIFTCODES = {
   "V600": { v600: true },
   "MINATO": { minato: true },
   "BANCHIEN": { banchien: true },
+  "V640": { naru_sasu: true },
+  "NARUSASU": { naru_sasu: true },
+  "BANCHIEN2": { naru_sasu: true },
+  "LUSAS": { naru_sasu: true },
   "RESET001": { reset: true },
   // v5.1.0: 15 Giftcode mới ẩn (nhận VPNC, Ánh Sao, Vàng, Kim Cương)
   "V5UPDATE": { kimCuong: 500, anhSao: 100, gold: 50000, vpnc: 500 },
@@ -1815,6 +1818,7 @@ const HERO_ICONS = {
   itachi_amaterasu: "🔥",
   minato: "⚡",
   momo_kaguya: "👑",
+  naru_sasu: "☯️",
   susanoo_boss: "💀",
   kaguya_god_boss: "🌌"
 };
@@ -2470,7 +2474,7 @@ const HERO_DB = {
     normalAttack: { 
       name: "Lục Đạo Tam Trùng Kích", 
       enGain: 2.0, 
-      desc: "Gây ST 3 lần (Bỏ qua 50% DEF): L1 (30% ATK, giảm 50% DEF cho lượt này); L2 (50% ATK, +20% Crit); L3 (10% ATK + 10% Max HP, hồi 100% ST lần 3 cho bản thân). Hồi 2 EN." 
+      desc: "Gây ST 3 lần (Bỏ qua 50% DEF): L1 (30% ATK, giảm 50% DEF cho lượt này); L2 (50% ATK, +20% Crit); L3 (10% ATK + 10% HP còn lại của mục tiêu, chỉ hồi lại 100% ST gây ra của lần 3). Hồi 2 EN." 
     },
     activeSkill: { 
       name: "Thần Thụ Giáng Thế", 
@@ -2489,6 +2493,43 @@ const HERO_DB = {
     spells: [
       { lv: 130, name: "Thần Chú Nguyên Sinh 1", desc: "+25% Công Phép, +20% HP." },
       { lv: 150, name: "Thần Chú Nguyên Sinh 2", desc: "+25% DEF, +10% Hút Máu Phép." }
+    ]
+  },
+  naru_sasu: {
+    id: "naru_sasu",
+    name: "Naruto (Lục Đạo) - Sasuke (Vĩnh Cửu)",
+    type: "ATK",
+    isPartner: true,
+    magicAtk: true,
+    roleDesc: "Bạn Chiến Song Hào [ATK], Công Phép Bỏ Qua 50% DEF, Song Thân Biến Ảo & Kurama Susanoo Hợp Nhất",
+    baseHp: 780,
+    baseAtk: 49.0, // Công Phép
+    baseDef: 48,
+    baseSpd: 170,
+    enMax: 25.0,
+    hasSpells: true,
+    normalAttack: { 
+      name: "Lục Đạo Âm Dương Kích", 
+      enGain: 1.9, 
+      desc: "Hồi 1.9 EN. Gây 88% ATK lên 1 mục tiêu. Có 30% gây Choáng (Stun)." 
+    },
+    activeSkill: { 
+      name: "Song Thân Biến Ảo", 
+      desc: "Tùy dạng hiện tại: Dạng Naruto (10 EN: 5 đòn liên hoàn x 50% ATK + 8% HP còn lại mục tiêu); Dạng Sasuke (11 EN: 300% ATK + 5% HP còn lại mục tiêu, +35% Crit, +40% ST Crit); Dạng Hợp Nhất (10 EN: 350% ATK + 8% HP còn lại, +45% Crit, +70% ST Crit, tạo Khiên Hoàng Kim 20% HP còn lại phản đòn x10)." 
+    },
+    activeSkill2: { 
+      name: "Thiên Chú Nguyên Sinh: Hợp Nhất", 
+      desc: "Cần 25 EN: Naruto và Sasuke hợp nhất trong 8 lượt (khóa chuyển dạng). Hợp nhất +20% Max HP, +30% ATK, +30% DEF, hồi 40% Max HP. Tự động kích hoạt khi HP dưới 2% (0 EN, 1 lần/trận, hồi 30% Max HP)." 
+    },
+    passives: [
+      { lv: 30, name: "Lục Đạo Kích", desc: "Vào trận và mỗi hiệp 5x (5, 10, 15...): Gây 55% ATK lên toàn bộ mục tiêu (có thể bạo kích). 30% mục tiêu bị Hắc Hóa (-10% Crit Rate, -50% ST thêm Crit, -10% SPD; tối đa giảm 50% Crit Rate, 100% ST thêm Crit, 50% SPD)." },
+      { lv: 70, name: "Âm Dương Chuyển Dạng", desc: "Mỗi lần tung 'Lục Đạo Kích', tự động đổi dạng kỹ năng chủ động (Naruto <-> Sasuke). Khóa chuyển dạng khi đang Hợp Nhất." },
+      { lv: 80, name: "Tiềm Lực Vô Hạn", desc: "Mỗi lần đánh thường có 28% cơ hội +5% tỉ lệ bạo kích vĩnh viễn, 50% cơ hội nhận thêm +1 EN." },
+      { lv: 100, name: "Lục Đạo Hộ Thể", desc: "Khi chuyển đổi giữa dạng Naruto / Sasuke, nhận 30% Miễn Thương trong 2 lượt, đồng thời nhận ngay +5 EN." }
+    ],
+    spells: [
+      { lv: 130, name: "Thiên Chú Nguyên Sinh 1", desc: "+25% Công Phép, +20% HP." },
+      { lv: 150, name: "Thiên Chú Nguyên Sinh 2", desc: "+20% DEF, +30% ST Bạo Kích, +15% Tỉ Lệ Bạo Kích." }
     ]
   },
   kaguya_god_boss: {
@@ -2896,6 +2937,11 @@ function getHeroStats(heroId, customLv = null) {
         atk = +(atk * 1.25).toFixed(1);
         hp = Math.round(hp * 1.20);
       }
+      else if (heroId === "naru_sasu") {
+        // Thiên chú nguyên sinh 1 (Lv.130): +25% Công Phép, +20% HP
+        atk = +(atk * 1.25).toFixed(1);
+        hp = Math.round(hp * 1.20);
+      }
     }
     if (lv >= 150) {
       if (heroId === "madara") { critRate += 0.15; critDmg += 0.50; }
@@ -2920,6 +2966,12 @@ function getHeroStats(heroId, customLv = null) {
       else if (heroId === "momo_kaguya") {
         // Thần chú nguyên sinh 2 (Lv.150): +25% DEF
         def = Math.round(def * 1.25);
+      }
+      else if (heroId === "naru_sasu") {
+        // Thiên chú nguyên sinh 2 (Lv.150): +20% DEF, +30% ST bạo kích, +15% tỉ lệ bạo kích
+        def = Math.round(def * 1.20);
+        critDmg = +(critDmg + 0.30).toFixed(2);
+        critRate = +(critRate + 0.15).toFixed(2);
       }
     }
   }
@@ -4106,6 +4158,21 @@ function startTrainingBattle(gateType, stage) {
     }
   });
 
+  // v6.4.0: Khởi tạo Bạn Chiến Naruto - Sasuke trong Đấu Luyện
+  [...pTeam, ...bTeam].forEach(fighter => {
+    if (fighter && (fighter.id === "naru_sasu" || fighter.heroId === "naru_sasu")) {
+      fighter.form = Math.random() < 0.5 ? 'naruto' : 'sasuke';
+      fighter.prevForm = fighter.form;
+      fighter.unifiedTurns = 0;
+      fighter.unifiedUsed = false;
+      fighter.kuramaSusanooShield = false;
+      logCombat(`🤝☯️ [Song Hào Khởi Đầu] Bạn Chiến ${fighter.name} vào trận với dạng: ${fighter.form === 'naruto' ? 'Naruto (Lục Đạo)' : 'Sasuke (Vĩnh Cửu)'}!`);
+      if (fighter.level >= 30) {
+        triggerLucDaoKich(fighter);
+      }
+    }
+  });
+
   buildTurnQueue();
   nextTurn();
 }
@@ -4220,6 +4287,21 @@ function startBattle() {
     }
   });
 
+  // v6.4.0: Khởi tạo Bạn Chiến Naruto - Sasuke & Kích hoạt Lục Đạo Kích đầu trận
+  [...pTeam, ...bTeam].forEach(fighter => {
+    if (fighter && (fighter.id === "naru_sasu" || fighter.heroId === "naru_sasu")) {
+      fighter.form = Math.random() < 0.5 ? 'naruto' : 'sasuke';
+      fighter.prevForm = fighter.form;
+      fighter.unifiedTurns = 0;
+      fighter.unifiedUsed = false;
+      fighter.kuramaSusanooShield = false;
+      logCombat(`🤝☯️ [Song Hào Khởi Đầu] Bạn Chiến ${fighter.name} vào trận với dạng: ${fighter.form === 'naruto' ? 'Naruto (Lục Đạo)' : 'Sasuke (Vĩnh Cửu)'}!`);
+      if (fighter.level >= 30) {
+        triggerLucDaoKich(fighter);
+      }
+    }
+  });
+
   // v5.2.1: Ghi log xác nhận chỉ số đối thủ đã được cân bằng
   bTeam.forEach(b => {
     if (b) logCombat(`⚔️ [v5.2.1 Đối Thủ] ${b.name} | HP: ${b.hp.toLocaleString()} | ATK: ${b.atk.toLocaleString()}`);
@@ -4328,7 +4410,17 @@ function buildTurnQueue() {
   battle.playerTeam.forEach(f => { if (f && f.hp > 0) aliveFighters.push(f); });
   battle.botTeam.forEach(f => { if (f && f.hp > 0) aliveFighters.push(f); });
 
-  aliveFighters.sort((a, b) => b.spd - a.spd);
+  const getEffectiveSpd = (f) => {
+    let s = f.spd;
+    if (f.buffs && f.buffs.hacHoa) {
+      const hhStacks = f.buffs.hacHoa.stacks || 1;
+      const spdRed = Math.min(0.50, hhStacks * 0.10);
+      s = Math.round(s * (1 - spdRed));
+    }
+    return s;
+  };
+
+  aliveFighters.sort((a, b) => getEffectiveSpd(b) - getEffectiveSpd(a));
   battle.turnQueue = aliveFighters;
   battle.currentActorIndex = 0;
 }
@@ -4576,8 +4668,28 @@ function nextTurn() {
         f.en = Math.min(f.enMax, +(f.en + 2).toFixed(1));
         logCombat(`[Điều Tức] ${f.name} nhận 2 EN!`);
       }
+      // Naruto - Sasuke Bị Động 1: Kích hoạt Lục Đạo Kích ở mỗi hiệp 5x (5, 10, 15, 20...)
+      if ((f.id === "naru_sasu" || f.heroId === "naru_sasu") && f.hp > 0 && f.level >= 30 && battle.roundCount % 5 === 0) {
+        triggerLucDaoKich(f);
+      }
+      // Naruto - Sasuke: Hết 8 hiệp Hợp Nhất trở về dạng trước đó và hoàn trả chỉ số
+      if (f.unifiedTurns > 0) {
+        f.unifiedTurns--;
+        if (f.unifiedTurns <= 0) {
+          f.maxHp = Math.max(1, f.maxHp - (f.unifiedBonusHp || 0));
+          f.hp = Math.min(f.maxHp, f.hp);
+          f.atk = Math.max(1, +(f.atk - (f.unifiedBonusAtk || 0)).toFixed(1));
+          f.def = Math.max(1, f.def - (f.unifiedBonusDef || 0));
+          f.form = f.prevForm || "naruto";
+          f.unifiedBonusHp = 0;
+          f.unifiedBonusAtk = 0;
+          f.unifiedBonusDef = 0;
+          logCombat(`☯️ [Hết Thời Gian Hợp Nhất] ${f.name} kết thúc 8 hiệp Kurama - Susanoo, chỉ số trở lại ban đầu và trở về dạng ${f.form === 'naruto' ? 'Naruto (Lục Đạo)' : 'Sasuke (Vĩnh Cửu)'}!`);
+          addAnimation(f, `TRỞ LẠI: ${f.form.toUpperCase()}`, "#8b949e");
+        }
+      }
       // Decrement duration of buffs
-      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "stun", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff", "mienThuongDacBiet", "vegitoDmgBoost", "conanWeakPoint", "hypnosis", "diemYeu", "momoTeamBuff", "conanCritBuff", "ketAn", "momoDefDebuff", "minatoTeamDmg", "immuneDebuff", "immortal"].forEach(k => {
+      ["madaraDmgBoost", "whisProtect", "suyGiam", "terror", "choang", "stun", "kiemSoatDebuff", "thienDaoDebuff", "teleportDebuff", "mienThuongDacBiet", "vegitoDmgBoost", "conanWeakPoint", "hypnosis", "diemYeu", "momoTeamBuff", "conanCritBuff", "ketAn", "momoDefDebuff", "minatoTeamDmg", "immuneDebuff", "immortal", "naruSasuDmgReduction"].forEach(k => {
         if (f.buffs[k]) {
           f.buffs[k]--;
           if (f.buffs[k] <= 0) {
@@ -4903,7 +5015,20 @@ function updatePlayerSkillCards(actor) {
 
   const isKaguraGod = (actor.id === "kagura" && actor.godForm);
   const isMomoKaguya = (actor.id === "momo_kaguya");
-  const canCastSkill = isKaguraGod ? (actor.en >= 3) : (isMomoKaguya ? (actor.en >= 5) : (actor.en >= actor.enMax));
+  const isNaruSasu = (actor.id === "naru_sasu" || actor.heroId === "naru_sasu");
+
+  let canCastSkill = false;
+  if (isKaguraGod) {
+    canCastSkill = (actor.en >= 3);
+  } else if (isMomoKaguya) {
+    canCastSkill = (actor.en >= 5);
+  } else if (isNaruSasu) {
+    if (actor.form === "naruto") canCastSkill = (actor.en >= 10);
+    else if (actor.form === "sasuke") canCastSkill = (actor.en >= 11);
+    else if (actor.form === "unified") canCastSkill = (actor.en >= 10);
+  } else {
+    canCastSkill = (actor.en >= actor.enMax);
+  }
 
   const skill2Btn = document.getElementById("btnActiveSkill2");
   if (isMomoKaguya) {
@@ -4925,6 +5050,46 @@ function updatePlayerSkillCards(actor) {
       document.getElementById("cardSkill2Title").textContent = "Thiên Chú Nguyên Sinh";
       document.getElementById("cardSkill2En").textContent = `Tốn 18 EN (${actor.en}/18 EN)`;
       document.getElementById("cardSkill2Desc").textContent = `Phải đủ 18 EN mới được sử dụng: Gây Choáng (Stun) mục tiêu có HP cao nhất phe địch trong 5 lượt!`;
+    }
+  } else if (isNaruSasu) {
+    if (actor.form === "naruto") {
+      document.getElementById("cardSkillTitle").textContent = "Kỹ Năng: Dạng Naruto Lục Đạo";
+      document.getElementById("cardSkillEn").textContent = `Tốn 10 EN (${actor.en}/10 EN)`;
+      document.getElementById("cardSkillDesc").textContent = "Gây ST liên tục 5 lần: mỗi lần 50% ATK + 8% HP còn lại của mục tiêu.";
+    } else if (actor.form === "sasuke") {
+      document.getElementById("cardSkillTitle").textContent = "Kỹ Năng: Dạng Sasuke Vĩnh Cửu";
+      document.getElementById("cardSkillEn").textContent = `Tốn 11 EN (${actor.en}/11 EN)`;
+      document.getElementById("cardSkillDesc").textContent = "Gây ST bằng 300% ATK + 5% HP còn lại mục tiêu (+35% Crit, +40% ST Crit).";
+    } else if (actor.form === "unified") {
+      document.getElementById("cardSkillTitle").textContent = "Kỹ Năng: Dạng Hợp Nhất Kurama - Susanoo";
+      document.getElementById("cardSkillEn").textContent = `Tốn 10 EN (${actor.en}/10 EN)`;
+      document.getElementById("cardSkillDesc").textContent = "Gây ST bằng 350% ATK + 8% HP còn lại (+45% Crit, +70% ST Crit). Tạo Khiên Hoàng Kim 20% HP (phản đòn x10).";
+    }
+
+    if (skill2Btn) {
+      skill2Btn.style.display = "flex";
+      if (actor.form === "unified") {
+        skill2Btn.classList.add("disabled");
+        document.getElementById("cardSkill2Title").textContent = "Thiên Chú: Đang Hợp Nhất";
+        document.getElementById("cardSkill2En").textContent = `${actor.unifiedTurns || 0} lượt còn lại`;
+        document.getElementById("cardSkill2Desc").textContent = "Đang trong trạng thái Hợp Nhất Kurama - Susanoo (+20% HP, +30% ATK, +30% DEF).";
+        document.getElementById("cardSkill2Status").textContent = "ĐANG TRONG TRẠNG THÁI HỢP NHẤT";
+        document.getElementById("cardSkill2Status").style.color = "var(--accent-gold)";
+      } else {
+        const canCastSkill2 = (actor.en >= 25);
+        if (canCastSkill2) {
+          skill2Btn.classList.remove("disabled");
+          document.getElementById("cardSkill2Status").textContent = "SẴN SÀNG HỢP NHẤT (ĐỦ 25 EN)";
+          document.getElementById("cardSkill2Status").style.color = "var(--accent-green)";
+        } else {
+          skill2Btn.classList.add("disabled");
+          document.getElementById("cardSkill2Status").textContent = `Chưa đủ 25 EN (${actor.en}/25 EN)`;
+          document.getElementById("cardSkill2Status").style.color = "var(--accent-red)";
+        }
+        document.getElementById("cardSkill2Title").textContent = "Thiên Chú Nguyên Sinh: Hợp Nhất";
+        document.getElementById("cardSkill2En").textContent = `Tốn 25 EN (${actor.en}/25 EN)`;
+        document.getElementById("cardSkill2Desc").textContent = "Tiêu tốn 25 EN: Hợp nhất Kurama - Susanoo trong 8 lượt (+20% Max HP, +30% ATK, +30% DEF, hồi 40% Max HP).";
+      }
     }
   } else {
     if (skill2Btn) skill2Btn.style.display = "none";
@@ -5004,6 +5169,94 @@ function isStunImmune(target) {
   if (target.id === "kagura" && target.level >= 100) return true;
   if (target.buffs && target.buffs.fateString && target.buffs.fateSource && target.buffs.fateSource.level >= 100) return true;
   return false;
+}
+
+
+// ==================== BẠN CHIẾN NARUTO (LỤC ĐẠO) - SASUKE (VĨNH CỬU) v6.4.0 ====================
+function triggerLucDaoKich(fighter) {
+  if (!fighter || fighter.hp <= 0 || fighter.level < 30) return;
+  const oppTeam = (battle.playerTeam && battle.playerTeam.includes(fighter)) ? battle.botTeam : battle.playerTeam;
+  const aliveOpponents = oppTeam ? oppTeam.filter(b => b && b.hp > 0) : [];
+  if (aliveOpponents.length === 0) return;
+
+  logCombat(`⚡☯️ [Lục Đạo Kích] Bạn Chiến ${fighter.name} phóng thích thần lực Lục Đạo lên toàn bộ quân địch!`);
+  aliveOpponents.forEach(target => {
+    const rawDmg = fighter.atk * 0.55;
+    const { damage, isCrit } = calculateDamage(fighter, target, rawDmg);
+    applyDamage(target, damage, isCrit, fighter);
+
+    // Có 30% mục tiêu bị Hắc Hóa
+    if (Math.random() < 0.30) {
+      target.buffs = target.buffs || {};
+      target.buffs.hacHoa = target.buffs.hacHoa || { stacks: 0 };
+      if (target.buffs.hacHoa.stacks < 5) {
+        target.buffs.hacHoa.stacks++;
+      }
+      const st = target.buffs.hacHoa.stacks;
+      const critRateRed = Math.round(st * 10);
+      const critDmgRed = Math.min(100, Math.round(st * 50));
+      const spdRed = Math.round(st * 10);
+      addAnimation(target, `HẮC HÓA x${st} (-${spdRed}% SPD)`, "#8a2be2");
+      logCombat(`🌑🖤 [Hắc Hóa x${st}] ${target.name} bị nhiễm Hắc Hóa: -${critRateRed}% Crit Rate, -${critDmgRed}% Crit Dmg, -${spdRed}% SPD!`);
+    }
+  });
+
+  // Bị Động 2 (Lv.70): Mỗi lần tung Lục Đạo Kích, đổi dạng kỹ năng chủ động (trừ khi đang Hợp Nhất)
+  if (fighter.level >= 70) {
+    if (fighter.form === 'unified' || (fighter.unifiedTurns && fighter.unifiedTurns > 0)) {
+      logCombat(`☯️ [Lục Đạo Kích] Đang trong trạng thái Hợp Nhất Kurama - Susanoo (${fighter.unifiedTurns} hiệp còn lại), không thể chuyển đổi dạng!`);
+    } else {
+      const prev = fighter.form || 'naruto';
+      fighter.form = (prev === 'naruto') ? 'sasuke' : 'naruto';
+      const formName = (fighter.form === 'naruto') ? 'Naruto (Lục Đạo)' : 'Sasuke (Vĩnh Cửu)';
+      addAnimation(fighter, `CHUYỂN: ${formName.toUpperCase()}`, "#f1e05a");
+      logCombat(`🔄⚡ [Chuyển Dạng Song Hào] ${fighter.name} chuyển đổi sang: ${formName}!`);
+
+      // Bị Động 4 (Lv.100): Khi chuyển đổi giữa dạng Naruto / Sasuke, nhận 30% Miễn Thương trong 2 lượt & nhận 5 EN
+      if (fighter.level >= 100) {
+        fighter.buffs = fighter.buffs || {};
+        fighter.buffs.naruSasuDmgReduction = 2; // Giảm 30% ST trong 2 lượt
+        fighter.en = Math.min(fighter.enMax, +(fighter.en + 5.0).toFixed(1));
+        addAnimation(fighter, "MIỄN THƯƠNG 30% & +5 EN", "#58a6ff");
+        logCombat(`🛡️✨ [Bị Động 4: Lục Đạo Hộ Thể] ${fighter.name} nhận 30% Miễn Thương (2 lượt) và hồi phục +5.0 EN!`);
+      }
+    }
+  }
+}
+
+function activateNaruSasuUnified(actor, isPassiveTrigger = false) {
+  if (!actor || actor.unifiedUsed) return;
+  actor.unifiedUsed = true;
+
+  if (!isPassiveTrigger) {
+    actor.en = Math.max(0, +(actor.en - 25).toFixed(1));
+  }
+
+  actor.prevForm = (actor.form === "sasuke" || actor.form === "naruto") ? actor.form : "naruto";
+  actor.form = "unified";
+  actor.unifiedTurns = 8;
+
+  // Hợp nhất: +20% HP tối đa, +30% ATK, +30% DEF
+  actor.unifiedBonusHp = Math.round(actor.maxHp * 0.20);
+  actor.unifiedBonusAtk = +(actor.atk * 0.30).toFixed(1);
+  actor.unifiedBonusDef = Math.round(actor.def * 0.30);
+
+  actor.maxHp += actor.unifiedBonusHp;
+  actor.atk = +(actor.atk + actor.unifiedBonusAtk).toFixed(1);
+  actor.def += actor.unifiedBonusDef;
+
+  // Hồi HP: 40% Max HP nếu chủ động, 30% Max HP nếu bị động khẩn cấp
+  const healRatio = isPassiveTrigger ? 0.30 : 0.40;
+  const healAmt = Math.round(actor.maxHp * healRatio);
+  healFighter(actor, healAmt);
+
+  if (isPassiveTrigger) {
+    addAnimation(actor, `HỢP NHẤT KHẨN CẤP! (+${healAmt.toLocaleString()} HP)`, "#f1e05a");
+    logCombat(`🌟💥 [Bị Động Khẩn Cấp: Thiên Chú Nguyên Sinh] HP dưới 2%! ${actor.name} tự động kích hoạt HỢP NHẤT KURAMA - SUSANOO (8 lượt, 0 EN): Hồi phục 30% Max HP (+${healAmt.toLocaleString()} HP), +20% HP, +30% ATK, +30% DEF!`);
+  } else {
+    addAnimation(actor, `HỢP NHẤT SUSANOO! (+${healAmt.toLocaleString()} HP)`, "#f1e05a");
+    logCombat(`🌟☯️ [Thiên Chú Nguyên Sinh: Hợp Nhất] ${actor.name} tiêu tốn 25 EN kích hoạt HỢP NHẤT KURAMA - SUSANOO (8 lượt): Hồi phục 40% Max HP (+${healAmt.toLocaleString()} HP), +20% HP, +30% ATK, +30% DEF!`);
+  }
 }
 
 function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
@@ -5116,7 +5369,15 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
 
   let isCrit = false;
   if (defender.shield <= 0) {
-    if (Math.random() < (attacker.critRate || 0.05)) {
+    let currentCritRate = attacker.critRate || 0.05;
+    // Bị Động 1: Hiệu ứng Hắc Hóa giảm tỉ lệ bạo kích (-10% mỗi tầng, tối đa -50%)
+    if (attacker.buffs && attacker.buffs.hacHoa) {
+      const hhStacks = attacker.buffs.hacHoa.stacks || 1;
+      const critRed = Math.min(0.50, hhStacks * 0.10);
+      currentCritRate = Math.max(0, currentCritRate - critRed);
+    }
+
+    if (Math.random() < currentCritRate) {
       isCrit = true;
       let effectiveCritDmg = attacker.critDmg || 1.5;
       // Susan Bị Động 4 (Lv.100): Dưới 50% HP, mỗi 5% HP mất đi tăng 20% ST bạo kích
@@ -5125,6 +5386,13 @@ function calculateDamage(attacker, defender, rawDmg, isPenetrate = 0) {
         const missingPct = 50 - hpPct;
         const critDmgBonus = Math.floor(missingPct / 5) * 0.20;
         effectiveCritDmg = +(effectiveCritDmg + critDmgBonus).toFixed(2);
+      }
+      // Bị Động 1: Hiệu ứng Hắc Hóa giảm ST thêm của bạo kích (-50% mỗi tầng, tối đa -100%)
+      if (attacker.buffs && attacker.buffs.hacHoa) {
+        const hhStacks = attacker.buffs.hacHoa.stacks || 1;
+        const critDmgBonusRed = Math.min(1.0, hhStacks * 0.50);
+        const extraCritDmg = Math.max(0, effectiveCritDmg - 1.0);
+        effectiveCritDmg = +(1.0 + extraCritDmg * (1 - critDmgBonusRed)).toFixed(2);
       }
       dmg *= effectiveCritDmg;
     }
@@ -5250,6 +5518,11 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
     finalDmg = Math.round(finalDmg * 0.85);
   }
 
+  // Naruto - Sasuke Bị Động 4 (Lv.100): Miễn thương 30% khi chuyển dạng (2 lượt)
+  if (target.buffs && target.buffs.naruSasuDmgReduction > 0) {
+    finalDmg = Math.round(finalDmg * 0.70);
+  }
+
   // Vegito Bị động 2 (Lv 70): Miễn thương đặc biệt (Damage Cap = 30% Max HP)
   if (target.buffs && target.buffs.mienThuongDacBiet && target.buffs.mienThuongDacBiet > 0) {
     const maxCap = Math.round(target.maxHp * 0.30);
@@ -5264,16 +5537,47 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
     // Momoshiki - Kaguya Bị Động 2 (Lv.70): Mục tiêu có "Shield", khi Bạn Chiến gây ST thì Shield nhận thêm 100% ST (x2 ST phá khiên!)
     const isMomoKaguyaAttacker = attacker && (attacker.id === "momo_kaguya" || attacker.heroId === "momo_kaguya") && attacker.level >= 70;
     const effectiveShieldDamage = isMomoKaguyaAttacker ? (finalDmg * 2) : finalDmg;
+    const isKuramaSusanooShield = target.shieldType === 'kuramaSusanoo' || target.kuramaSusanooShield;
+    let shieldAbsorbed = 0;
 
     if (target.shield >= effectiveShieldDamage) {
       target.shield -= effectiveShieldDamage;
-      addAnimation(target, `-${effectiveShieldDamage} (Khiên ${isMomoKaguyaAttacker ? 'x2 Phá Khiên' : ''})`, "#58a6ff");
+      shieldAbsorbed = effectiveShieldDamage;
+      addAnimation(target, `-${effectiveShieldDamage} (${isKuramaSusanooShield ? 'Khiên Hoàng Kim' : 'Khiên'} ${isMomoKaguyaAttacker ? 'x2 Phá Khiên' : ''})`, isKuramaSusanooShield ? "#f1e05a" : "#58a6ff");
+
+      // Phản đòn Kurama - Susanoo Shield (10x lượng khiên bị mất)
+      if (isKuramaSusanooShield && shieldAbsorbed > 0 && attacker && attacker.hp > 0 && !target.isReflectingShield) {
+        const reflectDmg = Math.round(shieldAbsorbed * 10);
+        target.isReflectingShield = true;
+        logCombat(`⚡🛡️ [Kurama - Susanoo Shield] Khiên Hoàng Kim hấp thụ ${shieldAbsorbed.toLocaleString()} ST và phản đòn ${reflectDmg.toLocaleString()} ST (x10) lên ${attacker.name}!`);
+        addAnimation(target, `PHẢN ĐÒN KHIÊN! -${reflectDmg.toLocaleString()}`, "#f1e05a");
+        applyDamage(attacker, reflectDmg, false, target);
+        target.isReflectingShield = false;
+      }
+
       checkDefenderTriggers(target, amount);
       return finalDmg;
     } else {
       const remainingShield = target.shield;
       target.shield = 0;
-      addAnimation(target, `Vỡ Khiên (-${remainingShield} ${isMomoKaguyaAttacker ? 'x2 Phá Khiên' : ''})`, "#58a6ff");
+      shieldAbsorbed = remainingShield;
+      addAnimation(target, `Vỡ Khiên (-${remainingShield} ${isKuramaSusanooShield ? 'Hoàng Kim' : ''} ${isMomoKaguyaAttacker ? 'x2 Phá Khiên' : ''})`, isKuramaSusanooShield ? "#f1e05a" : "#58a6ff");
+
+      // Phản đòn Kurama - Susanoo Shield (10x lượng khiên bị mất)
+      if (isKuramaSusanooShield && shieldAbsorbed > 0 && attacker && attacker.hp > 0 && !target.isReflectingShield) {
+        const reflectDmg = Math.round(shieldAbsorbed * 10);
+        target.isReflectingShield = true;
+        logCombat(`⚡🛡️ [Kurama - Susanoo Shield] Khiên Hoàng Kim vỡ hấp thụ ${shieldAbsorbed.toLocaleString()} ST và phản đòn ${reflectDmg.toLocaleString()} ST (x10) lên ${attacker.name}!`);
+        addAnimation(target, `PHẢN ĐÒN KHIÊN! -${reflectDmg.toLocaleString()}`, "#f1e05a");
+        applyDamage(attacker, reflectDmg, false, target);
+        target.isReflectingShield = false;
+      }
+
+      if (target.shield <= 0) {
+        target.kuramaSusanooShield = false;
+        if (target.shieldType === 'kuramaSusanoo') delete target.shieldType;
+      }
+
       const unabsorbedRatio = (effectiveShieldDamage - remainingShield) / (isMomoKaguyaAttacker ? 2 : 1);
       finalDmg = Math.max(0, Math.round(unabsorbedRatio));
     }
@@ -5315,6 +5619,15 @@ function applyDamage(target, amount, isCrit = false, attacker = null) {
   }
 
   target.hp = Math.max(0, target.hp - finalDmg);
+
+  // Naruto - Sasuke: Kích hoạt Thiên Chú Nguyên Sinh khẩn cấp khi HP dưới 2% (0 EN, 1 lần/trận)
+  if ((target.id === "naru_sasu" || target.heroId === "naru_sasu") && !target.unifiedUsed) {
+    const hpLimit = Math.max(1, Math.round(target.maxHp * 0.02));
+    if (target.hp <= hpLimit) {
+      if (target.hp <= 0) target.hp = 1; // Giữ lại 1 HP để hợp nhất hồi phục
+      activateNaruSasuUnified(target, true);
+    }
+  }
 
   // Susanoo Bị Động 1: Khi HP dưới 20% hồi HP bằng 90% HP tối đa (1 lần/trận)
   if (target.hp > 0 && (target.id === "susanoo_boss" || target.heroId === "susanoo_boss") && (target.hp / target.maxHp) <= 0.20 && !target.susanooHealed) {
@@ -6131,25 +6444,56 @@ function executePlayerAction(type) {
       applyDamage(target, hit2.damage, hit2.isCrit, actor);
       actor.critRate -= 0.20;
 
-      // Đòn 3: 10% ATK + 10% HP tối đa của bản thân hoặc mục tiêu. Hồi phục bản thân bằng 100% ST của lần 3.
+      // Đòn 3: 10% ATK + 10% HP còn lại của mục tiêu. Hồi phục bản thân đúng bằng 100% ST của lần 3.
       if (target.hp <= 0) {
         const nextTarget = enemyTeam.find(b => b && b.hp > 0);
         if (nextTarget) target = nextTarget;
       }
-      const raw3 = actor.atk * 0.10 + Math.max(actor.maxHp * 0.10, (target.maxHp || 0) * 0.05);
+      const raw3 = actor.atk * 0.10 + Math.max(1, (target.hp || 0) * 0.10);
       const hit3 = calculateDamage(actor, target, raw3);
       applyDamage(target, hit3.damage, hit3.isCrit, actor);
 
       const healSelf = hit3.damage;
       healFighter(actor, healSelf);
-      addAnimation(actor, `+${healSelf.toLocaleString()} HP (Hút 100%)`, "#3fb950");
+      addAnimation(actor, `+${healSelf.toLocaleString()} HP (Đòn 3 100%)`, "#3fb950");
       const totalHitDmg = hit1.damage + hit2.damage + hit3.damage;
-      logCombat(`🤝💥 [Lục Đạo Tam Trùng Kích] Bạn Chiến Momoshiki - Kaguya tung 3 đòn liên hoàn gây ${totalHitDmg.toLocaleString()} ST Công Phép và tự hồi phục ${healSelf.toLocaleString()} HP!`);
+      logCombat(`🤝💥 [Lục Đạo Tam Trùng Kích] Bạn Chiến Momoshiki - Kaguya tung 3 đòn liên hoàn gây ${totalHitDmg.toLocaleString()} ST Công Phép và tự hồi phục ${healSelf.toLocaleString()} HP (từ 100% ST đòn 3)!`);
+    } else if (actor.id === "naru_sasu" || actor.heroId === "naru_sasu") {
+      actor.en = Math.min(actor.enMax, +(actor.en + 1.9).toFixed(1));
+      const raw = actor.atk * 0.88;
+      const { damage, isCrit } = calculateDamage(actor, target, raw);
+      applyDamage(target, damage, isCrit, actor);
+
+      // 30% gây Choáng (Stun)
+      if (Math.random() < 0.30 && !isStunImmune(target)) {
+        target.buffs = target.buffs || {};
+        target.buffs.choang = 1;
+        target.buffs.stun = 1;
+        addAnimation(target, "CHOÁNG (1 LƯỢT)!", "#f1e05a");
+        logCombat(`⚡💫 [Lục Đạo Âm Dương Kích] Đòn đánh thường làm chấn động kinh mạch, gây CHOÁNG ${target.name} trong 1 lượt!`);
+      }
+
+      // Bị động 3 (Lv.80): 28% cơ hội +5% Crit Rate vĩnh viễn, 50% cơ hội nhận thêm 1 EN
+      if (actor.level >= 80) {
+        if (Math.random() < 0.28) {
+          actor.critRate = +(actor.critRate + 0.05).toFixed(2);
+          addAnimation(actor, "+5% CRIT VĨNH VIỄN", "#f1e05a");
+          logCombat(`🔥🎯 [Bị Động 3: Tiềm Lực Vô Hạn] ${actor.name} tăng vĩnh viễn +5% Tỉ Lệ Bạo Kích (Hiện có: ${Math.round(actor.critRate * 100)}%)!`);
+        }
+        if (Math.random() < 0.50) {
+          actor.en = Math.min(actor.enMax, +(actor.en + 1.0).toFixed(1));
+          addAnimation(actor, "+1 EN (BỊ ĐỘNG)", "#bc8cff");
+          logCombat(`⚡ [Bị Động 3: Hồi Khí] ${actor.name} nhận thêm +1.0 EN từ đòn đánh thường!`);
+        }
+      }
+
+      logCombat(`🤝💥 [Lục Đạo Âm Dương Kích] Bạn Chiến ${actor.name} tung kích gây ${damage.toLocaleString()} ST Công Phép (+1.9 EN)!`);
     }
   } else if (type === "skill") {
     const isKaguraGod = (actor.id === "kagura" && actor.godForm);
     const isMomoKaguya = (actor.id === "momo_kaguya");
-    const canCastSkill = isKaguraGod ? (actor.en >= 3) : (isMomoKaguya ? (actor.en >= 5) : (actor.en >= actor.enMax));
+    const isNaruSasu = (actor.id === "naru_sasu" || actor.heroId === "naru_sasu");
+    const canCastSkill = isKaguraGod ? (actor.en >= 3) : (isMomoKaguya ? (actor.en >= 5) : (isNaruSasu ? (actor.form === "sasuke" ? actor.en >= 11 : actor.en >= 10) : (actor.en >= actor.enMax)));
     if (!canCastSkill) return;
 
     if (actor.id === "kagura") {
@@ -6157,6 +6501,12 @@ function executePlayerAction(type) {
       actor.en = Math.max(0, +(actor.en - 3).toFixed(1));
     } else if (actor.id === "momo_kaguya") {
       actor.en = Math.max(0, +(actor.en - 5).toFixed(1)); // Chỉ tốn 5 EN!
+    } else if (isNaruSasu) {
+      if (actor.form === "sasuke") {
+        actor.en = Math.max(0, +(actor.en - 11).toFixed(1));
+      } else {
+        actor.en = Math.max(0, +(actor.en - 10).toFixed(1));
+      }
     } else if (actor.id === "kurama") {
       actor.en = 2; // Hồi 2 EN
     } else {
@@ -6741,23 +7091,83 @@ function executePlayerAction(type) {
         addAnimation(a, "MIỄN NHIỄM (2 LƯỢT)", "#00f2fe");
       });
       logCombat(`🤝🌸 [Thần Thụ Giáng Thế] Momoshiki - Kaguya tiêu hao 5 EN: Hồi phục ${healVal.toLocaleString()} HP (15% HP hiện tại) cho toàn đội, xóa sạch Choáng và kích hoạt [Miễn Nhiễm] 2 lượt!`);
+    } else if (actor.id === "naru_sasu" || actor.heroId === "naru_sasu") {
+      if (actor.form === "naruto") {
+        // Dạng Naruto Lục Đạo: gây ST liên tục 5 lần, mỗi lần: 50% ATK kèm 8% HP còn lại mục tiêu (tốn 10 EN)
+        let totalDmg5 = 0;
+        let critCount = 0;
+        for (let i = 1; i <= 5; i++) {
+          if (target.hp <= 0) {
+            const nextTarget = enemyTeam.find(b => b && b.hp > 0);
+            if (nextTarget) target = nextTarget;
+            else break;
+          }
+          const rawHit = actor.atk * 0.50 + Math.max(1, (target.hp || 0) * 0.08);
+          const hit = calculateDamage(actor, target, rawHit);
+          applyDamage(target, hit.damage, hit.isCrit, actor);
+          totalDmg5 += hit.damage;
+          if (hit.isCrit) critCount++;
+        }
+        addAnimation(actor, "5 ĐÒN LIÊN HOÀN (NARUTO)", "#f1e05a");
+        logCombat(`🤝🌀💥 [Dạng Naruto Lục Đạo: 5 Đòn Liên Hoàn] ${actor.name} tiêu tốn 10 EN tung 5 đòn bộc phá (kèm 8% HP còn lại mục tiêu mỗi đòn), tổng gây ${totalDmg5.toLocaleString()} ST Công Phép (${critCount} bạo kích)!`);
+      } else if (actor.form === "sasuke") {
+        // Dạng Sasuke Vĩnh Cửu: gây ST bằng 300% ATK kèm 5% HP còn lại mục tiêu (+35% Crit, +40% ST Crit, tốn 11 EN)
+        actor.critRate += 0.35;
+        actor.critDmg += 0.40;
+        const rawSasu = actor.atk * 3.00 + Math.max(1, (target.hp || 0) * 0.05);
+        const hitSasu = calculateDamage(actor, target, rawSasu);
+        applyDamage(target, hitSasu.damage, hitSasu.isCrit, actor);
+        actor.critRate -= 0.35;
+        actor.critDmg -= 0.40;
+        addAnimation(actor, "THIÊN THỦ LÔI THIÊN!", "#bc8cff");
+        logCombat(`🤝⚡🗡️ [Dạng Sasuke Vĩnh Cửu: Thiên Thủ Lôi Thiên] ${actor.name} tiêu tốn 11 EN (+35% Crit, +40% ST Crit) giáng kiếm sấm sét gây ${hitSasu.damage.toLocaleString()} ST ${hitSasu.isCrit ? '(CRIT!) ' : ''}lên ${target.name}!`);
+      } else if (actor.form === "unified") {
+        // Dạng Hợp Nhất: gây ST bằng 350% ATK kèm 8% HP còn lại mục tiêu (+45% Crit, +70% ST Crit). Tạo Khiên Kurama - Susanoo bằng 20% HP còn lại (màu vàng, phản đòn x10)
+        actor.critRate += 0.45;
+        actor.critDmg += 0.70;
+        const rawUni = actor.atk * 3.50 + Math.max(1, (target.hp || 0) * 0.08);
+        const hitUni = calculateDamage(actor, target, rawUni);
+        applyDamage(target, hitUni.damage, hitUni.isCrit, actor);
+        actor.critRate -= 0.45;
+        actor.critDmg -= 0.70;
+
+        const shieldVal = Math.max(1, Math.round(actor.hp * 0.20));
+        actor.shield = (actor.shield || 0) + shieldVal;
+        actor.shieldType = 'kuramaSusanoo';
+        actor.kuramaSusanooShield = true;
+
+        addAnimation(actor, `+${shieldVal.toLocaleString()} KHIÊN HOÀNG KIM`, "#f1e05a");
+        logCombat(`🤝🔥💀 [Dạng Hợp Nhất: Uy Trang Susanoo] ${actor.name} tiêu tốn 10 EN (+45% Crit, +70% ST Crit) gây ${hitUni.damage.toLocaleString()} ST ${hitUni.isCrit ? '(CRIT!) ' : ''}và tạo Khiên Kurama - Susanoo Hoàng Kim ${shieldVal.toLocaleString()} HP (phản đòn x10)!`);
+      }
     }
   } else if (type === "skill2") {
-    if (actor.id !== "momo_kaguya") return;
-    const canCastSkill2 = (actor.en >= 18);
-    if (!canCastSkill2) {
-      toast(`Chưa đủ 18 EN để thi triển Thiên Chú Nguyên Sinh (Hiện có: ${actor.en}/18 EN)!`, true);
-      return;
-    }
-    actor.en = Math.max(0, +(actor.en - 18).toFixed(1));
-    const aliveEnemies = enemyTeam.filter(e => e && e.hp > 0);
-    if (aliveEnemies.length > 0) {
-      const highestHpEnemy = aliveEnemies.sort((a, b) => b.hp - a.hp)[0];
-      highestHpEnemy.buffs = highestHpEnemy.buffs || {};
-      highestHpEnemy.buffs.choang = 5;
-      highestHpEnemy.buffs.stun = 5;
-      addAnimation(highestHpEnemy, "STUN 5 LƯỢT! (THIÊN CHÚ)", "#bc8cff");
-      logCombat(`🤝🌌 [Thiên Chú Nguyên Sinh] Momoshiki - Kaguya tiêu tốn 18 EN: Áp chế phong ấn khiến mục tiêu HP cao nhất [${highestHpEnemy.name}] bị CHOÁNG 5 LƯỢT!`);
+    if (actor.id === "momo_kaguya") {
+      const canCastSkill2 = (actor.en >= 18);
+      if (!canCastSkill2) {
+        toast(`Chưa đủ 18 EN để thi triển Thiên Chú Nguyên Sinh (Hiện có: ${actor.en}/18 EN)!`, true);
+        return;
+      }
+      actor.en = Math.max(0, +(actor.en - 18).toFixed(1));
+      const aliveEnemies = enemyTeam.filter(e => e && e.hp > 0);
+      if (aliveEnemies.length > 0) {
+        const highestHpEnemy = aliveEnemies.sort((a, b) => b.hp - a.hp)[0];
+        highestHpEnemy.buffs = highestHpEnemy.buffs || {};
+        highestHpEnemy.buffs.choang = 5;
+        highestHpEnemy.buffs.stun = 5;
+        addAnimation(highestHpEnemy, "STUN 5 LƯỢT! (THIÊN CHÚ)", "#bc8cff");
+        logCombat(`🤝🌌 [Thiên Chú Nguyên Sinh] Momoshiki - Kaguya tiêu tốn 18 EN: Áp chế phong ấn khiến mục tiêu HP cao nhất [${highestHpEnemy.name}] bị CHOÁNG 5 LƯỢT!`);
+      }
+    } else if (actor.id === "naru_sasu" || actor.heroId === "naru_sasu") {
+      if (actor.form === "unified") {
+        toast("Đang trong trạng thái Hợp Nhất Kurama - Susanoo!", true);
+        return;
+      }
+      const canCastSkill2 = (actor.en >= 25);
+      if (!canCastSkill2) {
+        toast(`Chưa đủ 25 EN để kích hoạt Thiên Chú Nguyên Sinh: Hợp Nhất (Hiện có: ${actor.en}/25 EN)!`, true);
+        return;
+      }
+      activateNaruSasuUnified(actor, false);
     }
   }
 
@@ -6914,7 +7324,8 @@ function executeHeroBotAction(actor, alivePlayers) {
 
     const isKaguraGod = ((actor.heroId === "kagura" || actor.id === "kagura") && actor.godForm);
     const isMomo = ((actor.heroId === "momo_kaguya" || actor.id === "momo_kaguya"));
-    const isSkill = isKaguraGod ? (actor.en >= 3) : (isMomo ? (actor.en >= 5) : (actor.en >= actor.enMax));
+    const isNaruSasu = ((actor.heroId === "naru_sasu" || actor.id === "naru_sasu"));
+    const isSkill = isKaguraGod ? (actor.en >= 3) : (isMomo ? (actor.en >= 5) : (isNaruSasu ? (actor.form === "sasuke" ? actor.en >= 11 : actor.en >= 10) : (actor.en >= actor.enMax)));
 
     if (isSkill) {
       if (actor.heroId === "kagura" || actor.id === "kagura") {
@@ -7231,6 +7642,55 @@ function executeHeroBotAction(actor, alivePlayers) {
           });
           logCombat(`🤝🌸 [Địch: Thần Thụ Giáng Thế] Bạn Chiến Momoshiki - Kaguya hồi ${healVal.toLocaleString()} HP cho toàn đội, xóa Choáng & ban [Miễn Nhiễm] 2 lượt!`);
         }
+      } else if (actor.heroId === "naru_sasu" || actor.id === "naru_sasu") {
+        if (actor.en >= 25 && actor.form !== "unified") {
+          activateNaruSasuUnified(actor, false);
+        } else if (actor.form === "naruto" && actor.en >= 10) {
+          actor.en = Math.max(0, +(actor.en - 10).toFixed(1));
+          let totalDmg5 = 0;
+          let critCount = 0;
+          for (let i = 1; i <= 5; i++) {
+            if (target.hp <= 0) {
+              const nextTarget = alivePlayers.find(b => b && b.hp > 0);
+              if (nextTarget) target = nextTarget;
+              else break;
+            }
+            const rawHit = actor.atk * 0.50 + Math.max(1, (target.hp || 0) * 0.08);
+            const hit = calculateDamage(actor, target, rawHit);
+            applyDamage(target, hit.damage, hit.isCrit, actor);
+            totalDmg5 += hit.damage;
+            if (hit.isCrit) critCount++;
+          }
+          addAnimation(actor, "5 ĐÒN LIÊN HOÀN (NARUTO)", "#f1e05a");
+          logCombat(`🤝🌀💥 [Địch: Dạng Naruto Lục Đạo] Bot ${actor.name} tung 5 đòn liên hoàn, gây ${totalDmg5.toLocaleString()} ST Công Phép (${critCount} bạo kích)!`);
+        } else if (actor.form === "sasuke" && actor.en >= 11) {
+          actor.en = Math.max(0, +(actor.en - 11).toFixed(1));
+          actor.critRate += 0.35;
+          actor.critDmg += 0.40;
+          const rawSasu = actor.atk * 3.00 + Math.max(1, (target.hp || 0) * 0.05);
+          const hitSasu = calculateDamage(actor, target, rawSasu);
+          applyDamage(target, hitSasu.damage, hitSasu.isCrit, actor);
+          actor.critRate -= 0.35;
+          actor.critDmg -= 0.40;
+          addAnimation(actor, "THIÊN THỦ LÔI THIÊN!", "#bc8cff");
+          logCombat(`🤝⚡🗡️ [Địch: Dạng Sasuke Vĩnh Cửu] Bot ${actor.name} giáng sấm sét gây ${hitSasu.damage.toLocaleString()} ST ${hitSasu.isCrit ? '(CRIT!) ' : ''}lên ${target.name}!`);
+        } else if (actor.form === "unified" && actor.en >= 10) {
+          actor.en = Math.max(0, +(actor.en - 10).toFixed(1));
+          actor.critRate += 0.45;
+          actor.critDmg += 0.70;
+          const rawUni = actor.atk * 3.50 + Math.max(1, (target.hp || 0) * 0.08);
+          const hitUni = calculateDamage(actor, target, rawUni);
+          applyDamage(target, hitUni.damage, hitUni.isCrit, actor);
+          actor.critRate -= 0.45;
+          actor.critDmg -= 0.70;
+
+          const shieldVal = Math.max(1, Math.round(actor.hp * 0.20));
+          actor.shield = (actor.shield || 0) + shieldVal;
+          actor.shieldType = 'kuramaSusanoo';
+          actor.kuramaSusanooShield = true;
+          addAnimation(actor, `+${shieldVal.toLocaleString()} KHIÊN HOÀNG KIM`, "#f1e05a");
+          logCombat(`🤝🔥💀 [Địch: Dạng Hợp Nhất Kurama Susanoo] Bot ${actor.name} gây ${hitUni.damage.toLocaleString()} ST và tạo Khiên Hoàng Kim ${shieldVal.toLocaleString()} HP (phản đòn x10)!`);
+        }
       } else if (actor.heroId === "kaguya_god_boss" || actor.id === "kaguya_god_boss") {
         actor.en = 0;
         alivePlayers.forEach(p => {
@@ -7416,15 +7876,44 @@ function executeHeroBotAction(actor, alivePlayers) {
         applyDamage(target, hit2.damage, hit2.isCrit, actor);
         actor.critRate -= 0.20;
 
-        const raw3 = actor.atk * 0.10 + target.maxHp * 0.10;
+        const raw3 = actor.atk * 0.10 + Math.max(1, (target.hp || 0) * 0.10);
         const hit3 = calculateDamage(actor, target, raw3);
         applyDamage(target, hit3.damage, hit3.isCrit, actor);
 
         const healSelf = hit3.damage;
         healFighter(actor, healSelf);
-        addAnimation(actor, `+${healSelf.toLocaleString()} HP`, "#3fb950");
+        addAnimation(actor, `+${healSelf.toLocaleString()} HP (Đòn 3 100%)`, "#3fb950");
         const totalHitDmg = hit1.damage + hit2.damage + hit3.damage;
-        logCombat(`🤝💥 [Lục Đạo Tam Trùng Kích] Bot Bạn Chiến Momoshiki - Kaguya gây ${totalHitDmg.toLocaleString()} ST Công Phép và tự hồi phục ${healSelf.toLocaleString()} HP!`);
+        logCombat(`🤝💥 [Lục Đạo Tam Trùng Kích] Bot Bạn Chiến Momoshiki - Kaguya gây ${totalHitDmg.toLocaleString()} ST Công Phép và tự hồi phục ${healSelf.toLocaleString()} HP (từ 100% ST đòn 3)!`);
+        return;
+      } else if (actor.heroId === "naru_sasu" || actor.id === "naru_sasu") {
+        actor.en = Math.min(actor.enMax, +(actor.en + 1.9).toFixed(1));
+        const raw = actor.atk * 0.88;
+        const { damage, isCrit } = calculateDamage(actor, target, raw);
+        applyDamage(target, damage, isCrit, actor);
+
+        if (Math.random() < 0.30 && !isStunImmune(target)) {
+          target.buffs = target.buffs || {};
+          target.buffs.choang = 1;
+          target.buffs.stun = 1;
+          addAnimation(target, "CHOÁNG (1 LƯỢT)!", "#f1e05a");
+          logCombat(`⚡💫 [Địch: Lục Đạo Âm Dương Kích] Đòn đánh thường áp chế gây CHOÁNG ${target.name} trong 1 lượt!`);
+        }
+
+        if (actor.level >= 80) {
+          if (Math.random() < 0.28) {
+            actor.critRate = +(actor.critRate + 0.05).toFixed(2);
+            addAnimation(actor, "+5% CRIT VĨNH VIỄN", "#f1e05a");
+            logCombat(`🔥🎯 [Bị Động 3: Tiềm Lực Vô Hạn] Bot ${actor.name} tăng vĩnh viễn +5% Tỉ Lệ Bạo Kích!`);
+          }
+          if (Math.random() < 0.50) {
+            actor.en = Math.min(actor.enMax, +(actor.en + 1.0).toFixed(1));
+            addAnimation(actor, "+1 EN (BỊ ĐỘNG)", "#bc8cff");
+            logCombat(`⚡ [Bị Động 3: Hồi Khí] Bot ${actor.name} nhận thêm +1.0 EN từ đòn đánh thường!`);
+          }
+        }
+
+        logCombat(`🤝💥 [Địch: Lục Đạo Âm Dương Kích] Bot Bạn Chiến ${actor.name} gây ${damage.toLocaleString()} ST Công Phép (+1.9 EN)!`);
         return;
       } else if (actor.heroId === "kaguya_god_boss" || actor.id === "kaguya_god_boss") {
         actor.en = Math.min(actor.enMax, +(actor.en + 2.0).toFixed(1));
@@ -7759,7 +8248,7 @@ function drawCharacter(f) {
     ctx.font = "bold 9.5px sans-serif";
     ctx.textAlign = "center";
     ctx.fillStyle = typeCol;
-    ctx.fillText(`[${isPartner ? "SS" : f.type}]`, x, y + 19);
+    ctx.fillText(`[${isPartner ? (f.id === "naru_sasu" || f.heroId === "naru_sasu" ? "ATK" : "SS") : f.type}]`, x, y + 19);
 
     // Cấp độ bên trong Token
     ctx.font = "bold 9.5px sans-serif";
@@ -7864,7 +8353,11 @@ function drawCharacter(f) {
       const shieldPct = Math.min(1.0, f.shield / f.maxHp);
       ctx.beginPath();
       ctx.rect(barX, barY - 3, barWidth * shieldPct, 3);
-      ctx.fillStyle = "rgba(56, 139, 253, 0.9)";
+      if (f.shieldType === 'kuramaSusanoo' || f.kuramaSusanooShield) {
+        ctx.fillStyle = "rgba(241, 224, 90, 0.95)"; // Màu vàng Hoàng Kim
+      } else {
+        ctx.fillStyle = "rgba(56, 139, 253, 0.9)";
+      }
       ctx.fill();
     }
 
@@ -7892,6 +8385,20 @@ function drawCharacter(f) {
 
     // 9. Status Buff & Debuff Badges (Hàng trên cùng, cân đối)
     let badgeOffset = -36;
+    if (f.buffs.hacHoa) {
+      drawBadge(x + badgeOffset, y - 54, `🌑x${f.buffs.hacHoa.stacks || 1}`, "#8a2be2");
+      badgeOffset += 28;
+    }
+    if (f.buffs.naruSasuDmgReduction) {
+      drawBadge(x + badgeOffset, y - 54, "🛡️-30%", "#58a6ff");
+      badgeOffset += 30;
+    }
+    if (f.id === "naru_sasu" || f.heroId === "naru_sasu") {
+      let formTxt = f.form === "sasuke" ? "🗡️Sasu" : (f.form === "unified" ? `👑Hợp${f.unifiedTurns||0}` : "⚡Naru");
+      let formCol = f.form === "sasuke" ? "#bc8cff" : (f.form === "unified" ? "#00f2fe" : "#f1e05a");
+      drawBadge(x + badgeOffset, y - 54, formTxt, formCol);
+      badgeOffset += 36;
+    }
     if (f.buffs.amaterasuTuyetDiet) { drawBadge(x + badgeOffset, y - 54, `🔥x${f.buffs.amaterasuTuyetDiet.stacks}`, "#ff0055"); badgeOffset += 32; }
     if (f.buffs.burn) { drawBadge(x + badgeOffset, y - 54, `🔥x${f.buffs.burn}`, "#f85149"); badgeOffset += 32; }
     if (f.buffs.bleeding) { drawBadge(x + badgeOffset, y - 54, `🩸x${f.buffs.bleeding.stacks}`, "#da3633"); badgeOffset += 32; }
@@ -9052,6 +9559,19 @@ function submitGiftcode() {
     closeModal("modalGiftcode");
     updateTopBarUI();
     toast("🤝 Kích hoạt mã BANCHIEN: Nhận Bạn Chiến Momoshiki - Kaguya (SS) & 2,000 Kim Cương!", false);
+    return;
+  }
+
+  if (code === "V640" || code === "NARUSASU" || code === "BANCHIEN2" || code === "LUSAS") {
+    gameState.heroes.naru_sasu = { level: 1 };
+    gameState.resources.gold += 1000000;
+    gameState.resources.kimCuong += 2500;
+    gameState.resources.vpnc += 50000;
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🤝☯️ Kích hoạt mã v6.4.0: Nhận Bạn Chiến Naruto (Lục Đạo) - Sasuke (Vĩnh Cửu) [ATK] & 2,500 Kim Cương!", false);
     return;
   }
 
