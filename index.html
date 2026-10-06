@@ -808,7 +808,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v7.1.0 (CẬP NHẬT HOÀN THIỆN: FIX LỖI ĐẤU TRẬN, NÂNG CẤP +10 & TỐI ƯU)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v7.2.0 (ĐỘT PHÁ CẤP, LINH THÚ HỘ MỆNH & BẢNG KỸ NĂNG GRID 3x2 KHÔNG CUỘN)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -820,7 +820,7 @@
           </div>
         </div>
 
-        <div class="action-deck" id="playerActionDeck" style="flex:1; display:flex; gap:8px; align-items:stretch; overflow-x:auto; padding-bottom:4px;">
+        <div class="action-deck" id="playerActionDeck" style="flex:1; display:grid; grid-template-columns:repeat(3, 1fr); grid-template-rows:repeat(2, 1fr); gap:6px; height:100%; overflow:hidden;">
         </div>
 
         <div class="battle-log-mini" id="battleLogBox">
@@ -1899,12 +1899,12 @@ const HERO_DB = {
     roleDesc: "Khởi đầu đa dụng, tích tụ Chakra & bùng nổ tiềm lực",
     baseHp: 728, baseAtk: 42.2, baseDef: 48, baseSpd: 139,
     chakraMax: 5000, chakraRegenMin: 50, chakraRegenMax: 200, startChakra: 0,
-    normalAttack: { name: "Trảm Kích", chakraGainMin: 150, chakraGainMax: 300, atkPct: 1.0, isMelee: true, desc: "Chém kiếm cơ bản gây 100% ATK, hồi 150 - 300 Chakra." },
+    normalAttack: { name: "Trảm Kích", chakraGainMin: 350, chakraGainMax: 650, atkPct: 1.0, isMelee: true, desc: "Chém kiếm cơ bản gây 100% ATK, hồi 350 - 650 Chakra (v7.2.0 tối ưu tích Chakra)." },
     skills: [
-      { reqLv: 1, name: "Kiếm Khí Đột Kích", cost: 800, isMelee: true, desc: "Xông lên chém mục tiêu gây 180% ATK, hồi 300 Chakra nếu Bạo kích." },
-      { reqLv: 50, name: "Hỏa Luân Trảm", cost: 1800, isRanged: true, desc: "Đứng tại chỗ xoay kiếm tạo lốc lửa, gây 220% ATK lên hàng trước đối thủ, kèm Thiêu Đốt 2 lượt." },
-      { reqLv: 130, name: "Phong Lôi Trảm", cost: 3000, isAirborne: true, desc: "Nhảy lên không giáng kiếm phong lôi, gây 320% ATK lên 2 mục tiêu, giảm 30% DEF trong 2 lượt." },
-      { reqLv: 250, name: "Lữ Hành Khai Hoang", cost: 4500, desc: "Bùng nổ tiềm lực, tăng 40% ATK, 25% Tốc đánh và hồi 25% HP đã mất trong 3 hiệp." }
+      { reqLv: 1, name: "Kiếm Khí Đột Kích", cost: 600, isMelee: true, desc: "Xông lên chém mục tiêu gây 180% ATK, hồi 300 Chakra nếu Bạo kích." },
+      { reqLv: 50, name: "Hỏa Luân Trảm", cost: 1400, isRanged: true, desc: "Đứng tại chỗ xoay kiếm tạo lốc lửa, gây 220% ATK lên hàng trước đối thủ, kèm Thiêu Đốt 2 lượt." },
+      { reqLv: 130, name: "Phong Lôi Trảm", cost: 2400, isAirborne: true, desc: "Nhảy lên không giáng kiếm phong lôi, gây 320% ATK lên 2 mục tiêu, giảm 30% DEF trong 2 lượt." },
+      { reqLv: 250, name: "Lữ Hành Khai Hoang", cost: 3800, desc: "Bùng nổ tiềm lực, tăng 40% ATK, 25% Tốc đánh và hồi 25% HP đã mất trong 3 hiệp." }
     ],
     passives: [
       { lv: 30, name: "Điều Tức", desc: "Mỗi lượt tự nhiên hồi thêm 50 - 200 Chakra ngẫu nhiên." },
@@ -2165,7 +2165,7 @@ const HERO_DB = {
     roleDesc: "Sát Thủ Sáo Thần, Liên Kết Ác Ma, Thôi Miên & Chia Sẻ Sát Thương",
     baseHp: 888, baseAtk: 48.2, baseDef: 75, baseSpd: 181,
     chakraMax: 22000, chakraRegenMin: 300, chakraRegenMax: 700, startChakra: 0,
-    normalAttack: { name: "Khúc Sáo Ma Thuật", chakraGainMin: 300, chakraGainMax: 800, atkPct: 0.99, isRanged: true, desc: "Gây 99% ATK, 30% cơ hội áp dụng 'Thôi Miên'. Hồi HP toàn đội bằng 30% ST gây ra. Hồi 300 - 800 Chakra." },
+    normalAttack: { name: "Khúc Sáo Ma Thuật", chakraGainMin: 400, chakraGainMax: 850, atkPct: 0.99, isRanged: true, desc: "Gây 99% ATK, 30% cơ hội áp dụng 'Thôi Miên'. Hồi HP toàn đội bằng 30% ST gây ra. Hồi 400 - 850 Chakra." },
     skills: [
       { reqLv: 1, name: "Nốt Nhạc Tử Thần", cost: 1600, isRanged: true, desc: "Gây 180% ATK, giảm 20% DEF địch trong 2 lượt." },
       { reqLv: 50, name: "Liên Kết Ác Ma", cost: 3800, isRanged: true, desc: "Gây 120% ATK. Áp dụng 'Liên Kết Ác Ma' duy trì 4 lượt (Susan chịu thêm 40% ST, truyền sang mục tiêu; ST mục tiêu nhận chuyển thành hồi HP cho Susan)." },
@@ -2206,8 +2206,8 @@ const HERO_DB = {
     normalAttack: { name: "Vu Thuật Đoạt Mệnh", chakraGainMin: 600, chakraGainMax: 1200, atkPct: 0.0, desc: "Không gây ST. Cướp 7% HP còn lại của 1 địch chia cho 2 đồng minh thấp máu. Hồi 600 - 1200 Chakra." },
     skills: [
       { reqLv: 1, name: "Linh Phù Hộ Mệnh", cost: 1800, desc: "Cấp 'Shield' bằng 15% HP tối đa của Kagura cho 1 đồng minh." },
-      { reqLv: 50, name: "Dây Định Mệnh / Giáng Thần", cost: 4500, desc: "Nối 'Dây Định Mệnh' cho 1 đồng minh, vào 'Dạng Thần' 5 lượt. Nhận thêm 1 lượt hành động lập tức." },
-      { reqLv: 130, name: "Thần Quang Chiếu Rọi", cost: 3500, desc: "Hồi 30% HP max cho đồng minh nối dây, Kagura hồi 70% lượng đó. Cấp 'Shield' 10% HP còn lại của Kagura." },
+      { reqLv: 50, name: "Dây Định Mệnh / Giáng Thần", cost: 3500, desc: "Nối 'Dây Định Mệnh' cho 1 đồng minh, vào 'Dạng Thần' 5 lượt. Nhận thêm 1 lượt hành động lập tức." },
+      { reqLv: 130, name: "Thần Quang Chiếu Rọi", cost: 5500, desc: "Hồi 30% HP max cho đồng minh nối dây, Kagura hồi 70% lượng đó. Cấp 'Shield' 10% HP còn lại của Kagura." },
       { reqLv: 250, name: "Thánh Âm Thanh Tẩy", cost: 10000, desc: "Xóa mọi debuff toàn đội, hồi máu bằng 25% HP max. Tăng 20% ATK cho mục tiêu nối dây trong 2 lượt." }
     ],
     passives: [
@@ -2298,7 +2298,7 @@ const HERO_DB = {
     roleDesc: "Thần La Thiên Chinh Phản Đòn Áp Sát, Vạn Tượng Thiên Dẫn",
     baseHp: 660, baseAtk: 65, baseDef: 60, baseSpd: 165,
     chakraMax: 26000, chakraRegenMin: 400, chakraRegenMax: 1000, startChakra: 0,
-    normalAttack: { name: "Hắc Bổng Kích", chakraGainMin: 400, chakraGainMax: 900, atkPct: 1.0, isMelee: true, desc: "Đâm hắc bổng gây 100% ATK, khóa hồi phục Chakra mục tiêu trong 1 hiệp. Hồi 400 - 900 Chakra." },
+    normalAttack: { name: "Hắc Bổng Kích", chakraGainMin: 450, chakraGainMax: 950, atkPct: 1.0, isMelee: true, desc: "Đâm hắc bổng gây 100% ATK, khóa hồi phục Chakra mục tiêu trong 1 hiệp. Hồi 450 - 950 Chakra." },
     skills: [
       { reqLv: 1, name: "Hắc Bổng Đâm Thấu", cost: 2000, isMelee: true, desc: "Phóng hắc bổng gây 220% ATK, phong tỏa không cho mục tiêu tích lũy Chakra trong 1 hiệp." },
       { reqLv: 50, name: "Vạn Tượng Thiên Dẫn", cost: 4500, isRanged: true, desc: "Kéo 1 tướng hàng sau của địch lên hàng trước gây 260% ATK, giảm 50% Né tránh của mục tiêu." },
@@ -4204,6 +4204,93 @@ function startTrainingBattle(gateType, stage) {
   nextTurn();
 }
 
+/* ==========================================================================
+   LINH THÚ HỘ MỆNH SYSTEM (v7.2.0: Tự Động Áp Dụng Toàn Diện Vào Trận Đấu)
+   ========================================================================== */
+function applyEquippedBeastBuffs(pTeam) {
+  if (!gameState.equippedBeast || !BEASTS_DB[gameState.equippedBeast]) return;
+  const beast = BEASTS_DB[gameState.equippedBeast];
+  logCombat(`🐉 [Linh Thú Hộ Mệnh] Đội hình được phù trợ bởi ${beast.name} [${beast.tier}]! (+${Math.round(beast.stats.hpPct * 100)}% HP & ATK, +${beast.stats.defFlat || 0} DEF)`);
+
+  pTeam.forEach(p => {
+    if (!p) return;
+    const curHp = p.maxHp;
+    const curAtk = p.atk;
+    const hpBonus = Math.round(curHp * beast.stats.hpPct);
+    const atkBonus = +(curAtk * beast.stats.atkPct).toFixed(1);
+
+    p.maxHp += hpBonus;
+    p.hp += hpBonus;
+    p.atk = +(p.atk + atkBonus).toFixed(1);
+    if (beast.stats.defFlat) p.def += beast.stats.defFlat;
+    if (beast.stats.critRate) p.critRate = (p.critRate || 0.18) + beast.stats.critRate;
+    if (beast.stats.normalEnGain) {
+      p.extraChakraGain = (p.extraChakraGain || 0) + Math.round(beast.stats.normalEnGain * 500);
+    }
+    if (beast.stats.teamStartEn) {
+      const startChakraBonus = beast.stats.teamStartEn * 1000;
+      p.chakra = Math.min(p.chakraMax, (p.chakra || 0) + startChakraBonus);
+      logCombat(`✨ [Linh Thú Khởi Nguyên] ${p.name} nhận thêm +${startChakraBonus.toLocaleString()} Chakra khởi đầu trận!`);
+    }
+  });
+
+  // Đồng hành Susanoo - Madara
+  if (gameState.equippedBeast === "susanoo") {
+    const madara = pTeam.find(p => p && p.id === "madara");
+    if (madara) {
+      madara.critRate = (madara.critRate || 0.18) + 0.25;
+      madara.chakra = Math.min(madara.chakraMax, (madara.chakra || 0) + 2000);
+      logCombat(`⚔️ [Susanoo Đồng Hành] Madara tăng 25% Bạo Kích và nhận thêm +2,000 Chakra!`);
+    }
+  }
+
+  // Đồng hành Amaterasu - Itachi
+  if (gameState.equippedBeast === "amaterasu") {
+    const itachi = pTeam.find(p => p && (p.id === "itachi" || p.id === "itachi_amaterasu"));
+    if (itachi) {
+      const extraAtk = +( (itachi.db ? itachi.db.baseAtk : 32.5) * 0.20 ).toFixed(1);
+      itachi.atk = +(itachi.atk + extraAtk).toFixed(1);
+      logCombat(`🔥 [Amaterasu Đồng Hành] Itachi tăng thêm 20% ATK gốc và thăng hoa uy lực kỹ năng!`);
+    }
+  }
+
+  // Đồng hành Rinnegan - Pain
+  if (gameState.equippedBeast === "rinnegan") {
+    const pain = pTeam.find(p => p && p.id === "pain");
+    if (pain) {
+      pain.dodgeRate = (pain.dodgeRate || 0.13) + 0.05;
+      logCombat(`👁️ [Rinnegan Đồng Hành] Pain tăng 5% Tỉ lệ Né tránh và kích hoạt hào quang Luân Hồi Hộ Trận!`);
+    }
+  }
+
+  // Đồng hành Bộ Ba Otsutsuki
+  if (gameState.equippedBeast === "otsutsuki_blood") {
+    const isshiki = pTeam.find(p => p && p.id === "isshiki");
+    const momo = pTeam.find(p => p && p.id === "momoshiki");
+    const luanhoi = pTeam.find(p => p && p.id === "luanhoi");
+
+    if (isshiki && momo && luanhoi) {
+      const shieldVal = Math.round(momo.maxHp * 0.50);
+      pTeam.forEach(p => {
+        if (p) {
+          p.shield = (p.shield || 0) + shieldVal;
+          p.extraChakraGain = (p.extraChakraGain || 0) + 400;
+          addAnimation(p, `+${shieldVal.toLocaleString()} Khiên`, "#58a6ff");
+        }
+      });
+      isshiki.atkSpd = 0.50;
+      logCombat(`👑 [Dòng Máu Otsutsuki] Bộ ba thức tỉnh! Toàn đội nhận Khiên ${shieldVal.toLocaleString()} HP (50% HP Momoshiki), +400 Chakra đánh thường, Isshiki 50% tốc đánh gốc!`);
+    }
+  }
+
+  // Cập nhật lại khiên của Omega Shenron theo lượng máu mới sau khi có Linh Thú
+  const omega = pTeam.find(p => p && p.id === "omega" && p.level >= 30);
+  if (omega) {
+    omega.shield = Math.round(omega.maxHp * 1.10);
+    logCombat(`🐉 [Tà Long Hộ Thể] Omega Shenron nhận Khiên thần hộ ${omega.shield.toLocaleString()} HP (110% HP sau Linh Thú)!`);
+  }
+}
+
 function startBattle() {
   closeModal("modalTeamSetup");
   closeModal("modalStageSelect");
@@ -4295,6 +4382,9 @@ function startBattle() {
       pTeam.push(fighter);
     }
   }
+
+  // v7.2.0: Áp dụng Linh Thú Hộ Mệnh cho toàn đội hình trong trận đấu
+  applyEquippedBeastBuffs(pTeam);
 
   // Aura toàn đội đầu trận
   pTeam.forEach(fighter => {
@@ -4869,57 +4959,90 @@ function updatePlayerSkillCards(actor) {
   if (!db) return;
 
   const normalAtk = db.normalAttack || { name: "Đánh Thường", chakraGainMin: 150, chakraGainMax: 300, desc: "Tấn công mục tiêu tích lũy Chakra." };
+  const skills = db.skills || [];
+  const heroSave = gameState.heroes[actor.id];
+  const eqSkillId = heroSave?.equippedSkill;
+  const hasLearnedSkill = (eqSkillId && LEARNED_SKILLS_DB[eqSkillId] && actor.level >= 100);
+
+  // v7.2.0: Layout Grid 3 Cột x 2 Hàng Không Cần Kéo Cuộn Ngang
+  const isCompactGrid = (skills.length > 2);
+  deck.style.display = "grid";
+  deck.style.gridTemplateColumns = "repeat(3, 1fr)";
+  deck.style.gridTemplateRows = isCompactGrid ? "repeat(2, 1fr)" : "1fr";
+  deck.style.gap = "6px";
+  deck.style.overflow = "hidden";
+  deck.style.paddingBottom = "0";
+
   let cardsHtml = `
-    <div class="skill-card" id="btnNormalAttack" onclick="executePlayerAction('normal')" style="min-width:145px; border-color:#388bfd;">
-      <div class="skill-title" style="display:flex; justify-content:space-between; align-items:center;">
-        <span style="color:#58a6ff; font-weight:700;">Đánh Thường</span>
-        <span style="color:var(--accent-cyan); font-size:11px; font-weight:700;">+${normalAtk.chakraGainMin}-${normalAtk.chakraGainMax} 🌀</span>
+    <div class="skill-card" id="btnNormalAttack" onclick="executePlayerAction('normal')" style="border-color:#388bfd; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; cursor:pointer;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
+        <span style="color:#58a6ff; font-weight:700; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">⚔️ Đánh Thường</span>
+        <span style="color:var(--accent-cyan); font-size:10px; font-weight:800; white-space:nowrap;">+${normalAtk.chakraGainMin}-${normalAtk.chakraGainMax} 🌀</span>
       </div>
-      <div style="font-weight:700; color:#fff; font-size:12px; margin:2px 0;">${normalAtk.name}</div>
-      <div class="skill-desc" style="font-size:10px; color:#8b949e; line-height:1.3;">${normalAtk.desc}</div>
-      <div class="skill-meta" style="margin-top:auto; font-size:10px; color:#58a6ff; font-weight:700;">🎯 Tích lũy Chakra</div>
+      <div style="font-weight:700; color:#fff; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:1px 0;">${normalAtk.name}</div>
+      <div style="font-size:9.5px; color:#8b949e; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${normalAtk.desc}</div>
+      <div style="font-size:9.5px; color:#3fb950; font-weight:700; margin-top:auto;">🎯 Tích lũy Chakra</div>
     </div>
   `;
 
-  // Render 4 Active Skills
-  const skills = db.skills || [];
+  // Render 4 Active Skills (Lv.1, Lv.50, Lv.130, Lv.250)
   skills.forEach((s, idx) => {
     const isUnlocked = (actor.level >= s.reqLv);
     const hasEnoughChakra = ((actor.chakra || 0) >= s.cost);
     const canCast = isUnlocked && hasEnoughChakra;
 
     let borderCol = canCast ? "#bc8cff" : (isUnlocked ? "#30363d" : "#21262d");
-    let statusText = canCast ? "SẴN SÀNG KÍCH HOẠT" : (isUnlocked ? `Thiếu Chakra (${(actor.chakra || 0).toLocaleString()}/${s.cost.toLocaleString()})` : `🔒 Mở ở Lv.${s.reqLv}`);
+    let statusText = canCast ? "🟢 SẴN SÀNG" : (isUnlocked ? `🔴 Thiếu ${(s.cost - (actor.chakra || 0)).toLocaleString()} 🌀` : `🔒 Mở ở Lv.${s.reqLv}`);
     let statusColor = canCast ? "var(--accent-green)" : (isUnlocked ? "var(--accent-red)" : "#6e7681");
 
     cardsHtml += `
-      <div class="skill-card ${canCast ? '' : 'disabled'}" id="btnSkill_${idx}" onclick="${canCast ? `executePlayerAction('skill_${idx}')` : ''}" style="min-width:150px; border-color:${borderCol}; ${canCast ? 'box-shadow:0 0 10px rgba(188,140,255,0.25);' : ''}">
-        <div class="skill-title" style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-weight:700; color:${isUnlocked ? '#d2a8ff' : '#6e7681'};">[Lv.${s.reqLv}] ${s.name}</span>
-          <span style="color:var(--accent-gold); font-size:11px; font-weight:700;">${s.cost.toLocaleString()} 🌀</span>
+      <div class="skill-card ${canCast ? '' : 'disabled'}" id="btnSkill_${idx}" onclick="${canCast ? `executePlayerAction('skill_${idx}')` : ''}" style="border-color:${borderCol}; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; ${canCast ? 'box-shadow:0 0 8px rgba(188,140,255,0.25); cursor:pointer;' : 'cursor:not-allowed; opacity:0.65;'}">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
+          <span style="font-weight:700; color:${isUnlocked ? '#d2a8ff' : '#6e7681'}; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">[Lv.${s.reqLv}] ${s.name}</span>
+          <span style="color:var(--accent-gold); font-size:10px; font-weight:800; white-space:nowrap;">${s.cost.toLocaleString()} 🌀</span>
         </div>
-        <div class="skill-desc" style="font-size:10px; color:${isUnlocked ? '#c9d1d9' : '#484f58'}; line-height:1.3; margin:3px 0;">${s.desc}</div>
-        <div class="skill-meta" style="margin-top:auto; font-size:10px; color:${statusColor}; font-weight:700;">${statusText}</div>
+        <div style="font-size:9.5px; color:${isUnlocked ? '#c9d1d9' : '#484f58'}; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin:1px 0;">${s.desc}</div>
+        <div style="font-size:9.5px; color:${statusColor}; font-weight:700; margin-top:auto;">${statusText}</div>
       </div>
     `;
   });
 
-  // Render Learned Skill (nếu có trang bị)
-  const heroSave = gameState.heroes[actor.id];
-  const eqSkillId = heroSave?.equippedSkill;
-  if (eqSkillId && LEARNED_SKILLS_DB[eqSkillId] && actor.level >= 100) {
+  // Render 6th Slot: Learned Skill (Bí kíp cấm thuật học thêm)
+  if (hasLearnedSkill) {
     const ls = LEARNED_SKILLS_DB[eqSkillId];
     const canCastLs = ((actor.chakra || 0) >= ls.cost);
     cardsHtml += `
-      <div class="skill-card ${canCastLs ? '' : 'disabled'}" id="btnLearnedSkill" onclick="${canCastLs ? `executePlayerAction('learned')` : ''}" style="min-width:150px; border-color:${canCastLs ? '#ffd700' : '#30363d'};">
-        <div class="skill-title" style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-weight:700; color:#ffd700;">[Bí Kíp] ${ls.name}</span>
-          <span style="color:var(--accent-gold); font-size:11px; font-weight:700;">${ls.cost.toLocaleString()} 🌀</span>
+      <div class="skill-card ${canCastLs ? '' : 'disabled'}" id="btnLearnedSkill" onclick="${canCastLs ? `executePlayerAction('learned')` : ''}" style="border-color:${canCastLs ? '#ffd700' : '#30363d'}; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; ${canCastLs ? 'box-shadow:0 0 8px rgba(255,215,0,0.3); cursor:pointer;' : 'cursor:not-allowed; opacity:0.65;'}">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
+          <span style="font-weight:700; color:#ffd700; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">📜 [Bí Kíp] ${ls.name}</span>
+          <span style="color:var(--accent-gold); font-size:10px; font-weight:800; white-space:nowrap;">${ls.cost.toLocaleString()} 🌀</span>
         </div>
-        <div class="skill-desc" style="font-size:10px; color:#c9d1d9; line-height:1.3; margin:3px 0;">${ls.desc}</div>
-        <div class="skill-meta" style="margin-top:auto; font-size:10px; color:${canCastLs ? 'var(--accent-green)' : 'var(--accent-red)'}; font-weight:700;">
-          ${canCastLs ? 'SẴN SÀNG KÍCH HOẠT' : `Thiếu Chakra (${(actor.chakra || 0).toLocaleString()}/${ls.cost.toLocaleString()})`}
+        <div style="font-size:9.5px; color:#c9d1d9; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin:1px 0;">${ls.desc}</div>
+        <div style="font-size:9.5px; color:${canCastLs ? 'var(--accent-green)' : 'var(--accent-red)'}; font-weight:700; margin-top:auto;">
+          ${canCastLs ? '🟢 SẴN SÀNG' : `🔴 Thiếu ${(ls.cost - (actor.chakra || 0)).toLocaleString()} 🌀`}
         </div>
+      </div>
+    `;
+  } else if (actor.level >= 100) {
+    cardsHtml += `
+      <div class="skill-card disabled" style="border:1px dashed #30363d; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; opacity:0.6;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-weight:700; color:#ffd700; font-size:11px;">📜 Ô Bí Kíp (Lv.100)</span>
+          <span style="color:#8b949e; font-size:10px;">Chưa gán</span>
+        </div>
+        <div style="font-size:9.5px; color:#8b949e; line-height:1.2; margin:1px 0;">Chưa trang bị bí kíp nào. Hãy vào bảng Nhân Vật để trang bị!</div>
+        <div style="font-size:9.5px; color:#8b949e; font-weight:700; margin-top:auto;">(Trống)</div>
+      </div>
+    `;
+  } else if (isCompactGrid && skills.length < 5) {
+    cardsHtml += `
+      <div class="skill-card disabled" style="border:1px dashed #21262d; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; opacity:0.4;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-weight:700; color:#6e7681; font-size:11px;">📜 Ô Bí Kíp Cấm Thuật</span>
+          <span style="color:#6e7681; font-size:10px;">Khóa</span>
+        </div>
+        <div style="font-size:9.5px; color:#484f58; line-height:1.2; margin:1px 0;">Mở khóa ô kỹ năng thứ 5 khi nhân vật đạt Cấp độ 100.</div>
+        <div style="font-size:9.5px; color:#6e7681; font-weight:700; margin-top:auto;">🔒 Cần Lv.100</div>
       </div>
     `;
   }
@@ -5395,7 +5518,10 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
     const normalAtk = db.normalAttack || { name: "Đánh Thường", chakraGainMin: 150, chakraGainMax: 300, atkPct: 1.0, isMelee: true };
     const minG = normalAtk.chakraGainMin || 150;
     const maxG = normalAtk.chakraGainMax || 300;
-    const chakraGain = Math.floor(Math.random() * (maxG - minG + 1)) + minG;
+    let chakraGain = Math.floor(Math.random() * (maxG - minG + 1)) + minG;
+    if (actor.extraChakraGain) {
+      chakraGain += actor.extraChakraGain;
+    }
     actor.chakra = Math.min(actor.chakraMax || 10000, (actor.chakra || 0) + chakraGain);
 
     logCombat(`⚔️ [${normalAtk.name}] ${actor.name} tung đòn đánh thường, hồi phục +${chakraGain.toLocaleString()} Chakra!`);
@@ -8984,33 +9110,39 @@ function renderHeroDetails(heroId) {
     `;
   }
 
-  const isLocked250 = (currentLv === 250 && !gameState.heroes[heroId]?.breakthrough250);
-  const isLocked300 = (currentLv === 300 && !gameState.heroes[heroId]?.breakthrough300);
-  const isLocked350 = (currentLv === 350 && !gameState.heroes[heroId]?.breakthrough350);
+  const isLocked250 = (currentLv >= 250 && !gameState.heroes[heroId]?.breakthrough250);
+  const isLocked300 = (currentLv >= 300 && !gameState.heroes[heroId]?.breakthrough300);
+  const isLocked350 = (currentLv >= 350 && !gameState.heroes[heroId]?.breakthrough350);
 
   let upgradeSectionHtml = "";
   if (isLocked250) {
     upgradeSectionHtml = `
-      <div style="width:100%; background:#1c1214; border:1px solid #f85149; border-radius:8px; padding:10px;">
-        <div style="font-weight:700; color:#f85149; font-size:12px; margin-bottom:3px;">🔒 CẦN ĐỘT PHÁ CẤP 250 ĐỂ NÂNG TIẾP LÊN CẤP 300!</div>
-        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">Yêu cầu tiêu hao: <b>5 Thiên Thạch Xanh 🔷</b> (Quay tại Sổ Sứ Mệnh Thường).</div>
-        <button class="btn btn-pink" style="width:100%; padding:8px; font-weight:700;" onclick="breakthroughHero('${heroId}', 250)">Đột Phá Cấp 250</button>
+      <div style="width:100%; background:#2c1216; border:1px solid #f85149; border-radius:8px; padding:10px;">
+        <div style="font-weight:700; color:#f85149; font-size:12px; margin-bottom:3px;">🔒 CHẠM MỐC CẤP 250! CẦN ĐỘT PHÁ ĐỂ NÂNG TIẾP LÊN CẤP 300:</div>
+        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">Chọn 1 trong 2 cách tiêu hao: <b>45 Thiên Thạch Hồng ☄️</b> HOẶC <b>95 Thiên Thạch Xanh 🔷</b></div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-pink" style="flex:1; padding:8px; font-weight:700;" onclick="breakthroughHero('${heroId}', 'pink')">45 ☄️ Hồng</button>
+          <button class="btn btn-accent" style="flex:1; padding:8px; font-weight:700;" onclick="breakthroughHero('${heroId}', 'blue')">95 🔷 Xanh</button>
+        </div>
       </div>
     `;
   } else if (isLocked300) {
     upgradeSectionHtml = `
-      <div style="width:100%; background:#1c1214; border:1px solid #f85149; border-radius:8px; padding:10px;">
-        <div style="font-weight:700; color:#f85149; font-size:12px; margin-bottom:3px;">🔒 CẦN ĐỘT PHÁ CẤP 300 ĐỂ NÂNG TIẾP LÊN CẤP 350!</div>
-        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">Yêu cầu tiêu hao: <b>3 Thiên Thạch Hồng ☄️</b> (Quay tại Sổ Sứ Mệnh Đặc Biệt).</div>
-        <button class="btn btn-pink" style="width:100%; padding:8px; font-weight:700;" onclick="breakthroughHero('${heroId}', 300)">Đột Phá Cấp 300</button>
+      <div style="width:100%; background:#2c1216; border:1px solid #f85149; border-radius:8px; padding:10px;">
+        <div style="font-weight:700; color:#f85149; font-size:12px; margin-bottom:3px;">🔒 CHẠM MỐC CẤP 300! CẦN ĐỘT PHÁ ĐỂ NÂNG TIẾP LÊN CẤP 350:</div>
+        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">Chọn 1 trong 2 cách tiêu hao: <b>180 Thiên Thạch Hồng ☄️</b> HOẶC <b>390 Thiên Thạch Xanh 🔷</b></div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-pink" style="flex:1; padding:8px; font-weight:700;" onclick="breakthroughHero300('${heroId}', 'pink')">180 ☄️ Hồng</button>
+          <button class="btn btn-accent" style="flex:1; padding:8px; font-weight:700;" onclick="breakthroughHero300('${heroId}', 'blue')">390 🔷 Xanh</button>
+        </div>
       </div>
     `;
   } else if (isLocked350) {
     upgradeSectionHtml = `
-      <div style="width:100%; background:#1c1214; border:1px solid #bc8cff; border-radius:8px; padding:10px;">
-        <div style="font-weight:700; color:#bc8cff; font-size:12px; margin-bottom:3px;">🔮 CẦN ĐỘT PHÁ CẤP 350 ĐỂ NÂNG TIẾP LÊN CẤP 500!</div>
-        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">Yêu cầu tiêu hao: <b>35 Thiên Thạch Tím 🔮</b> (Thu thập tại Đấu Trường Đối Kháng).</div>
-        <button class="btn btn-purple" style="width:100%; padding:8px; font-weight:700; background:#6f42c1; color:#fff;" onclick="breakthroughHero('${heroId}', 350)">Đột Phá Cấp 350 (Thiên Thạch Tím)</button>
+      <div style="width:100%; background:#2c1216; border:1px solid #bc8cff; border-radius:8px; padding:10px;">
+        <div style="font-weight:700; color:#bc8cff; font-size:12px; margin-bottom:3px;">🔮 CHẠM MỐC CẤP 350! ĐỘT PHÁ SIÊU CẤP ĐỂ NÂNG LÊN CẤP 600:</div>
+        <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px;">Yêu cầu: <b>500 ⭐ Ánh sao</b> + <b>3,000 💎 Kim cương</b> + <b>10M 🧪 VPNC</b> + <b>30 ☄️ Hồng</b></div>
+        <button class="btn btn-pink" style="width:100%; padding:8px; font-weight:700;" onclick="breakthroughHero350('${heroId}')">🚀 Đột Phá Siêu Thần Cấp 350</button>
       </div>
     `;
   } else {
@@ -9250,6 +9382,18 @@ function breakthroughHero(heroId, type) {
     return;
   }
 
+  // Tự động chọn loại thiên thạch nếu không truyền hoặc truyền 250
+  if (!type || type === 250 || type === "250" || type === "auto") {
+    if ((gameState.resources.pinkMeteor || 0) >= 45) {
+      type = "pink";
+    } else if ((gameState.resources.blueMeteor || 0) >= 95) {
+      type = "blue";
+    } else {
+      toast("Cần 45 Thiên Thạch Hồng ☄️ hoặc 95 Thiên Thạch Xanh 🔷 để Đột Phá Cấp 250!", true);
+      return;
+    }
+  }
+
   if (type === "pink") {
     if ((gameState.resources.pinkMeteor || 0) < 45) {
       toast("Không đủ Thiên Thạch Hồng (Cần 45 ☄️)!", true);
@@ -9263,13 +9407,14 @@ function breakthroughHero(heroId, type) {
     }
     gameState.resources.blueMeteor -= 95;
   } else {
+    toast("Loại thiên thạch không hợp lệ!", true);
     return;
   }
 
   gameState.heroes[heroId].breakthrough250 = true;
   saveGame();
   updateTopBarUI();
-  toast(`🎉 Đột phá thành công! ${HERO_DB[heroId].name} mở khóa giới hạn lên Cấp 300 (+22% chỉ số/Lv)!`);
+  toast(`🎉 Đột phá Cấp 250 thành công! ${HERO_DB[heroId]?.name || heroId} mở khóa giới hạn lên Cấp 300 (+22% chỉ số/Lv)!`);
   renderHeroesList();
   renderHeroDetails(heroId);
 }
@@ -9285,6 +9430,18 @@ function breakthroughHero300(heroId, type) {
     return;
   }
 
+  // Tự động chọn loại thiên thạch nếu không truyền hoặc truyền 300
+  if (!type || type === 300 || type === "300" || type === "auto") {
+    if ((gameState.resources.pinkMeteor || 0) >= 180) {
+      type = "pink";
+    } else if ((gameState.resources.blueMeteor || 0) >= 390) {
+      type = "blue";
+    } else {
+      toast("Cần 180 Thiên Thạch Hồng ☄️ hoặc 390 Thiên Thạch Xanh 🔷 để Đột Phá Cấp 300!", true);
+      return;
+    }
+  }
+
   if (type === "pink") {
     if ((gameState.resources.pinkMeteor || 0) < 180) {
       toast("Không đủ Thiên Thạch Hồng (Cần 180 ☄️)!", true);
@@ -9298,13 +9455,14 @@ function breakthroughHero300(heroId, type) {
     }
     gameState.resources.blueMeteor -= 390;
   } else {
+    toast("Loại thiên thạch không hợp lệ!", true);
     return;
   }
 
   gameState.heroes[heroId].breakthrough300 = true;
   saveGame();
   updateTopBarUI();
-  toast(`🎉 Đột Phá Thần Cấp thành công! ${HERO_DB[heroId].name} mở khóa giới hạn lên Cấp 350 (+30% chỉ số/Lv)!`);
+  toast(`🎉 Đột Phá Thần Cấp 300 thành công! ${HERO_DB[heroId]?.name || heroId} mở khóa giới hạn lên Cấp 350 (+30% chỉ số/Lv)!`);
   renderHeroesList();
   renderHeroDetails(heroId);
 }
@@ -9334,7 +9492,7 @@ function breakthroughHero350(heroId) {
   gameState.heroes[heroId].breakthrough350 = true;
   saveGame();
   updateTopBarUI();
-  toast(`🎉 Đột Phá Siêu Thần thành công! ${HERO_DB[heroId].name} mở khóa giới hạn lên Cấp 600 (+35% chỉ số/Lv, +20 DEF/50 Lv)!`);
+  toast(`🎉 Đột Phá Siêu Thần 350 thành công! ${HERO_DB[heroId]?.name || heroId} mở khóa giới hạn lên Cấp 600 (+35% chỉ số/Lv, +20 DEF/50 Lv)!`);
   renderHeroesList();
   renderHeroDetails(heroId);
 }
