@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -809,7 +808,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v7.0.0 (SIÊU CẬP NHẬT: CHAKRA, KỸ NĂNG ĐA TẦNG, PHẢN ỨNG CHIẾN THUẬT & HỌC BÍ KÍP)</div>
+            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v7.1.0 (CẬP NHẬT HOÀN THIỆN: FIX LỖI ĐẤU TRẬN, NÂNG CẤP +10 & TỐI ƯU)</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
             <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1688,6 +1687,28 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Học Kỹ Năng / Bí Kíp Cấm Thuật (v7.1.0) -->
+  <div class="modal-overlay" id="modalLearnSkill">
+    <div class="modal-card" style="width:680px; max-width:96vw; max-height:85vh;">
+      <div class="modal-header">
+        <div class="modal-title">📜 Học Kỹ Năng & Bí Kíp Cấm Thuật</div>
+        <button class="modal-close" onclick="closeModal('modalLearnSkill')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:16px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; max-height:calc(85vh - 120px);">
+        <div style="display:flex; justify-content:space-between; align-items:center; background:#161b22; border:1px solid #30363d; border-radius:8px; padding:12px;" id="learnSkillHeroHeader"></div>
+        <div style="display:flex; justify-content:space-between; align-items:center; font-size:12px; color:#8b949e; padding:0 4px;">
+          <span>Kho Bí Kíp Cấm Thuật:</span>
+          <span>Mảnh bí kíp hiện có: <b style="color:var(--accent-gold);" id="learnSkillShardCount">0</b> 📜</span>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:10px;" id="learnSkillList"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('modalLearnSkill')">Đóng</button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Popup: Kết Quả Trận Đấu -->
   
@@ -3985,7 +4006,12 @@ function startTrainingBattle(gateType, stage) {
       const stats = getHeroStats(heroId);
       const fighter = {
         ...stats,
-        en: 0,
+        chakra: stats.startChakra || 0,
+        en: stats.startChakra || 0,
+        chakraMax: stats.chakraMax || 10000,
+        enMax: stats.chakraMax || 10000,
+        chakraRegenMin: stats.chakraRegenMin || 200,
+        chakraRegenMax: stats.chakraRegenMax || 500,
         shield: 0,
         isBot: false,
         slot: slot,
@@ -3994,8 +4020,17 @@ function startTrainingBattle(gateType, stage) {
         extraEnGain: 0,
         vegitoPassiveTriggered: false,
         atkSpd: stats.db.atkSpd || 0,
+        hitShake: 0,
         rage: 0
       };
+      Object.defineProperty(fighter, 'en', {
+        get() { return this.chakra; },
+        set(val) { this.chakra = val; }
+      });
+      Object.defineProperty(fighter, 'enMax', {
+        get() { return this.chakraMax; },
+        set(val) { this.chakraMax = val; }
+      });
       // Passives kích hoạt đầu trận
       if (heroId === "omega" && stats.level >= 30) {
         fighter.shield = Math.round(fighter.maxHp * 1.10);
@@ -4161,9 +4196,7 @@ function startTrainingBattle(gateType, stage) {
       fighter.unifiedUsed = false;
       fighter.kuramaSusanooShield = false;
       logCombat(`🤝☯️ [Song Hào Khởi Đầu] Bạn Chiến ${fighter.name} vào trận với dạng: ${fighter.form === 'naruto' ? 'Naruto (Lục Đạo)' : 'Sasuke (Vĩnh Cửu)'}!`);
-      if (fighter.level >= 30) {
-        triggerLucDaoKich(fighter);
-      }
+// v7.1.0: Đã cập nhật theo hệ thống Chakra mới
     }
   });
 
@@ -4766,6 +4799,12 @@ function nextTurn() {
     nextTurn();
     return;
   }
+
+  // v7.1.0: Cập nhật HUD lượt hành động và tốc độ
+  const elActorName = document.getElementById("activeActorName");
+  if (elActorName) elActorName.textContent = actor.name || "---";
+  const elActorSpeed = document.getElementById("activeActorSpeed");
+  if (elActorSpeed) elActorSpeed.textContent = `Tốc độ: ${actor.spd || 140}`;
 
   actor.buffs = actor.buffs || {};
 
@@ -6636,11 +6675,11 @@ function drawCharacter(f) {
     ctx.fillText(chStr, x, chakraBarY + 14);
 
     // Chữ số HP
-    ctx.font = "bold 9.5px sans-serif";
+    ctx.font = "bold 9px sans-serif";
     ctx.textAlign = "center";
     ctx.fillStyle = "#c9d1d9";
-    const hpStr = f.maxHp >= 10000000 ? `${(f.hp / 1e6).toFixed(1)}M / ${(f.maxHp / 1e6).toFixed(1)}M` : `${f.hp.toLocaleString()}/${f.maxHp.toLocaleString()}`;
-    ctx.fillText(hpStr, x, enBarY + 14);
+    const hpStr = f.maxHp >= 10000000 ? `${(f.hp / 1e6).toFixed(1)}M / ${(f.maxHp / 1e6).toFixed(1)}M HP` : `${f.hp.toLocaleString()}/${f.maxHp.toLocaleString()} HP`;
+    ctx.fillText(hpStr, x, chakraBarY + 25);
 
     // 9. Status Buff & Debuff Badges (Hàng trên cùng, cân đối)
     let badgeOffset = -36;
@@ -8979,6 +9018,9 @@ function renderHeroDetails(heroId) {
       <button class="btn btn-primary" style="flex:1; padding:8px;" onclick="upgradeHero('${heroId}')">
         Nâng Cấp (Lv.${currentLv + 1})
       </button>
+      <button class="btn btn-accent" style="flex:1; padding:8px; font-weight:700;" onclick="upgradeHero10('${heroId}')">
+        Nâng +10 Cấp
+      </button>
       <button class="btn" style="flex:1; padding:8px;" onclick="upgradeHeroMax('${heroId}')">
         Nâng Tối Đa
       </button>
@@ -9135,6 +9177,67 @@ function upgradeHero10(heroId) {
   renderHeroesList();
   renderHeroDetails(heroId);
 }
+
+function upgradeHeroMax(heroId) {
+  const currentLv = gameState.heroes[heroId].level;
+  if (currentLv >= 600) { toast("Nhân vật đã đạt cấp tối đa (Lv. 600)!", true); return; }
+  if (currentLv === 250 && !gameState.heroes[heroId]?.breakthrough250) {
+    toast("Cần Đột Phá Cấp 250 bằng 45 Thiên Thạch Hồng hoặc 95 Thiên Thạch Xanh để nâng cấp tiếp!", true);
+    return;
+  }
+  if (currentLv === 300 && !gameState.heroes[heroId]?.breakthrough300) {
+    toast("Cần Đột Phá Cấp 300 bằng 180 Thiên Thạch Hồng hoặc 390 Thiên Thạch Xanh để nâng cấp tiếp lên Cấp 350!", true);
+    return;
+  }
+  if (currentLv === 350 && !gameState.heroes[heroId]?.breakthrough350) {
+    toast("Cần Đột Phá Cấp 350 để nâng cấp tiếp lên Cấp 600!", true);
+    return;
+  }
+
+  let maxAllowed = 600;
+  if (!gameState.heroes[heroId]?.breakthrough250 && currentLv < 250) {
+    maxAllowed = 250;
+  } else if (!gameState.heroes[heroId]?.breakthrough300 && currentLv < 300) {
+    maxAllowed = 300;
+  } else if (!gameState.heroes[heroId]?.breakthrough350 && currentLv < 350) {
+    maxAllowed = 350;
+  }
+
+  let targetLv = currentLv;
+  let totalVpnc = 0;
+  let totalGold = 0;
+
+  while (targetLv < maxAllowed) {
+    const { vpncCost, goldCost } = getHeroUpgradeCost(targetLv);
+    if (gameState.resources.vpnc < totalVpnc + vpncCost || gameState.resources.gold < totalGold + goldCost) {
+      break;
+    }
+    totalVpnc += vpncCost;
+    totalGold += goldCost;
+    targetLv++;
+  }
+
+  if (targetLv === currentLv) {
+    const { vpncCost, goldCost } = getHeroUpgradeCost(currentLv);
+    toast(`Không đủ tài nguyên! Cần ${vpncCost.toLocaleString()} VPNC và ${goldCost.toLocaleString()} Vàng để nâng cấp tiếp!`, true);
+    return;
+  }
+
+  gameState.resources.vpnc -= totalVpnc;
+  gameState.resources.gold -= totalGold;
+  const levelsGained = targetLv - currentLv;
+  gameState.heroes[heroId].level = targetLv;
+  gameState.dailyQuests.progress.levelsUpgraded += levelsGained;
+  if (gameState.events && gameState.events.anhHungChiVien && gameState.events.anhHungChiVien.dailyQuestProgress) {
+    gameState.events.anhHungChiVien.dailyQuestProgress.levelsUpgraded = (gameState.events.anhHungChiVien.dailyQuestProgress.levelsUpgraded || 0) + levelsGained;
+  }
+  saveGame();
+
+  toast(`Nâng tối đa ${HERO_DB[heroId].name} thêm +${levelsGained} cấp (Đạt Lv. ${targetLv})!`);
+  renderHeroesList();
+  renderHeroDetails(heroId);
+}
+
 
 function breakthroughHero(heroId, type) {
   if (!gameState.heroes[heroId]) return;
@@ -9976,7 +10079,7 @@ function claimEventGiftcode() {
 
   const originalInput = document.getElementById("giftcodeInput");
   if (originalInput) originalInput.value = code;
-  claimGiftcode();
+  submitGiftcode();
   input.value = "";
 }
 
