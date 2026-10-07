@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v7.0.0 [SIÊU CẬP NHẬT: HỆ THỐNG CHAKRA, KỸ NĂNG ĐA TẦNG & HỌC VIỆN NHẪN THUẬT]</title>
+<title>Chiến Thuật Luân Hồi v7.1.2.1 [BẢN CẬP NHẬT: SỬA TRIỆT ĐỂ LỖI Ô KỸ NĂNG & MÔ TẢ ĐẦY ĐỦ KHÔNG BỊ CHE]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -341,42 +341,48 @@
   }
   #battleCanvas {
     width: 100%;
-    height: 480px;
+    height: 460px;
     display: block;
     background: #0d1117;
   }
   .battle-controls {
-    height: 200px;
+    height: 225px;
     background: #0f141c;
     border-top: 1px solid var(--border-color);
     display: flex;
-    padding: 10px 16px;
-    gap: 14px;
+    padding: 8px 10px;
+    gap: 8px;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
   }
   .turn-banner {
-    width: 210px;
+    width: 165px;
+    min-width: 155px;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background: #161b22;
-    padding: 10px;
+    padding: 8px 10px;
     border-radius: 8px;
     border: 1px solid var(--border-color);
   }
   .speed-toggle-group {
     display: flex;
-    gap: 6px;
+    gap: 4px;
   }
   .speed-btn {
     flex: 1;
-    padding: 4px;
-    font-size: 11px;
+    padding: 4px 2px;
+    font-size: 10.5px;
     border-radius: 4px;
     background: #21262d;
     color: #8b949e;
     border: 1px solid var(--border-color);
     cursor: pointer;
     font-weight: 600;
+    text-align: center;
   }
   .speed-btn.active {
     background: #1f6feb;
@@ -385,59 +391,114 @@
   }
   .action-deck {
     flex: 1;
-    display: flex;
-    gap: 12px;
-    align-items: center;
+    min-width: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: repeat(2, 1fr);
+    gap: 6px;
+    height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
   }
   .skill-card {
-    flex: 1;
     background: #161b22;
-    border: 1px solid var(--border-color);
+    border: 1.5px solid var(--border-color);
     border-radius: 8px;
-    padding: 10px;
+    padding: 6px 8px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    justify-content: space-between;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.15s ease;
     height: 100%;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    user-select: none;
+    overflow: hidden;
   }
   .skill-card:hover:not(.disabled) {
-    border-color: var(--accent-blue);
-    background: #21262d;
     transform: translateY(-2px);
+    filter: brightness(1.15);
+    z-index: 5;
   }
   .skill-card.disabled {
-    opacity: 0.35;
+    opacity: 0.55;
     cursor: not-allowed;
   }
   .skill-title {
-    font-size: 13px;
+    font-size: 11.5px;
     font-weight: 700;
     display: flex;
     justify-content: space-between;
   }
   .skill-desc {
-    font-size: 11px;
+    font-size: 9.5px;
     color: var(--text-secondary);
     line-height: 1.3;
   }
   .skill-meta {
-    font-size: 10px;
+    font-size: 9.5px;
     color: var(--accent-gold);
     margin-top: auto;
   }
   .battle-log-mini {
-    width: 240px;
+    width: 180px;
+    min-width: 150px;
+    flex-shrink: 0;
     background: #090d13;
     border: 1px solid #21262d;
     border-radius: 8px;
-    padding: 8px;
-    font-size: 11px;
+    padding: 6px 8px;
+    font-size: 10px;
     color: var(--text-secondary);
     overflow-y: auto;
     display: flex;
     flex-direction: column-reverse;
+    transition: width 0.2s ease, min-width 0.2s ease;
+  }
+  .battle-log-mini.collapsed {
+    width: 28px;
+    min-width: 28px;
+    padding: 4px 2px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  #battleSkillTooltip {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    background: rgba(13, 17, 23, 0.98);
+    border: 1.5px solid #bc8cff;
+    border-radius: 10px;
+    padding: 12px 14px;
+    max-width: 340px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    transition: opacity 0.1s ease;
+  }
+  .battle-log-mini.collapsed {
+    width: 32px;
+    min-width: 32px;
+    padding: 4px 2px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  #battleSkillTooltip {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    background: rgba(13, 17, 23, 0.98);
+    border: 1.5px solid #bc8cff;
+    border-radius: 10px;
+    padding: 12px 14px;
+    max-width: 340px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
+    pointer-events: none;
+    backdrop-filter: blur(8px);
+    transition: opacity 0.1s ease;
   }
   /* Modals */
   .modal-overlay {
@@ -729,7 +790,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-green); margin-top:-14px;">v6.1.1 CẬP NHẬT: Sửa Triệt Để Lỗi Đòn Đánh Bạn Chiến, Tối Ưu Sổ Sứ Mệnh Mùa III & Cường Hóa Bạn Chiến!</div>
+      <div style="font-size:12px; color:var(--accent-gold); margin-top:-14px; font-weight:700;">⚡ BẢN v7.1.2.1: HỆ THỐNG CHAKRA, ĐỘT PHÁ LV.600, LINH THÚ GIA HỘ & BẢNG KỸ NĂNG TỐI ƯU</div>
       <div class="menu-grid">
         <button class="btn btn-hub-campaign" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -808,10 +869,11 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:10px; color:#ff0055; font-weight:800; letter-spacing:0.5px;">⚡ BẢN v7.2.0 (ĐỘT PHÁ CẤP, LINH THÚ HỘ MỆNH & BẢNG KỸ NĂNG GRID 3x2 KHÔNG CUỘN)</div>
-            <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động</div>
-            <div style="font-size:14px; font-weight:700; color:var(--accent-blue);" id="activeActorName">Đang tải...</div>
+            <div style="font-size:9.5px; color:#ff0055; font-weight:800; letter-spacing:0.5px; line-height:1.2; margin-bottom:2px;">⚡ v7.1.2.1 SỬA LỖI Ô KỸ NĂNG</div>
+            <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động:</div>
+            <div style="font-size:13.5px; font-weight:700; color:var(--accent-blue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
+            <button class="btn btn-secondary" style="padding:3px 6px; font-size:10px; margin-top:4px; width:100%; font-weight:700; border-color:#58a6ff33;" onclick="openBattleHeroSkillsModal()" title="Mở bảng xem toàn bộ mô tả chiêu thức">📖 Chi Tiết Kỹ Năng</button>
           </div>
           <div class="speed-toggle-group">
             <button class="speed-btn active" id="btnSpeed1" onclick="setBattleSpeed(1)">1x</button>
@@ -820,7 +882,7 @@
           </div>
         </div>
 
-        <div class="action-deck" id="playerActionDeck" style="flex:1; display:grid; grid-template-columns:repeat(3, 1fr); grid-template-rows:repeat(2, 1fr); gap:6px; height:100%; overflow:hidden;">
+        <div class="action-deck" id="playerActionDeck" style="flex:1; min-width:0; display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:6px; height:100%; box-sizing:border-box;">
         </div>
 
         <div class="battle-log-mini" id="battleLogBox">
@@ -4952,6 +5014,290 @@ function nextTurn() {
   }
 }
 
+// ==================== BẢN v7.1.2: HỆ THỐNG HIỂN THỊ KỸ NĂNG GRID 3x2 KHÔNG BỊ CHE & TOOLTIP CHI TIẾT ====================
+function toggleBattleLog() {
+  const logBox = document.getElementById("battleLogBox");
+  if (!logBox) return;
+  logBox.classList.toggle("collapsed");
+}
+
+function showBattleSkillTooltip(e, name, costStr, desc, statusStr, statusColor, borderCol) {
+  const tooltip = document.getElementById("battleSkillTooltip");
+  if (!tooltip) return;
+  const header = document.getElementById("tooltipSkillHeader");
+  const descEl = document.getElementById("tooltipSkillDesc");
+  const meta = document.getElementById("tooltipSkillMeta");
+
+  if (header) {
+    header.innerHTML = `
+      <span style="font-weight:800; color:${borderCol || '#58a6ff'}; font-size:12.5px;">${name}</span>
+      <span style="font-weight:800; color:var(--accent-gold); font-size:11.5px;">${costStr}</span>
+    `;
+  }
+  if (descEl) {
+    descEl.textContent = desc;
+  }
+  if (meta) {
+    meta.innerHTML = `<span style="color:${statusColor || '#3fb950'};">${statusStr}</span>`;
+  }
+
+  tooltip.style.borderColor = borderCol || '#58a6ff';
+  tooltip.style.display = "block";
+  moveBattleSkillTooltip(e);
+}
+
+function moveBattleSkillTooltip(e) {
+  const tooltip = document.getElementById("battleSkillTooltip");
+  if (!tooltip || tooltip.style.display === "none") return;
+  const tw = tooltip.offsetWidth || 300;
+  const th = tooltip.offsetHeight || 100;
+  let left = e.clientX - (tw / 2);
+  let top = e.clientY - th - 16;
+
+  if (left < 10) left = 10;
+  if (left + tw > window.innerWidth - 10) left = window.innerWidth - tw - 10;
+  if (top < 10) top = e.clientY + 22;
+
+  tooltip.style.left = left + "px";
+  tooltip.style.top = top + "px";
+}
+
+function hideBattleSkillTooltip() {
+  const tooltip = document.getElementById("battleSkillTooltip");
+  if (tooltip) tooltip.style.display = "none";
+}
+
+function showSingleSkillModal(name, costStr, desc, reqLv, statusStr, statusColor) {
+  const title = document.getElementById("singleSkillModalTitle");
+  const body = document.getElementById("singleSkillModalBody");
+  if (title) title.innerHTML = `📖 ${name}`;
+  if (body) {
+    body.innerHTML = `
+      <div style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #21262d; padding-bottom:8px;">
+          <span style="font-size:14px; font-weight:800; color:#bc8cff;">${name} ${reqLv ? `[Cấp ${reqLv}]` : ''}</span>
+          <span style="font-size:13px; font-weight:800; color:var(--accent-gold);">${costStr}</span>
+        </div>
+        <div style="font-size:12.5px; color:#f0f6fc; line-height:1.5; white-space:pre-wrap;">${desc}</div>
+        <div style="font-size:11px; font-weight:700; color:${statusColor || 'var(--accent-green)'}; padding-top:6px; border-top:1px dashed #21262d;">
+          Trạng thái: ${statusStr}
+        </div>
+      </div>
+    `;
+  }
+  openModal("modalSingleSkillDetail");
+}
+
+function openBattleHeroSkillsModal() {
+  const actor = battle.turnQueue[battle.currentActorIndex];
+  if (!actor) return;
+  const db = HERO_DB[actor.id] || actor.db;
+  if (!db) return;
+
+  const title = document.getElementById("battleHeroSkillsTitle");
+  const content = document.getElementById("battleHeroSkillsContent");
+  if (title) title.innerHTML = `📜 Toàn Bộ Kỹ Năng: ${actor.name} (Lv.${actor.level}) - Chakra: ${(actor.chakra||0).toLocaleString()}/${(actor.chakraMax||10000).toLocaleString()} 🌀`;
+
+  if (content) {
+    const normalAtk = db.normalAttack || { name: "Đánh Thường", chakraGainMin: 150, chakraGainMax: 300, desc: "Tấn công mục tiêu tích lũy Chakra." };
+    const skills = db.skills || [];
+    const heroSave = gameState.heroes[actor.id];
+    const eqSkillId = heroSave?.equippedSkill;
+    const ls = (eqSkillId && LEARNED_SKILLS_DB[eqSkillId]) ? LEARNED_SKILLS_DB[eqSkillId] : null;
+
+    let html = `
+      <div style="background:#161b22; border:1px solid #388bfd; border-radius:8px; padding:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b style="color:#58a6ff; font-size:13px;">⚔️ Đánh Thường: ${normalAtk.name}</b>
+          <span style="color:var(--accent-cyan); font-size:12px; font-weight:bold;">+${normalAtk.chakraGainMin}-${normalAtk.chakraGainMax} 🌀 Chakra</span>
+        </div>
+        <div style="font-size:12px; color:#c9d1d9; line-height:1.45; margin-top:4px;">${normalAtk.desc}</div>
+      </div>
+    `;
+
+    skills.forEach(s => {
+      const isUnlocked = (actor.level >= s.reqLv);
+      const canCast = isUnlocked && ((actor.chakra || 0) >= s.cost);
+      let borderCol = canCast ? "#bc8cff" : (isUnlocked ? "#30363d" : "#21262d");
+
+      html += `
+        <div style="background:#161b22; border:1px solid ${borderCol}; border-radius:8px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <b style="color:${isUnlocked ? '#d2a8ff' : '#6e7681'}; font-size:13px;">[Lv.${s.reqLv}] ${s.name}</b>
+            <span style="color:var(--accent-gold); font-size:12px; font-weight:bold;">${s.cost.toLocaleString()} 🌀 Chakra</span>
+          </div>
+          <div style="font-size:12px; color:${isUnlocked ? '#c9d1d9' : '#6e7681'}; line-height:1.45; margin-top:4px;">${s.desc}</div>
+          <div style="font-size:11px; font-weight:700; margin-top:4px; color:${canCast ? 'var(--accent-green)' : (isUnlocked ? 'var(--accent-red)' : '#6e7681')};">
+            ${canCast ? '✓ Đủ Chakra để thi triển' : (isUnlocked ? `✗ Thiếu ${(s.cost - (actor.chakra||0)).toLocaleString()} Chakra` : `🔒 Mở khóa khi đạt Cấp ${s.reqLv}`)}
+          </div>
+        </div>
+      `;
+    });
+
+    if (ls && actor.level >= 100) {
+      const canCastLs = ((actor.chakra || 0) >= ls.cost);
+      html += `
+        <div style="background:#161b22; border:1.5px solid #ffd700; border-radius:8px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <b style="color:#ffd700; font-size:13px;">📜 [Bí Kíp Đang Trang Bị] ${ls.name}</b>
+            <span style="color:var(--accent-gold); font-size:12px; font-weight:bold;">${ls.cost.toLocaleString()} 🌀 Chakra</span>
+          </div>
+          <div style="font-size:12px; color:#c9d1d9; line-height:1.45; margin-top:4px;">${ls.desc}</div>
+          <div style="font-size:11px; font-weight:700; margin-top:4px; color:${canCastLs ? 'var(--accent-green)' : 'var(--accent-red)'};">
+            ${canCastLs ? '✓ Đủ Chakra để thi triển' : `✗ Thiếu ${(ls.cost - (actor.chakra||0)).toLocaleString()} Chakra`}
+          </div>
+        </div>
+      `;
+    }
+
+    content.innerHTML = html;
+  }
+
+  openModal("modalBattleHeroSkills");
+}
+
+// ==================== BẢN v7.1.2.1: HỆ THỐNG HIỂN THỊ KỸ NĂNG GRID 3x2 KHÔNG BỊ CHE & TOOLTIP CHI TIẾT ====================
+function toggleBattleLog() {
+  const logBox = document.getElementById("battleLogBox");
+  if (!logBox) return;
+  logBox.classList.toggle("collapsed");
+}
+
+function showBattleSkillTooltip(e, name, costStr, desc, statusStr, statusColor, borderCol) {
+  const tooltip = document.getElementById("battleSkillTooltip");
+  if (!tooltip) return;
+  const header = document.getElementById("tooltipSkillHeader");
+  const descEl = document.getElementById("tooltipSkillDesc");
+  const meta = document.getElementById("tooltipSkillMeta");
+
+  if (header) {
+    header.innerHTML = `
+      <span style="font-weight:800; color:${borderCol || '#58a6ff'}; font-size:12.5px;">${name}</span>
+      <span style="font-weight:800; color:var(--accent-gold); font-size:11.5px;">${costStr}</span>
+    `;
+  }
+  if (descEl) {
+    descEl.textContent = desc;
+  }
+  if (meta) {
+    meta.innerHTML = `<span style="color:${statusColor || '#3fb950'};">${statusStr}</span>`;
+  }
+
+  tooltip.style.borderColor = borderCol || '#58a6ff';
+  tooltip.style.display = "block";
+  moveBattleSkillTooltip(e);
+}
+
+function moveBattleSkillTooltip(e) {
+  const tooltip = document.getElementById("battleSkillTooltip");
+  if (!tooltip || tooltip.style.display === "none") return;
+  const tw = tooltip.offsetWidth || 300;
+  const th = tooltip.offsetHeight || 100;
+  let left = e.clientX - (tw / 2);
+  let top = e.clientY - th - 16;
+
+  if (left < 10) left = 10;
+  if (left + tw > window.innerWidth - 10) left = window.innerWidth - tw - 10;
+  if (top < 10) top = e.clientY + 22;
+
+  tooltip.style.left = left + "px";
+  tooltip.style.top = top + "px";
+}
+
+function hideBattleSkillTooltip() {
+  const tooltip = document.getElementById("battleSkillTooltip");
+  if (tooltip) tooltip.style.display = "none";
+}
+
+function showSingleSkillModal(name, costStr, desc, reqLv, statusStr, statusColor) {
+  const title = document.getElementById("singleSkillModalTitle");
+  const body = document.getElementById("singleSkillModalBody");
+  if (title) title.innerHTML = `📖 ${name}`;
+  if (body) {
+    body.innerHTML = `
+      <div style="background:#161b22; border:1px solid #30363d; border-radius:8px; padding:14px; display:flex; flex-direction:column; gap:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #21262d; padding-bottom:8px;">
+          <span style="font-size:14px; font-weight:800; color:#bc8cff;">${name} ${reqLv ? `[Cấp ${reqLv}]` : ''}</span>
+          <span style="font-size:13px; font-weight:800; color:var(--accent-gold);">${costStr}</span>
+        </div>
+        <div style="font-size:12.5px; color:#f0f6fc; line-height:1.5; white-space:pre-wrap;">${desc}</div>
+        <div style="font-size:11px; font-weight:700; color:${statusColor || 'var(--accent-green)'}; padding-top:6px; border-top:1px dashed #21262d;">
+          Trạng thái: ${statusStr}
+        </div>
+      </div>
+    `;
+  }
+  openModal("modalSingleSkillDetail");
+}
+
+function openBattleHeroSkillsModal() {
+  const actor = battle.turnQueue[battle.currentActorIndex];
+  if (!actor) return;
+  const db = HERO_DB[actor.id] || actor.db;
+  if (!db) return;
+
+  const title = document.getElementById("battleHeroSkillsTitle");
+  const content = document.getElementById("battleHeroSkillsContent");
+  if (title) title.innerHTML = `📜 Toàn Bộ Kỹ Năng: ${actor.name} (Lv.${actor.level}) - Chakra: ${(actor.chakra||0).toLocaleString()}/${(actor.chakraMax||10000).toLocaleString()} 🌀`;
+
+  if (content) {
+    const normalAtk = db.normalAttack || { name: "Đánh Thường", chakraGainMin: 150, chakraGainMax: 300, desc: "Tấn công mục tiêu tích lũy Chakra." };
+    const skills = db.skills || [];
+    const heroSave = gameState.heroes[actor.id];
+    const eqSkillId = heroSave?.equippedSkill;
+    const ls = (eqSkillId && LEARNED_SKILLS_DB[eqSkillId]) ? LEARNED_SKILLS_DB[eqSkillId] : null;
+
+    let html = `
+      <div style="background:#161b22; border:1px solid #388bfd; border-radius:8px; padding:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <b style="color:#58a6ff; font-size:13px;">⚔️ Đánh Thường: ${normalAtk.name}</b>
+          <span style="color:var(--accent-cyan); font-size:12px; font-weight:bold;">+${normalAtk.chakraGainMin}-${normalAtk.chakraGainMax} 🌀 Chakra</span>
+        </div>
+        <div style="font-size:12px; color:#c9d1d9; line-height:1.45; margin-top:4px;">${normalAtk.desc}</div>
+      </div>
+    `;
+
+    skills.forEach(s => {
+      const isUnlocked = (actor.level >= s.reqLv);
+      const canCast = isUnlocked && ((actor.chakra || 0) >= s.cost);
+      let borderCol = canCast ? "#bc8cff" : (isUnlocked ? "#30363d" : "#21262d");
+
+      html += `
+        <div style="background:#161b22; border:1px solid ${borderCol}; border-radius:8px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <b style="color:${isUnlocked ? '#d2a8ff' : '#6e7681'}; font-size:13px;">[Lv.${s.reqLv}] ${s.name}</b>
+            <span style="color:var(--accent-gold); font-size:12px; font-weight:bold;">${s.cost.toLocaleString()} 🌀 Chakra</span>
+          </div>
+          <div style="font-size:12px; color:${isUnlocked ? '#c9d1d9' : '#6e7681'}; line-height:1.45; margin-top:4px;">${s.desc}</div>
+          <div style="font-size:11px; font-weight:700; margin-top:4px; color:${canCast ? 'var(--accent-green)' : (isUnlocked ? 'var(--accent-red)' : '#6e7681')};">
+            ${canCast ? '✓ Đủ Chakra để thi triển' : (isUnlocked ? `✗ Thiếu ${(s.cost - (actor.chakra||0)).toLocaleString()} Chakra` : `🔒 Mở khóa khi đạt Cấp ${s.reqLv}`)}
+          </div>
+        </div>
+      `;
+    });
+
+    if (ls && actor.level >= 100) {
+      const canCastLs = ((actor.chakra || 0) >= ls.cost);
+      html += `
+        <div style="background:#161b22; border:1.5px solid #ffd700; border-radius:8px; padding:12px;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <b style="color:#ffd700; font-size:13px;">📜 [Bí Kíp Đang Trang Bị] ${ls.name}</b>
+            <span style="color:var(--accent-gold); font-size:12px; font-weight:bold;">${ls.cost.toLocaleString()} 🌀 Chakra</span>
+          </div>
+          <div style="font-size:12px; color:#c9d1d9; line-height:1.45; margin-top:4px;">${ls.desc}</div>
+          <div style="font-size:11px; font-weight:700; margin-top:4px; color:${canCastLs ? 'var(--accent-green)' : 'var(--accent-red)'};">
+            ${canCastLs ? '✓ Đủ Chakra để thi triển' : `✗ Thiếu ${(ls.cost - (actor.chakra||0)).toLocaleString()} Chakra`}
+          </div>
+        </div>
+      `;
+    }
+
+    content.innerHTML = html;
+  }
+
+  openModal("modalBattleHeroSkills");
+}
+
 function updatePlayerSkillCards(actor) {
   const deck = document.getElementById("playerActionDeck");
   if (!deck) return;
@@ -4964,24 +5310,37 @@ function updatePlayerSkillCards(actor) {
   const eqSkillId = heroSave?.equippedSkill;
   const hasLearnedSkill = (eqSkillId && LEARNED_SKILLS_DB[eqSkillId] && actor.level >= 100);
 
-  // v7.2.0: Layout Grid 3 Cột x 2 Hàng Không Cần Kéo Cuộn Ngang
+  // v7.1.2.1: Sử dụng Grid 3 Cột minmax(0, 1fr) với min-width: 0 tuyệt đối để chống tràn & chống bị che
   const isCompactGrid = (skills.length > 2);
   deck.style.display = "grid";
-  deck.style.gridTemplateColumns = "repeat(3, 1fr)";
+  deck.style.gridTemplateColumns = "repeat(3, minmax(0, 1fr))";
   deck.style.gridTemplateRows = isCompactGrid ? "repeat(2, 1fr)" : "1fr";
   deck.style.gap = "6px";
   deck.style.overflow = "hidden";
-  deck.style.paddingBottom = "0";
+  deck.style.minWidth = "0";
+  deck.style.width = "100%";
+  deck.style.boxSizing = "border-box";
+
+  const escapeAttr = (str) => (str || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
   let cardsHtml = `
-    <div class="skill-card" id="btnNormalAttack" onclick="executePlayerAction('normal')" style="border-color:#388bfd; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; cursor:pointer;">
-      <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
-        <span style="color:#58a6ff; font-weight:700; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">⚔️ Đánh Thường</span>
-        <span style="color:var(--accent-cyan); font-size:10px; font-weight:800; white-space:nowrap;">+${normalAtk.chakraGainMin}-${normalAtk.chakraGainMax} 🌀</span>
+    <div class="skill-card" id="btnNormalAttack" onclick="executePlayerAction('normal')"
+      onmouseenter="showBattleSkillTooltip(event, '${escapeAttr(normalAtk.name)}', '+${normalAtk.chakraGainMin}-${normalAtk.chakraGainMax} 🌀', '${escapeAttr(normalAtk.desc)}', '🎯 Tích lũy Chakra', 'var(--accent-green)', '#388bfd')"
+      onmousemove="moveBattleSkillTooltip(event)"
+      onmouseleave="hideBattleSkillTooltip()"
+      title="${escapeAttr(normalAtk.name)} (+${normalAtk.chakraGainMin}-${normalAtk.chakraGainMax} 🌀):
+${escapeAttr(normalAtk.desc)}"
+      style="border-color:#388bfd; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; cursor:pointer; min-width:0; width:100%; box-sizing:border-box;">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:4px; min-width:0; width:100%;">
+        <span style="color:#58a6ff; font-weight:700; font-size:10.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; min-width:0;">⚔️ Đánh Thường</span>
+        <span style="color:var(--accent-cyan); font-size:9.5px; font-weight:800; white-space:nowrap; flex-shrink:0;">+${normalAtk.chakraGainMin}-${normalAtk.chakraGainMax} 🌀</span>
       </div>
-      <div style="font-weight:700; color:#fff; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:1px 0;">${normalAtk.name}</div>
-      <div style="font-size:9.5px; color:#8b949e; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${normalAtk.desc}</div>
-      <div style="font-size:9.5px; color:#3fb950; font-weight:700; margin-top:auto;">🎯 Tích lũy Chakra</div>
+      <div style="font-weight:700; color:#fff; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin:1px 0;">${normalAtk.name}</div>
+      <div style="font-size:9px; color:#c9d1d9; line-height:1.25; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word;">${normalAtk.desc}</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; font-size:9px; font-weight:700; min-width:0; width:100%; gap:2px;">
+        <span style="color:#3fb950; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; min-width:0;">🎯 Tích Chakra</span>
+        <span onclick="event.stopPropagation(); showSingleSkillModal('${escapeAttr(normalAtk.name)}', '+${normalAtk.chakraGainMin}-${normalAtk.chakraGainMax} 🌀', '${escapeAttr(normalAtk.desc)}', null, 'Tích lũy Chakra', 'var(--accent-green)')" style="color:#58a6ff; font-size:9.5px; padding:1px 4px; border-radius:3px; background:#1c2433; border:1px solid #388bfd44; cursor:pointer; flex-shrink:0;" title="Bấm xem đầy đủ mô tả">ℹ️ Chi tiết</span>
+      </div>
     </div>
   `;
 
@@ -4996,13 +5355,22 @@ function updatePlayerSkillCards(actor) {
     let statusColor = canCast ? "var(--accent-green)" : (isUnlocked ? "var(--accent-red)" : "#6e7681");
 
     cardsHtml += `
-      <div class="skill-card ${canCast ? '' : 'disabled'}" id="btnSkill_${idx}" onclick="${canCast ? `executePlayerAction('skill_${idx}')` : ''}" style="border-color:${borderCol}; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; ${canCast ? 'box-shadow:0 0 8px rgba(188,140,255,0.25); cursor:pointer;' : 'cursor:not-allowed; opacity:0.65;'}">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
-          <span style="font-weight:700; color:${isUnlocked ? '#d2a8ff' : '#6e7681'}; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">[Lv.${s.reqLv}] ${s.name}</span>
-          <span style="color:var(--accent-gold); font-size:10px; font-weight:800; white-space:nowrap;">${s.cost.toLocaleString()} 🌀</span>
+      <div class="skill-card ${canCast ? '' : 'disabled'}" id="btnSkill_${idx}" onclick="${canCast ? `executePlayerAction('skill_${idx}')` : ''}"
+        onmouseenter="showBattleSkillTooltip(event, '${escapeAttr(s.name)} [Lv.${s.reqLv}]', '${s.cost.toLocaleString()} 🌀', '${escapeAttr(s.desc)}', '${escapeAttr(statusText)}', '${statusColor}', '${borderCol}')"
+        onmousemove="moveBattleSkillTooltip(event)"
+        onmouseleave="hideBattleSkillTooltip()"
+        title="[Lv.${s.reqLv}] ${escapeAttr(s.name)} (${s.cost.toLocaleString()} Chakra):
+${escapeAttr(s.desc)}"
+        style="border-color:${borderCol}; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; min-width:0; width:100%; box-sizing:border-box; ${canCast ? 'box-shadow:0 0 8px rgba(188,140,255,0.25); cursor:pointer;' : 'cursor:not-allowed; opacity:0.65;'}">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:4px; min-width:0; width:100%;">
+          <span style="font-weight:700; color:${isUnlocked ? '#d2a8ff' : '#6e7681'}; font-size:10.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; min-width:0;">[Lv.${s.reqLv}] ${s.name}</span>
+          <span style="color:var(--accent-gold); font-size:9.5px; font-weight:800; white-space:nowrap; flex-shrink:0;">${s.cost.toLocaleString()} 🌀</span>
         </div>
-        <div style="font-size:9.5px; color:${isUnlocked ? '#c9d1d9' : '#484f58'}; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin:1px 0;">${s.desc}</div>
-        <div style="font-size:9.5px; color:${statusColor}; font-weight:700; margin-top:auto;">${statusText}</div>
+        <div style="font-size:9px; color:${isUnlocked ? '#c9d1d9' : '#6e7681'}; line-height:1.25; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin:1px 0; word-break:break-word;">${s.desc}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; font-size:9px; font-weight:700; min-width:0; width:100%; gap:2px;">
+          <span style="color:${statusColor}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; min-width:0;">${statusText}</span>
+          <span onclick="event.stopPropagation(); showSingleSkillModal('${escapeAttr(s.name)}', '${s.cost.toLocaleString()} 🌀', '${escapeAttr(s.desc)}', ${s.reqLv}, '${escapeAttr(statusText)}', '${statusColor}')" style="color:#bc8cff; font-size:9.5px; padding:1px 4px; border-radius:3px; background:#241830; border:1px solid #bc8cff44; cursor:pointer; flex-shrink:0;" title="Bấm xem đầy đủ mô tả">ℹ️ Chi tiết</span>
+        </div>
       </div>
     `;
   });
@@ -5011,38 +5379,49 @@ function updatePlayerSkillCards(actor) {
   if (hasLearnedSkill) {
     const ls = LEARNED_SKILLS_DB[eqSkillId];
     const canCastLs = ((actor.chakra || 0) >= ls.cost);
+    let borderCol = canCastLs ? "#ffd700" : "#30363d";
+    let statusText = canCastLs ? "🟢 SẴN SÀNG" : `🔴 Thiếu ${(ls.cost - (actor.chakra || 0)).toLocaleString()} 🌀`;
+    let statusColor = canCastLs ? "var(--accent-green)" : "var(--accent-red)";
+
     cardsHtml += `
-      <div class="skill-card ${canCastLs ? '' : 'disabled'}" id="btnLearnedSkill" onclick="${canCastLs ? `executePlayerAction('learned')` : ''}" style="border-color:${canCastLs ? '#ffd700' : '#30363d'}; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; ${canCastLs ? 'box-shadow:0 0 8px rgba(255,215,0,0.3); cursor:pointer;' : 'cursor:not-allowed; opacity:0.65;'}">
-        <div style="display:flex; justify-content:space-between; align-items:center; gap:4px;">
-          <span style="font-weight:700; color:#ffd700; font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">📜 [Bí Kíp] ${ls.name}</span>
-          <span style="color:var(--accent-gold); font-size:10px; font-weight:800; white-space:nowrap;">${ls.cost.toLocaleString()} 🌀</span>
+      <div class="skill-card ${canCastLs ? '' : 'disabled'}" id="btnLearnedSkill" onclick="${canCastLs ? `executePlayerAction('learned')` : ''}"
+        onmouseenter="showBattleSkillTooltip(event, '📜 [Bí Kíp] ${escapeAttr(ls.name)}', '${ls.cost.toLocaleString()} 🌀', '${escapeAttr(ls.desc)}', '${escapeAttr(statusText)}', '${statusColor}', '${borderCol}')"
+        onmousemove="moveBattleSkillTooltip(event)"
+        onmouseleave="hideBattleSkillTooltip()"
+        title="📜 [Bí Kíp] ${escapeAttr(ls.name)} (${ls.cost.toLocaleString()} Chakra):
+${escapeAttr(ls.desc)}"
+        style="border-color:${borderCol}; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; min-width:0; width:100%; box-sizing:border-box; ${canCastLs ? 'box-shadow:0 0 8px rgba(255,215,0,0.3); cursor:pointer;' : 'cursor:not-allowed; opacity:0.65;'}">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:4px; min-width:0; width:100%;">
+          <span style="font-weight:700; color:#ffd700; font-size:10.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; min-width:0;">📜 ${ls.name}</span>
+          <span style="color:var(--accent-gold); font-size:9.5px; font-weight:800; white-space:nowrap; flex-shrink:0;">${ls.cost.toLocaleString()} 🌀</span>
         </div>
-        <div style="font-size:9.5px; color:#c9d1d9; line-height:1.2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin:1px 0;">${ls.desc}</div>
-        <div style="font-size:9.5px; color:${canCastLs ? 'var(--accent-green)' : 'var(--accent-red)'}; font-weight:700; margin-top:auto;">
-          ${canCastLs ? '🟢 SẴN SÀNG' : `🔴 Thiếu ${(ls.cost - (actor.chakra || 0)).toLocaleString()} 🌀`}
+        <div style="font-size:9px; color:#c9d1d9; line-height:1.25; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin:1px 0; word-break:break-word;">${ls.desc}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:auto; font-size:9px; font-weight:700; min-width:0; width:100%; gap:2px;">
+          <span style="color:${statusColor}; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; min-width:0;">${statusText}</span>
+          <span onclick="event.stopPropagation(); showSingleSkillModal('${escapeAttr(ls.name)}', '${ls.cost.toLocaleString()} 🌀', '${escapeAttr(ls.desc)}', 'Bí Kíp', '${escapeAttr(statusText)}', '${statusColor}')" style="color:#ffd700; font-size:9.5px; padding:1px 4px; border-radius:3px; background:#292212; border:1px solid #ffd70044; cursor:pointer; flex-shrink:0;" title="Bấm xem đầy đủ mô tả">ℹ️ Chi tiết</span>
         </div>
       </div>
     `;
   } else if (actor.level >= 100) {
     cardsHtml += `
-      <div class="skill-card disabled" style="border:1px dashed #30363d; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; opacity:0.6;">
+      <div class="skill-card disabled" style="border:1px dashed #30363d; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; opacity:0.6; min-width:0; width:100%; box-sizing:border-box;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-weight:700; color:#ffd700; font-size:11px;">📜 Ô Bí Kíp (Lv.100)</span>
-          <span style="color:#8b949e; font-size:10px;">Chưa gán</span>
+          <span style="font-weight:700; color:#ffd700; font-size:10px;">📜 Ô Bí Kíp (Lv.100)</span>
+          <span style="color:#8b949e; font-size:9px;">Chưa gán</span>
         </div>
-        <div style="font-size:9.5px; color:#8b949e; line-height:1.2; margin:1px 0;">Chưa trang bị bí kíp nào. Hãy vào bảng Nhân Vật để trang bị!</div>
-        <div style="font-size:9.5px; color:#8b949e; font-weight:700; margin-top:auto;">(Trống)</div>
+        <div style="font-size:9px; color:#8b949e; line-height:1.25; margin:1px 0;">Chưa trang bị bí kíp nào. Hãy vào bảng Nhân Vật để trang bị!</div>
+        <div style="font-size:9px; color:#8b949e; font-weight:700; margin-top:auto;">(Trống)</div>
       </div>
     `;
   } else if (isCompactGrid && skills.length < 5) {
     cardsHtml += `
-      <div class="skill-card disabled" style="border:1px dashed #21262d; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; opacity:0.4;">
+      <div class="skill-card disabled" style="border:1px dashed #21262d; padding:6px 8px; justify-content:space-between; display:flex; flex-direction:column; opacity:0.4; min-width:0; width:100%; box-sizing:border-box;">
         <div style="display:flex; justify-content:space-between; align-items:center;">
-          <span style="font-weight:700; color:#6e7681; font-size:11px;">📜 Ô Bí Kíp Cấm Thuật</span>
-          <span style="color:#6e7681; font-size:10px;">Khóa</span>
+          <span style="font-weight:700; color:#6e7681; font-size:10px;">📜 Ô Bí Kíp Cấm Thuật</span>
+          <span style="color:#6e7681; font-size:9px;">Khóa</span>
         </div>
-        <div style="font-size:9.5px; color:#484f58; line-height:1.2; margin:1px 0;">Mở khóa ô kỹ năng thứ 5 khi nhân vật đạt Cấp độ 100.</div>
-        <div style="font-size:9.5px; color:#6e7681; font-weight:700; margin-top:auto;">🔒 Cần Lv.100</div>
+        <div style="font-size:9px; color:#484f58; line-height:1.25; margin:1px 0;">Mở khóa ô kỹ năng thứ 5 khi nhân vật đạt Cấp độ 100.</div>
+        <div style="font-size:9px; color:#6e7681; font-weight:700; margin-top:auto;">🔒 Cần Lv.100</div>
       </div>
     `;
   }
@@ -10703,5 +11082,43 @@ function showVersusResult(winningTeam) {
 }
 
 </script>
+
+  <!-- Tooltip Nổi Xem Chi Tiết Kỹ Năng (v7.1.2) -->
+  <div id="battleSkillTooltip">
+    <div id="tooltipSkillHeader" style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:4px;"></div>
+    <div id="tooltipSkillDesc" style="font-size:11px; color:#e6edf3; line-height:1.45; margin-bottom:6px; word-break:break-word;"></div>
+    <div id="tooltipSkillMeta" style="font-size:10px; font-weight:700; border-top:1px solid #30363d; padding-top:4px;"></div>
+  </div>
+
+  <!-- Modal Đọc Toàn Bộ Kỹ Năng Nhân Vật Trong Trận Đấu (v7.1.2) -->
+  <div class="modal-overlay" id="modalBattleHeroSkills">
+    <div class="modal-card" style="width:720px; max-width:96vw; max-height:85vh;">
+      <div class="modal-header">
+        <div class="modal-title" id="battleHeroSkillsTitle">📜 Toàn Bộ Kỹ Năng Nhân Vật</div>
+        <button class="modal-close" onclick="closeModal('modalBattleHeroSkills')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:16px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; max-height:calc(85vh - 120px);" id="battleHeroSkillsContent">
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('modalBattleHeroSkills')">Đóng</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Chi Tiết Một Kỹ Năng Đơn Lẻ (v7.1.2) -->
+  <div class="modal-overlay" id="modalSingleSkillDetail">
+    <div class="modal-card" style="width:500px; max-width:96vw;">
+      <div class="modal-header">
+        <div class="modal-title" id="singleSkillModalTitle">📖 Chi Tiết Kỹ Năng</div>
+        <button class="modal-close" onclick="closeModal('modalSingleSkillDetail')">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:16px;" id="singleSkillModalBody">
+      </div>
+      <div class="modal-footer">
+        <button class="btn" onclick="closeModal('modalSingleSkillDetail')">Đóng</button>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
