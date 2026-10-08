@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v7.1.2.1 [BẢN CẬP NHẬT: SỬA TRIỆT ĐỂ LỖI Ô KỸ NĂNG & MÔ TẢ ĐẦY ĐỦ KHÔNG BỊ CHE]</title>
+<title>Chiến Thuật Luân Hồi v7.2.0 [SIÊU CẬP NHẬT: KẾ HOẠCH TƯỚNG MỚI & SỬA TRIỆT ĐỂ DÂY KAGURA]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -790,7 +790,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-gold); margin-top:-14px; font-weight:700;">⚡ BẢN v7.1.2.1: HỆ THỐNG CHAKRA, ĐỘT PHÁ LV.600, LINH THÚ GIA HỘ & BẢNG KỸ NĂNG TỐI ƯU</div>
+      <div style="font-size:12px; color:var(--accent-gold); margin-top:-14px; font-weight:700;">⚡ BẢN v7.2.0: KẾ HOẠCH TƯỚNG MỚI, SỬA TRIỆT ĐỂ DÂY KAGURA & TỐI ƯU TOÀN DIỆN</div>
       <div class="menu-grid">
         <button class="btn btn-hub-campaign" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -869,7 +869,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:9.5px; color:#ff0055; font-weight:800; letter-spacing:0.5px; line-height:1.2; margin-bottom:2px;">⚡ v7.1.2.1 SỬA LỖI Ô KỸ NĂNG</div>
+            <div style="font-size:9.5px; color:#ff0055; font-weight:800; letter-spacing:0.5px; line-height:1.2; margin-bottom:2px;">⚡ v7.2.0 SỬA LỖI DÂY KAGURA & GRID KỸ NĂNG</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động:</div>
             <div style="font-size:13.5px; font-weight:700; color:var(--accent-blue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1821,6 +1821,11 @@
    CONFIG & DATABASE v1.3.0
    ========================================================================== */
 const GIFTCODES = {
+  "V720": { kimCuong: 50000, vpnc: 1000000, pinkMeteor: 50, blueMeteor: 100, gold: 2000000 },
+  "KURAMA": { kimCuong: 10000, vpnc: 500000, pinkMeteor: 20, gold: 500000 },
+  "SAGEMODE": { kimCuong: 10000, vpnc: 500000, pinkMeteor: 20, gold: 500000 },
+  "SUSANOO": { kimCuong: 10000, vpnc: 500000, pinkMeteor: 20, gold: 500000 },
+  "TOBIRAMA": { kimCuong: 10000, vpnc: 500000, pinkMeteor: 20, gold: 500000 },
   "TANTHU001": { anhSao: 500 },
   "TANTHU002": { anhSao: 500 },
   "TANTHU003": { anhSao: 500 },
@@ -1862,6 +1867,10 @@ const GIFTCODES = {
 };
 
 const HERO_ICONS = {
+  naruto_kurama: "🦊",
+  naruto_sage: "🐸",
+  sasuke_susanoo: "🏹",
+  tobirama: "🌊",
   traveler: "🗡️",
   madara: "☄️",
   omega: "🐉",
@@ -1954,6 +1963,89 @@ const LEARNED_SKILLS_DB = {
 };
 
 const HERO_DB = {
+  naruto_kurama: {
+    id: "naruto_kurama",
+    name: "Naruto (Chakra Cửu Vĩ)",
+    type: "AS",
+    roleDesc: "Đấu Sĩ Toàn Năng, Avatar Cửu Vĩ & Biến Đổi Bộ Kỹ Năng",
+    baseHp: 820, baseAtk: 46.5, baseDef: 60, baseSpd: 175,
+    chakraMax: 32000, chakraRegenMin: 700, chakraRegenMax: 1500, startChakra: 6000,
+    normalAttack: { name: "Rasengan", chakraGainMin: 500, chakraGainMax: 1000, atkPct: 1.10, isMelee: true, desc: "Tấn công áp sát gây 110% ATK, hồi 500 - 1,000 Chakra." },
+    skills: [
+      { reqLv: 1, name: "Phong Độn: Rasenshuriken", cost: 1800, desc: "Ném phi tiêu gió xoáy gây 220% ATK lên 1 mục tiêu, giảm 20% DEF đối thủ trong 2 lượt." },
+      { reqLv: 50, name: "Áo Choàng Chakra Cửu Vĩ", cost: 3200, desc: "Cấp 'Shield' bằng 20% HP tối đa của Naruto cho toàn đội, tăng 15% Tốc đánh trong 3 lượt." },
+      { reqLv: 130, name: "Cánh Tay Chakra Bành Trướng", cost: 4800, desc: "Vươn cánh tay Chakra tóm 2 kẻ địch nện xuống gây 350% ATK, làm Choáng (Stun) 1 lượt." },
+      { reqLv: 250, name: "Hóa Thân: Kurama's Chakra Perfect", cost: 8000, desc: "Tiến vào Avatar Cửu Vĩ Hoàng Kim trong 4 lượt: Tăng 40% ATK, Khiên 35% HP, miễn khống chế và THAY ĐỔI TOÀN BỘ BỘ CHIÊU THỨC!" }
+    ],
+    transformedSkills: [
+      { reqLv: 1, name: "Tiểu Vĩ Thú Cầu (Mini Bijuu Dama)", cost: 2900, desc: "Bắn 3 quả cầu năng lượng nén gây 280% ATK, bỏ qua 30% DEF đối thủ." },
+      { reqLv: 50, name: "Cửu Vĩ Liên Hoàn Trảo", cost: 4200, desc: "Quét 9 đuôi Chakra càn quét toàn đội địch gây 380% ATK diện rộng, 30% Choáng (Stun) 1 lượt." },
+      { reqLv: 130, name: "Pháo Đài Vĩ Thú (Kurama Bastion)", cost: 6500, desc: "Cuộn đuôi bảo vệ toàn đội: Cấp Khiên bằng 40% HP tối đa của Naruto, phản 40% ST cận chiến trong 2 lượt." },
+      { reqLv: 250, name: "Siêu Đại Vĩ Thú Cầu Rasenshuriken", cost: 15000, desc: "Ném Vĩ Thú Cầu bọc lưỡi dao gió khổng lồ gây 750% ATK diện rộng + Sát thương chuẩn bằng 15% HP tối đa toàn địch!" }
+    ],
+    transformedNormalAttack: { name: "Vĩ Thú Nanh Vuốt", chakraGainMin: 800, chakraGainMax: 1500, atkPct: 1.30, isMelee: true, desc: "Cào xé bằng vuốt vàng gây 130% ATK lên 2 mục tiêu, hồi 800 - 1,500 Chakra." },
+    passives: [
+      { lv: 30, name: "Ý Chí Uzumaki", desc: "Khi nhận sát thương chí tử, bất tử 1 lượt, hồi 50% HP và 6,000 Chakra (1 lần/trận)." },
+      { lv: 80, name: "Đồng Bộ Hoàn Hảo", desc: "Khi ở dạng Kurama's Chakra Perfect, tăng 30% Crit, +60% ST Bạo kích và giảm 35% mọi ST gánh chịu." }
+    ]
+  },
+  naruto_sage: {
+    id: "naruto_sage",
+    name: "Naruto (Tiên Nhân Thuật)",
+    type: "SKL",
+    roleDesc: "Pháp Sư Tiên Nhân, Cảm Ứng Né Tránh & Cường Hóa Chiêu Thức",
+    baseHp: 790, baseAtk: 48.0, baseDef: 52, baseSpd: 165,
+    chakraMax: 28000, chakraRegenMin: 500, chakraRegenMax: 1900, startChakra: 5000,
+    normalAttack: { name: "Ếch Quyền (Kawazu Kumite)", chakraGainMin: 500, chakraGainMax: 1300, atkPct: 1.0, isMelee: true, desc: "Gây 100% ATK. Khi ở Sage Mode: Đòn sóng xung kích vô hình gây 135% ATK, bỏ qua 50% DEF." },
+    skills: [
+      { reqLv: 1, name: "Tiên Pháp: Rasengan", cost: 1800, desc: "Nện Rasengan gây 220% ATK (Khi ở Sage Mode: 380% ATK và đẩy lùi thanh hành động đối thủ về 0)." },
+      { reqLv: 50, name: "Bật Tiên Nhân Thuật (Sage Mode)", cost: 3000, desc: "Hội tụ Tự Nhiên Năng Lượng trong 4 lượt: Tăng 50% Né tránh, +30% ST toàn bộ kỹ năng và NHẬN THÊM 1 LƯỢT ĐI LẬP TỨC!" },
+      { reqLv: 130, name: "Tiên Pháp: Phong Độn Rasenshuriken", cost: 5200, desc: "Ném Rasenshuriken gây 320% ATK lên 2 mục tiêu (Khi ở Sage Mode: 480% ATK toàn sàn, phá 35% DEF, cấm nhận buff 2 lượt)." },
+      { reqLv: 250, name: "Tiên Pháp: Siêu Đại Ngọc Rasengan", cost: 8800, desc: "Đại ngọc Rasengan giáng xuống gây 650% ATK toàn thể (Khi ở Sage Mode: +20% HP max ST, hồi HP toàn đội 25% ST gây ra)." }
+    ],
+    passives: [
+      { lv: 30, name: "Cảm Ứng Tiên Khí", desc: "Tăng vĩnh viễn 35% Tỉ lệ Né tránh. Né thành công lập tức phản kích 150% ATK và hồi 1,000 Chakra." },
+      { lv: 80, name: "Ý Chí Cóc Tiên", desc: "Khi ở Sage Mode, miễn nhiễm hoàn toàn với mọi hiệu ứng khống chế cứng (Choáng, Mất lượt, Ngưng đọng thời gian)." }
+    ]
+  },
+  sasuke_susanoo: {
+    id: "sasuke_susanoo",
+    name: "Sasuke (Susanoo Hoàn Chỉnh)",
+    type: "ATK",
+    roleDesc: "Sát Thủ Chung Cực, Giáp Susanoo Thần Hộ & Mũi Tên Indra",
+    baseHp: 770, baseAtk: 52.0, baseDef: 48, baseSpd: 178,
+    chakraMax: 26000, chakraRegenMin: 450, chakraRegenMax: 950, startChakra: 5000,
+    normalAttack: { name: "Chidori Kiếm (Kusanagi)", chakraGainMin: 450, chakraGainMax: 850, atkPct: 1.10, isMelee: true, desc: "Chém kiếm điện gây 110% ATK (+25% Crit Rate), hồi 450 - 850 Chakra." },
+    skills: [
+      { reqLv: 1, name: "Hỏa Độn: Hào Hỏa Long Thuật", cost: 1800, desc: "Bắn 3 rồng lửa gây 240% ATK, thiêu đốt 6% HP tối đa mỗi lượt trong 2 lượt." },
+      { reqLv: 50, name: "Viêm Độn: Hắc Hỏa Thao Túng (Kagutsuchi)", cost: 3500, desc: "Phóng Amaterasu xuyên thủng 1 mục tiêu gây 360% ATK, CẤM TRỊ LIỆU VĨNH VIỄN." },
+      { reqLv: 130, name: "Triệu Hồi: Susanoo Hoàn Chỉnh", cost: 5800, desc: "Thức tỉnh Susanoo Cự Thần Tím trong 4 lượt: Cấp Khiên 50% HP max, +35% ATK, +50 DEF, 50% ST chuyển thành Sát thương chuẩn!" },
+      { reqLv: 250, name: "Tuyệt Kỹ: Mũi Tên Indra (Indra's Arrow)", cost: 10000, desc: "Bắn mũi tên sấm sét tối thượng gây 750% ATK diện rộng. Nếu địch có Khiên, lập tức phá hủy Khiên và nhân đôi sát thương!" }
+    ],
+    passives: [
+      { lv: 30, name: "Đồng Lực Mangekyo Vĩnh Cửu", desc: "Tăng 25% Tỉ lệ Bạo Kích và 50% Sát thương Bạo Kích. Đòn đánh chí mạng hồi 800 Chakra." },
+      { lv: 80, name: "Hào Quang Báo Thù Indra", desc: "Khi HP dưới 35%, hồi phục 4,000 Chakra và tăng 40% Tốc độ trong 2 lượt (1 lần/trận)." }
+    ]
+  },
+  tobirama: {
+    id: "tobirama",
+    name: "Senju Tobirama (Đệ Nhị)",
+    type: "DEF",
+    roleDesc: "Bậc Thầy Thủy Độn, Tuyệt Đối Kháng Hỏa & Bài Xích Ảo Thuật",
+    baseHp: 840, baseAtk: 44.0, baseDef: 65, baseSpd: 172,
+    chakraMax: 28000, chakraRegenMin: 500, chakraRegenMax: 1000, startChakra: 6000,
+    normalAttack: { name: "Thủy Độn: Thủy Đoạn Ba", chakraGainMin: 500, chakraGainMax: 1000, atkPct: 0.95, isMelee: false, desc: "Tia nước áp suất cao gây 95% ATK, hồi 500 - 1,000 Chakra. Tự động thanh tẩy Ảo Thuật cho đồng minh!" },
+    skills: [
+      { reqLv: 1, name: "Thủy Độn: Thủy Trận Bích", cost: 1800, desc: "Tường nước cấp Khiên 22% HP tối đa Tobirama cho toàn đội, dập tắt toàn bộ hiệu ứng Thiêu đốt." },
+      { reqLv: 50, name: "Phi Lôi Thần Trảm (Hiraishin Giri)", cost: 3600, desc: "Dịch chuyển tức thời chém 340% ATK, bỏ qua 60% DEF, KHÔNG THỂ BỊ NÉ TRÁNH." },
+      { reqLv: 130, name: "Thủy Độn: Thủy Long Đạn Vực Sâu", cost: 5800, desc: "Đại thủy long càn quét toàn đội địch gây 380% ATK diện rộng, giảm 35% Tốc độ đối thủ trong 3 lượt." },
+      { reqLv: 250, name: "Cấm Thuật: Hỗ Thừa Khởi Bạo Phù", cost: 9500, desc: "Kích hoạt chuỗi nổ liên hoàn vô tận gây 620% ATK toàn thể. Kẻ địch tử trận sẽ phát nổ gây thêm 15% HP tối đa lên toàn bộ kẻ còn sống!" }
+    ],
+    passives: [
+      { lv: 30, name: "Thủy Thần Chi Thể (Tuyệt Đối Kháng Hỏa)", desc: "Miễn nhiễm 100% Thiêu Đốt, Bỏng Rát, Hắc Hỏa, Amaterasu. Bị đòn hệ Hỏa/Uchiha đánh trúng tự giảm 50% ST và phản 50% ST gốc." },
+      { lv: 80, name: "Cảm Ứng Thần Nhãn (Bài Xích Ảo Thuật)", desc: "Miễn nhiễm hoàn toàn với mọi Ảo Thuật (Genjutsu, Thao Túng, Thôi Miên, Vòng Lặp Izanami, Tsukuyomi). Đánh thường tự động thanh tẩy ảo thuật cho đồng minh." }
+    ]
+  },
   traveler: {
     id: "traveler",
     name: "Nhà lữ hành",
@@ -2848,8 +2940,11 @@ function getHeroStats(heroId, customLv = null) {
     hp = Math.round(hp * 1.50);
   }
 
-  let critRate = (heroId === "itachi_amaterasu" || heroId === "susan") ? 0.28 : 0.18;
-  let critDmg = (heroId === "itachi_amaterasu") ? 3.20 : (heroId === "susan" ? 2.80 : 3.0);
+  let critRate = (heroId === "itachi_amaterasu" || heroId === "susan" || heroId === "sasuke_susanoo") ? 0.28 : 0.18;
+  if (heroId === "sasuke_susanoo" && lv >= 30) {
+    critRate += 0.25;
+  }
+  let critDmg = (heroId === "itachi_amaterasu") ? 3.20 : (heroId === "susan" ? 2.80 : (heroId === "sasuke_susanoo" && lv >= 30 ? 3.50 : 3.0));
   let armorPen = 0;
   if (heroId === "itachi_amaterasu" && lv >= 30) {
     armorPen += 0.30;
@@ -2867,6 +2962,12 @@ function getHeroStats(heroId, customLv = null) {
   }
   if (heroId === "kid" && lv >= 70) {
     dodgeRate += 0.22;
+  }
+  if (heroId === "naruto_sage" && lv >= 30) {
+    dodgeRate += 0.35;
+  }
+  if (heroId === "tobirama" && lv >= 30) {
+    def += 30;
   }
 
   return {
@@ -4937,6 +5038,54 @@ function nextTurn() {
 
       // Hồi chiêu Rinnegan Madara
       if (f.rinneganCd && f.rinneganCd > 0) f.rinneganCd--;
+
+      // v7.2.0: Countdown cho các dạng biến hình mới
+      if (f.id === "naruto_kurama" && f.kuramaPerfect && f.kuramaPerfect > 0) {
+        f.kuramaPerfect--;
+        if (f.kuramaPerfect <= 0) {
+          f.atk = Math.round(f.atk / 1.40);
+          logCombat(`🦊 Trạng thái Kurama's Chakra Perfect của Naruto đã kết thúc!`);
+        }
+      }
+      if (f.id === "naruto_sage" && f.sageMode && f.sageMode > 0) {
+        f.sageMode--;
+        if (f.sageMode <= 0) {
+          f.dodgeRate = Math.max(0.13, (f.dodgeRate || 0.63) - 0.50);
+          logCombat(`🐸 Trạng thái Sage Mode của Naruto đã kết thúc!`);
+        }
+      }
+      if (f.id === "sasuke_susanoo" && f.susanooPerfect && f.susanooPerfect > 0) {
+        f.susanooPerfect--;
+        if (f.susanooPerfect <= 0) {
+          f.atk = Math.round(f.atk / 1.35);
+          f.def = Math.max(48, (f.def || 98) - 50);
+          logCombat(`🏹 Susanoo Hoàn Chỉnh của Sasuke đã thu hồi!`);
+        }
+      }
+
+      // v7.2.0: Kagura Dây Định Mệnh & Dạng Thần đếm lùi
+      if (f.id === "kagura" && f.buffs && f.buffs.dayDinhMenh) {
+        f.buffs.dayDinhMenh--;
+        if (f.linkedAlly && f.linkedAlly.buffs) {
+          f.linkedAlly.buffs.fateString = f.buffs.dayDinhMenh;
+        }
+        if (f.buffs.dayDinhMenh <= 0) {
+          f.godForm = false;
+          delete f.buffs.dayDinhMenh;
+          if (f.linkedAlly && f.linkedAlly.buffs) {
+            delete f.linkedAlly.buffs.fateString;
+          }
+          f.linkedAlly = null;
+          logCombat(`🪭 Sợi Dây Định Mệnh và Dạng Thần của Kagura đã kết thúc!`);
+        }
+      }
+      if (f.buffs && f.buffs.kaguraAtkBuff) {
+        f.buffs.kaguraAtkBuff--;
+        if (f.buffs.kaguraAtkBuff <= 0) {
+          delete f.buffs.kaguraAtkBuff;
+          f.atk = Math.round(f.atk / 1.20);
+        }
+      }
     });
 
     buildTurnQueue();
@@ -5304,8 +5453,9 @@ function updatePlayerSkillCards(actor) {
   const db = HERO_DB[actor.id] || actor.db;
   if (!db) return;
 
-  const normalAtk = db.normalAttack || { name: "Đánh Thường", chakraGainMin: 150, chakraGainMax: 300, desc: "Tấn công mục tiêu tích lũy Chakra." };
-  const skills = db.skills || [];
+  const isKuramaTransformed = (actor.id === "naruto_kurama" && actor.kuramaPerfect && actor.kuramaPerfect > 0);
+  const normalAtk = isKuramaTransformed ? (db.transformedNormalAttack || db.normalAttack) : (db.normalAttack || { name: "Đánh Thường", chakraGainMin: 150, chakraGainMax: 300, desc: "Tấn công mục tiêu tích lũy Chakra." });
+  const skills = isKuramaTransformed ? (db.transformedSkills || db.skills || []) : (db.skills || []);
   const heroSave = gameState.heroes[actor.id];
   const eqSkillId = heroSave?.equippedSkill;
   const hasLearnedSkill = (eqSkillId && LEARNED_SKILLS_DB[eqSkillId] && actor.level >= 100);
@@ -5485,6 +5635,17 @@ function executePlayerAction(type) {
 
   executeSkillLogic(actor, type, enemyTeam, allyTeam);
 
+  // v7.2.0: Kagura Dây Định Mệnh nhận thêm 1 lượt hành động lập tức
+  if (actor.extraTurnGranted) {
+    delete actor.extraTurnGranted;
+    logCombat(`⚡✨ [Lượt Thần Tốc] ${actor.name} nhận thêm 1 lượt hành động ngay lập tức!`);
+    setTimeout(() => {
+      battle.isWaitingPlayer = true;
+      updatePlayerSkillCards(actor);
+    }, Math.max(200, 600 / battle.speed));
+    return;
+  }
+
   setTimeout(() => {
     battle.currentActorIndex++;
     nextTurn();
@@ -5536,6 +5697,14 @@ function executeHeroBotAction(actor) {
   }
 
   executeSkillLogic(actor, chosenType, enemyTeam, battle.botTeam);
+
+  if (actor.extraTurnGranted) {
+    delete actor.extraTurnGranted;
+    setTimeout(() => {
+      executeHeroBotAction(actor);
+    }, Math.max(200, 600 / battle.speed));
+    return;
+  }
 
   setTimeout(() => {
     battle.currentActorIndex++;
@@ -5705,6 +5874,44 @@ function applyDamage(target, amount, isCrit = false, attacker = null, isMelee = 
     }
   }
 
+  // v7.2.0: Tobirama Tuyệt Đối Kháng Hỏa & Khắc Chế Uchiha (Giảm 50% ST, Phản 50% ST gốc, Miễn Nhiễm Lửa & Ảo Thuật)
+  if (target.id === "tobirama") {
+    if (target.buffs) {
+      delete target.buffs.burn;
+      delete target.buffs.bongRat;
+      delete target.buffs.hacHoa;
+      delete target.buffs.amaterasu;
+      delete target.buffs.amaterasuTuyetDietV7;
+      delete target.buffs.aoThuat;
+      delete target.buffs.thaoTung;
+      delete target.buffs.hypnosis;
+      delete target.buffs.vongLap;
+      delete target.buffs.tsukuyomi;
+      delete target.buffs.thuocNgu;
+    }
+    const isFireOrUchiha = (attacker && (attacker.id === "madara" || attacker.id === "itachi" || attacker.id === "itachi_amaterasu" || attacker.id === "sasuke_susanoo" || attacker.id === "shisui"));
+    if (isFireOrUchiha) {
+      finalDmg = Math.round(finalDmg * 0.50);
+      const reflectVal = Math.round(amount * 0.50);
+      addAnimation(target, "🌊 THỦY THẦN PHẢN HỎA!", "#58a6ff");
+      logCombat(`🌊🛡️ [Thủy Thần Chi Thể] Tobirama kháng 50% sát thương từ ${attacker.name} và phản ${reflectVal.toLocaleString()} ST gốc qua Thủy Trận Bích!`);
+      if (attacker && attacker.hp > 0) applyDamage(attacker, reflectVal, false, target, false, true);
+    }
+  }
+
+  // v7.2.0: Naruto Kurama giảm 35% sát thương khi ở Kurama Perfect
+  if (target.id === "naruto_kurama" && target.kuramaPerfect && target.kuramaPerfect > 0) {
+    finalDmg = Math.round(finalDmg * 0.65);
+  }
+
+  // v7.2.0: Dạng Thần Kagura & Sợi Dây Định Mệnh giảm 30% sát thương nhận vào
+  if (target.id === "kagura" && target.godForm) {
+    finalDmg = Math.round(finalDmg * 0.70);
+  }
+  if (target.buffs && target.buffs.fateString && target.linkedByKagura && target.linkedByKagura.hp > 0) {
+    finalDmg = Math.round(finalDmg * 0.70);
+  }
+
   // 9. Xử lý Shield (Khiên)
   if (target.shield > 0 && !isTrueDmg) {
     if (target.shield >= finalDmg) {
@@ -5747,6 +5954,16 @@ function applyDamage(target, amount, isCrit = false, attacker = null, isMelee = 
       finalDmg = Math.max(0, target.hp - 1);
       addAnimation(target, "BẤT TỬ BÁCH HÀO!", "#ffd700");
     }
+  }
+
+  // v7.2.0: Naruto Kurama Ý Chí Uzumaki (Hồi sinh 50% HP khi nhận sát thương chí tử)
+  if (target.id === "naruto_kurama" && target.hp - finalDmg <= 0 && !target.uzumakiRevived) {
+    target.uzumakiRevived = true;
+    finalDmg = 0;
+    target.hp = Math.round(target.maxHp * 0.50);
+    target.chakra = Math.min(target.chakraMax || 32000, (target.chakra || 0) + 6000);
+    addAnimation(target, "🦊 Ý CHÍ UZUMAKI (HỒI SINH 50% HP)!", "#ffd700");
+    logCombat(`🦊✨ [Ý Chí Uzumaki] Naruto kích hoạt huyết mạch Uzumaki, thoát khỏi cái chết, hồi sinh với ${target.hp.toLocaleString()} HP và +6,000 Chakra!`);
   }
 
   target.hp = Math.max(0, target.hp - finalDmg);
@@ -5856,7 +6073,7 @@ function healFighter(fighter, amount) {
   let finalHeal = amount;
 
   // Cấm Trị Liệu
-  if (fighter.buffs && fighter.buffs.camTriLieu > 0) {
+  if (fighter.buffs && (fighter.buffs.camTriLieu > 0 || fighter.buffs.camTriLieuVinhVien)) {
     if (fighter.id !== "isshiki" && fighter.id !== "hashirama") {
       addAnimation(fighter, "CẤM TRỊ LIỆU (0 HP)", "#da3633");
       return 0;
@@ -5996,7 +6213,52 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
       applyDamage(target, damage, isCrit, actor, true, false);
       actor.dodgeRate = (actor.dodgeRate || 0.43) + 0.15;
       addAnimation(actor, "+15% NÉ TRÁNH", "#58a6ff");
-    } else if (actor.id === "kagura") {
+        } else if (actor.id === "naruto_kurama") {
+      if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
+        // Vĩ Thú Nanh Vuốt: 130% ATK lên 2 mục tiêu, hồi 800-1500 Chakra
+        const targets = aliveEnemies.slice(0, 2);
+        targets.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 1.30);
+          applyDamage(t, damage, isCrit, actor, true, false);
+        });
+        addAnimation(actor, "🦊 VĨ THÚ NANH VUỐT!", "#ffd700");
+      } else {
+        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 1.10);
+        applyDamage(target, damage, isCrit, actor, true, false);
+      }
+    } else if (actor.id === "naruto_sage") {
+      if (actor.sageMode && actor.sageMode > 0) {
+        // Ếch Quyền Tiên Nhân: 135% ATK, bỏ qua 50% DEF
+        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 1.35, 0.50);
+        applyDamage(target, damage, isCrit, actor, true, false);
+        addAnimation(target, "🐸 SÓNG XUNG KÍCH TIÊN NHÂN (-50% DEF)", "#ff9800");
+      } else {
+        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 1.0);
+        applyDamage(target, damage, isCrit, actor, true, false);
+      }
+    } else if (actor.id === "sasuke_susanoo") {
+      const isSusanoo = (actor.susanooPerfect && actor.susanooPerfect > 0);
+      const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 1.10);
+      if (isSusanoo) {
+        const halfTrue = Math.round(damage * 0.50);
+        applyDamage(target, halfTrue, isCrit, actor, true, true);
+        applyDamage(target, damage - halfTrue, isCrit, actor, true, false);
+        addAnimation(target, "💜 CHIDORI SUSANOO (50% ST CHUẨN)", "#bc8cff");
+      } else {
+        applyDamage(target, damage, isCrit, actor, true, false);
+      }
+    } else if (actor.id === "tobirama") {
+      const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 0.95);
+      applyDamage(target, damage, isCrit, actor, false, false);
+      // Tự động thanh tẩy Ảo Thuật cho toàn đội đồng minh
+      aliveAllies.forEach(a => {
+        if (a && a.buffs) {
+          const genjutsuList = ['aoThuat', 'thaoTung', 'hypnosis', 'vongLap', 'tsukuyomi', 'thuocNgu'];
+          genjutsuList.forEach(k => delete a.buffs[k]);
+        }
+      });
+      addAnimation(actor, "🌊 THANH TẨY ẢO THUẬT!", "#58a6ff");
+} else if (actor.id === "kagura") {
       // Đánh thường: cướp 7% HP còn lại của 1 địch chia cho 2 đồng minh thấp máu
       const highestHpEnemy = aliveEnemies.reduce((prev, curr) => (curr.hp > prev.hp ? curr : prev), aliveEnemies[0]);
       if (highestHpEnemy) {
@@ -6118,7 +6380,48 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
         target.buffs = target.buffs || {};
         target.buffs.burn = 2;
         addAnimation(target, "🔥 THIÊU ĐỐT 2 LƯỢT", "#ff7b72");
-      } else if (actor.id === "kagura") {
+            } else if (actor.id === "naruto_kurama") {
+        if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
+          // Tiểu Vĩ Thú Cầu: 3 hit tổng 280% ATK, bỏ qua 30% DEF
+          const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 2.80, 0.30);
+          applyDamage(target, damage, isCrit, actor, false, false);
+          addAnimation(target, "💥 TIỂU VĨ THÚ CẦU x3!", "#ffd700");
+        } else {
+          const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 2.20);
+          applyDamage(target, damage, isCrit, actor, false, false);
+          target.buffs = target.buffs || {};
+          target.buffs.defDebuff = 2;
+          addAnimation(target, "-20% DEF (2 LƯỢT)", "#ff7b72");
+        }
+      } else if (actor.id === "naruto_sage") {
+        if (actor.sageMode && actor.sageMode > 0) {
+          const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 3.80);
+          applyDamage(target, damage, isCrit, actor, true, false);
+          target.spd = 0;
+          addAnimation(target, "🐸 TIÊN PHÁP RASENGAN (ĐẨY LÙI 0 SPD)!", "#ff9800");
+        } else {
+          const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 2.20);
+          applyDamage(target, damage, isCrit, actor, true, false);
+        }
+      } else if (actor.id === "sasuke_susanoo") {
+        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 2.40);
+        applyDamage(target, damage, isCrit, actor, false, false);
+        target.buffs = target.buffs || {};
+        target.buffs.burn = 2;
+        addAnimation(target, "🔥 HÀO HỎA LONG (THIÊU ĐỐT 2 LƯỢT)", "#f85149");
+      } else if (actor.id === "tobirama") {
+        const shieldVal = Math.round(actor.maxHp * 0.22);
+        aliveAllies.forEach(a => {
+          a.shield = (a.shield || 0) + shieldVal;
+          if (a.buffs) {
+            delete a.buffs.burn;
+            delete a.buffs.bongRat;
+            delete a.buffs.hacHoa;
+          }
+          addAnimation(a, `+${shieldVal.toLocaleString()} THỦY TRẬN BÍCH`, "#58a6ff");
+        });
+        logCombat(`🌊🛡️ [Thủy Độn: Thủy Trận Bích] Tobirama dựng tường sóng nước cấp ${shieldVal.toLocaleString()} Khiên và dập tắt toàn bộ Thiêu đốt toàn đội!`);
+} else if (actor.id === "kagura") {
         const targetAlly = aliveAllies[Math.floor(Math.random() * aliveAllies.length)];
         if (targetAlly) {
           targetAlly.shield = (targetAlly.shield || 0) + Math.round(actor.maxHp * 0.15);
@@ -6264,11 +6567,78 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
         target.buffs = target.buffs || {};
         target.buffs.chayMauShisui = { casterAtk: actor.atk, stacks: (target.buffs.chayMauShisui?.stacks || 0) + 1, source: actor };
         addAnimation(target, `🩸 CHẢY MÁU x${target.buffs.chayMauShisui.stacks}`, "#da3633");
-      } else if (actor.id === "kagura") {
+            } else if (actor.id === "naruto_kurama") {
+        if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
+          // Cửu Vĩ Liên Hoàn Trảo: 380% ATK toàn thể, 30% Stun
+          aliveEnemies.forEach(t => {
+            const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 3.80);
+            applyDamage(t, damage, isCrit, actor, true, false);
+            if (Math.random() < 0.30) {
+              t.buffs = t.buffs || {};
+              t.buffs.stun = 1;
+              addAnimation(t, "💫 CHOÁNG (CỬU VĨ TRẢO)", "#ffd700");
+            }
+          });
+          addAnimation(actor, "🦊 9 ĐUÔI CÀN QUÉT TOÀN ĐỊCH!", "#ffd700");
+        } else {
+          // Áo Choàng Chakra Cửu Vĩ: Khiên 20% HP max, +15% Tốc đánh
+          const shieldVal = Math.round(actor.maxHp * 0.20);
+          aliveAllies.forEach(a => {
+            a.shield = (a.shield || 0) + shieldVal;
+            a.spd = Math.round(a.spd * 1.15);
+            addAnimation(a, `+${shieldVal.toLocaleString()} ÁO CHOÀNG CỬU VĨ`, "#ffd700");
+          });
+          logCombat(`🦊✨ [Áo Choàng Chakra Cửu Vĩ] Naruto phủ áo hồ ly cấp ${shieldVal.toLocaleString()} Khiên và tăng 15% Tốc độ cho toàn đội!`);
+        }
+      } else if (actor.id === "naruto_sage") {
+        actor.sageMode = 4;
+        actor.buffs = actor.buffs || {};
+        actor.buffs.sageMode = 4;
+        actor.dodgeRate = (actor.dodgeRate || 0.13) + 0.50;
+        actor.extraTurnGranted = true;
+        addAnimation(actor, "🐸 BẬT SAGE MODE (TIÊN NHÂN 4 LƯỢT)!", "#ff9800");
+        logCombat(`🐸✨ [Bật Tiên Nhân Thuật] Naruto mở mắt ếch bước vào Sage Mode (4 lượt), tăng 50% Né Tránh, +30% ST toàn chiêu và nhận thêm 1 lượt đi lập tức!`);
+      } else if (actor.id === "sasuke_susanoo") {
+        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 3.60);
+        applyDamage(target, damage, isCrit, actor, false, false);
+        target.buffs = target.buffs || {};
+        target.buffs.camTriLieuVinhVien = true;
+        addAnimation(target, "🔥 CẤM TRỊ LIỆU VĨNH VIỄN", "#ff0055");
+        logCombat(`🔥🖤 [Viêm Độn: Kagutsuchi] Sasuke bắn tiễn Amaterasu gây ${damage.toLocaleString()} ST và CẤM TRỊ LIỆU VĨNH VIỄN lên ${target.name}!`);
+      } else if (actor.id === "tobirama") {
+        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 3.40, 0.60);
+        applyDamage(target, damage, isCrit, actor, true, false);
+        addAnimation(target, "⚡ PHI LÔI THẦN TRẢM (KHÔNG THỂ NÉ)!", "#58a6ff");
+        logCombat(`🗡️⚡ [Phi Lôi Thần Trảm] Tobirama dịch chuyển chém trúng ${target.name} gây ${damage.toLocaleString()} ST (bỏ qua 60% DEF, không thể né tránh)!`);
+} else if (actor.id === "kagura") {
         actor.godForm = true;
         actor.buffs.dayDinhMenh = 5;
         addAnimation(actor, "✨ DẠNG THẦN (5 LƯỢT)", "#ffd700");
-        logCombat(`🪭✨ [Dây Định Mệnh] Kagura kích hoạt Dạng Thần, tăng 30% miễn thương và miễn Stun!`);
+
+        // v7.2.0: Sửa lỗi nối Dây Định Mệnh cho đồng minh
+        const otherAllies = aliveAllies.filter(a => a !== actor && a.hp > 0);
+        let linked = null;
+        if (otherAllies.length > 0) {
+          // Ưu tiên chọn đồng minh có ATK cao nhất để nối dây
+          linked = otherAllies.reduce((prev, curr) => (curr.atk > prev.atk ? curr : prev), otherAllies[0]);
+        }
+
+        if (linked) {
+          if (actor.linkedAlly && actor.linkedAlly.buffs) {
+            delete actor.linkedAlly.buffs.fateString;
+          }
+          actor.linkedAlly = linked;
+          linked.buffs = linked.buffs || {};
+          linked.buffs.fateString = 5;
+          linked.linkedByKagura = actor;
+          addAnimation(linked, "🔗 DÂY ĐỊNH MỆNH (5 LƯỢT)", "#ffd700");
+          logCombat(`🪭✨ [Dây Định Mệnh] Kagura kết nối Sợi Dây Định Mệnh với ${linked.name}, bước vào Dạng Thần (5 lượt)! Cả 2 được giảm 30% sát thương gánh chịu!`);
+        } else {
+          logCombat(`🪭✨ [Dây Định Mệnh] Kagura đơn độc bước vào Dạng Thần (5 lượt), tăng 30% miễn thương và miễn khống chế!`);
+        }
+
+        // Nhận thêm 1 lượt hành động lập tức
+        actor.extraTurnGranted = true;
       } else if (actor.id === "itachi_amaterasu") {
         target.buffs = target.buffs || {};
         target.buffs.aoThuatVoTan = 3;
@@ -6406,11 +6776,86 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
         const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 3.50);
         applyDamage(target, damage, isCrit, actor, true, false);
         addAnimation(target, "PHÁ KHIÊN SUSANOO!", "#ff5722");
-      } else if (actor.id === "kagura") {
-        const heal = Math.round(actor.maxHp * 0.30);
-        aliveAllies.forEach(a => healFighter(a, heal));
-        healFighter(actor, Math.round(heal * 0.70));
-        actor.shield = (actor.shield || 0) + Math.round(actor.hp * 0.10);
+            } else if (actor.id === "naruto_kurama") {
+        if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
+          const shieldVal = Math.round(actor.maxHp * 0.40);
+          aliveAllies.forEach(a => {
+            a.shield = (a.shield || 0) + shieldVal;
+            a.buffs = a.buffs || {};
+            a.buffs.kuramaBastion = 2;
+            addAnimation(a, `+${shieldVal.toLocaleString()} PHÁO ĐÀI CỬU VĨ`, "#ffd700");
+          });
+          logCombat(`🦊🛡️ [Pháo Đài Vĩ Thú] Cửu Vĩ bọc khiên ${shieldVal.toLocaleString()} HP cho toàn đội và phản 40% ST cận chiến!`);
+        } else {
+          const targets = aliveEnemies.slice(0, 2);
+          targets.forEach(t => {
+            const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 3.50);
+            applyDamage(t, damage, isCrit, actor, true, false);
+            t.buffs = t.buffs || {};
+            t.buffs.stun = 1;
+            addAnimation(t, "💫 CHOÁNG (CÁNH TAY CHAKRA)", "#ffd700");
+          });
+          logCombat(`🦊💥 [Cánh Tay Chakra Bành Trướng] Naruto tóm lấy nện 2 kẻ địch, gây choáng 1 lượt!`);
+        }
+      } else if (actor.id === "naruto_sage") {
+        if (actor.sageMode && actor.sageMode > 0) {
+          aliveEnemies.forEach(t => {
+            const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 4.80);
+            applyDamage(t, damage, isCrit, actor, false, false);
+            t.def = Math.round(t.def * 0.65);
+            t.buffs = t.buffs || {};
+            t.buffs.camBuff = 2;
+            addAnimation(t, "🌪️ PHÁ 35% DEF & CẤM BUFF", "#ff9800");
+          });
+          logCombat(`🐸🌪️ [Tiên Pháp: Phong Độn Rasenshuriken] Rasenshuriken bành trướng nổ tung toàn sàn đấu, phá hủy 35% DEF và cấm nhận Buff!`);
+        } else {
+          const targets = aliveEnemies.slice(0, 2);
+          targets.forEach(t => {
+            const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 3.20);
+            applyDamage(t, damage, isCrit, actor, false, false);
+          });
+        }
+      } else if (actor.id === "sasuke_susanoo") {
+        actor.susanooPerfect = 4;
+        actor.buffs = actor.buffs || {};
+        actor.buffs.susanooPerfect = 4;
+        const shieldVal = Math.round(actor.maxHp * 0.50);
+        actor.shield = (actor.shield || 0) + shieldVal;
+        actor.atk = Math.round(actor.atk * 1.35);
+        actor.def = (actor.def || 48) + 50;
+        addAnimation(actor, "🏹 SUSANOO HOÀN CHỈNH (4 LƯỢT)!", "#bc8cff");
+        logCombat(`🏹💜 [Triệu Hồi: Susanoo Hoàn Chỉnh] Sasuke thức tỉnh Cự Thần Tím có cánh (4 lượt): Nhận Khiên ${shieldVal.toLocaleString()} HP, +35% ATK, 50 DEF, 50% ST chuyển thành Sát thương chuẩn!`);
+      } else if (actor.id === "tobirama") {
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 3.80);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.spd = Math.round(t.spd * 0.65);
+          t.buffs = t.buffs || {};
+          t.buffs.slow = 3;
+          addAnimation(t, "🌊 -35% TỐC ĐỘ (3 LƯỢT)", "#58a6ff");
+        });
+        logCombat(`🌊🐉 [Thủy Độn: Thủy Long Đạn Vực Sâu] Đại thủy long càn quét toàn đội địch, làm chậm 35% Tốc độ trong 3 lượt!`);
+} else if (actor.id === "kagura") {
+        const shieldVal = Math.round(actor.hp * 0.10);
+        actor.shield = (actor.shield || 0) + shieldVal;
+
+        if (actor.linkedAlly && actor.linkedAlly.hp > 0) {
+          const healAlly = Math.round(actor.linkedAlly.maxHp * 0.30);
+          healFighter(actor.linkedAlly, healAlly);
+          actor.linkedAlly.shield = (actor.linkedAlly.shield || 0) + shieldVal;
+          addAnimation(actor.linkedAlly, `+${healAlly.toLocaleString()} HP (QUANG CHIẾU)`, "#3fb950");
+          addAnimation(actor.linkedAlly, `+${shieldVal.toLocaleString()} KHIÊN`, "#ffd700");
+
+          const healKagura = Math.round(healAlly * 0.70);
+          healFighter(actor, healKagura);
+          addAnimation(actor, `+${healKagura.toLocaleString()} HP (CỘNG HƯỞNG)`, "#3fb950");
+          logCombat(`✨ [Thần Quang Chiếu Rọi] Sợi Dây Định Mệnh truyền hào quang: Hồi ${healAlly.toLocaleString()} HP và +${shieldVal.toLocaleString()} Khiên cho ${actor.linkedAlly.name}! Kagura hồi ${healKagura.toLocaleString()} HP!`);
+        } else {
+          const heal = Math.round(actor.maxHp * 0.20);
+          aliveAllies.forEach(a => healFighter(a, heal));
+          addAnimation(actor, "QUANG CHIẾU TOÀN ĐỘI!", "#3fb950");
+          logCombat(`✨ [Thần Quang Chiếu Rọi] Kagura tỏa ánh sáng hồi phục ${heal.toLocaleString()} HP cho toàn đội!`);
+        }
       } else if (actor.id === "itachi_amaterasu") {
         target.shield = 0;
         const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 4.0);
@@ -6524,14 +6969,89 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
         target.buffs = target.buffs || {};
         target.buffs.thaoTung = 2;
         addAnimation(target, "👁️ KOTOAMATSUKAMI (THAO TÚNG)", "#da3633");
-      } else if (actor.id === "kagura") {
+            } else if (actor.id === "naruto_kurama") {
+        if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
+          aliveEnemies.forEach(t => {
+            const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 7.50);
+            const extraTrue = Math.round(t.maxHp * 0.15);
+            applyDamage(t, damage + extraTrue, isCrit, actor, false, true);
+            addAnimation(t, `💥 BIJUU RASENSHURIKEN! -${(damage+extraTrue).toLocaleString()}`, "#ffd700");
+          });
+          logCombat(`🦊💥 [Siêu Đại Vĩ Thú Cầu Rasenshuriken] Cực đại Vĩ Thú Cầu nổ tung sàn đấu gây lượng sát thương khủng khiếp lên toàn thể địch!`);
+        } else {
+          actor.kuramaPerfect = 4;
+          actor.buffs = actor.buffs || {};
+          actor.buffs.kuramaPerfect = 4;
+          const shieldVal = Math.round(actor.maxHp * 0.35);
+          actor.shield = (actor.shield || 0) + shieldVal;
+          actor.atk = Math.round(actor.atk * 1.40);
+          addAnimation(actor, "🦊 AVATAR CỬU VĨ HOÀNG KIM!", "#ffd700");
+          logCombat(`🦊👑 [Hóa Thân: Kurama's Chakra Perfect] Naruto hóa thân Avatar Cửu Vĩ Khổng Lồ, tăng 40% ATK, Khiên ${shieldVal.toLocaleString()} HP và THAY ĐỔI TOÀN BỘ KỸ NĂNG!`);
+        }
+      } else if (actor.id === "naruto_sage") {
+        const isSage = (actor.sageMode && actor.sageMode > 0);
+        const baseMul = isSage ? 6.50 : 5.00;
+        let totalDmgDone = 0;
+        aliveEnemies.forEach(t => {
+          let rawDmg = actor.atk * baseMul;
+          if (isSage) rawDmg += Math.round(actor.maxHp * 0.20);
+          const { damage, isCrit } = calculateDamage(actor, t, rawDmg);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          totalDmgDone += damage;
+          addAnimation(t, "🐸 TIÊN PHÁP SIÊU ĐẠI NGỌC!", "#ff9800");
+        });
+        if (isSage) {
+          const healAllies = Math.round(totalDmgDone * 0.25);
+          aliveAllies.forEach(a => healFighter(a, healAllies));
+          logCombat(`🐸🌿 [Tiên Pháp Siêu Đại Ngọc Rasengan] Nện ngọn núi năng lượng toàn sàn đấu và hồi phục ${healAllies.toLocaleString()} HP cho toàn đội!`);
+        }
+      } else if (actor.id === "sasuke_susanoo") {
+        aliveEnemies.forEach(t => {
+          let mul = 7.50;
+          if (t.shield > 0) {
+            t.shield = 0;
+            mul *= 2.0;
+            addAnimation(t, "💔 PHÁ NÁT KHIÊN (X2 ST)!", "#ff0055");
+          }
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * mul);
+          applyDamage(t, damage, isCrit, actor, false, true);
+          addAnimation(t, `🏹 MŨI TÊN INDRA! -${damage.toLocaleString()}`, "#bc8cff");
+        });
+        logCombat(`🏹⚡ [Mũi Tên Indra] Mũi tên sấm sét tối thượng xuyên thủng mọi hàng phòng ngự, phá nát toàn bộ Khiên phe địch!`);
+      } else if (actor.id === "tobirama") {
+        let deadEnemyHpPool = 0;
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 6.20);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          if (t.hp <= 0) {
+            deadEnemyHpPool += Math.round(t.maxHp * 0.15);
+          }
+        });
+        if (deadEnemyHpPool > 0) {
+          const remainingEnemies = aliveEnemies.filter(t => t.hp > 0);
+          remainingEnemies.forEach(t => {
+            applyDamage(t, deadEnemyHpPool, false, actor, false, true);
+            addAnimation(t, `💣 NỔ DÂY CHUYỀN -${deadEnemyHpPool.toLocaleString()}`, "#ff5722");
+          });
+          logCombat(`💣💥 [Hỗ Thừa Khởi Bạo Phù: Nổ Dây Chuyền] Thi thể kẻ địch phát nổ liên hoàn gây thêm ${deadEnemyHpPool.toLocaleString()} Sát thương chuẩn lên toàn bộ kẻ sống sót!`);
+        }
+} else if (actor.id === "kagura") {
         aliveAllies.forEach(a => {
           a.buffs = a.buffs || {};
-          const bKeys = Object.keys(a.buffs);
-          bKeys.forEach(k => delete a.buffs[k]);
+          const debuffsToRemove = ['burn', 'stun', 'choang', 'bleeding', 'thuocNgu', 'ngungDong', 'vongLap', 'tramTrong', 'chayMauShisui', 'phongAn', 'camTriLieu', 'lunSau'];
+          debuffsToRemove.forEach(k => delete a.buffs[k]);
           healFighter(a, Math.round(actor.maxHp * 0.25));
         });
         addAnimation(actor, "THÁNH ÂM THANH TẨY TOÀN ĐỘI!", "#ffd700");
+        logCombat(`🔔✨ [Thánh Âm Thanh Tẩy] Kagura rung chuông thánh: Xóa sạch debuff và hồi 25% HP tối đa cho toàn đội!`);
+
+        if (actor.linkedAlly && actor.linkedAlly.hp > 0) {
+          actor.linkedAlly.buffs = actor.linkedAlly.buffs || {};
+          actor.linkedAlly.buffs.kaguraAtkBuff = 2;
+          actor.linkedAlly.atk = Math.round(actor.linkedAlly.atk * 1.20);
+          addAnimation(actor.linkedAlly, "+20% ATK (2 LƯỢT)", "#ffd700");
+          logCombat(`⚔️🔥 [Cộng Hưởng Thánh Âm] ${actor.linkedAlly.name} nhận thêm +20% Sức Mạnh Tấn Công trong 2 lượt!`);
+        }
       } else if (actor.id === "itachi_amaterasu") {
         target.buffs = target.buffs || {};
         target.buffs.amaterasuTuyetDietV7 = { source: actor };
@@ -6938,7 +7458,56 @@ function drawCharacter(f) {
     ctx.restore();
   }
 
-  // 1. Aura lượt đánh của nhân vật hiện tại
+      // v7.2.0: Hoạt ảnh Hóa Thân Kurama's Chakra Perfect
+    if (f.id === "naruto_kurama" && f.kuramaPerfect && f.kuramaPerfect > 0) {
+      ctx.save();
+      const t = Date.now() / 150;
+      ctx.shadowColor = "#ffd700";
+      ctx.shadowBlur = 24 + Math.sin(t * 2) * 8;
+      ctx.strokeStyle = "#ffb700";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(x, y, R + 9, 0, Math.PI * 2);
+      ctx.stroke();
+
+      for (let i = 0; i < 9; i++) {
+        const angle = (i / 9) * Math.PI * 2 + t * 0.5;
+        const fx = x + Math.cos(angle) * (R + 12);
+        const fy = y + Math.sin(angle) * (R + 12);
+        ctx.beginPath();
+        ctx.arc(fx, fy, 4, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffe066";
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    // v7.2.0: Hoạt ảnh Sage Mode (Mắt Tiên Nhân & Hào Quang Tự Nhiên)
+    if (f.id === "naruto_sage" && f.sageMode && f.sageMode > 0) {
+      ctx.save();
+      ctx.shadowColor = "#ff9800";
+      ctx.shadowBlur = 20;
+      ctx.strokeStyle = "#ff9800";
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.arc(x, y, R + 8, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // v7.2.0: Hoạt ảnh Susanoo Hoàn Chỉnh (Cự Thần Tím Khổng Lồ)
+    if (f.id === "sasuke_susanoo" && f.susanooPerfect && f.susanooPerfect > 0) {
+      ctx.save();
+      ctx.shadowColor = "#bc8cff";
+      ctx.shadowBlur = 25;
+      ctx.strokeStyle = "#9d4edd";
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.arc(x, y, R + 10, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+// 1. Aura lượt đánh của nhân vật hiện tại
   if (isCurrentActor && !isDead) {
     ctx.save();
     const auraCol = f.isBot ? "#f85149" : (isPartner ? "#bc8cff" : "#58a6ff");
@@ -7082,6 +7651,12 @@ function drawCharacter(f) {
   let cleanName = (f.name || "").replace(/ \(C\.\d+-\d+\)/, "");
   if (isNaruSasuUnified) {
     cleanName = "Kurama - Susanoo";
+  } else if (f.id === "naruto_kurama" && f.kuramaPerfect && f.kuramaPerfect > 0) {
+    cleanName = "Avatar Kurama (Hoàng Kim)";
+  } else if (f.id === "naruto_sage" && f.sageMode && f.sageMode > 0) {
+    cleanName = "Naruto (Tiên Nhân Thể)";
+  } else if (f.id === "sasuke_susanoo" && f.susanooPerfect && f.susanooPerfect > 0) {
+    cleanName = "Sasuke (Susanoo Hoàn Chỉnh)";
   }
   ctx.save();
   ctx.beginPath();
@@ -10757,6 +11332,14 @@ function buySkillScroll() {
 
 
 function initGame() {
+  // v7.2.0: Tự động bổ sung 4 Siêu Tướng Mới vào tài khoản người chơi
+  const v720Heroes = ["naruto_kurama", "naruto_sage", "sasuke_susanoo", "tobirama"];
+  v720Heroes.forEach(hId => {
+    if (!gameState.heroes[hId]) {
+      gameState.heroes[hId] = { level: 100, equippedSkill: null };
+    }
+  });
+
   // v6.1.0: Dọn dẹp triệt để Itachi Amaterasu nếu chưa từng nhập code hợp lệ
   if (gameState.heroes && gameState.heroes.itachi_amaterasu) {
     const legitCodes = ["ITACHIAS", "AMATERASU"];
