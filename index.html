@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v7.2.0 [SIÊU CẬP NHẬT: KẾ HOẠCH TƯỚNG MỚI & SỬA TRIỆT ĐỂ DÂY KAGURA]</title>
+<title>Chiến Thuật Luân Hồi v7.3.0 [SIÊU CÁ MẬP KISAME & THIÊN SỨ LỤC ĐẠO KONAN - ĐỈNH CAO CHIẾN THUẬT]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -790,7 +790,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-gold); margin-top:-14px; font-weight:700;">⚡ BẢN v7.2.0: KẾ HOẠCH TƯỚNG MỚI, SỬA TRIỆT ĐỂ DÂY KAGURA & TỐI ƯU TOÀN DIỆN</div>
+      <div style="font-size:12px; color:var(--accent-gold); margin-top:-14px; font-weight:700;">⚡ BẢN v7.3.0: SIÊU TƯỚNG DEF HOSHIGAKI KISAME & SIÊU PHẨM THẦN THOẠI KONAN (600 TỶ BÙA NỔ)</div>
       <div class="menu-grid">
         <button class="btn btn-hub-campaign" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -869,7 +869,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:9.5px; color:#ff0055; font-weight:800; letter-spacing:0.5px; line-height:1.2; margin-bottom:2px;">⚡ v7.2.0 SỬA LỖI DÂY KAGURA & GRID KỸ NĂNG</div>
+            <div style="font-size:9.5px; color:#ff0055; font-weight:800; letter-spacing:0.5px; line-height:1.2; margin-bottom:2px;">⚡ v7.3.0 KISAME & KONAN LỤC ĐẠO</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động:</div>
             <div style="font-size:13.5px; font-weight:700; color:var(--accent-blue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1573,7 +1573,17 @@
         <button class="modal-close" onclick="closeModal('modalGiftcode')">&times;</button>
       </div>
       <div class="modal-body">
-        <input type="text" id="giftcodeInput" placeholder="VD: TANTHU001, TRUNGTHU2026..." style="width:100%; padding:10px; background:#0d1117; border:1px solid var(--border-color); border-radius:8px; color:#fff; font-size:13px; text-transform:uppercase;">
+        <input type="text" id="giftcodeInput" placeholder="VD: V730, KISAME, KONAN, V720..." style="width:100%; padding:10px; background:#0d1117; border:1px solid var(--border-color); border-radius:8px; color:#fff; font-size:13px; text-transform:uppercase;">
+        <div style="margin-top:12px; font-size:11px; color:var(--text-secondary); display:flex; flex-direction:column; gap:6px;">
+          <div style="font-weight:bold; color:var(--accent-gold);">⚡ GIFTCODE MỚI NHẤT (BẢN v7.3.0 & v7.2.1):</div>
+          <div style="display:flex; flex-wrap:wrap; gap:6px;">
+            <button class="btn btn-accent" style="padding:4px 8px; font-size:10.5px;" onclick="submitGiftcodeQuick('V730')">🎁 V730 (Trọn Bộ v7.3.0)</button>
+            <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#39c5bb; color:#39c5bb;" onclick="submitGiftcodeQuick('KISAME')">🦈 KISAME (Siêu Cá Mập)</button>
+            <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#e0b0ff; color:#e0b0ff;" onclick="submitGiftcodeQuick('KONAN')">🕊️ KONAN (Thiên Sứ Lục Đạo)</button>
+            <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#58a6ff; color:#58a6ff;" onclick="submitGiftcodeQuick('V720')">📜 V720 (4 Siêu Tướng v7.2.0)</button>
+          </div>
+          <div style="font-size:10px; color:#8b949e; margin-top:2px;">* Lưu ý: Mọi tướng nhận từ Giftcode đều được khởi tạo chuẩn mực ở <b>Cấp độ 1</b>.</div>
+        </div>
       </div>
       <div class="modal-footer">
         <button class="btn" onclick="closeModal('modalGiftcode')">Hủy</button>
@@ -1871,6 +1881,8 @@ const HERO_ICONS = {
   naruto_sage: "🐸",
   sasuke_susanoo: "🏹",
   tobirama: "🌊",
+  kisame: "🦈",
+  konan_sage: "🕊️",
   traveler: "🗡️",
   madara: "☄️",
   omega: "🐉",
@@ -2025,6 +2037,44 @@ const HERO_DB = {
     passives: [
       { lv: 30, name: "Đồng Lực Mangekyo Vĩnh Cửu", desc: "Tăng 25% Tỉ lệ Bạo Kích và 50% Sát thương Bạo Kích. Đòn đánh chí mạng hồi 800 Chakra." },
       { lv: 80, name: "Hào Quang Báo Thù Indra", desc: "Khi HP dưới 35%, hồi phục 4,000 Chakra và tăng 40% Tốc độ trong 2 lượt (1 lần/trận)." }
+    ]
+  },
+  kisame: {
+    id: "kisame",
+    name: "Hoshigaki Kisame (Siêu Cá Mập)",
+    type: "DEF",
+    roleDesc: "Đấu Sĩ Thủy Vực Bất Diệt, Tuyệt Đối Kháng Hỏa, Hút Cạn Chakra & Biến Hình Shark Form",
+    baseHp: 860, baseAtk: 43.0, baseDef: 68, baseSpd: 168,
+    chakraMax: 30000, chakraRegenMin: 600, chakraRegenMax: 1200, startChakra: 6000,
+    normalAttack: { name: "Samehada Cắt Xé", chakraGainMin: 600, chakraGainMax: 1200, atkPct: 1.05, isMelee: true, desc: "Chém đại đao gai nhọn gây 105% ATK, cướp 800 - 1,500 🌀 Chakra của mục tiêu, hồi phục máu bằng 30% sát thương." },
+    skills: [
+      { reqLv: 1, name: "Thủy Độn: Ngũ Thực Sa", cost: 1800, desc: "Triệu hồi 5 cá mập Chakra cắn xé 1 mục tiêu gây 240% ATK, cướp 1,200 Chakra và tạo Thủy Khiên bằng 18% HP tối đa trong 3 lượt." },
+      { reqLv: 50, name: "Thủy Lao Thuật: Đại Hải Giam Cầm", cost: 3500, desc: "Giam cầm kẻ địch ATK cao nhất (Choáng/Stun 1 lượt, rút 2,000 Chakra), toàn đội nhận Khiên Sóng Nước giảm 30% ST trong 2 lượt." },
+      { reqLv: 130, name: "Hợp Thể Samehada: Thủy Lao Đại Sa Trùm", cost: 6000, desc: "Biến thành Siêu Cá Mập (Shark Form 4 lượt): Giảm 35% SPD và rút 1,000 Chakra toàn địch mỗi lượt, tăng 50 DEF, 30% ST, miễn khống chế và đánh lan hồi máu!" },
+      { reqLv: 250, name: "Tuyệt Kỹ: Đại Sa Đạn Thuật", cost: 10000, desc: "Đại Sa há miệng nuốt chửng toàn phe địch: 680% ATK diện rộng, hút 30% Chakra hiện có của toàn bộ địch, mỗi 1k Chakra nuốt được tăng +15% ST và tạo Khiên vĩnh cửu!" }
+    ],
+    passives: [
+      { lv: 30, name: "Thủy Phách Bất Diệt", desc: "Miễn nhiễm 100% Lửa/Nhiệt/Thiêu đốt/Hắc Hỏa. Giảm 50% ST từ Hỏa Độn/Uchiha. Khi trúng đòn Hỏa, hồi 8% HP và +20 DEF vĩnh viễn (tối đa 5 lần)." },
+      { lv: 80, name: "Đại Đao Samehada", desc: "Mọi đòn đánh/kỹ năng hút 15% Chakra địch (50% nạp bản thân, 50% hóa Khiên). Khi HP < 30%, Samehada lập tức hồi 40% Max HP và cấp 5,000 Chakra (1 lần/trận)." }
+    ]
+  },
+  konan_sage: {
+    id: "konan_sage",
+    name: "Konan (Thiên Sứ Lục Đạo)",
+    type: "SKL",
+    roleDesc: "Pháp Sư Thần Thoại Tối Thượng, 600 Tỷ Bùa Nổ, Xóa Sạch Buff, Câm Lặng & Sát Thương Chuẩn 25% Max HP",
+    baseHp: 810, baseAtk: 54.0, baseDef: 54, baseSpd: 185,
+    chakraMax: 35000, chakraRegenMin: 800, chakraRegenMax: 1800, startChakra: 8000,
+    normalAttack: { name: "Vũ Điệu Thiên Sứ: Phi Tiêu Giấy", chakraGainMin: 600, chakraGainMax: 1200, atkPct: 1.20, isRanged: true, desc: "Bắn shuriken giấy bọc Chakra Lục Đạo vào 2 mục tiêu gây 120% ATK, hồi 600 - 1,200 Chakra, không thể bị phản hồi sát thương." },
+    skills: [
+      { reqLv: 1, name: "Thức Chỉ Khiêu: Đôi Cánh Thiên Thần", cost: 2000, isRanged: true, desc: "Dang rộng cánh bay lơ lửng (Phi Hành 3 lượt): Tăng 35% SPD, +25% ATK, miễn nhiễm 100% đòn cận chiến, mưa lông vũ gây 250% ATK." },
+      { reqLv: 50, name: "Lục Đạo Thần Trảm: Chakram Giấy Nén", cost: 3800, isRanged: true, desc: "Nén giấy thành 2 đĩa Chakram cưa xuyên hàng trước gây 380% ATK (bỏ qua 70% DEF), khắc Ấn Bùa Nổ nổ thêm 100% ATK sát thương chuẩn." },
+      { reqLv: 130, name: "Thánh Nữ Luân Hồi: Đại Bão Giấy Trấn Hồn", cost: 6200, isRanged: true, desc: "Cuồng phong giấy bao trùm toàn sàn: 480% ATK diện rộng, TƯỚC ĐOẠT 100% BUFF của toàn địch, dán bùa CÂM LẶNG (Khóa kỹ năng 1 lượt)!" },
+      { reqLv: 250, name: "Tuyệt Kỹ: 600 TỶ BÙA NỔ THẦN DIỆT THUẬT", cost: 12000, isRanged: true, desc: "Khai mở vực thẳm bộc phá 600 tỷ bùa nổ: Gây 880% ATK diện rộng + SÁT THƯƠNG CHUẨN 25% MAX HP TOÀN ĐỊCH, phá nát khiên và giáng TÀN PHẾ HƯ VÔ (-50% ATK & DEF vĩnh viễn)!" }
+    ],
+    passives: [
+      { lv: 30, name: "Thể Giấy Vô Định", desc: "40% Tỉ lệ Tự Động Phân Tán (né sạch 100% mọi đòn đánh), phản kích 180% ATK và hồi 1,000 Chakra. Khi Phi Hành, miễn nhiễm 100% sát thương đòn cận chiến." },
+      { lv: 80, name: "Ý Chí Thiên Sứ Lục Đạo", desc: "+30% Bạo Kích, +60% Sát thương Bạo Kích. Khi HP < 40%, bừng tỉnh Bảo Hộ Thiên Thần: Xóa sạch debuff, nhận Khiên 40% HP, hồi 6,000 Chakra và +40% SPD (1 lần/trận)." }
     ]
   },
   tobirama: {
@@ -2703,6 +2753,22 @@ function loadGame() {
       saveGame();
     }
   }
+  // v7.2.1: Sửa dứt điểm lỗi tài khoản mới tự động nhận 4 Siêu Tướng ở Cấp 100
+  const v720Heroes = ["naruto_kurama", "naruto_sage", "sasuke_susanoo", "tobirama", "kisame", "konan_sage"];
+  const legitV720Codes = ["V720", "KURAMA", "SAGEMODE", "SUSANOO", "TOBIRAMA", "V730", "KISAME", "KONAN", "TEST001", "TEST002", "TEST003"];
+  const hasUsedAnyV720Code = gameState.usedCodes && legitV720Codes.some(c => gameState.usedCodes.includes(c));
+
+  v720Heroes.forEach(hId => {
+    if (gameState.heroes && gameState.heroes[hId]) {
+      if (!hasUsedAnyV720Code && gameState.heroes[hId].level === 100) {
+        delete gameState.heroes[hId];
+        if (gameState.team) {
+          gameState.team = gameState.team.map(id => id === hId ? null : id);
+        }
+        saveGame();
+      }
+    }
+  });
   // v5.1.1: Cưỡng chế Max Level tài khoản lên 500 và xử lý ngay EXP tích lũy bị nghẽn
   if (!gameState.player.maxLevel || gameState.player.maxLevel < 600) {
     gameState.player.maxLevel = 600;
@@ -2968,6 +3034,18 @@ function getHeroStats(heroId, customLv = null) {
   }
   if (heroId === "tobirama" && lv >= 30) {
     def += 30;
+  }
+  if (heroId === "kisame" && lv >= 30) {
+    def += 25;
+  }
+  if (heroId === "konan_sage") {
+    if (lv >= 30) {
+      dodgeRate = Math.max(dodgeRate, 0.40);
+    }
+    if (lv >= 80) {
+      critRate += 0.30;
+      critDmg += 0.60;
+    }
   }
 
   return {
@@ -5079,6 +5157,55 @@ function nextTurn() {
           logCombat(`🪭 Sợi Dây Định Mệnh và Dạng Thần của Kagura đã kết thúc!`);
         }
       }
+      // v7.3.0: Kisame Shark Form đếm lùi & Thủy Vực Sâu rút Chakra, làm chậm toàn địch
+      if (f.id === "kisame" && f.sharkForm && f.sharkForm > 0) {
+        f.sharkForm--;
+        const enemyTeam = (battle.playerTeam && battle.playerTeam.includes(f)) ? battle.botTeam : battle.playerTeam;
+        const enemies = enemyTeam ? enemyTeam.filter(e => e && e.hp > 0) : [];
+        enemies.forEach(e => {
+          const drain1k = Math.min(e.chakra || 0, 1000);
+          e.chakra = Math.max(0, (e.chakra || 0) - drain1k);
+          f.chakra = Math.min(f.chakraMax || 30000, (f.chakra || 0) + Math.round(drain1k * 0.50));
+        });
+        logCombat(`🦈🌊 [Thủy Vực Sâu] Shark Form của Kisame rút 1,000 🌀 Chakra của toàn bộ kẻ địch cuối hiệp!`);
+        if (f.sharkForm <= 0) {
+          f.def = Math.max(68, (f.def || 118) - 50);
+          f.atk = +(f.atk / 1.30).toFixed(1);
+          logCombat(`🦈 Hóa Thân Siêu Cá Mập của Kisame đã kết thúc, trở về dạng người!`);
+        }
+      }
+
+      // v7.3.0: Konan Phi Hành Lục Đạo đếm lùi
+      if (f.id === "konan_sage" && f.buffs && f.buffs.phiHanh && f.buffs.phiHanh > 0) {
+        f.buffs.phiHanh--;
+        if (f.buffs.phiHanh <= 0) {
+          delete f.buffs.phiHanh;
+          f.spd = Math.round(f.spd / 1.35);
+          f.atk = +(f.atk / 1.25).toFixed(1);
+          logCombat(`🕊️ Trạng thái Phi Hành Thiên Sứ của Konan đã kết thúc, hạ cánh xuống mặt đất!`);
+        }
+      }
+
+      // v7.3.0: Konan Ấn Bùa Nổ nổ chậm ở cuối hiệp
+      if (f.buffs && f.buffs.anBuaNo) {
+        f.buffs.anBuaNo.turns--;
+        if (f.buffs.anBuaNo.turns <= 0) {
+          const explodeDmg = f.buffs.anBuaNo.burnDmg || Math.round(f.maxHp * 0.10);
+          applyDamage(f, explodeDmg, false, f.buffs.anBuaNo.caster, false, true);
+          addAnimation(f, `💥 ẤN BÙA NỔ! -${explodeDmg.toLocaleString()}`, "#ff0055");
+          logCombat(`🕊️💣 [Ấn Bùa Nổ Lục Đạo] Bùa nổ găm trên người ${f.name} phát hỏa nổ tung gây ${explodeDmg.toLocaleString()} Sát thương chuẩn!`);
+          delete f.buffs.anBuaNo;
+        }
+      }
+
+      // v7.3.0: Hiệu ứng Câm Lặng (Silence) đếm lùi
+      if (f.buffs && f.buffs.silence && f.buffs.silence > 0) {
+        f.buffs.silence--;
+        if (f.buffs.silence <= 0) {
+          delete f.buffs.silence;
+          logCombat(`🕊️✨ Lá bùa phong ấn Thiên Sứ tan biến, ${f.name} đã thoát khỏi trạng thái Câm Lặng!`);
+        }
+      }
       if (f.buffs && f.buffs.kaguraAtkBuff) {
         f.buffs.kaguraAtkBuff--;
         if (f.buffs.kaguraAtkBuff <= 0) {
@@ -5874,6 +6001,96 @@ function applyDamage(target, amount, isCrit = false, attacker = null, isMelee = 
     }
   }
 
+
+  // v7.3.0: Kisame Tuyệt Đối Kháng Hỏa, Giảm 50% ST Hỏa/Uchiha, Hấp Thụ Hơi Nước & Samehada Hút Chakra/Khiên
+  if (target.id === "kisame") {
+    if (target.buffs) {
+      delete target.buffs.burn;
+      delete target.buffs.bongRat;
+      delete target.buffs.hacHoa;
+      delete target.buffs.amaterasu;
+      delete target.buffs.amaterasuTuyetDietV7;
+    }
+    const isFireOrUchiha = (attacker && (attacker.id === "madara" || attacker.id === "itachi" || attacker.id === "itachi_amaterasu" || attacker.id === "sasuke_susanoo" || attacker.id === "shisui"));
+    if (isFireOrUchiha) {
+      finalDmg = Math.round(finalDmg * 0.50);
+      const healAmt = Math.round(target.maxHp * 0.08);
+      target.hp = Math.min(target.maxHp, target.hp + healAmt);
+      target.steamArmorStacks = (target.steamArmorStacks || 0) + 1;
+      if (target.steamArmorStacks <= 5) {
+        target.def = (target.def || 68) + 20;
+      }
+      addAnimation(target, `🌊 THỦY PHÁCH! +${healAmt.toLocaleString()} HP (+20 DEF)`, "#58a6ff");
+      logCombat(`🦈🌊 [Thủy Phách Bất Diệt] Hơi nước bốc lên giúp Kisame hấp thụ đòn Hỏa Độn của ${attacker.name}, giảm 50% ST, hồi +${healAmt.toLocaleString()} HP và cộng dồn +20 DEF (Tầng ${target.steamArmorStacks})!`);
+    }
+
+    // Bị Động 2 (Lv.80) [Đại Đao Samehada - Kẻ Thù Năng Lượng]: Hút 15% Chakra của kẻ tấn công biến thành Khiên
+    if (target.level >= 80 && attacker && attacker !== target && attacker.chakra > 0) {
+      const drainVal = Math.round(attacker.chakra * 0.15);
+      if (drainVal > 0) {
+        attacker.chakra = Math.max(0, attacker.chakra - drainVal);
+        const gainChakra = Math.round(drainVal * 0.50);
+        const gainShield = Math.round(drainVal * 0.50);
+        target.chakra = Math.min(target.chakraMax || 30000, (target.chakra || 0) + gainChakra);
+        target.shield = (target.shield || 0) + gainShield;
+        addAnimation(target, `🦈 SAMEHADA (+${gainShield.toLocaleString()} KHIÊN)`, "#39c5bb");
+        logCombat(`🦈🗡️ [Đại Đao Samehada] Samehada nuốt chửng ${drainVal.toLocaleString()} 🌀 Chakra của ${attacker.name} (Nạp +${gainChakra.toLocaleString()} 🌀, hóa Khiên +${gainShield.toLocaleString()})!`);
+      }
+    }
+
+    // Phản Hồi Sinh Lực Khẩn Cấp (< 30% HP)
+    if (target.level >= 80 && (target.hp / target.maxHp) < 0.30 && !target.samehadaEmergencyUsed) {
+      target.samehadaEmergencyUsed = true;
+      const emergHeal = Math.round(target.maxHp * 0.40);
+      target.hp = Math.min(target.maxHp, target.hp + emergHeal);
+      target.chakra = Math.min(target.chakraMax || 30000, (target.chakra || 0) + 5000);
+      addAnimation(target, `🦈 CỨU CHỦ KHẨN CẤP! +${emergHeal.toLocaleString()} HP`, "#3fb950");
+      logCombat(`🦈💖 [Samehada Phản Hồi Sinh Lực] Khi HP dưới 30%, Samehada lập tức nhả sinh lực nuôi dưỡng Kisame: Hồi ngay +${emergHeal.toLocaleString()} HP và cấp +5,000 Chakra!`);
+    }
+  }
+
+  // v7.3.0: Konan Thể Giấy Vô Định (40% Né đòn & Phản kích) + Miễn nhiễm cận chiến khi Phi Hành + Bảo Hộ Thiên Thần (< 40% HP)
+  if (target.id === "konan_sage") {
+    // 1. Miễn nhiễm cận chiến khi đang Phi Hành
+    if (target.buffs && target.buffs.phiHanh && target.buffs.phiHanh > 0 && isMelee && !isTrueDmg) {
+      addAnimation(target, "🪶 KHÁNG CẬN CHIẾN (0 ST)!", "#e0b0ff");
+      logCombat(`🕊️🪶 [Thức Chỉ Khiêu: Phi Hành] Konan bay lơ lửng trên không trung, đôi cánh giấy gạt phăng đòn cận chiến của ${attacker ? attacker.name : 'kẻ địch'} (0 ST)!`);
+      return 0;
+    }
+
+    // 2. Bị Động 1 (Lv.30) [Thể Giấy Vô Định]: 40% tự động phân tán thành bướm giấy né sạch đòn & phản kích 180% ATK
+    if (target.level >= 30 && !isTrueDmg && Math.random() < 0.40) {
+      addAnimation(target, "🦋 THỂ GIẤY VÔ ĐỊNH (NÉ 100%)", "#e0b0ff");
+      target.chakra = Math.min(target.chakraMax || 35000, (target.chakra || 0) + 1000);
+      logCombat(`🕊️🦋 [Thể Giấy Vô Định] Konan phân tách thành 100 cánh bướm giấy origami né sạch 100% đòn đánh của ${attacker ? attacker.name : 'kẻ địch'} và hồi +1,000 Chakra!`);
+      if (attacker && attacker !== target && attacker.hp > 0) {
+        const counterDmg = Math.round(target.atk * 1.80);
+        addAnimation(attacker, `💥 PHẢN KÍCH BƯỚM GIẤY! -${counterDmg.toLocaleString()}`, "#bc8cff");
+        logCombat(`💥 [Phản Kích Bướm Giấy] Các trang giấy tụ lại phía sau lưng ${attacker.name} phóng phi tiêu bọc lôi điện phản kích ${counterDmg.toLocaleString()} ST!`);
+        applyDamage(attacker, counterDmg, false, target, false, true);
+      }
+      return 0;
+    }
+
+    // 3. Bị Động 2 (Lv.80) [Bảo Hộ Thiên Thần]: Khi HP < 40%, bừng tỉnh Khiên Sen Giấy 40% HP, giải toàn bộ debuff, +6,000 Chakra, +40% SPD
+    if (target.level >= 80 && (target.hp / target.maxHp) < 0.40 && !target.angelProtectionUsed) {
+      target.angelProtectionUsed = true;
+      const lotusShield = Math.round(target.maxHp * 0.40);
+      target.shield = (target.shield || 0) + lotusShield;
+      target.chakra = Math.min(target.chakraMax || 35000, (target.chakra || 0) + 6000);
+      target.spd = Math.round(target.spd * 1.40);
+      target.buffs = target.buffs || {};
+      target.buffs.angelSpd = 2;
+      // Xóa toàn bộ debuff bất lợi
+      if (target.buffs) {
+        const debuffs = ['burn', 'bongRat', 'hacHoa', 'amaterasu', 'amaterasuTuyetDietV7', 'aoThuat', 'thaoTung', 'hypnosis', 'vongLap', 'tsukuyomi', 'thuocNgu', 'stun', 'choang', 'slow'];
+        debuffs.forEach(k => delete target.buffs[k]);
+      }
+      addAnimation(target, `🛡️ BẢO HỘ THIÊN THẦN (+${lotusShield.toLocaleString()} KHIÊN)`, "#ffd700");
+      logCombat(`🕊️👑 [Bảo Hộ Thiên Thần] HP dưới 40%, đóa hoa sen giấy 8 cánh nở rộ: Konan xóa sạch toàn bộ debuff, nhận Khiên +${lotusShield.toLocaleString()} HP (40%), hồi ngay +6,000 🌀 Chakra và tăng +40% SPD trong 2 lượt!`);
+    }
+  }
+
   // v7.2.0: Tobirama Tuyệt Đối Kháng Hỏa & Khắc Chế Uchiha (Giảm 50% ST, Phản 50% ST gốc, Miễn Nhiễm Lửa & Ảo Thuật)
   if (target.id === "tobirama") {
     if (target.buffs) {
@@ -6421,6 +6638,28 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
           addAnimation(a, `+${shieldVal.toLocaleString()} THỦY TRẬN BÍCH`, "#58a6ff");
         });
         logCombat(`🌊🛡️ [Thủy Độn: Thủy Trận Bích] Tobirama dựng tường sóng nước cấp ${shieldVal.toLocaleString()} Khiên và dập tắt toàn bộ Thiêu đốt toàn đội!`);
+      } else if (actor.id === "kisame") {
+        // Lv.1: Thủy Độn: Ngũ Thực Sa: 240% ATK, cướp 1,200 Chakra, tạo Thủy Khiên 18% HP max trong 3 lượt
+        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 2.40);
+        applyDamage(target, damage, isCrit, actor, false, false);
+        const stolen = Math.min(target.chakra || 0, 1200);
+        target.chakra = Math.max(0, (target.chakra || 0) - stolen);
+        actor.chakra = Math.min(actor.chakraMax || 30000, (actor.chakra || 0) + stolen);
+        const sharkShield = Math.round(actor.maxHp * 0.18);
+        actor.shield = (actor.shield || 0) + sharkShield;
+        addAnimation(actor, `🛡️ THỦY KHIÊN +${sharkShield.toLocaleString()}`, "#58a6ff");
+        logCombat(`🦈🌊 [Thủy Độn: Ngũ Thực Sa] 5 cá mập Chakra lao đến cắn xé ${target.name} gây ${damage.toLocaleString()} ST, cướp ${stolen.toLocaleString()} 🌀 Chakra và tạo Thủy Khiên +${sharkShield.toLocaleString()} HP cho Kisame!`);
+      } else if (actor.id === "konan_sage") {
+        // Lv.1: Thức Chỉ Khiêu: Đôi Cánh Thiên Thần: Phi Hành 3 lượt, +35% SPD, +25% ATK, miễn nhiễm cận chiến, mưa lông vũ 250% ATK
+        actor.buffs = actor.buffs || {};
+        actor.buffs.phiHanh = 3;
+        actor.spd = Math.round(actor.spd * 1.35);
+        actor.atk = +(actor.atk * 1.25).toFixed(1);
+        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 2.50);
+        applyDamage(target, damage, isCrit, actor, false, false);
+        addAnimation(actor, "🪶 PHI HÀNH THIÊN SỨ (3 LƯỢT)!", "#e0b0ff");
+        addAnimation(target, `💥 MƯA LÔNG VŨ -${damage.toLocaleString()}`, "#bc8cff");
+        logCombat(`🕊️✨ [Thức Chỉ Khiêu: Đôi Cánh Thiên Thần] Konan bay lượn trên bầu trời (Phi Hành 3 lượt: +35% SPD, +25% ATK, Miễn đòn cận chiến), trút mưa lông vũ giấy gây ${damage.toLocaleString()} ST lên ${target.name}!`);
 } else if (actor.id === "kagura") {
         const targetAlly = aliveAllies[Math.floor(Math.random() * aliveAllies.length)];
         if (targetAlly) {
@@ -6610,6 +6849,39 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
         applyDamage(target, damage, isCrit, actor, true, false);
         addAnimation(target, "⚡ PHI LÔI THẦN TRẢM (KHÔNG THỂ NÉ)!", "#58a6ff");
         logCombat(`🗡️⚡ [Phi Lôi Thần Trảm] Tobirama dịch chuyển chém trúng ${target.name} gây ${damage.toLocaleString()} ST (bỏ qua 60% DEF, không thể né tránh)!`);
+      } else if (actor.id === "kisame") {
+        // Lv.50: Thủy Lao Thuật: Đại Hải Giam Cầm: Choáng 1 lượt kẻ địch ATK cao nhất, rút 2000 Chakra, toàn đội nhận bùa giảm 30% ST trong 2 lượt
+        let highestAtkEnemy = target;
+        aliveEnemies.forEach(e => {
+          if (e.atk > highestAtkEnemy.atk) highestAtkEnemy = e;
+        });
+        highestAtkEnemy.buffs = highestAtkEnemy.buffs || {};
+        highestAtkEnemy.buffs.stun = 1;
+        const drained = Math.min(highestAtkEnemy.chakra || 0, 2000);
+        highestAtkEnemy.chakra = Math.max(0, (highestAtkEnemy.chakra || 0) - drained);
+        actor.chakra = Math.min(actor.chakraMax || 30000, (actor.chakra || 0) + drained);
+        addAnimation(highestAtkEnemy, "🌊 THỦY LAO GIAM CẦM (STUN 1 LƯỢT)!", "#58a6ff");
+        aliveAllies.forEach(a => {
+          a.buffs = a.buffs || {};
+          a.buffs.lanSongBaoVe = 2;
+          addAnimation(a, "🌊 -30% ST (2 LƯỢT)", "#39c5bb");
+        });
+        logCombat(`🦈🌊 [Thủy Lao Thuật: Đại Hải Giam Cầm] Kisame tạo khối cầu nước giam cầm ${highestAtkEnemy.name} (Stun 1 lượt, rút ${drained.toLocaleString()} 🌀 Chakra), toàn đội nhận bùa [Làn Sóng Bảo Vệ] giảm 30% sát thương trong 2 lượt!`);
+      } else if (actor.id === "konan_sage") {
+        // Lv.50: Lục Đạo Thần Trảm: Chakram Giấy Nén: 380% ATK lên hàng trước, bỏ qua 70% DEF, găm Ấn Bùa Nổ (100% ATK sát thương chuẩn cuối lượt)
+        const frontRow = aliveEnemies.slice(0, 2);
+        frontRow.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 3.80, 0.70);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.buffs = t.buffs || {};
+          t.buffs.anBuaNo = {
+            turns: 1,
+            caster: actor,
+            burnDmg: Math.round(actor.atk * 1.0)
+          };
+          addAnimation(t, "💣 ẤN BÙA NỔ LỤC ĐẠO!", "#ff0055");
+        });
+        logCombat(`🕊️💫 [Lục Đạo Thần Trảm: Chakram Giấy Nén] 2 cỗ máy cưa Chakram siêu thanh chém xuyên hàng trước gây sát thương khủng (bỏ qua 70% DEF) và khắc Ấn Bùa Nổ Lục Đạo!`);
 } else if (actor.id === "kagura") {
         actor.godForm = true;
         actor.buffs.dayDinhMenh = 5;
@@ -6835,6 +7107,34 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
           addAnimation(t, "🌊 -35% TỐC ĐỘ (3 LƯỢT)", "#58a6ff");
         });
         logCombat(`🌊🐉 [Thủy Độn: Thủy Long Đạn Vực Sâu] Đại thủy long càn quét toàn đội địch, làm chậm 35% Tốc độ trong 3 lượt!`);
+      } else if (actor.id === "kisame") {
+        // Lv.130: Hợp Thể Samehada: Thủy Lao Đại Sa Trùm: Shark Form 4 lượt (+50 DEF, +30% ST, miễn khống chế, toàn địch -35% SPD và mất 1k Chakra mỗi hiệp)
+        actor.sharkForm = 4;
+        actor.def = (actor.def || 68) + 50;
+        actor.atk = +(actor.atk * 1.30).toFixed(1);
+        aliveEnemies.forEach(t => {
+          t.spd = Math.round(t.spd * 0.65);
+          addAnimation(t, "🌊 THỦY VỰC SÂU (-35% SPD)", "#58a6ff");
+        });
+        addAnimation(actor, "🦈 SIÊU CÁ MẬP QUÁI THÚ (4 LƯỢT)!", "#39c5bb");
+        logCombat(`🦈🌊 [HỢP THỂ SAMEHADA: THỦY LAO ĐẠI SA TRÙM] Kisame hóa thân thành Siêu Cá Mập Quái Thú trong 4 lượt: Tăng +50 DEF, +30% ST, miễn khống chế; triệu hồi khối cầu nước khổng lồ giảm 35% SPD và rút 1,000 Chakra toàn địch mỗi hiệp!`);
+      } else if (actor.id === "konan_sage") {
+        // Lv.130: Thánh Nữ Luân Hồi: Đại Bão Giấy Trấn Hồn: 480% ATK diện rộng, Tước đoạt 100% Buff/Khiên, Câm Lặng (Silence 1 lượt)
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 4.80);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          // Tước đoạt 100% buff & Khiên
+          t.shield = 0;
+          if (t.buffs) {
+            const buffsToDispel = ['lanSongBaoVe', 'tuTin', 'dayDinhMenh', 'fateString', 'mocPhanThan', 'khienDungNham', 'bucTuongBatHoai', 'atkUp', 'spdUp', 'defUp'];
+            buffsToDispel.forEach(k => delete t.buffs[k]);
+          }
+          // Dán bùa Câm Lặng (Silence 1 lượt)
+          t.buffs = t.buffs || {};
+          t.buffs.silence = 1;
+          addAnimation(t, "🔇 CÂM LẶNG & XÓA SẠCH BUFF!", "#e0b0ff");
+        });
+        logCombat(`🕊️🌪️ [Thánh Nữ Luân Hồi: Đại Bão Giấy Trấn Hồn] Cơn lốc xoáy bão giấy càn quét xé nát toàn bộ Khiên/Buff của kẻ địch và dán bùa CÂM LẶNG (Khóa toàn bộ kỹ năng chủ động trong 1 lượt)!`);
 } else if (actor.id === "kagura") {
         const shieldVal = Math.round(actor.hp * 0.10);
         actor.shield = (actor.shield || 0) + shieldVal;
@@ -7035,6 +7335,45 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
           });
           logCombat(`💣💥 [Hỗ Thừa Khởi Bạo Phù: Nổ Dây Chuyền] Thi thể kẻ địch phát nổ liên hoàn gây thêm ${deadEnemyHpPool.toLocaleString()} Sát thương chuẩn lên toàn bộ kẻ sống sót!`);
         }
+      } else if (actor.id === "kisame") {
+        // Lv.250: Tuyệt Kỹ: Đại Sa Đạn Thuật: 680% ATK diện rộng, hút 30% Chakra toàn địch, mỗi 1k Chakra tăng 15% ST và tạo Khiên vĩnh cửu
+        let totalChakraSwallowed = 0;
+        aliveEnemies.forEach(t => {
+          const drain = Math.round((t.chakra || 0) * 0.30);
+          if (drain > 0) {
+            t.chakra = Math.max(0, (t.chakra || 0) - drain);
+            totalChakraSwallowed += drain;
+          }
+        });
+        actor.chakra = Math.min(actor.chakraMax || 30000, (actor.chakra || 0) + Math.round(totalChakraSwallowed * 0.50));
+        const extraDmgMult = 1.0 + (totalChakraSwallowed / 1000) * 0.15;
+        const sharkShieldBonus = totalChakraSwallowed;
+        actor.shield = (actor.shield || 0) + sharkShieldBonus;
+
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 6.80 * extraDmgMult);
+          applyDamage(t, damage, isCrit, actor, false, false);
+        });
+        addAnimation(actor, `🦈 ĐẠI SA ĐẠN (+${sharkShieldBonus.toLocaleString()} KHIÊN)`, "#39c5bb");
+        logCombat(`🦈🌊👑 [TUYỆT KỸ: ĐẠI SA ĐẠN THUẬT] Con cá mập khổng lồ há miệng nuốt chửng ${totalChakraSwallowed.toLocaleString()} 🌀 Chakra của toàn bộ phe địch, cường hóa sát thương x${extraDmgMult.toFixed(2)} và tạo lớp Khiên vĩnh cửu +${sharkShieldBonus.toLocaleString()} HP cho Kisame!`);
+      } else if (actor.id === "konan_sage") {
+        // Lv.250: Tuyệt Kỹ: 600 TỶ BÙA NỔ THẦN DIỆT THUẬT - KAMI NO SHISHA NO JUTSU
+        // 880% ATK diện rộng + SÁT THƯƠNG CHUẨN 25% MAX HP TỪNG ĐỊCH, phá nát khiên, Tàn Phế Hư Vô (-50% ATK & DEF vĩnh viễn)
+        battle.screenShake = 12;
+        aliveEnemies.forEach(t => {
+          t.shield = 0; // Phá nát toàn bộ Khiên trước khi tính sát thương
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 8.80);
+          const trueDmg25 = Math.round(t.maxHp * 0.25);
+          applyDamage(t, damage + trueDmg25, isCrit, actor, false, true);
+          // Tàn Phế Hư Vô (-50% ATK & DEF vĩnh viễn)
+          t.atk = +(t.atk * 0.50).toFixed(1);
+          t.def = Math.round(t.def * 0.50);
+          t.buffs = t.buffs || {};
+          t.buffs.tanPheHuVo = true;
+          addAnimation(t, "⚡ TÀN PHẾ HƯ VÔ (-50% CÔNG & GIÁP)!", "#ff0055");
+        });
+        addAnimation(actor, "👑 600 TỶ BÙA NỔ THẦN DIỆT THUẬT!", "#ffd700");
+        logCombat(`🕊️💣👑 [TUYỆT KỸ TỐI THƯỢNG: 600 TỶ BÙA NỔ THẦN DIỆT THUẬT] Konan khai mở vực thẳm đại dương, 600 tỷ lá bùa nổ bộc phá dữ dội cày nát toàn bộ đội hình địch: 880% ATK + SÁT THƯƠNG CHUẨN 25% MAX HP, phá nát khiên và giáng TÀN PHẾ HƯ VÔ (-50% ATK & DEF vĩnh viễn)!`);
 } else if (actor.id === "kagura") {
         aliveAllies.forEach(a => {
           a.buffs = a.buffs || {};
@@ -7505,6 +7844,94 @@ function drawCharacter(f) {
       ctx.beginPath();
       ctx.arc(x, y, R + 10, 0, Math.PI * 2);
       ctx.stroke();
+      ctx.restore();
+    }
+
+    // v7.3.0: Hoạt ảnh Siêu Cá Mập Kisame (Thủy Vực Sâu & Vây Cá Mập Samehada)
+    if (f.id === "kisame" && !isDead) {
+      ctx.save();
+      const t = Date.now() / 200;
+      // Vòng xoáy nước Thủy Vực
+      ctx.shadowColor = "#39c5bb";
+      ctx.shadowBlur = f.sharkForm ? 28 : 14;
+      ctx.strokeStyle = f.sharkForm ? "#00ffff" : "rgba(88, 166, 255, 0.7)";
+      ctx.lineWidth = f.sharkForm ? 4.5 : 2.5;
+      ctx.beginPath();
+      ctx.arc(x, y, R + (f.sharkForm ? 10 : 6) + Math.sin(t * 2) * 3, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Vây cá mập bơi lượn quanh token
+      const finCount = f.sharkForm ? 4 : 2;
+      for (let i = 0; i < finCount; i++) {
+        const finAngle = (i / finCount) * Math.PI * 2 + t * 0.8;
+        const fx = x + Math.cos(finAngle) * (R + (f.sharkForm ? 14 : 9));
+        const fy = y + Math.sin(finAngle) * (R + (f.sharkForm ? 14 : 9));
+        ctx.beginPath();
+        ctx.arc(fx, fy, f.sharkForm ? 4.5 : 3, 0, Math.PI * 2);
+        ctx.fillStyle = "#39c5bb";
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    // v7.3.0: Hoạt ảnh Đỉnh Cao Thiên Sứ Lục Đạo Konan (Đôi Cánh Giấy Nhịp Thở, Hào Quang Lục Đạo, Hoa Sen Giấy)
+    if (f.id === "konan_sage" && !isDead) {
+      ctx.save();
+      const t = Date.now() / 250;
+      const wingFlap = Math.sin(t) * 7;
+      const isFlying = (f.buffs && f.buffs.phiHanh && f.buffs.phiHanh > 0);
+
+      // Đôi cánh giấy Origami trắng bạc viền tím nhạt sau lưng
+      ctx.fillStyle = "rgba(255, 255, 255, 0.92)";
+      ctx.strokeStyle = "rgba(224, 176, 255, 0.85)";
+      ctx.lineWidth = 2;
+      ctx.shadowColor = "#e0b0ff";
+      ctx.shadowBlur = 18;
+
+      // Cánh trái
+      ctx.beginPath();
+      ctx.moveTo(x - R * 0.4, y - R * 0.2);
+      ctx.quadraticCurveTo(x - R * 1.5 - wingFlap, y - R * 1.2, x - R * 0.9, y + R * 0.3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Cánh phải
+      ctx.beginPath();
+      ctx.moveTo(x + R * 0.4, y - R * 0.2);
+      ctx.quadraticCurveTo(x + R * 1.5 + wingFlap, y - R * 1.2, x + R * 0.9, y + R * 0.3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // Hào quang Lục Đạo (Angelic Halo) xoay tròn trên đầu
+      ctx.beginPath();
+      ctx.ellipse(x, y - R - 12 + (isFlying ? -6 : 0), 16, 5, t * 0.4, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(255, 215, 0, 0.9)";
+      ctx.lineWidth = 2.5;
+      ctx.shadowColor = "#ffd700";
+      ctx.shadowBlur = 15;
+      ctx.stroke();
+
+      // Mưa hoa sen giấy origami rơi rụng lơ lửng dưới chân
+      for (let p = 0; p < 4; p++) {
+        const px = x + Math.sin(t * 1.5 + p * 1.8) * (R * 0.7);
+        const py = y + R * 0.4 + ((t * 20 + p * 15) % (R * 0.9));
+        ctx.beginPath();
+        ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.75)";
+        ctx.fill();
+      }
+
+      // Nếu đang Phi Hành: thêm vòng xoáy gió nâng đỡ
+      if (isFlying) {
+        ctx.beginPath();
+        ctx.ellipse(x, y + R + 4, R * 0.8, 8, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(224, 176, 255, 0.75)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
       ctx.restore();
     }
 // 1. Aura lượt đánh của nhân vật hiện tại
@@ -8027,6 +8454,9 @@ let currentGachaIndex = 0;
 const GACHA_SPECIAL_RATES = [
   { name: "Gaara Nhất Vĩ [Tỉ Lệ 0.35% Mùa III]", type: "hero", id: "gaara", rate: 0.0035, color: "var(--accent-gold)" },
   { name: "Kagura [Tỉ Lệ 0.35% Mùa III]", type: "hero", id: "kagura", rate: 0.0035, color: "var(--accent-purple)" },
+  { name: "Naruto (Chakra Cửu Vĩ) [Tỉ Lệ 0.35% v7.2.1]", type: "hero", id: "naruto_kurama", rate: 0.0035, color: "var(--accent-red)" },
+  { name: "Sasuke (Susanoo Hoàn Chỉnh) [Tỉ Lệ 0.35% v7.2.1]", type: "hero", id: "sasuke_susanoo", rate: 0.0035, color: "var(--accent-purple)" },
+  { name: "Konan (Thiên Sứ Lục Đạo) [Tỉ Lệ 0.35% v7.3.0]", type: "hero", id: "konan_sage", rate: 0.0035, color: "var(--accent-gold)" },
   { name: "100 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 100, rate: 0.05, color: "var(--accent-gold)" },
   { name: "60 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 60, rate: 0.15, color: "var(--accent-gold)" },
   { name: "40 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 40, rate: 0.15, color: "var(--accent-gold)" },
@@ -8035,12 +8465,15 @@ const GACHA_SPECIAL_RATES = [
   { name: "10 Mảnh Thiên Thạch Hoàng Kim", type: "res", res: "pinkShard", amt: 10, rate: 0.10, color: "var(--accent-gold)" },
   { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.12, color: "var(--accent-cyan)" },
   { name: "600 💎 Kim cương", type: "res", res: "kimCuong", amt: 600, rate: 0.09, color: "var(--accent-cyan)" },
-  { name: "1,000 💎 Kim cương", type: "res", res: "kimCuong", amt: 1000, rate: 0.033, color: "var(--accent-cyan)" }
+  { name: "1,000 💎 Kim cương", type: "res", res: "kimCuong", amt: 1000, rate: 0.0225, color: "var(--accent-cyan)" }
 ];
 
 const GACHA_NORMAL_RATES = [
   { name: "Omega Shenron [Tỉ Lệ 0.8% Mùa III]", type: "hero", id: "omega", rate: 0.008, color: "var(--accent-cyan)" },
   { name: "Whis [Tỉ Lệ 0.8% Mùa III]", type: "hero", id: "whis", rate: 0.008, color: "var(--accent-purple)" },
+  { name: "Naruto (Tiên Nhân Thuật) [Tỉ Lệ 0.8% v7.2.1]", type: "hero", id: "naruto_sage", rate: 0.008, color: "var(--accent-green)" },
+  { name: "Senju Tobirama (Đệ Nhị) [Tỉ Lệ 0.8% v7.2.1]", type: "hero", id: "tobirama", rate: 0.008, color: "var(--accent-cyan)" },
+  { name: "Hoshigaki Kisame (Siêu Cá Mập) [Tỉ Lệ 0.8% v7.3.0]", type: "hero", id: "kisame", rate: 0.008, color: "var(--accent-cyan)" },
   { name: "50 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 50, rate: 0.12, color: "var(--accent-gold)" },
   { name: "30 ⭐ Ánh sao", type: "res", res: "anhSao", amt: 30, rate: 0.15, color: "var(--accent-gold)" },
   { name: "1 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 1, rate: 0.12, color: "var(--accent-cyan)" },
@@ -8048,8 +8481,8 @@ const GACHA_NORMAL_RATES = [
   { name: "5 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 5, rate: 0.10, color: "var(--accent-cyan)" },
   { name: "10 Mảnh Thiên Thạch Xanh", type: "res", res: "blueShard", amt: 10, rate: 0.10, color: "var(--accent-cyan)" },
   { name: "150 💎 Kim cương", type: "res", res: "kimCuong", amt: 150, rate: 0.15, color: "var(--accent-cyan)" },
-  { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.10, color: "var(--accent-cyan)" },
-  { name: "500 💎 Kim cương", type: "res", res: "kimCuong", amt: 500, rate: 0.024, color: "var(--accent-cyan)" }
+  { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.092, color: "var(--accent-cyan)" },
+  { name: "500 💎 Kim cương", type: "res", res: "kimCuong", amt: 500, rate: 0.008, color: "var(--accent-cyan)" }
 ];
 
 function openPassModal() {
@@ -8072,13 +8505,35 @@ function switchPassTab(tab) {
   const showcaseGridEl = document.getElementById("gachaHeroShowcaseGrid");
 
   if (tab === "special") {
-    if (titleEl) titleEl.textContent = "Sổ Sứ Mệnh Đặc Biệt Mùa III";
-    if (descEl) descEl.textContent = "Cơ hội nhận Gaara Nhất Vĩ (0.35%), Kagura (0.35%) cùng Thiên Thạch Hoàng Kim & Ánh Sao Thần Thoại.";
+    if (titleEl) titleEl.textContent = "Sổ Sứ Mệnh Đặc Biệt v7.2.1";
+    if (descEl) descEl.textContent = "Cơ hội nhận Naruto Kurama (0.35%), Sasuke Susanoo (0.35%), Gaara (0.35%), Kagura (0.35%) cùng Thiên Thạch Hoàng Kim & Ánh Sao Thần Thoại.";
     if (cost1El) cost1El.textContent = "1 ☄️ Thiên Thạch Hồng";
     if (cost10El) cost10El.textContent = "9 ☄️ (Ưu đãi 10 lượt)";
-    if (showcaseTitleEl) showcaseTitleEl.textContent = "🌟 2 TƯỚNG CAO CẤP MÙA III (TỈ LỆ 0.35% MỖI TƯỚNG):";
+    if (showcaseTitleEl) showcaseTitleEl.textContent = "🌟 4 SIÊU TƯỚNG ĐẶC BIỆT (TỈ LỆ 0.35% MỖI TƯỚNG):";
     if (showcaseGridEl) {
       showcaseGridEl.innerHTML = `
+        <div style="background:#161b22; border:1px solid var(--accent-red); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(248,81,73,0.15);">
+          <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🦊</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b style="font-size:13px; color:var(--accent-red);">Naruto (Chakra Cửu Vĩ)</b>
+              <span style="font-size:10px; background:rgba(248,81,73,0.2); color:var(--accent-red); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.35%</span>
+            </div>
+            <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Đấu Sĩ Đột Biến Hóa Thần [AS]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Hóa Thân Kurama's Chakra Perfect, thay đổi 100% kỹ năng thành Vĩ Thú Thần Thể.</div>
+          </div>
+        </div>
+        <div style="background:#161b22; border:1px solid var(--accent-purple); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(188,140,255,0.15);">
+          <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🏹</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b style="font-size:13px; color:var(--accent-purple);">Sasuke (Susanoo Hoàn Chỉnh)</b>
+              <span style="font-size:10px; background:rgba(188,140,255,0.2); color:var(--accent-purple); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.35%</span>
+            </div>
+            <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Sát Thủ Dứt Điểm Tối Thượng [ATK]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Triệu hồi Susanoo Cự Thần Tím, Mũi Tên Indra phá nát toàn bộ Khiên địch.</div>
+          </div>
+        </div>
         <div style="background:#161b22; border:1px solid var(--accent-gold); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(241,224,90,0.15);">
           <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🏜️</div>
           <div style="flex:1;">
@@ -8087,7 +8542,7 @@ function switchPassTab(tab) {
               <span style="font-size:10px; background:rgba(241,224,90,0.2); color:var(--accent-gold); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.35%</span>
             </div>
             <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Kazekage Đệ Ngũ [DEF/SKL]</div>
-            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Phong Thuẫn Cát Hộ Thân, Đại Thác Sa Trầm Gây Choáng & Giảm 40% Giáp Toàn Phe Địch.</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Phong Thuẫn Cát Hộ Thân, Đại Thác Sa Trầm Gây Choáng & Giảm 40% Giáp.</div>
           </div>
         </div>
         <div style="background:#161b22; border:1px solid var(--accent-purple); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(188,140,255,0.15);">
@@ -8097,20 +8552,42 @@ function switchPassTab(tab) {
               <b style="font-size:13px; color:var(--accent-purple);">Kagura</b>
               <span style="font-size:10px; background:rgba(188,140,255,0.2); color:var(--accent-purple); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.35%</span>
             </div>
-            <div style="font-size:11px; color:#00f2fe; margin-top:2px;">Vu Nữ Tối Thượng [SKL]</div>
-            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Sợi Dây Định Mệnh Hồi HP Đồng Minh, Thức Tỉnh Dạng Thần & Miễn Nhiễm Choáng Vĩnh Viễn.</div>
+            <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Âm Dương Sư Vô Cực [SKL]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Dây Định Mệnh liên kết tăng cường hỏa lực, Dạng Thần toàn diện.</div>
           </div>
         </div>
       `;
     }
   } else {
-    if (titleEl) titleEl.textContent = "Sổ Sứ Mệnh Thường Mùa III";
-    if (descEl) descEl.textContent = "Cơ hội nhận Omega Shenron (0.8%), Whis (0.8%) cùng Mảnh Thiên Thạch Xanh & Ánh Sao.";
+    if (titleEl) titleEl.textContent = "Sổ Sứ Mệnh Thường v7.2.1";
+    if (descEl) descEl.textContent = "Cơ hội nhận Naruto Tiên Nhân (0.8%), Senju Tobirama (0.8%), Omega Shenron (0.8%), Whis (0.8%) cùng Mảnh Thiên Thạch Xanh & Ánh Sao.";
     if (cost1El) cost1El.textContent = "1 🔷 Thiên Thạch Xanh";
     if (cost10El) cost10El.textContent = "9 🔷 (Ưu đãi 10 lượt)";
-    if (showcaseTitleEl) showcaseTitleEl.textContent = "🌟 2 TƯỚNG THƯỜNG MÙA III (TỈ LỆ 0.8% MỖI TƯỚNG):";
+    if (showcaseTitleEl) showcaseTitleEl.textContent = "🌟 4 TƯỚNG TIÊU BIỂU (TỈ LỆ 0.8% MỖI TƯỚNG):";
     if (showcaseGridEl) {
       showcaseGridEl.innerHTML = `
+        <div style="background:#161b22; border:1px solid var(--accent-green); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(57,197,187,0.15);">
+          <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🐸</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b style="font-size:13px; color:var(--accent-green);">Naruto (Tiên Nhân Thuật)</b>
+              <span style="font-size:10px; background:rgba(57,197,187,0.2); color:var(--accent-green); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.8%</span>
+            </div>
+            <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Pháp Sư Tiên Khí [SKL]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Bật Sage Mode, Né đòn phản kích 150% ATK, Siêu Đại Ngọc Rasengan hồi máu đội.</div>
+          </div>
+        </div>
+        <div style="background:#161b22; border:1px solid var(--accent-cyan); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(88,166,255,0.15);">
+          <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🌊</div>
+          <div style="flex:1;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <b style="font-size:13px; color:var(--accent-cyan);">Senju Tobirama (Đệ Nhị)</b>
+              <span style="font-size:10px; background:rgba(88,166,255,0.2); color:var(--accent-cyan); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.8%</span>
+            </div>
+            <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Bậc Thầy Thủy Độn & Cấm Thuật [DEF]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Kháng 100% Lửa & Ảo Thuật, Phi Lôi Thần Trảm không thể né, Hỗ Thừa Khởi Bạo Phù.</div>
+          </div>
+        </div>
         <div style="background:#161b22; border:1px solid var(--accent-cyan); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(88,166,255,0.15);">
           <div style="font-size:32px; background:#0d1117; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:8px; border:1px solid #30363d;">🐉</div>
           <div style="flex:1;">
@@ -8119,7 +8596,7 @@ function switchPassTab(tab) {
               <span style="font-size:10px; background:rgba(88,166,255,0.2); color:var(--accent-cyan); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.8%</span>
             </div>
             <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Hắc Long Thần Ma [DEF]</div>
-            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Hắc Long Bất Diệt, Phản Sát Thương Cực Đại, Giảm Công & Miễn Nhiễm Khống Chế.</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Hắc Long Bất Diệt, Phản Sát Thương Toàn Diện.</div>
           </div>
         </div>
         <div style="background:#161b22; border:1px solid var(--accent-purple); border-radius:10px; padding:10px; display:flex; gap:10px; align-items:center; box-shadow:0 4px 12px rgba(188,140,255,0.15);">
@@ -8129,8 +8606,8 @@ function switchPassTab(tab) {
               <b style="font-size:13px; color:var(--accent-purple);">Whis</b>
               <span style="font-size:10px; background:rgba(188,140,255,0.2); color:var(--accent-purple); padding:2px 6px; border-radius:4px; font-weight:700;">Tỉ lệ 0.8%</span>
             </div>
-            <div style="font-size:11px; color:#f0883e; margin-top:2px;">Thiên Sứ Vũ Trụ 7 [SKL]</div>
-            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Đảo Ngược Thời Gian, Hồi Sinh Đồng Đội Tử Trận & Miễn Nhiễm Hoàn Toàn Mọi Sát Thương.</div>
+            <div style="font-size:11px; color:#58a6ff; margin-top:2px;">Thiên Sứ Vũ Trụ [SKL]</div>
+            <div style="font-size:10px; color:var(--text-secondary); margin-top:2px;">Đảo Ngược Thời Gian, Miễn Thương Hộ Vệ Toàn Đội.</div>
           </div>
         </div>
       `;
@@ -8901,6 +9378,184 @@ function submitGiftcode() {
   const input = document.getElementById("giftcodeInput");
   const code = input ? input.value.trim().toUpperCase() : "";
   if (!code) return;
+
+  // v7.3.0: Đại Lễ Cập Nhật v7.3.0: Mở khóa Kisame Cấp 1 + Konan Cấp 1 + Tài nguyên khủng
+  if (code === "V730") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("V730")) {
+      toast("Mã quà tặng V730 đã được sử dụng rồi!", true);
+      return;
+    }
+    const newHeroes = ["kisame", "konan_sage"];
+    newHeroes.forEach(hId => {
+      if (!gameState.heroes[hId]) gameState.heroes[hId] = { level: 1 };
+    });
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 50000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 1500000;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 3000000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 60;
+    gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 120;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("V730");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🎉 Kích hoạt mã V730: Mở khóa Hoshigaki Kisame (Cấp 1) & Konan Thiên Sứ (Cấp 1) + 50K KC + 1.5M VPNC + 3M Vàng + 60 Thiên Thạch Hồng + 120 Thiên Thạch Xanh!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "KISAME") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("KISAME")) {
+      toast("Mã quà tặng KISAME đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.kisame) gameState.heroes.kisame = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 15000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 600000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 25;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 600000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("KISAME");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🦈 Kích hoạt mã KISAME: Mở khóa Hoshigaki Kisame (Siêu Cá Mập) [Cấp 1] + 15K KC + 600K VPNC + 25 Thiên Thạch Hồng + 600K Vàng!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "KONAN") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("KONAN")) {
+      toast("Mã quà tặng KONAN đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.konan_sage) gameState.heroes.konan_sage = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 15000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 600000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 25;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 600000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("KONAN");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🕊️ Kích hoạt mã KONAN: Mở khóa Konan (Thiên Sứ Lục Đạo) [Cấp 1] + 15K KC + 600K VPNC + 25 Thiên Thạch Hồng + 600K Vàng!", false);
+    renderHeroesList();
+    return;
+  }
+
+  // v7.2.1: Giftcodes chính thức mở khóa 4 Siêu Tướng ở Cấp 1
+  if (code === "V720") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("V720")) {
+      toast("Mã quà tặng V720 đã được sử dụng rồi!", true);
+      return;
+    }
+    const newHeroes = ["naruto_kurama", "naruto_sage", "sasuke_susanoo", "tobirama"];
+    newHeroes.forEach(hId => {
+      if (!gameState.heroes[hId]) gameState.heroes[hId] = { level: 1 };
+    });
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 50000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 1000000;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 2000000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 50;
+    gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 100;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("V720");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🎉 Kích hoạt mã V720: Mở khóa trọn bộ 4 Siêu Tướng Mới (Cấp 1) + 50K KC + 1M VPNC + 2M Vàng + 50 Thiên Thạch Hồng + 100 Thiên Thạch Xanh!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "KURAMA") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("KURAMA")) {
+      toast("Mã quà tặng KURAMA đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.naruto_kurama) gameState.heroes.naruto_kurama = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 10000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 500000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 20;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 500000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("KURAMA");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🦊 Kích hoạt mã KURAMA: Mở khóa Naruto (Chakra Cửu Vĩ) [Cấp 1] + 10K KC + 500K VPNC + 20 Thiên Thạch Hồng + 500K Vàng!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "SAGEMODE") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("SAGEMODE")) {
+      toast("Mã quà tặng SAGEMODE đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.naruto_sage) gameState.heroes.naruto_sage = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 10000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 500000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 20;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 500000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("SAGEMODE");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🐸 Kích hoạt mã SAGEMODE: Mở khóa Naruto (Tiên Nhân Thuật) [Cấp 1] + 10K KC + 500K VPNC + 20 Thiên Thạch Hồng + 500K Vàng!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "SUSANOO") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("SUSANOO")) {
+      toast("Mã quà tặng SUSANOO đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.sasuke_susanoo) gameState.heroes.sasuke_susanoo = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 10000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 500000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 20;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 500000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("SUSANOO");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🏹 Kích hoạt mã SUSANOO: Mở khóa Sasuke (Susanoo Hoàn Chỉnh) [Cấp 1] + 10K KC + 500K VPNC + 20 Thiên Thạch Hồng + 500K Vàng!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "TOBIRAMA") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("TOBIRAMA")) {
+      toast("Mã quà tặng TOBIRAMA đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.tobirama) gameState.heroes.tobirama = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 10000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 500000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 20;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 500000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("TOBIRAMA");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🌊 Kích hoạt mã TOBIRAMA: Mở khóa Senju Tobirama (Đệ Nhị) [Cấp 1] + 10K KC + 500K VPNC + 20 Thiên Thạch Hồng + 500K Vàng!", false);
+    renderHeroesList();
+    return;
+  }
 
   if (code === "V600") {
     gameState.heroes.minato = { level: 1 };
@@ -9934,6 +10589,17 @@ function renderHeroesList() {
       saveGame();
     }
   }
+  // v7.2.1: Dọn dẹp 4 Siêu Tướng nếu chưa từng nhập giftcode hợp lệ hoặc quay gacha
+  const v720Heroes = ["naruto_kurama", "naruto_sage", "sasuke_susanoo", "tobirama"];
+  const legitV720Codes = ["V720", "KURAMA", "SAGEMODE", "SUSANOO", "TOBIRAMA", "TEST001", "TEST002", "TEST003"];
+  const hasUsedAnyV720Code = gameState.usedCodes && legitV720Codes.some(c => gameState.usedCodes.includes(c));
+  v720Heroes.forEach(hId => {
+    if (gameState.heroes && gameState.heroes[hId] && !hasUsedAnyV720Code && gameState.heroes[hId].level === 100) {
+      delete gameState.heroes[hId];
+      if (gameState.team) gameState.team = gameState.team.map(id => id === hId ? null : id);
+      saveGame();
+    }
+  });
   const container = document.getElementById("heroListContainer");
   if (!container) return;
   container.innerHTML = "";
@@ -11332,11 +11998,20 @@ function buySkillScroll() {
 
 
 function initGame() {
-  // v7.2.0: Tự động bổ sung 4 Siêu Tướng Mới vào tài khoản người chơi
+  // v7.2.1: Khắc phục triệt để lỗi tài khoản mới tự động nhận 4 Siêu Tướng ở Cấp 100
   const v720Heroes = ["naruto_kurama", "naruto_sage", "sasuke_susanoo", "tobirama"];
+  const legitV720Codes = ["V720", "KURAMA", "SAGEMODE", "SUSANOO", "TOBIRAMA", "TEST001", "TEST002", "TEST003"];
+  const hasUsedAnyV720Code = gameState.usedCodes && legitV720Codes.some(c => gameState.usedCodes.includes(c));
+
   v720Heroes.forEach(hId => {
-    if (!gameState.heroes[hId]) {
-      gameState.heroes[hId] = { level: 100, equippedSkill: null };
+    if (gameState.heroes && gameState.heroes[hId]) {
+      // Nếu tướng ở Lv.100 do lỗi tự cấp của bản v7.2.0 và chưa từng nhập mã hợp lệ
+      if (!hasUsedAnyV720Code && gameState.heroes[hId].level === 100) {
+        delete gameState.heroes[hId];
+        if (gameState.team) {
+          gameState.team = gameState.team.map(id => id === hId ? null : id);
+        }
+      }
     }
   });
 
