@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chiến Thuật Luân Hồi v7.3.0 [SIÊU CÁ MẬP KISAME & THIÊN SỨ LỤC ĐẠO KONAN - ĐỈNH CAO CHIẾN THUẬT]</title>
+<title>Chiến Thuật Luân Hồi v7.3.0 [LỤC ĐẠO CHI CHIẾN: OBITO, NAGATO, KISAME, KONAN & ĐẠI REWORK THẦN THOẠI]</title>
 <style>
   :root {
     --bg-main: #0d1117;
@@ -790,7 +790,7 @@
     <!-- Hub Màn Hình Chính -->
     <div class="screen hub-screen active" id="screenHub">
       <div class="game-title">Chiến Thuật Luân Hồi</div>
-      <div style="font-size:12px; color:var(--accent-gold); margin-top:-14px; font-weight:700;">⚡ BẢN v7.3.0: SIÊU TƯỚNG DEF HOSHIGAKI KISAME & SIÊU PHẨM THẦN THOẠI KONAN (600 TỶ BÙA NỔ)</div>
+      <div style="font-size:12px; color:var(--accent-gold); margin-top:-14px; font-weight:700;">⚡ BẢN v7.3.0: OBITO LỤC ĐẠO, NAGATO (SIÊU LIÊN KẾT), KISAME, KONAN & REWORK SHISUI, HAGOROMO, ISSHIKI</div>
       <div class="menu-grid">
         <button class="btn btn-hub-campaign" onclick="openBattleStageModal()">
           <span class="btn-icon">⚔️</span>
@@ -869,7 +869,7 @@
       <div class="battle-controls">
         <div class="turn-banner" id="battleTurnBanner">
           <div>
-            <div style="font-size:9.5px; color:#ff0055; font-weight:800; letter-spacing:0.5px; line-height:1.2; margin-bottom:2px;">⚡ v7.3.0 KISAME & KONAN LỤC ĐẠO</div>
+            <div style="font-size:9.5px; color:#ff0055; font-weight:800; letter-spacing:0.5px; line-height:1.2; margin-bottom:2px;">⚡ v7.3.0 LỤC ĐẠO CHI CHIẾN</div>
             <div style="font-size:11px; color:var(--text-secondary);">Lượt hành động:</div>
             <div style="font-size:13.5px; font-weight:700; color:var(--accent-blue); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;" id="activeActorName">Đang tải...</div>
             <div style="font-size:11px;" id="activeActorSpeed">Tốc độ: 0</div>
@@ -1577,9 +1577,14 @@
         <div style="margin-top:12px; font-size:11px; color:var(--text-secondary); display:flex; flex-direction:column; gap:6px;">
           <div style="font-weight:bold; color:var(--accent-gold);">⚡ GIFTCODE MỚI NHẤT (BẢN v7.3.0 & v7.2.1):</div>
           <div style="display:flex; flex-wrap:wrap; gap:6px;">
-            <button class="btn btn-accent" style="padding:4px 8px; font-size:10.5px;" onclick="submitGiftcodeQuick('V730')">🎁 V730 (Trọn Bộ v7.3.0)</button>
+            <button class="btn btn-accent" style="padding:4px 8px; font-size:10.5px;" onclick="submitGiftcodeQuick('V730')">🎁 V730 (Trọn Bộ 4 Siêu Tướng)</button>
+            <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#fff; color:#fff;" onclick="submitGiftcodeQuick('OBITO')">🔘 OBITO (Lục Đạo Tiên Nhân)</button>
+            <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#bc8cff; color:#bc8cff;" onclick="submitGiftcodeQuick('NAGATO')">🔯 NAGATO (Lục Đạo Chân Nhân)</button>
             <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#39c5bb; color:#39c5bb;" onclick="submitGiftcodeQuick('KISAME')">🦈 KISAME (Siêu Cá Mập)</button>
             <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#e0b0ff; color:#e0b0ff;" onclick="submitGiftcodeQuick('KONAN')">🕊️ KONAN (Thiên Sứ Lục Đạo)</button>
+            <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#3fb950; color:#3fb950;" onclick="submitGiftcodeQuick('SHISUI')">🦅 SHISUI (Thuấn Thân)</button>
+            <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#ffd700; color:#ffd700;" onclick="submitGiftcodeQuick('HAGOROMO')">👑 HAGOROMO (Sáng Thế)</button>
+            <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#bc8cff; color:#bc8cff;" onclick="submitGiftcodeQuick('ISSHIKI')">⬛ ISSHIKI (Chuẩn Phim)</button>
             <button class="btn" style="padding:4px 8px; font-size:10.5px; border-color:#58a6ff; color:#58a6ff;" onclick="submitGiftcodeQuick('V720')">📜 V720 (4 Siêu Tướng v7.2.0)</button>
           </div>
           <div style="font-size:10px; color:#8b949e; margin-top:2px;">* Lưu ý: Mọi tướng nhận từ Giftcode đều được khởi tạo chuẩn mực ở <b>Cấp độ 1</b>.</div>
@@ -1883,6 +1888,8 @@ const HERO_ICONS = {
   tobirama: "🌊",
   kisame: "🦈",
   konan_sage: "🕊️",
+  obito_sage: "🔘",
+  nagato: "🔯",
   traveler: "🗡️",
   madara: "☄️",
   omega: "🐉",
@@ -2077,6 +2084,44 @@ const HERO_DB = {
       { lv: 80, name: "Ý Chí Thiên Sứ Lục Đạo", desc: "+30% Bạo Kích, +60% Sát thương Bạo Kích. Khi HP < 40%, bừng tỉnh Bảo Hộ Thiên Thần: Xóa sạch debuff, nhận Khiên 40% HP, hồi 6,000 Chakra và +40% SPD (1 lần/trận)." }
     ]
   },
+  obito_sage: {
+    id: "obito_sage",
+    name: "Uchiha Obito (Lục Đạo Tiên Nhân)",
+    type: "DEF",
+    roleDesc: "Jinchuuriki Thập Vĩ, Cầu Đạo Ngọc Kháng Nhẫn Thuật, Kamui Vô Định & Kiếm Nunoboko",
+    baseHp: 850, baseAtk: 50.0, baseDef: 66, baseSpd: 176,
+    chakraMax: 32000, chakraRegenMin: 700, chakraRegenMax: 1400, startChakra: 7000,
+    normalAttack: { name: "Trượng Lục Đạo & Cầu Đạo Tiễn", chakraGainMin: 600, chakraGainMax: 1100, atkPct: 1.15, isRanged: true, desc: "Bắn Cầu Đạo Ngọc gây 115% ATK, hồi 600 - 1,100 🌀 Chakra, cướp 500 Chakra đối thủ." },
+    skills: [
+      { reqLv: 1, name: "Âm Dương Độn: Cầu Đạo Thuẫn", cost: 1900, desc: "Cầu Đạo Ngọc hóa khiên vòm cấp Khiên bằng 25% Max HP Obito cho toàn đội, xóa sạch khống chế trên đồng minh trong 3 lượt." },
+      { reqLv: 50, name: "Hỏa Độn: Bạo Phong Loạn Vũ Lục Đạo", cost: 3600, isRanged: true, desc: "Xoáy Kamui phun bão lửa gây 360% ATK hàng trước, thiêu đốt 8% HP tối đa/lượt trong 3 lượt (không thể bị xóa/kháng), giảm 40% Tốc độ đánh địch." },
+      { reqLv: 130, name: "Thập Vĩ Bộc Phá: Bijuu Dama Liên Hoàn", cost: 6500, isRanged: true, desc: "Thập Vĩ bắn 4 quả Bijuu Dama cực đại gây 500% ATK diện rộng, phá 100% Khiên và gây Choáng (Stun) 1 lượt 2 kẻ địch có Chakra cao nhất." },
+      { reqLv: 250, name: "Tuyệt Kỹ: Thánh Kiếm Nunoboko", cost: 11000, isRanged: true, desc: "Bảo kiếm sáng thế rạch đôi sàn đấu: Gây 850% ATK diện rộng + Sát thương chuẩn 20% HP tối đa toàn địch, xóa toàn bộ Chakra địch về 0 và cấm hồi Chakra trong 2 lượt!" }
+    ],
+    passives: [
+      { lv: 30, name: "Bản Thể Cầu Đạo Ngọc", desc: "Giảm 60% sát thương từ nhẫn thuật nguyên tố thông thường (Hỏa, Thủy, Lôi, Thổ, Phong). Miễn nhiễm Thiêu đốt, Chảy máu, Giảm giáp. Đầu trận nhận 10 Cầu Đạo Ngọc: mỗi lần bị đánh tiêu hao 1 viên tạo Khiên 10% HP và phản 50% ST gốc." },
+      { lv: 80, name: "Không Gian Kamui Vô Định", desc: "Khi HP < 35%, dịch chuyển nửa thân vào Kamui 2 lượt: Tăng 50% Né tránh, miễn nhiễm 100% ST diện rộng, tự hồi 25% Max HP và cấp 4,000 Chakra mỗi lượt (1 lần/trận)." }
+    ]
+  },
+  nagato: {
+    id: "nagato",
+    name: "Nagato Uzumaki (Lục Đạo Chân Nhân)",
+    type: "SKL",
+    roleDesc: "Lục Đạo Chi Chủ, Thần La Thiên Chinh, Hồi Sinh Đồng Đội & Siêu Liên Kết Konan - Naruto",
+    baseHp: 840, baseAtk: 48.0, baseDef: 62, baseSpd: 172,
+    chakraMax: 35000, chakraRegenMin: 800, chakraRegenMax: 1600, startChakra: 8000,
+    normalAttack: { name: "Thanh Hắc Quản Luân Hồi", chakraGainMin: 600, chakraGainMax: 1200, atkPct: 1.10, isRanged: true, desc: "Phóng thanh hắc quản gây 110% ATK, hồi 600 - 1,200 🌀 Chakra, làm gián đoạn giảm 800 Chakra đối thủ." },
+    skills: [
+      { reqLv: 1, name: "Thần La Thiên Chinh Toàn Hướng", cost: 2000, isRanged: true, desc: "Lực đẩy vô hình hất tung toàn đội địch gây 220% ATK, đẩy lùi thanh hành động địch 30%, giải trừ toàn bộ bùa hại trên đồng đội." },
+      { reqLv: 50, name: "Vạn Tượng Thiên Dẫn & Tu La Pháo", cost: 3800, isRanged: true, desc: "Hút kẻ địch ATK cao nhất về nện Tu La Pháo gây 420% ATK, Choáng (Stun) 1 lượt và giáng hiệu ứng Gãy Xương (-50% ATK & DEF trong 2 lượt)." },
+      { reqLv: 130, name: "Ngoại Đạo: Ma Tượng Triệu Hoán", cost: 6500, isRanged: true, desc: "Triệu hồi Dị Tượng Ngoại Đạo phóng rồng linh hồn gây 460% ATK diện rộng, rút 3,000 Chakra toàn địch và cấp Khiên 30% HP Nagato cho toàn đội trong 3 lượt." },
+      { reqLv: 250, name: "Tuyệt Kỹ: Siêu Địa Bộc Thiên Tinh", cost: 10000, isRanged: true, desc: "Hắc cầu trọng lực nén đè bẹp chiến trường: Gây 750% ATK diện rộng, giam cầm toàn bộ địch trong 1 lượt (mất 10% HP tối đa), ban cho toàn đội buff Hào Quang Luân Hồi (+30% ATK & DEF trong 3 lượt)!" }
+    ],
+    passives: [
+      { lv: 30, name: "Ngạ Quỷ Đạo - Hấp Thụ Vạn Năng", desc: "Mỗi khi địch dùng chiêu tiêu hao Chakra, Nagato hấp thụ 20% nạp bản thân và chia 50% cho đồng minh. Khi chịu đòn đánh xa, giảm 40% sát thương và tạo khiên tương ứng." },
+      { lv: 80, name: "Ngoại Đạo Luân Hồi & Siêu Liên Kết", desc: "Hồi sinh đồng đội đầu tiên tử trận với 60% HP và 5,000 Chakra. Kích hoạt Siêu Liên Kết đặc biệt khi ra trận cùng Konan, Naruto Tiên Nhân hoặc Naruto Kurama!" }
+    ]
+  },
   tobirama: {
     id: "tobirama",
     name: "Senju Tobirama (Đệ Nhị)",
@@ -2174,21 +2219,21 @@ const HERO_DB = {
   },
   isshiki: {
     id: "isshiki",
-    name: "Isshiki Otsutsuki",
+    name: "Isshiki Otsutsuki (Đại Tộc Trưởng)",
     type: "ATK",
-    roleDesc: "Xóa Sổ Phòng Ngự, Hút Cạn Chakra & Kama Tối Thượng",
-    baseHp: 826, baseAtk: 50, baseDef: 60, baseSpd: 159,
-    chakraMax: 22000, chakraRegenMin: 400, chakraRegenMax: 900, startChakra: 0,
-    normalAttack: { name: "Sukunahikona", chakraGainMin: 400, chakraGainMax: 900, atkPct: 1.0, isRanged: true, desc: "Gây 100% ATK bằng cọc đen siêu nhỏ. Hồi 400 - 900 Chakra." },
+    roleDesc: "Sát Thủ Diệt Thế Chuẩn Phim Boruto, Sukunahikona Thu Nhỏ, Daikokuten Cột Trụ & Kama Trảm Sát Niên Thọ",
+    baseHp: 860, baseAtk: 55.0, baseDef: 64, baseSpd: 180,
+    chakraMax: 30000, chakraRegenMin: 600, chakraRegenMax: 1300, startChakra: 7000,
+    normalAttack: { name: "Sukunahikona: Hắc Quản Thu Nhỏ", chakraGainMin: 500, chakraGainMax: 1000, atkPct: 1.25, isRanged: true, desc: "Cọc đen siêu nhỏ không thể né tránh gây 125% ATK, rút 1,000 🌀 Chakra của nạn nhân nạp cho Isshiki." },
     skills: [
-      { reqLv: 1, name: "Đá Trọng Lực", cost: 1800, isRanged: true, desc: "Triệu hồi khối đá khổng lồ đè nát 1 mục tiêu gây 250% ATK." },
-      { reqLv: 50, name: "Daikokuten", cost: 4000, isRanged: true, desc: "Thả hàng loạt cột trụ từ không gian khác gây 320% ATK lên toàn đội địch, áp dụng 'Phá Vỡ' (giảm 40% DEF trong 2 lượt)." },
-      { reqLv: 130, name: "Hắc Quản Xuyên Tâm", cost: 6000, isRanged: true, desc: "Phóng thanh hắc quản xuyên thủng 1 mục tiêu gây 400% ATK, áp dụng 'Hút Cạn' (xóa 2000 Chakra của mục tiêu)." },
-      { reqLv: 250, name: "Kama Tối Thượng", cost: 9000, isMelee: true, desc: "Lao đến đá bay 1 mục tiêu gây 600% ATK. Nếu chiêu này tiêu diệt địch, Isshiki lập tức nhận thêm 1 lượt hành động." }
+      { reqLv: 1, name: "Sukunahikona: Phóng Đại Hắc Cầu", cost: 1900, isRanged: true, desc: "Phóng đại vật thể siêu nhỏ gấp 10,000 lần đè nát mục tiêu gây 260% ATK (bỏ qua 50% DEF), làm Choáng (Stun) 1 lượt." },
+      { reqLv: 50, name: "Daikokuten: Cột Trụ Không Gian Khổng Lồ", cost: 4000, isRanged: true, desc: "Thả hàng loạt cột trụ từ không gian tĩnh đè sập hàng trước gây 400% ATK, phá hủy toàn bộ Khiên, cấm hồi máu trong 2 lượt." },
+      { reqLv: 130, name: "Daikokuten: Chiếc Quan Tài Hư Vô", cost: 6200, isRanged: true, desc: "Triệu hồi quan tài khổng lồ cô lập kẻ địch ATK cao nhất trong 1 lượt; khi mở ra gây 500% ATK sát thương chuẩn và xóa 100% Chakra!" },
+      { reqLv: 250, name: "Tuyệt Kỹ: Kama Tối Thượng - Trảm Sát Niên Thọ", cost: 11000, isMelee: true, desc: "Liên hoàn cước hủy diệt sinh mệnh: 880% ATK diện rộng + Sát thương chuẩn 20% Max HP; nếu hạ gục địch hồi 100% HP và nhận thêm 1 lượt đánh tức thì!" }
     ],
     passives: [
-      { lv: 30, name: "Mắt Pháp Uy", desc: "Nhận vĩnh viễn 40% Tỉ lệ Né tránh mọi đòn tấn công không phải ảo thuật." },
-      { lv: 80, name: "Sinh Mệnh Ký Sinh", desc: "Kháng 100% hiệu ứng 'Cấm Trị Liệu'. Mỗi khi gây ST bạo kích, hồi lại 5% HP tối đa." }
+      { lv: 30, name: "Mắt Pháp Uy - Thu Nhỏ Cơ Thể", desc: "Tăng vĩnh viễn 45% Tỉ lệ Né tránh. Khi bị tấn công bởi đòn đánh xa (isRanged), tự động thu nhỏ né sạch 100% đòn đánh đó." },
+      { lv: 80, name: "Đại Tộc Trưởng Otsutsuki", desc: "Miễn nhiễm Giảm ATK, Giảm Giáp, Câm Lặng và Ảo Thuật. Đòn đánh bạo kích được tăng thêm 50% Sát thương bạo kích." }
     ]
   },
   itachi: {
@@ -2383,21 +2428,21 @@ const HERO_DB = {
   },
   shisui: {
     id: "shisui",
-    name: "Uchiha Shisui",
+    name: "Uchiha Shisui (Thuấn Thân Thần Thoại)",
     type: "AS",
-    roleDesc: "Thuấn Thân Sát Thủ, Susanoo Mũi Khoan & Ảo Thuật Kotoamatsukami",
-    baseHp: 754, baseAtk: 51.5, baseDef: 60, baseSpd: 171,
-    chakraMax: 23000, chakraRegenMin: 400, chakraRegenMax: 900, startChakra: 0,
-    normalAttack: { name: "Thuấn Thân Thuật", chakraGainMin: 400, chakraGainMax: 900, atkPct: 1.0, isMelee: true, desc: "Biến mất và chém 100% ATK, tự tăng 15% Tỉ lệ né tránh. Hồi 400 - 900 Chakra." },
+    roleDesc: "Thần Thuấn Thân Rework, Tốc Độ Đỉnh Phong, Susanoo Ngọc Bích & Kotoamatsukami Thao Túng Toàn Diện",
+    baseHp: 805, baseAtk: 53.5, baseDef: 58, baseSpd: 182,
+    chakraMax: 28000, chakraRegenMin: 500, chakraRegenMax: 1100, startChakra: 6000,
+    normalAttack: { name: "Ảo Ảnh Thuấn Thân Trảm", chakraGainMin: 500, chakraGainMax: 1000, atkPct: 1.20, isMelee: true, desc: "Chém 2 mục tiêu gây 120% ATK, tự tăng 25% Né tránh trong 1 lượt, hồi 500 - 1,000 Chakra." },
     skills: [
-      { reqLv: 1, name: "Hỏa Độn: Hào Hỏa Cầu", cost: 1800, isRanged: true, desc: "Thổi lửa gây 180% ATK, áp dụng 'Thiêu Đốt' (mất 5% HP mỗi lượt) trong 2 lượt." },
-      { reqLv: 50, name: "Kiếm Thuật Ảo Ảnh", cost: 4000, isMelee: true, desc: "Gây 300% ATK lên 1 mục tiêu, áp dụng 'Chảy Máu' (nhận ST bằng 20% ATK Shisui ở cuối mỗi lượt, cộng dồn vô hạn)." },
-      { reqLv: 130, name: "Susanoo Mũi Khoan", cost: 6000, isMelee: true, desc: "Đâm khoan 350% ATK. Lập tức phá hủy mọi lớp 'Shield' của địch trước khi gây sát thương." },
-      { reqLv: 250, name: "Kotoamatsukami", cost: 9000, desc: "Ảo thuật tối thượng: Áp dụng 'Thao Túng' lên 1 mục tiêu trong 2 lượt (mục tiêu sẽ dùng Đánh thường tấn công chính đồng minh của chúng)." }
+      { reqLv: 1, name: "Hào Hỏa Diệt Khước Ảo Ảnh", cost: 1800, isRanged: true, desc: "Phun biển lửa bọc ảo thuật gây 240% ATK hàng trước, thiêu đốt 8% HP/lượt trong 2 lượt, giảm 30% DEF nạn nhân." },
+      { reqLv: 50, name: "Kiếm Thuật Thuấn Thân: Bát Phương Tuyệt Sát", cost: 3800, isMelee: true, desc: "Chém 8 hướng vào mục tiêu thấp máu nhất gây 450% ATK (bỏ qua 50% DEF); nếu hạ gục địch lập tức tàng hình và nhận thêm 1 lượt đánh mới!" },
+      { reqLv: 130, name: "Susanoo Ngọc Bích: Thần Giáo Mũi Khoan", cost: 6000, isMelee: true, desc: "Susanoo mở ngực phóng ngàn mũi chông Chakra gây 480% ATK diện rộng, phá nát toàn bộ Khiên, Stun 1 lượt, cấp Khiên Susanoo 30% HP." },
+      { reqLv: 250, name: "Kotoamatsukami: Biệt Thiên Thần Tối Cao", cost: 9500, desc: "Ảo thuật tối thượng gây 650% ATK diện rộng (bỏ qua 100% DEF), Thao Túng 2 kẻ địch có ATK cao nhất trong 2 lượt tấn công đồng minh của chúng (không thể giải trừ)!" }
     ],
     passives: [
-      { lv: 30, name: "Thiên Tài Thuấn Thân", desc: "Tỉ lệ Né tránh mặc định tăng 30%. Khi né thành công, lập tức tàng hình (không thể bị nhắm mục tiêu) trong 1 lượt." },
-      { lv: 80, name: "Sát Thủ Ảo Thuật", desc: "Tăng 40% ST bạo kích khi tấn công kẻ địch đang dính bất kỳ hiệu ứng bất lợi (debuff) nào." }
+      { lv: 30, name: "Thiên Tài Thuấn Thân", desc: "Tăng vĩnh viễn 45% Tỉ lệ Né tránh. Mỗi khi né thành công, phân tách tàn ảnh phản đòn gây 200% ATK và hồi 1,200 Chakra." },
+      { lv: 80, name: "Ý Chí Kotoamatsukami & Izanagi", desc: "Tăng 35% Bạo kích, +70% Sát thương bạo kích. Khi nhận sát thương chí tử, tự động dùng Izanagi hồi sinh ngay với 50% HP và tàng hình 1 lượt (1 lần/trận)." }
     ]
   },
   kagura: {
@@ -2478,21 +2523,21 @@ const HERO_DB = {
   },
   luanhoi: {
     id: "luanhoi",
-    name: "Luân Hồi Tiên Nhân",
+    name: "Otsutsuki Hagoromo (Lục Đạo Tiên Nhân)",
     type: "DEF",
-    roleDesc: "Tướng Giới Hạn, Tiên Khí Hộ Thuẫn & Địa Bộc Thiên Tinh",
-    baseHp: 923, baseAtk: 36.4, baseDef: 87, baseSpd: 166,
-    chakraMax: 28000, chakraRegenMin: 500, chakraRegenMax: 1000, startChakra: 5000,
-    normalAttack: { name: "Tiên Khí Chưởng", chakraGainMin: 500, chakraGainMax: 1000, atkPct: 1.0, isRanged: true, desc: "Chưởng tiên khí gây 100% ATK. Hồi 500 - 1000 Chakra." },
+    roleDesc: "Thủy Tổ Nhẫn Tông Rework, Sáng Thế Chi Thần, Ban Phát Bất Tử & Địa Bộc Thiên Tinh Thần Thoại",
+    baseHp: 950, baseAtk: 48.0, baseDef: 75, baseSpd: 175,
+    chakraMax: 35000, chakraRegenMin: 800, chakraRegenMax: 1800, startChakra: 10000,
+    normalAttack: { name: "Tiên Khí Chưởng - Vạn Vật Đồng Quy", chakraGainMin: 600, chakraGainMax: 1200, atkPct: 1.20, isRanged: true, desc: "Đánh chưởng Tiên thuật vào 2 mục tiêu gây 120% ATK, hồi 600 - 1,200 🌀 Chakra, hồi máu cho toàn bộ đồng minh bằng 30% sát thương gây ra." },
     skills: [
-      { reqLv: 1, name: "Tiên Thuật Chưởng", cost: 2000, isRanged: true, desc: "Đẩy lùi 1 mục tiêu gây 200% ATK, giảm 1500 Chakra của đối thủ." },
-      { reqLv: 50, name: "Khai Mở Tiên Giới", cost: 4500, desc: "Tăng 35% DEF cho toàn bộ đội hình và tạo kết giới hấp thụ 20% sát thương trong 2 hiệp." },
-      { reqLv: 130, name: "Địa Bộc Thiên Tinh Vực", cost: 7000, isRanged: true, desc: "Hút toàn bộ kẻ địch về trung tâm gây 320% ATK, khóa di chuyển và giảm 40% DEF địch trong 2 hiệp." },
-      { reqLv: 250, name: "Lục Đạo Vạn Tượng", cost: 10000, desc: "Hồi sinh 1 đồng đội đã tử trận với 50% HP (hoặc hồi 40% HP toàn đội nếu chưa ai chết)." }
+      { reqLv: 1, name: "Âm Dương Độn: Vạn Vật Khai Sáng", cost: 2000, desc: "Tăng 30% ATK và 30% DEF cho toàn đội trong 3 lượt, cấp lớp Khiên bằng 20% Max HP Hagoromo." },
+      { reqLv: 50, name: "Bảo Kiếm Linh Hồn & Thập Vĩ Trượng", cost: 4000, isRanged: true, desc: "Phóng 6 Cầu Đạo Ngọc xuyên thủng hàng trước gây 380% ATK (bỏ qua 60% DEF), xóa 2,500 Chakra đối thủ." },
+      { reqLv: 130, name: "Lục Đạo: Địa Bộc Thiên Tinh Thần Thoại", cost: 7000, isRanged: true, desc: "Tạo mặt trăng phong ấn giam cầm toàn bộ phe địch gây 520% ATK diện rộng, Choáng (Stun) 1 lượt và giảm 50% DEF vĩnh viễn." },
+      { reqLv: 250, name: "Tuyệt Kỹ Tối Cao: Vạn Vật Sáng Tạo", cost: 11000, desc: "Hồi sinh toàn bộ đồng đội đã tử trận với 50% HP (hoặc hồi 60% HP nếu còn sống), xóa sạch bùa hại, gây 700% ATK sát thương chuẩn lên địch và ban Bất Tử Tạm Thời trong 1 lượt!" }
     ],
     passives: [
-      { lv: 30, name: "Tiên Khí Hộ Thể", desc: "Đầu trận nhận 5000 Chakra. Nhận khiên bằng 20% HP tối đa mỗi 3 hiệp." },
-      { lv: 80, name: "Vạn Tượng Hộ Thuẫn", desc: "Tăng 30% DEF và 20% Kháng sát thương bạo kích cho toàn bộ đội hình phe ta." }
+      { lv: 30, name: "Hào Quang Sáng Thế", desc: "Đầu trận nhận sẵn 10,000 Chakra. Miễn nhiễm 100% hiệu ứng khống chế cứng và debuff giảm chỉ số." },
+      { lv: 80, name: "Ý Chí Lục Đạo Thần Thoại", desc: "Giảm 30% sát thương nhận vào cho toàn bộ đội hình. Mỗi khi đồng minh tung Tuyệt kỹ Lv.250, Hagoromo hồi cho người đó 3,000 Chakra." }
     ]
   },
   pain: {
@@ -2754,8 +2799,8 @@ function loadGame() {
     }
   }
   // v7.2.1: Sửa dứt điểm lỗi tài khoản mới tự động nhận 4 Siêu Tướng ở Cấp 100
-  const v720Heroes = ["naruto_kurama", "naruto_sage", "sasuke_susanoo", "tobirama", "kisame", "konan_sage"];
-  const legitV720Codes = ["V720", "KURAMA", "SAGEMODE", "SUSANOO", "TOBIRAMA", "V730", "KISAME", "KONAN", "TEST001", "TEST002", "TEST003"];
+  const v720Heroes = ["naruto_kurama", "naruto_sage", "sasuke_susanoo", "tobirama", "kisame", "konan_sage", "obito_sage", "nagato"];
+  const legitV720Codes = ["V720", "KURAMA", "SAGEMODE", "SUSANOO", "TOBIRAMA", "V730", "KISAME", "KONAN", "OBITO", "NAGATO", "HAGOROMO", "ISSHIKI", "SHISUI", "TEST001", "TEST002", "TEST003"];
   const hasUsedAnyV720Code = gameState.usedCodes && legitV720Codes.some(c => gameState.usedCodes.includes(c));
 
   v720Heroes.forEach(hId => {
@@ -3021,10 +3066,27 @@ function getHeroStats(heroId, customLv = null) {
 
   let dodgeRate = 0.13;
   if (heroId === "isshiki" && lv >= 30) {
-    dodgeRate = 0.40;
+    dodgeRate = 0.45;
   }
   if (heroId === "shisui" && lv >= 30) {
-    dodgeRate = 0.43;
+    dodgeRate = 0.45;
+  }
+  if (heroId === "shisui" && lv >= 80) {
+    critRate += 0.35;
+    critDmg += 0.70;
+  }
+  if (heroId === "isshiki" && lv >= 80) {
+    critDmg += 0.50;
+  }
+  if (heroId === "obito_sage" && lv >= 30) {
+    def += 25;
+  }
+  if (heroId === "nagato" && lv >= 30) {
+    def += 20;
+  }
+  if (heroId === "luanhoi" && lv >= 30) {
+    def += 20;
+    hp = Math.round(hp * 1.15);
   }
   if (heroId === "kid" && lv >= 70) {
     dodgeRate += 0.22;
@@ -4524,6 +4586,61 @@ function applyEquippedBeastBuffs(pTeam) {
     }
   }
 
+  // v7.3.0: Hệ Thống Siêu Liên Kết Định Mệnh của Nagato (Konan, Naruto Tiên Nhân, Naruto Lục Đạo)
+  const nagato = pTeam.find(p => p && p.id === "nagato");
+  if (nagato) {
+    const konan = pTeam.find(p => p && p.id === "konan_sage");
+    const narutoSage = pTeam.find(p => p && p.id === "naruto_sage");
+    const narutoKurama = pTeam.find(p => p && p.id === "naruto_kurama");
+
+    // 1. Liên Kết Nagato + Konan [Lời Thề Làng Mưa]
+    if (konan) {
+      nagato.linkedWithKonan = true;
+      konan.linkedWithNagato = true;
+      konan.critDmg = (konan.critDmg || 3.0) + 0.25;
+      logCombat(`🕊️🔯 [Lời Thề Làng Mưa] Nagato & Konan kích hoạt Siêu Liên Kết: Konan tăng 25% ST Bạo Kích, Nagato sẵn sàng cản phá sát thương chí tử!`);
+    }
+
+    // 2. Liên Kết Nagato + Naruto Tiên Nhân [Ý Chí Truyền Nhân Jiraiya]
+    if (narutoSage) {
+      nagato.linkedWithNarutoSage = true;
+      narutoSage.linkedWithNagato = true;
+      narutoSage.dodgeRate = (narutoSage.dodgeRate || 0.48) + 0.20;
+      narutoSage.sageMode = 4; // Tự động bật Sage Mode ngay từ lượt 1
+      logCombat(`🐸🔯 [Ý Chí Truyền Nhân Jiraiya] Naruto Tiên Nhân kích hoạt Sage Mode ngay lượt 1 và tăng thêm +20% Tỉ lệ Né tránh!`);
+    }
+
+    // 3. Liên Kết Nagato + Naruto Lục Đạo (Kurama) [Song Hùng Uzumaki]
+    if (narutoKurama) {
+      nagato.linkedWithNarutoKurama = true;
+      narutoKurama.linkedWithNagato = true;
+      nagato.maxHp = Math.round(nagato.maxHp * 1.30);
+      nagato.hp = nagato.maxHp;
+      narutoKurama.maxHp = Math.round(narutoKurama.maxHp * 1.30);
+      narutoKurama.hp = narutoKurama.maxHp;
+      nagato.chakraRegenMin = Math.round((nagato.chakraRegenMin || 800) * 1.50);
+      nagato.chakraRegenMax = Math.round((nagato.chakraRegenMax || 1600) * 1.50);
+      narutoKurama.chakraRegenMin = Math.round((narutoKurama.chakraRegenMin || 700) * 1.50);
+      narutoKurama.chakraRegenMax = Math.round((narutoKurama.chakraRegenMax || 1500) * 1.50);
+      logCombat(`🦊🔯 [Song Hùng Uzumaki] Nagato & Naruto Kurama tăng 30% HP tối đa và tăng 50% Tốc độ hồi Chakra!`);
+    }
+
+    // 4. Đại Hợp Đoàn Tam Giác Định Mệnh (Nagato + Konan + Naruto)
+    const hasAnyNaruto = (narutoSage || narutoKurama);
+    if (konan && hasAnyNaruto) {
+      pTeam.forEach(p => {
+        if (p) {
+          p.atk = +(p.atk * 1.25).toFixed(1);
+          p.def = Math.round(p.def * 1.25);
+          p.spd = (p.spd || 140) + 20;
+          p.buffs = p.buffs || {};
+          p.buffs.binhMinhHyVong = 2; // Miễn khống chế 2 hiệp đầu
+        }
+      });
+      logCombat(`🌅👑 [BÌNH MINH HY VỌNG] KÍCH HOẠT ĐẠI HỢP ĐOÀN TAM GIÁC ĐỊNH MỆNH (Nagato + Konan + Naruto): Toàn đội +25% ATK, +25% DEF, +20 SPD và miễn nhiễm mọi khống chế cứng trong 2 hiệp đầu!`);
+    }
+  }
+
   // Cập nhật lại khiên của Omega Shenron theo lượng máu mới sau khi có Linh Thú
   const omega = pTeam.find(p => p && p.id === "omega" && p.level >= 30);
   if (omega) {
@@ -5206,6 +5323,30 @@ function nextTurn() {
           logCombat(`🕊️✨ Lá bùa phong ấn Thiên Sứ tan biến, ${f.name} đã thoát khỏi trạng thái Câm Lặng!`);
         }
       }
+
+      // v7.3.0: Obito Bạo Phong Loạn Vũ thiêu đốt Kamui
+      if (f.buffs && f.buffs.kamuiBurn) {
+        f.buffs.kamuiBurn.turns--;
+        const burnDmg = f.buffs.kamuiBurn.dmg || Math.round(f.maxHp * 0.08);
+        applyDamage(f, burnDmg, false, f.buffs.kamuiBurn.caster, false, true);
+        addAnimation(f, `🔥 KAMUI BURN -${burnDmg.toLocaleString()}`, "#ff5722");
+        if (f.buffs.kamuiBurn.turns <= 0) {
+          delete f.buffs.kamuiBurn;
+          logCombat(`🔘 Ngọn lửa Kamui bão phong trên người ${f.name} đã tắt!`);
+        }
+      }
+
+      // v7.3.0: Cấm hồi Chakra từ Thánh Kiếm Nunoboko
+      if (f.buffs && f.buffs.camHoiChakra) {
+        f.buffs.camHoiChakra--;
+        if (f.buffs.camHoiChakra <= 0) delete f.buffs.camHoiChakra;
+      }
+
+      // v7.3.0: Bình Minh Hy Vọng (Nagato + Konan + Naruto) đếm lùi
+      if (f.buffs && f.buffs.binhMinhHyVong) {
+        f.buffs.binhMinhHyVong--;
+        if (f.buffs.binhMinhHyVong <= 0) delete f.buffs.binhMinhHyVong;
+      }
       if (f.buffs && f.buffs.kaguraAtkBuff) {
         f.buffs.kaguraAtkBuff--;
         if (f.buffs.kaguraAtkBuff <= 0) {
@@ -5256,7 +5397,11 @@ function nextTurn() {
   // Khả năng hồi phục Chakra tự nhiên mỗi lượt
   const minReg = actor.chakraRegenMin || 200;
   const maxReg = actor.chakraRegenMax || 500;
-  const naturalChakra = Math.floor(Math.random() * (maxReg - minReg + 1)) + minReg;
+  let naturalChakra = Math.floor(Math.random() * (maxReg - minReg + 1)) + minReg;
+  if (actor.buffs && actor.buffs.camHoiChakra) {
+    naturalChakra = 0;
+    logCombat(`⚔️ [Cấm Hồi Chakra] ${actor.name} bị Thánh Kiếm Nunoboko phong tỏa, không thể hồi phục Chakra!`);
+  }
   actor.chakra = Math.min(actor.chakraMax || 10000, (actor.chakra || 0) + naturalChakra);
   logCombat(`🌀 [Hồi Chakra] ${actor.name} tự nhiên hồi ${naturalChakra.toLocaleString()} Chakra (Hiện có: ${actor.chakra.toLocaleString()}/${(actor.chakraMax || 10000).toLocaleString()})`);
 
@@ -5950,11 +6095,74 @@ function applyDamage(target, amount, isCrit = false, attacker = null, isMelee = 
     return 0;
   }
 
-  // 4. Isshiki Né tránh 40%
-  if (target.id === "isshiki" && !isTrueDmg && Math.random() < (target.dodgeRate || 0.40)) {
-    addAnimation(target, "MẮT PHÁP UY NÉ!", "#bc8cff");
-    logCombat(`👁️ [Mắt Pháp Uy] Isshiki thu nhỏ né sạch toàn bộ đòn tấn công!`);
+  // 4. Isshiki Thu Nhỏ Né Tránh Chuẩn Phim (45% né đòn đánh thường & 100% né đòn đánh xa)
+  if (target.id === "isshiki" && !isTrueDmg) {
+    const isRangedAtk = !isMelee;
+    if (isRangedAtk || Math.random() < (target.dodgeRate || 0.45)) {
+      addAnimation(target, "SUKUNAHIKONA THU NHỎ NÉ!", "#bc8cff");
+      logCombat(`👁️⬛ [Sukunahikona: Mắt Pháp Uy] Isshiki thu nhỏ kích thước vật thể né sạch toàn bộ đòn tấn công của ${attacker ? attacker.name : 'kẻ địch'}!`);
+      return 0;
+    }
+  }
+
+  // v7.3.0: Shisui Thuấn Thân Né Tránh 45% & Phản Đòn Tàn Ảnh
+  if (target.id === "shisui" && !isTrueDmg && Math.random() < (target.dodgeRate || 0.45)) {
+    addAnimation(target, "ẢO ẢNH THUẤN THÂN NÉ!", "#58a6ff");
+    target.chakra = Math.min(target.chakraMax || 28000, (target.chakra || 0) + 1200);
+    logCombat(`🦅🌀 [Thuấn Thân Tàn Ảnh] Shisui phân thân ảo ảnh né sạch 100% đòn đánh và hồi +1,200 Chakra!`);
+    if (attacker && attacker !== target && attacker.hp > 0) {
+      const counterDmg = Math.round(target.atk * 2.0);
+      applyDamage(attacker, counterDmg, false, target, false, true);
+      addAnimation(attacker, `💥 PHẢN ĐÒN TÀN ẢNH -${counterDmg.toLocaleString()}`, "#ff0055");
+      logCombat(`💥 [Phản Kích Tàn Ảnh] Shisui xuất hiện bất ngờ phía sau ${attacker.name} chém phản đòn ${counterDmg.toLocaleString()} ST!`);
+    }
     return 0;
+  }
+
+  // v7.3.0: Obito Lục Đạo - Cầu Đạo Ngọc Giảm 60% Sát Thương Nhẫn Thuật & Phản Sát Thương
+  if (target.id === "obito_sage") {
+    // Miễn nhiễm debuff
+    if (target.buffs) {
+      delete target.buffs.burn;
+      delete target.buffs.chayMau;
+      delete target.buffs.slow;
+      delete target.buffs.phaVo;
+    }
+    if (!isTrueDmg) {
+      finalDmg = Math.round(finalDmg * 0.40); // Giảm 60% sát thương
+      if (target.gudoudamaStacks === undefined) target.gudoudamaStacks = 10;
+      if (target.gudoudamaStacks > 0 && attacker && attacker !== target) {
+        target.gudoudamaStacks--;
+        const shieldGained = Math.round(target.maxHp * 0.10);
+        target.shield = (target.shield || 0) + shieldGained;
+        const reflectVal = Math.round(amount * 0.50);
+        addAnimation(target, `🌑 CẦU ĐẠO NGỌC (x${target.gudoudamaStacks})`, "#000");
+        logCombat(`🔘🛡️ [Cầu Đạo Ngọc Hộ Thể] Obito giảm 60% sát thương, tiêu hao 1 Cầu Đạo Ngọc nhận Khiên +${shieldGained.toLocaleString()} HP và phản ${reflectVal.toLocaleString()} ST gốc lên ${attacker.name}!`);
+        applyDamage(attacker, reflectVal, false, target, false, true);
+      }
+    }
+  }
+
+  // v7.3.0: Nagato Ngạ Quỷ Đạo Hấp Thụ Đòn Đánh Xa (isRanged)
+  if (target.id === "nagato" && !isMelee && !isTrueDmg) {
+    const absorbDmg = Math.round(finalDmg * 0.40);
+    finalDmg = Math.round(finalDmg * 0.60);
+    target.shield = (target.shield || 0) + absorbDmg;
+    addAnimation(target, `🔯 NGẠ QUỶ ĐẠO (+${absorbDmg.toLocaleString()} KHIÊN)`, "#bc8cff");
+    logCombat(`🔯 [Ngạ Quỷ Đạo] Nagato hấp thụ 40% sát thương phép của ${attacker ? attacker.name : 'kẻ địch'}, chuyển hóa thành +${absorbDmg.toLocaleString()} Khiên!`);
+  }
+
+  // v7.3.0: Nagato Bảo Vệ Konan [Lời Thề Làng Mưa]
+  if (target.id === "konan_sage" && (target.hp - finalDmg <= 0)) {
+    const allyTeam = (battle.playerTeam && battle.playerTeam.includes(target)) ? battle.playerTeam : battle.botTeam;
+    const nagatoAlly = allyTeam ? allyTeam.find(p => p && p.id === "nagato" && p.hp > 0 && !p.nagatoSavedKonan) : null;
+    if (nagatoAlly) {
+      nagatoAlly.nagatoSavedKonan = true;
+      finalDmg = 0;
+      addAnimation(target, "🔯 THẦN LA THIÊN CHINH CẢN ĐÒN!", "#bc8cff");
+      logCombat(`🕊️🔯 [Lời Thề Làng Mưa] Nagato bộc phát Thần La Thiên Chinh hất văng đòn đánh chí mạng, bảo toàn mạng sống tuyệt đối cho Konan!`);
+      return 0;
+    }
   }
 
   // 5. Gaara Phòng Ngự Tuyệt Đối (Bức Tường Bất Hoại: giảm 80% ST, phản 100% ST gốc)
@@ -6181,6 +6389,31 @@ function applyDamage(target, amount, isCrit = false, attacker = null, isMelee = 
     target.chakra = Math.min(target.chakraMax || 32000, (target.chakra || 0) + 6000);
     addAnimation(target, "🦊 Ý CHÍ UZUMAKI (HỒI SINH 50% HP)!", "#ffd700");
     logCombat(`🦊✨ [Ý Chí Uzumaki] Naruto kích hoạt huyết mạch Uzumaki, thoát khỏi cái chết, hồi sinh với ${target.hp.toLocaleString()} HP và +6,000 Chakra!`);
+  }
+
+  // v7.3.0: Izanagi Shisui viết lại thực tại khi dính đòn chí tử
+  if (target.id === "shisui" && (target.hp - finalDmg <= 0) && target.level >= 80 && !target.shisuiIzanagiUsed) {
+    target.shisuiIzanagiUsed = true;
+    target.hp = Math.round(target.maxHp * 0.50);
+    target.buffs = target.buffs || {};
+    target.buffs.tangHinh = 1;
+    addAnimation(target, "👁️ IZANAGI HỒI SINH (TÀNG HÌNH)!", "#58a6ff");
+    logCombat(`🦅✨ [Izanagi Viết Lại Thực Tại] Shisui kích hoạt cấm thuật Izanagi thoát chết trong gang tấc, hồi sinh 50% HP (+${target.hp.toLocaleString()} HP) và tàng hình trong 1 lượt!`);
+    return 0;
+  }
+
+  // v7.3.0: Địa Ngục Đạo Ngoại Đạo Luân Hồi của Nagato hồi sinh đồng đội đầu tiên tử trận
+  if (target.hp - finalDmg <= 0) {
+    const allyTeam = (battle.playerTeam && battle.playerTeam.includes(target)) ? battle.playerTeam : battle.botTeam;
+    const nagatoRes = allyTeam ? allyTeam.find(p => p && p.id === "nagato" && p.hp > 0 && !p.nagatoReviveUsed) : null;
+    if (nagatoRes && target !== nagatoRes) {
+      nagatoRes.nagatoReviveUsed = true;
+      target.hp = Math.round(target.maxHp * 0.60);
+      target.chakra = Math.min(target.chakraMax || 30000, (target.chakra || 0) + 5000);
+      addAnimation(target, "🔯 NGOẠI ĐẠO LUÂN HỒI HỒI SINH!", "#ffd700");
+      logCombat(`🔯👑 [Địa Ngục Đạo: Ngoại Đạo Luân Hồi] Nagato triệu hồi Vua Địa Ngục hồi sinh ngay lập tức ${target.name} với 60% HP (+${target.hp.toLocaleString()} HP) và 5,000 Chakra!`);
+      return 0;
+    }
   }
 
   target.hp = Math.max(0, target.hp - finalDmg);
@@ -6425,11 +6658,55 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
       const healTeam = Math.round(damage * 0.30);
       aliveAllies.forEach(a => healFighter(a, healTeam));
     } else if (actor.id === "shisui") {
-      // Đánh thường: 100% ATK, +15% Né
-      const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 1.0);
-      applyDamage(target, damage, isCrit, actor, true, false);
-      actor.dodgeRate = (actor.dodgeRate || 0.43) + 0.15;
-      addAnimation(actor, "+15% NÉ TRÁNH", "#58a6ff");
+      // Đánh thường Rework: Ảo Ảnh Thuấn Thân Trảm: 120% ATK lên 2 mục tiêu, tự tăng 25% Né
+      const targets = aliveEnemies.slice(0, 2);
+      targets.forEach(t => {
+        const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 1.20);
+        applyDamage(t, damage, isCrit, actor, true, false);
+      });
+      actor.dodgeRate = (actor.dodgeRate || 0.45) + 0.25;
+      addAnimation(actor, "🦅 +25% NÉ TRÁNH", "#58a6ff");
+      logCombat(`🦅🗡️ [Ảo Ảnh Thuấn Thân Trảm] Shisui phân thân chém liên hoàn 2 mục tiêu và tăng 25% Né tránh!`);
+    } else if (actor.id === "luanhoi") {
+      // Đánh thường Rework (Hagoromo): Tiên Khí Chưởng: 120% ATK 2 mục tiêu, hồi máu đồng minh 30% ST
+      const targets = aliveEnemies.slice(0, 2);
+      let totalDmg = 0;
+      targets.forEach(t => {
+        const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 1.20);
+        applyDamage(t, damage, isCrit, actor, false, false);
+        totalDmg += damage;
+      });
+      const teamHeal = Math.round(totalDmg * 0.30);
+      aliveAllies.forEach(a => healFighter(a, teamHeal));
+      addAnimation(actor, `+${teamHeal.toLocaleString()} HP TOÀN ĐỘI`, "#3fb950");
+      logCombat(`🔯✨ [Tiên Khí Chưởng - Vạn Vật Đồng Quy] Hagoromo chưởng tiên khí tấn công 2 mục tiêu và hồi phục +${teamHeal.toLocaleString()} HP cho toàn đội!`);
+    } else if (actor.id === "isshiki") {
+      // Đánh thường Rework: Sukunahikona Hắc Quản Thu Nhỏ: 125% ATK, không thể né tránh, rút 1,000 Chakra
+      const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 1.25);
+      applyDamage(target, damage, isCrit, actor, false, false);
+      const drain1k = Math.min(target.chakra || 0, 1000);
+      target.chakra = Math.max(0, (target.chakra || 0) - drain1k);
+      actor.chakra = Math.min(actor.chakraMax || 30000, (actor.chakra || 0) + drain1k);
+      addAnimation(target, `-${drain1k.toLocaleString()} 🌀 (HẮC QUẢN)`, "#bc8cff");
+      logCombat(`👁️⬛ [Sukunahikona: Hắc Quản Thu Nhỏ] Isshiki phóng cọc đen siêu nhỏ không thể né tránh gây ${damage.toLocaleString()} ST và cướp ${drain1k.toLocaleString()} 🌀 Chakra của ${target.name}!`);
+    } else if (actor.id === "obito_sage") {
+      // Đánh thường: Trượng Lục Đạo & Cầu Đạo Tiễn: 115% ATK, cướp 500 Chakra
+      const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 1.15);
+      applyDamage(target, damage, isCrit, actor, false, false);
+      const drain500 = Math.min(target.chakra || 0, 500);
+      target.chakra = Math.max(0, (target.chakra || 0) - drain500);
+      actor.chakra = Math.min(actor.chakraMax || 32000, (actor.chakra || 0) + drain500);
+      addAnimation(target, `-${drain500.toLocaleString()} 🌀 (CẦU ĐẠO TIỄN)`, "#000");
+      logCombat(`🔘🏹 [Trượng Lục Đạo & Cầu Đạo Tiễn] Obito bắn mũi tên Cầu Đạo Ngọc gây ${damage.toLocaleString()} ST và cướp ${drain500.toLocaleString()} 🌀 Chakra của ${target.name}!`);
+    } else if (actor.id === "nagato") {
+      // Đánh thường: Thanh Hắc Quản Luân Hồi: 110% ATK, giảm 800 Chakra đối thủ
+      const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 1.10);
+      applyDamage(target, damage, isCrit, actor, false, false);
+      const drain800 = Math.min(target.chakra || 0, 800);
+      target.chakra = Math.max(0, (target.chakra || 0) - drain800);
+      actor.chakra = Math.min(actor.chakraMax || 35000, (actor.chakra || 0) + drain800);
+      addAnimation(target, `-${drain800.toLocaleString()} 🌀 (HẮC QUẢN)`, "#bc8cff");
+      logCombat(`🔯 [Thanh Hắc Quản Luân Hồi] Nagato phóng hắc quản phong bế kinh mạch gây ${damage.toLocaleString()} ST và giảm ${drain800.toLocaleString()} 🌀 Chakra của ${target.name}!`);
         } else if (actor.id === "naruto_kurama") {
       if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
         // Vĩ Thú Nanh Vuốt: 130% ATK lên 2 mục tiêu, hồi 800-1500 Chakra
@@ -6592,11 +6869,66 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
         target.def = Math.round(target.def * 0.80);
         addAnimation(target, "-20% DEF (NỐT NHẠC TỬ THẦN)", "#bc8cff");
       } else if (actor.id === "shisui") {
-        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 1.80);
+        // Lv.1 Rework: Hào Hỏa Diệt Khước Ảo Ảnh: 240% ATK hàng trước, thiêu đốt 8% HP, giảm 30% DEF
+        const frontRow = aliveEnemies.slice(0, 2);
+        frontRow.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 2.40);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.buffs = t.buffs || {};
+          t.buffs.burn = 2;
+          t.def = Math.round(t.def * 0.70);
+          addAnimation(t, "🔥 ẢO ẢNH THIÊU ĐỐT (-30% DEF)", "#ff7b72");
+        });
+        logCombat(`🦅🔥 [Hào Hỏa Diệt Khước Ảo Ảnh] Shisui phun biển lửa ảo ảnh thiêu đốt hàng trước địch và phá hủy 30% DEF!`);
+      } else if (actor.id === "luanhoi") {
+        // Lv.1 Rework (Hagoromo): Âm Dương Độn: Vạn Vật Khai Sáng: +30% ATK & DEF 3 lượt, Khiên 20% HP
+        const shieldVal = Math.round(actor.maxHp * 0.20);
+        aliveAllies.forEach(a => {
+          a.atk = +(a.atk * 1.30).toFixed(1);
+          a.def = Math.round(a.def * 1.30);
+          a.shield = (a.shield || 0) + shieldVal;
+          addAnimation(a, `+${shieldVal.toLocaleString()} KHAI SÁNG (+30% CÔNG/GIÁP)`, "#ffd700");
+        });
+        logCombat(`🔯✨ [Âm Dương Độn: Vạn Vật Khai Sáng] Hagoromo ban phước lành: Toàn đội +30% ATK, +30% DEF và nhận Khiên ${shieldVal.toLocaleString()} HP!`);
+      } else if (actor.id === "isshiki") {
+        // Lv.1 Rework: Sukunahikona: Phóng Đại Hắc Cầu: 260% ATK, bỏ qua 50% DEF, Stun 1 lượt
+        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 2.60, 0.50);
         applyDamage(target, damage, isCrit, actor, false, false);
         target.buffs = target.buffs || {};
-        target.buffs.burn = 2;
-        addAnimation(target, "🔥 THIÊU ĐỐT 2 LƯỢT", "#ff7b72");
+        target.buffs.stun = 1;
+        addAnimation(target, "💥 PHÓNG ĐẠI HẮC CẦU (STUN 1 LƯỢT)!", "#bc8cff");
+        logCombat(`👁️⬛ [Sukunahikona: Phóng Đại Hắc Cầu] Isshiki phóng đại vật thể siêu nhỏ đè nẹp ${target.name} gây ${damage.toLocaleString()} ST (bỏ qua 50% DEF) và làm Choáng 1 lượt!`);
+      } else if (actor.id === "obito_sage") {
+        // Lv.1: Âm Dương Độn: Cầu Đạo Thuẫn: Khiên 25% HP Obito cho toàn đội, xóa sạch khống chế
+        const shieldVal = Math.round(actor.maxHp * 0.25);
+        aliveAllies.forEach(a => {
+          a.shield = (a.shield || 0) + shieldVal;
+          if (a.buffs) {
+            delete a.buffs.stun;
+            delete a.buffs.choang;
+            delete a.buffs.thuocNgu;
+            delete a.buffs.ngungDong;
+          }
+          addAnimation(a, `+${shieldVal.toLocaleString()} CẦU ĐẠO THUẪN`, "#000");
+        });
+        logCombat(`🔘🛡️ [Âm Dương Độn: Cầu Đạo Thuẫn] Obito biến Cầu Đạo Ngọc thành khiên vòm cấp ${shieldVal.toLocaleString()} Khiên và giải trừ toàn bộ khống chế cho toàn đội!`);
+      } else if (actor.id === "nagato") {
+        // Lv.1: Thần La Thiên Chinh Toàn Hướng: 220% ATK AoE, đẩy lùi thanh hành động 30%, giải trừ bùa hại
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 2.20);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.spd = Math.round((t.spd || 140) * 0.70);
+          addAnimation(t, "💨 ĐẨY LÙI 30% SPD", "#bc8cff");
+        });
+        aliveAllies.forEach(a => {
+          if (a.buffs) {
+            delete a.buffs.burn;
+            delete a.buffs.chayMau;
+            delete a.buffs.slow;
+            delete a.buffs.phaVo;
+          }
+        });
+        logCombat(`🔯🌪️ [Thần La Thiên Chinh Toàn Hướng] Nagato phát động lực đẩy cực đại đẩy lùi toàn đội địch và thanh tẩy mọi bùa hại cho đồng minh!`);
             } else if (actor.id === "naruto_kurama") {
         if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
           // Tiểu Vĩ Thú Cầu: 3 hit tổng 280% ATK, bỏ qua 30% DEF
@@ -6801,11 +7133,70 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
         actor.buffs.devilLinkedTarget = target;
         addAnimation(target, "🩸 LIÊN KẾT ÁC MA (4 LƯỢT)", "#bc8cff");
       } else if (actor.id === "shisui") {
-        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 3.0);
-        applyDamage(target, damage, isCrit, actor, true, false);
-        target.buffs = target.buffs || {};
-        target.buffs.chayMauShisui = { casterAtk: actor.atk, stacks: (target.buffs.chayMauShisui?.stacks || 0) + 1, source: actor };
-        addAnimation(target, `🩸 CHẢY MÁU x${target.buffs.chayMauShisui.stacks}`, "#da3633");
+        // Lv.50 Rework: Kiếm Thuật Thuấn Thân: Bát Phương Tuyệt Sát: 450% ATK (bỏ qua 50% DEF); nếu hạ gục địch nhận thêm 1 lượt đánh
+        let lowestHpEnemy = target;
+        aliveEnemies.forEach(e => {
+          if (e.hp < lowestHpEnemy.hp) lowestHpEnemy = e;
+        });
+        const { damage, isCrit } = calculateDamage(actor, lowestHpEnemy, actor.atk * 4.50, 0.50);
+        applyDamage(lowestHpEnemy, damage, isCrit, actor, true, false);
+        if (lowestHpEnemy.hp <= 0) {
+          actor.extraTurnGranted = true;
+          actor.buffs = actor.buffs || {};
+          actor.buffs.tangHinh = 1;
+          addAnimation(actor, "⚡ TÀNG HÌNH & NHẬN LƯỢT MỚI!", "#58a6ff");
+          logCombat(`🦅✨ [Bát Phương Tuyệt Sát] Shisui chém gục ${lowestHpEnemy.name} (bỏ qua 50% DEF), lập tức tàng hình và nhận thêm 1 lượt hành động!`);
+        } else {
+          logCombat(`🦅🗡️ [Bát Phương Tuyệt Sát] Shisui chém 8 hướng vào ${lowestHpEnemy.name} gây ${damage.toLocaleString()} ST (bỏ qua 50% DEF)!`);
+        }
+      } else if (actor.id === "luanhoi") {
+        // Lv.50 Rework (Hagoromo): Bảo Kiếm Linh Hồn & Thập Vĩ Trượng: 380% ATK hàng trước (bỏ qua 60% DEF), xóa 2,500 Chakra
+        const frontRow = aliveEnemies.slice(0, 2);
+        frontRow.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 3.80, 0.60);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.chakra = Math.max(0, (t.chakra || 0) - 2500);
+          addAnimation(t, "-2,500 🌀 (THẬP VĨ TRƯỢNG)", "#ffd700");
+        });
+        logCombat(`🔯⚡ [Bảo Kiếm Linh Hồn & Thập Vĩ Trượng] Hagoromo phóng 6 Cầu Đạo Ngọc chém thủng hàng trước địch (bỏ qua 60% DEF) và xóa 2,500 Chakra!`);
+      } else if (actor.id === "isshiki") {
+        // Lv.50 Rework: Daikokuten: Cột Trụ Không Gian Khổng Lồ: 400% ATK hàng trước, phá hủy Khiên, cấm hồi máu 2 lượt
+        const frontRow = aliveEnemies.slice(0, 2);
+        frontRow.forEach(t => {
+          t.shield = 0; // Phá hủy khiên
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 4.0);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.buffs = t.buffs || {};
+          t.buffs.camTriLieu = 2;
+          addAnimation(t, "💥 PHÁ KHIÊN & CẤM HỒI MÁU", "#bc8cff");
+        });
+        logCombat(`👁️🏛️ [Daikokuten: Cột Trụ Không Gian] Isshiki thả các cột trụ phong ấn đè nát Khiên hàng trước và cấm hồi máu trong 2 lượt!`);
+      } else if (actor.id === "obito_sage") {
+        // Lv.50: Hỏa Độn: Bạo Phong Loạn Vũ Lục Đạo: 360% ATK hàng trước, thiêu đốt 8% Max HP/lượt trong 3 lượt, -40% SPD
+        const frontRow = aliveEnemies.slice(0, 2);
+        frontRow.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 3.60);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.buffs = t.buffs || {};
+          t.buffs.kamuiBurn = { turns: 3, caster: actor, dmg: Math.round(t.maxHp * 0.08) };
+          t.spd = Math.round((t.spd || 140) * 0.60);
+          addAnimation(t, "🔥 BẠO PHONG LOẠN VŨ (-40% SPD)", "#ff5722");
+        });
+        logCombat(`🔘🔥 [Hỏa Độn: Bạo Phong Loạn Vũ Lục Đạo] Obito kết hợp Kamui xoáy bão lửa thiêu đốt 8% Max HP/lượt và giảm 40% Tốc độ hàng trước địch!`);
+      } else if (actor.id === "nagato") {
+        // Lv.50: Vạn Tượng Thiên Dẫn & Tu La Pháo: 420% ATK kẻ địch ATK cao nhất, Stun 1 lượt, Gãy Xương (-50% ATK & DEF)
+        let highestAtkEnemy = target;
+        aliveEnemies.forEach(e => {
+          if (e.atk > highestAtkEnemy.atk) highestAtkEnemy = e;
+        });
+        const { damage, isCrit } = calculateDamage(actor, highestAtkEnemy, actor.atk * 4.20);
+        applyDamage(highestAtkEnemy, damage, isCrit, actor, false, false);
+        highestAtkEnemy.buffs = highestAtkEnemy.buffs || {};
+        highestAtkEnemy.buffs.stun = 1;
+        highestAtkEnemy.atk = +(highestAtkEnemy.atk * 0.50).toFixed(1);
+        highestAtkEnemy.def = Math.round(highestAtkEnemy.def * 0.50);
+        addAnimation(highestAtkEnemy, "💥 GÃY XƯƠNG (STUN & -50% CÔNG/GIÁP)", "#bc8cff");
+        logCombat(`🔯💥 [Vạn Tượng Thiên Dẫn & Tu La Pháo] Nagato hút chặt ${highestAtkEnemy.name} nện Tu La Pháo gây ${damage.toLocaleString()} ST, Choáng 1 lượt và giáng hiệu ứng Gãy Xương (-50% ATK & DEF)!`);
             } else if (actor.id === "naruto_kurama") {
         if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
           // Cửu Vĩ Liên Hoàn Trảo: 380% ATK toàn thể, 30% Stun
@@ -7044,10 +7435,70 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
         const lowAllies = [...aliveAllies].sort((a, b) => a.hp - b.hp).slice(0, 2);
         lowAllies.forEach(a => healFighter(a, Math.round(shareHp / lowAllies.length)));
       } else if (actor.id === "shisui") {
-        target.shield = 0; // Phá hủy khiên
-        const { damage, isCrit } = calculateDamage(actor, target, actor.atk * 3.50);
-        applyDamage(target, damage, isCrit, actor, true, false);
-        addAnimation(target, "PHÁ KHIÊN SUSANOO!", "#ff5722");
+        // Lv.130 Rework: Susanoo Ngọc Bích: Thần Giáo Mũi Khoan: 480% ATK AoE, phá nát Khiên, Stun 1 lượt, cấp Khiên Susanoo 30% HP
+        aliveEnemies.forEach(t => {
+          t.shield = 0; // Phá nát toàn bộ Khiên
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 4.80);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.buffs = t.buffs || {};
+          t.buffs.stun = 1;
+          addAnimation(t, "💚 SUSANOO PHÁ KHIÊN & STUN!", "#3fb950");
+        });
+        actor.shield = (actor.shield || 0) + Math.round(actor.maxHp * 0.30);
+        addAnimation(actor, `🛡️ KHIÊN SUSANOO +${Math.round(actor.maxHp * 0.30).toLocaleString()}`, "#3fb950");
+        logCombat(`🦅💚 [Susanoo Ngọc Bích: Thần Giáo Mũi Khoan] Susanoo xanh lục rực lửa mở ngực phóng mưa chông phá nát toàn bộ Khiên của địch, Choáng 1 lượt và cấp Khiên 30% HP cho Shisui!`);
+      } else if (actor.id === "luanhoi") {
+        // Lv.130 Rework (Hagoromo): Lục Đạo: Địa Bộc Thiên Tinh Thần Thoại: 520% ATK AoE, Stun toàn bộ địch 1 lượt, -50% DEF vĩnh viễn
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 5.20);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.buffs = t.buffs || {};
+          t.buffs.stun = 1;
+          t.def = Math.round(t.def * 0.50);
+          addAnimation(t, "🔯 PHONG ẤN MẶT TRĂNG (STUN & -50% DEF)", "#bc8cff");
+        });
+        logCombat(`🔯🌕 [Lục Đạo: Địa Bộc Thiên Tinh Thần Thoại] Hagoromo tạo mặt trăng phong ấn giam cầm toàn bộ phe địch gây ${actor.atk * 5.2} ST, Choáng 1 lượt và phá hủy 50% DEF vĩnh viễn!`);
+      } else if (actor.id === "isshiki") {
+        // Lv.130 Rework: Daikokuten: Chiếc Quan Tài Hư Vô: cô lập kẻ địch ATK cao nhất 1 lượt; gây 500% ATK sát thương chuẩn và xóa 100% Chakra
+        let highestAtkEnemy = target;
+        aliveEnemies.forEach(e => {
+          if (e.atk > highestAtkEnemy.atk) highestAtkEnemy = e;
+        });
+        const trueDmg = Math.round(actor.atk * 5.0);
+        applyDamage(highestAtkEnemy, trueDmg, false, actor, false, true);
+        highestAtkEnemy.chakra = 0;
+        highestAtkEnemy.buffs = highestAtkEnemy.buffs || {};
+        highestAtkEnemy.buffs.stun = 1;
+        addAnimation(highestAtkEnemy, "⚰️ QUAN TÀI HƯ VÔ (XÓA CHAKRA)", "#000");
+        logCombat(`👁️⚰️ [Daikokuten: Chiếc Quan Tài Hư Vô] Isshiki giam cầm ${highestAtkEnemy.name} vào quan tài hư vô, giáng ${trueDmg.toLocaleString()} ST chuẩn và xóa sạch 100% Chakra!`);
+      } else if (actor.id === "obito_sage") {
+        // Lv.130: Thập Vĩ Bộc Phá: Bijuu Dama Liên Hoàn: 500% ATK AoE, phá 100% Khiên, Stun 1 lượt 2 kẻ địch nhiều Chakra nhất
+        aliveEnemies.forEach(t => {
+          t.shield = 0;
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 5.0);
+          applyDamage(t, damage, isCrit, actor, false, false);
+        });
+        const sortedChakra = [...aliveEnemies].sort((a, b) => (b.chakra || 0) - (a.chakra || 0));
+        sortedChakra.slice(0, 2).forEach(t => {
+          t.buffs = t.buffs || {};
+          t.buffs.stun = 1;
+          addAnimation(t, "💥 THẬP VĨ BIJUU DAMA (STUN)", "#ff0055");
+        });
+        logCombat(`🔘☄️ [Thập Vĩ Bộc Phá: Bijuu Dama Liên Hoàn] Cây thần Thập Vĩ bắn 4 quả bom Vĩ Thú phá nát khiên toàn địch và làm Choáng 2 kẻ địch nhiều Chakra nhất!`);
+      } else if (actor.id === "nagato") {
+        // Lv.130: Ngoại Đạo: Ma Tượng Triệu Hoán: 460% ATK AoE, rút 3,000 Chakra toàn địch, cấp Khiên 30% HP Nagato cho toàn đội 3 lượt
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 4.60);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.chakra = Math.max(0, (t.chakra || 0) - 3000);
+          addAnimation(t, "-3,000 🌀 (MA TƯỢNG)", "#bc8cff");
+        });
+        const shieldVal = Math.round(actor.maxHp * 0.30);
+        aliveAllies.forEach(a => {
+          a.shield = (a.shield || 0) + shieldVal;
+          addAnimation(a, `+${shieldVal.toLocaleString()} KHIÊN MA TƯỢNG`, "#bc8cff");
+        });
+        logCombat(`🔯🐉 [Ngoại Đạo: Ma Tượng Triệu Hoán] Dị Tượng Ngoại Đạo nuốt 3,000 Chakra của toàn đội địch và cấp lớp Khiên ${shieldVal.toLocaleString()} HP cho toàn đội!`);
             } else if (actor.id === "naruto_kurama") {
         if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
           const shieldVal = Math.round(actor.maxHp * 0.40);
@@ -7266,9 +7717,89 @@ function executeSkillLogic(actor, actionType, enemyTeam, allyTeam) {
           applyDamage(t, damage, isCrit, actor, false, false);
         });
       } else if (actor.id === "shisui") {
-        target.buffs = target.buffs || {};
-        target.buffs.thaoTung = 2;
-        addAnimation(target, "👁️ KOTOAMATSUKAMI (THAO TÚNG)", "#da3633");
+        // Lv.250 Rework: Kotoamatsukami: Biệt Thiên Thần Tối Cao: 650% ATK AoE (bỏ qua 100% DEF), Thao Túng 2 kẻ địch ATK cao nhất 2 lượt
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 6.50, 1.0);
+          applyDamage(t, damage, isCrit, actor, false, true);
+        });
+        const sortedAtk = [...aliveEnemies].sort((a, b) => b.atk - a.atk);
+        sortedAtk.slice(0, 2).forEach(t => {
+          t.buffs = t.buffs || {};
+          t.buffs.thaoTung = 2;
+          addAnimation(t, "👁️ THAO TÚNG KOTOAMATSUKAMI (2 LƯỢT)!", "#da3633");
+        });
+        logCombat(`🦅👁️👑 [KOTOAMATSUKAMI: BIỆT THIÊN THẦN TỐI CAO] Shisui mở Mangekyo Sharingan bao trùm toàn sàn đấu gây sát thương tâm linh xuyên 100% giáp và THAO TÚNG 2 kẻ địch ATK cao nhất quay lại tàn sát phe địch!`);
+      } else if (actor.id === "luanhoi") {
+        // Lv.250 Rework (Hagoromo): Tuyệt Kỹ Tối Cao: Vạn Vật Sáng Tạo: Hồi sinh toàn đội tử trận 50% HP (hoặc hồi 60% HP nếu sống), 700% ST chuẩn, Bất Tử 1 lượt
+        aliveAllies.forEach(a => {
+          if (a.hp <= 0) {
+            a.hp = Math.round(a.maxHp * 0.50);
+            addAnimation(a, "🔯 SÁNG THẾ HỒI SINH (50% HP)!", "#ffd700");
+          } else {
+            healFighter(a, Math.round(a.maxHp * 0.60));
+            addAnimation(a, "+60% HP (SÁNG THẾ)", "#ffd700");
+          }
+          a.buffs = a.buffs || {};
+          a.buffs.batTu = 1;
+        });
+        aliveEnemies.forEach(t => {
+          const trueDmg = Math.round(actor.atk * 7.0);
+          applyDamage(t, trueDmg, false, actor, false, true);
+          addAnimation(t, `💥 SÁNG THẾ DIỆT ĐỊCH -${trueDmg.toLocaleString()}`, "#ffd700");
+        });
+        logCombat(`🔯👑 [TUYỆT KỸ TỐI CAO: VẠN VẬT SÁNG TẠO] Hagoromo sáng thế thực tại: Hồi sinh toàn bộ đồng đội đã khuất, ban Bất Tử 1 lượt và giáng 700% ATK sát thương chuẩn lên toàn bộ kẻ địch!`);
+      } else if (actor.id === "isshiki") {
+        // Lv.250 Rework: Tuyệt Kỹ: Kama Tối Thượng - Trảm Sát Niên Thọ: 880% ATK AoE + 20% Max HP ST chuẩn; nếu hạ gục địch hồi 100% HP và nhận thêm lượt đánh
+        let killedAny = false;
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 8.80);
+          const trueDmg20 = Math.round(t.maxHp * 0.20);
+          applyDamage(t, damage + trueDmg20, isCrit, actor, true, true);
+          if (t.hp <= 0) killedAny = true;
+        });
+        if (killedAny) {
+          actor.hp = actor.maxHp;
+          actor.extraTurnGranted = true;
+          addAnimation(actor, "⚡ HỒI ĐẦY 100% MÁU & CƯỚP LƯỢT!", "#bc8cff");
+          logCombat(`👁️⬛👑 [KAMA TRẢM SÁT NIÊN THỌ] Isshiki nghiền nát sinh mệnh địch: Tiêu diệt kẻ địch giúp Isshiki hồi phục 100% HP và NHẬN THÊM 1 LƯỢT ĐÁNH MỚI NGAY LẬP TỨC!`);
+        } else {
+          logCombat(`👁️⬛ [KAMA TỐI THƯỢNG] Isshiki phát động liên hoàn cước trảm sát 880% ATK + 20% Max HP Sát thương chuẩn lên toàn bộ phe địch!`);
+        }
+      } else if (actor.id === "obito_sage") {
+        // Lv.250: Tuyệt Kỹ: Thánh Kiếm Nunoboko: 850% ATK AoE + 20% Max HP ST chuẩn, xóa Chakra về 0 và cấm hồi 2 lượt
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 8.50);
+          const trueDmg20 = Math.round(t.maxHp * 0.20);
+          applyDamage(t, damage + trueDmg20, isCrit, actor, false, true);
+          t.chakra = 0;
+          t.buffs = t.buffs || {};
+          t.buffs.camHoiChakra = 2;
+          addAnimation(t, "⚔️ NUNOBOKO (XÓA & CẤM CHAKRA)", "#000");
+        });
+        logCombat(`🔘⚔️👑 [TUYỆT KỸ: THÁNH KIẾM NUNOBOKO] Obito vung thanh kiếm sáng thế chém đôi sàn đấu gây 850% ATK + 20% Max HP sát thương chuẩn, xóa toàn bộ Chakra địch về 0 và cấm hồi Chakra trong 2 lượt!`);
+      } else if (actor.id === "nagato") {
+        // Lv.250: Tuyệt Kỹ: Siêu Địa Bộc Thiên Tinh: 750% ATK AoE, giam cầm 1 lượt (-10% Max HP), toàn đội +30% ATK & DEF 3 lượt
+        // Kiểm tra Hợp Đòn cùng Konan nếu có
+        let bonusCritDmg = 1.0;
+        if (actor.linkedWithKonan) {
+          bonusCritDmg = 1.25;
+          logCombat(`🕊️🔯 [Thiên Sứ Luân Hồi Kích] Konan & Nagato hợp đòn gia tăng 25% uy lực Chibaku Tensei!`);
+        }
+        aliveEnemies.forEach(t => {
+          const { damage, isCrit } = calculateDamage(actor, t, actor.atk * 7.50 * bonusCritDmg);
+          applyDamage(t, damage, isCrit, actor, false, false);
+          t.buffs = t.buffs || {};
+          t.buffs.giamCamChibaku = 1;
+          const hpLoss = Math.round(t.maxHp * 0.10);
+          applyDamage(t, hpLoss, false, actor, false, true);
+          addAnimation(t, `🌑 TRỌNG LỰC CHIBAKU (-${hpLoss.toLocaleString()})`, "#bc8cff");
+        });
+        aliveAllies.forEach(a => {
+          a.atk = +(a.atk * 1.30).toFixed(1);
+          a.def = Math.round(a.def * 1.30);
+          addAnimation(a, "✨ HÀO QUANG LUÂN HỒI (+30% CÔNG/GIÁP)", "#ffd700");
+        });
+        logCombat(`🔯🌑👑 [TUYỆT KỸ: SIÊU ĐỊA BỘC THIÊN TINH] Nagato tạo vệ tinh nhân tạo đè bẹp toàn đội địch, giam cầm và ban Hào Quang Luân Hồi tăng 30% Công & Giáp cho toàn đội!`);
             } else if (actor.id === "naruto_kurama") {
         if (actor.kuramaPerfect && actor.kuramaPerfect > 0) {
           aliveEnemies.forEach(t => {
@@ -7874,6 +8405,88 @@ function drawCharacter(f) {
       ctx.restore();
     }
 
+    // v7.3.0: Hoạt ảnh Obito Lục Đạo (10 Cầu Đạo Ngọc Xoay Quanh & Trượng Lục Đạo)
+    if (f.id === "obito_sage" && !isDead) {
+      ctx.save();
+      const t = Date.now() / 180;
+      ctx.shadowColor = "#000";
+      ctx.shadowBlur = 18;
+      // 10 Cầu Đạo Ngọc đen tuyền xoay quanh
+      const ballCount = 10;
+      for (let i = 0; i < ballCount; i++) {
+        const angle = (i / ballCount) * Math.PI * 2 + t * 0.4;
+        const bx = x + Math.cos(angle) * (R + 10);
+        const by = y + Math.sin(angle) * (R + 10);
+        ctx.beginPath();
+        ctx.arc(bx, by, 3.8, 0, Math.PI * 2);
+        ctx.fillStyle = "#111";
+        ctx.strokeStyle = "#444";
+        ctx.lineWidth = 1.2;
+        ctx.fill();
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // v7.3.0: Hoạt ảnh Nagato Uzumaki (Vòng Tròn Luân Hồi & Khí Lực Tím Đậm)
+    if (f.id === "nagato" && !isDead) {
+      ctx.save();
+      const t = Date.now() / 220;
+      ctx.shadowColor = "#bc8cff";
+      ctx.shadowBlur = 20;
+      ctx.strokeStyle = "rgba(188, 140, 255, 0.8)";
+      ctx.lineWidth = 2.5;
+      // 3 vòng tròn đồng tâm Rinnegan phát quang mờ
+      for (let rIdx = 1; rIdx <= 3; rIdx++) {
+        ctx.beginPath();
+        ctx.arc(x, y, R + rIdx * 4 + Math.sin(t + rIdx) * 2, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+      ctx.restore();
+    }
+
+    // v7.3.0: Hoạt ảnh Shisui Thuấn Thân Thần Thoại (Susanoo Ngọc Bích & Tàn Ảnh)
+    if (f.id === "shisui" && !isDead) {
+      ctx.save();
+      const t = Date.now() / 150;
+      ctx.shadowColor = "#3fb950";
+      ctx.shadowBlur = 22 + Math.sin(t * 2) * 6;
+      ctx.strokeStyle = "rgba(63, 185, 80, 0.85)";
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.arc(x, y, R + 8 + Math.sin(t * 3) * 2, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // v7.3.0: Hoạt ảnh Otsutsuki Hagoromo (Hào Quang Sáng Thế Hoàng Kim & 6 Hạt Cầu Đạo)
+    if (f.id === "luanhoi" && !isDead) {
+      ctx.save();
+      const t = Date.now() / 200;
+      ctx.shadowColor = "#ffd700";
+      ctx.shadowBlur = 26 + Math.sin(t * 2) * 8;
+      ctx.strokeStyle = "rgba(255, 215, 0, 0.9)";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(x, y, R + 9, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // v7.3.0: Hoạt ảnh Isshiki Đại Tộc Trưởng (Mắt Pháp Uy & Cọc Đen Bay Lượn)
+    if (f.id === "isshiki" && !isDead) {
+      ctx.save();
+      const t = Date.now() / 160;
+      ctx.shadowColor = "#bc8cff";
+      ctx.shadowBlur = 22;
+      ctx.strokeStyle = "#9d4edd";
+      ctx.lineWidth = 3.5;
+      ctx.beginPath();
+      ctx.arc(x, y, R + 8, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    }
+
     // v7.3.0: Hoạt ảnh Đỉnh Cao Thiên Sứ Lục Đạo Konan (Đôi Cánh Giấy Nhịp Thở, Hào Quang Lục Đạo, Hoa Sen Giấy)
     if (f.id === "konan_sage" && !isDead) {
       ctx.save();
@@ -8457,6 +9070,8 @@ const GACHA_SPECIAL_RATES = [
   { name: "Naruto (Chakra Cửu Vĩ) [Tỉ Lệ 0.35% v7.2.1]", type: "hero", id: "naruto_kurama", rate: 0.0035, color: "var(--accent-red)" },
   { name: "Sasuke (Susanoo Hoàn Chỉnh) [Tỉ Lệ 0.35% v7.2.1]", type: "hero", id: "sasuke_susanoo", rate: 0.0035, color: "var(--accent-purple)" },
   { name: "Konan (Thiên Sứ Lục Đạo) [Tỉ Lệ 0.35% v7.3.0]", type: "hero", id: "konan_sage", rate: 0.0035, color: "var(--accent-gold)" },
+  { name: "Obito Lục Đạo [Tỉ Lệ 0.35% v7.3.0]", type: "hero", id: "obito_sage", rate: 0.0035, color: "var(--accent-purple)" },
+  { name: "Nagato Uzumaki [Tỉ Lệ 0.35% v7.3.0]", type: "hero", id: "nagato", rate: 0.0035, color: "var(--accent-gold)" },
   { name: "100 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 100, rate: 0.05, color: "var(--accent-gold)" },
   { name: "60 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 60, rate: 0.15, color: "var(--accent-gold)" },
   { name: "40 ⭐ Ánh sao Thần Thoại", type: "res", res: "anhSao", amt: 40, rate: 0.15, color: "var(--accent-gold)" },
@@ -8465,7 +9080,7 @@ const GACHA_SPECIAL_RATES = [
   { name: "10 Mảnh Thiên Thạch Hoàng Kim", type: "res", res: "pinkShard", amt: 10, rate: 0.10, color: "var(--accent-gold)" },
   { name: "300 💎 Kim cương", type: "res", res: "kimCuong", amt: 300, rate: 0.12, color: "var(--accent-cyan)" },
   { name: "600 💎 Kim cương", type: "res", res: "kimCuong", amt: 600, rate: 0.09, color: "var(--accent-cyan)" },
-  { name: "1,000 💎 Kim cương", type: "res", res: "kimCuong", amt: 1000, rate: 0.0225, color: "var(--accent-cyan)" }
+  { name: "1,000 💎 Kim cương", type: "res", res: "kimCuong", amt: 1000, rate: 0.0155, color: "var(--accent-cyan)" }
 ];
 
 const GACHA_NORMAL_RATES = [
@@ -9379,28 +9994,130 @@ function submitGiftcode() {
   const code = input ? input.value.trim().toUpperCase() : "";
   if (!code) return;
 
-  // v7.3.0: Đại Lễ Cập Nhật v7.3.0: Mở khóa Kisame Cấp 1 + Konan Cấp 1 + Tài nguyên khủng
+  // v7.3.0: Đại Lễ Cập Nhật v7.3.0: Mở khóa 4 Siêu Tướng Lục Đạo (Cấp 1) + Tài nguyên cực khủng
   if (code === "V730") {
     if (gameState.usedCodes && gameState.usedCodes.includes("V730")) {
       toast("Mã quà tặng V730 đã được sử dụng rồi!", true);
       return;
     }
-    const newHeroes = ["kisame", "konan_sage"];
+    const newHeroes = ["kisame", "konan_sage", "obito_sage", "nagato"];
     newHeroes.forEach(hId => {
       if (!gameState.heroes[hId]) gameState.heroes[hId] = { level: 1 };
     });
-    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 50000;
-    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 1500000;
-    gameState.resources.gold = (gameState.resources.gold || 0) + 3000000;
-    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 60;
-    gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 120;
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 80000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 2500000;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 5000000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 100;
+    gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 200;
     if (!gameState.usedCodes) gameState.usedCodes = [];
     gameState.usedCodes.push("V730");
     saveGame();
     input.value = "";
     closeModal("modalGiftcode");
     updateTopBarUI();
-    toast("🎉 Kích hoạt mã V730: Mở khóa Hoshigaki Kisame (Cấp 1) & Konan Thiên Sứ (Cấp 1) + 50K KC + 1.5M VPNC + 3M Vàng + 60 Thiên Thạch Hồng + 120 Thiên Thạch Xanh!", false);
+    toast("🎉 Kích hoạt mã V730: Mở khóa trọn bộ 4 Siêu Tướng Mới (Cấp 1) [Kisame, Konan, Obito Lục Đạo, Nagato] + 80K KC + 2.5M VPNC + 5M Vàng + 100 Thiên Thạch Hồng + 200 Thiên Thạch Xanh!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "OBITO") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("OBITO")) {
+      toast("Mã quà tặng OBITO đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.obito_sage) gameState.heroes.obito_sage = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 20000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 800000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 30;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 800000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("OBITO");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🔘 Kích hoạt mã OBITO: Mở khóa Obito Lục Đạo (Jinchuuriki Thập Vĩ) [Cấp 1] + 20K KC + 800K VPNC + 30 Thiên Thạch Hồng!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "NAGATO") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("NAGATO")) {
+      toast("Mã quà tặng NAGATO đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.nagato) gameState.heroes.nagato = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 20000;
+    gameState.resources.vpnc = (gameState.resources.vpnc || 0) + 800000;
+    gameState.resources.pinkMeteor = (gameState.resources.pinkMeteor || 0) + 30;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 800000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("NAGATO");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🔯 Kích hoạt mã NAGATO: Mở khóa Nagato Uzumaki (Lục Đạo Chân Nhân) [Cấp 1] + 20K KC + 800K VPNC + 30 Thiên Thạch Hồng!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "HAGOROMO") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("HAGOROMO")) {
+      toast("Mã quà tặng HAGOROMO đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.luanhoi) gameState.heroes.luanhoi = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 15000;
+    gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 50;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 500000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("HAGOROMO");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🔯 Quà tri ân Rework Hagoromo: Mở khóa/Cường hóa Hagoromo (Cấp 1) + 15K KC + 50 Thiên Thạch Xanh + 500K Vàng!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "ISSHIKI") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("ISSHIKI")) {
+      toast("Mã quà tặng ISSHIKI đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.isshiki) gameState.heroes.isshiki = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 15000;
+    gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 50;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 500000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("ISSHIKI");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("⬛ Quà tri ân Rework Isshiki: Mở khóa/Cường hóa Isshiki Chuẩn Phim (Cấp 1) + 15K KC + 50 Thiên Thạch Xanh + 500K Vàng!", false);
+    renderHeroesList();
+    return;
+  }
+
+  if (code === "SHISUI") {
+    if (gameState.usedCodes && gameState.usedCodes.includes("SHISUI")) {
+      toast("Mã quà tặng SHISUI đã được sử dụng rồi!", true);
+      return;
+    }
+    if (!gameState.heroes.shisui) gameState.heroes.shisui = { level: 1 };
+    gameState.resources.kimCuong = (gameState.resources.kimCuong || 0) + 15000;
+    gameState.resources.blueMeteor = (gameState.resources.blueMeteor || 0) + 50;
+    gameState.resources.gold = (gameState.resources.gold || 0) + 500000;
+    if (!gameState.usedCodes) gameState.usedCodes = [];
+    gameState.usedCodes.push("SHISUI");
+    saveGame();
+    input.value = "";
+    closeModal("modalGiftcode");
+    updateTopBarUI();
+    toast("🦅 Quà tri ân Rework Shisui: Mở khóa/Cường hóa Shisui Thuấn Thân (Cấp 1) + 15K KC + 50 Thiên Thạch Xanh + 500K Vàng!", false);
     renderHeroesList();
     return;
   }
